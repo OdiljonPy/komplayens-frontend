@@ -50,12 +50,12 @@ const VideoCourseDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto grid lg:grid-cols-12 md:grid-cols-2 grid-cols-1 gap-8">
         {/* Left Section */}
         <div className="lg:col-span-7">
           <div className="flex justify-between items-center mb-6">
-            <h1 className="text-2xl font-bold border-l-4 border-blue-600 pl-3">Videokurslar</h1>
+            <h1 className="text-2xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959]">Video kurslar</h1>
             <button className="px-4 py-2 bg-white text-gray-700 rounded-md hover:bg-gray-50">
               Batafsil
             </button>
