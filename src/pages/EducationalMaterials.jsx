@@ -1,6 +1,8 @@
 import HeroCarousel from "../components/HeroCarousel";
 import Announcements from "../sections/Announcements";
 import VideoCourseDashboard from "../sections/VideoCourseDashboard";
+import NewsGrid from "../sections/NewsGrid";
+
 
 const EducationalMaterials = () => {
   return (
@@ -8,6 +10,7 @@ const EducationalMaterials = () => {
       <HeroCarousel />
       <VideoCourseDashboard />
       <Announcements />
+      <NewsGrid />
     </>
   );
 };
