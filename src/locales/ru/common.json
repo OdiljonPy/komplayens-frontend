@@ -1,0 +1,22 @@
+{
+  "platform_title_1": "Платформа по профилактике",
+  "platform_title_2": "коррупционных факторов",
+  "login": "Вход",
+  "menu": {
+    "study_materials_1": "Учебно-методические",
+    "study_materials_2": "материалы",
+    "corruption_risks_1": "Коррупционные",
+    "corruption_risks_2": "риски",
+    "report": "Сообщить",
+    "conflict_1": "Конфликт",
+    "conflict_2": "интересов",
+    "activity": "Деятельность",
+    "useful_info_1": "Пропаганда и полезная",
+    "useful_info_2": "информация",
+    "integrity_test": "Тест на честность",
+    "compliance_1": "Комплаенс",
+    "compliance_2": "офицеры",
+    "news": "Новости",
+    "announcements": "Объявления"
+  }
+}

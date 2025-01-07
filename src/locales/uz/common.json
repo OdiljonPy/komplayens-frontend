@@ -1,0 +1,22 @@
+{
+  "platform_title_1": "Korrupsiyaviy omillarni",
+  "platform_title_2": "profilaktika qilish platformasi",
+  "login": "Kirish",
+  "menu": {
+    "study_materials_1": "O'quv-uslubiy",
+    "study_materials_2": "materiallar",
+    "corruption_risks_1": "Korrupsiyaviy",
+    "corruption_risks_2": "xavf-xatarlar",
+    "report": "Xabar berish",
+    "conflict_1": "Manfaatlar",
+    "conflict_2": "to'qnashuvi",
+    "activity": "Amaliyot",
+    "useful_info_1": "Targ'ibot va foydali",
+    "useful_info_2": "axborotlar",
+    "integrity_test": "Halollik testi",
+    "compliance_1": "Komplayens",
+    "compliance_2": "ofitserlar",
+    "news": "Yangiliklar",
+    "announcements": "E'lonlar"
+  }
+}
