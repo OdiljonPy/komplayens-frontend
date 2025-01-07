@@ -4,7 +4,7 @@ import banner from "../assets/banners/05.png"
 
 const Announcements = () => {
   return (
-    <div className="w-full max-w-7xl mx-auto py-4 mt-4">
+    <div className="w-full max-w-7xl mx-auto px-4 md:px-0 py-4 mt-4">
       <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-6">E'lonlar</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
