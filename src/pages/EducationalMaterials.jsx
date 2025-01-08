@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Search, ChevronRight } from 'lucide-react';
+import { Search, ChevronRight, ChevronDown, ChevronLeft, FileText } from 'lucide-react';
 import banner from "../assets/banners/07.png";
+import Pagination from '../components/Pagination';
 
 const exampleCourses = [
   {
@@ -16,15 +17,21 @@ const exampleCourses = [
   duration: "14 daqiqa",
 })));
 
+const exampleBooks = Array(20).fill(null).map((_, i) => ({
+  id: i + 1,
+  name: "Kitob nomi.pdf",
+  author: "Yozuvchining ismi",
+}));
+
 const categories = ["Kategoriya", "Kategoriya", "Kategoriya", "Kategoriya"];
 
 export default function EducationalMaterials() {
   const [activeTab, setActiveTab] = useState("O'quv Kurslari");
-  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 md:px-0">
+    <div className="max-w-7xl mx-auto px-4 md:px-6">
       {/* Header with Breadcrumb */}
       <div className="py-3 md:py-4">
         <div className="text-sm text-gray-600 flex items-center gap-1">
@@ -36,32 +43,8 @@ export default function EducationalMaterials() {
 
       <div className="py-4 md:py-6">
         <h1 className="text-lg md:text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-6 md:mb-10">
-          O'quv-Uslubiy Materiallar
+          Ta'lim
         </h1>
-
-        {/* Mobile Search Toggle */}
-        <div className="flex md:hidden justify-end mb-4">
-          <button
-            onClick={() => setIsSearchOpen(!isSearchOpen)}
-            className="p-2 text-gray-500 hover:text-gray-700"
-          >
-            <Search size={20} />
-          </button>
-        </div>
-
-        {/* Mobile Search Input */}
-        {isSearchOpen && (
-          <div className="md:hidden mb-4">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Tashkilotni qidirish"
-                className="w-full pr-10 pl-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-              />
-              <Search className="absolute right-3 top-2.5 text-gray-400" size={20} />
-            </div>
-          </div>
-        )}
 
         {/* Navigation and Search Container */}
         <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
@@ -87,8 +70,8 @@ export default function EducationalMaterials() {
             </button>
           </div>
 
-          {/* Desktop Search Input */}
-          <div className="hidden md:block relative w-64">
+          {/* Search Input */}
+          <div className="relative w-full md:w-64">
             <input
               type="text"
               placeholder="Tashkilotni qidirish"
@@ -98,43 +81,141 @@ export default function EducationalMaterials() {
           </div>
         </div>
 
-        {/* Category Pills */}
-        <div className="flex overflow-x-auto md:flex-wrap gap-2 mb-6 md:mb-8 pb-2 md:pb-0 scrollbar-hide">
-          {categories.map((category, index) => (
-            <button
-              key={index}
-              className={`px-4 py-1.5 rounded-full transition-colors whitespace-nowrap ${index === 0
-                ? 'bg-blue-500 text-white'
-                : 'bg-white hover:bg-gray-50'
-                }`}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
-
-        {/* Course Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-          {exampleCourses.map((course) => (
-            <div key={course.id} className="bg-white rounded-lg overflow-hidden shadow-sm">
-              <img
-                src={banner}
-                alt="Course illustration"
-                className="w-full aspect-[16/9] object-cover"
-              />
-              <div className="p-3 md:p-4">
-                <span className="text-sm text-gray-500">{course.duration}</span>
-                <h3 className="font-medium text-base md:text-lg mb-2 line-clamp-2">{course.title}</h3>
-                <p className="text-sm text-gray-600 mb-4 line-clamp-2">
-                  {course.description}
-                </p>
-                <button className="w-full bg-blue-900 text-white py-2 rounded-md hover:bg-blue-800 transition-colors">
-                  Boshlash
+        {activeTab === "O'quv Kurslari" ? (
+          <>
+            {/* Category Pills */}
+            <div className="flex flex-wrap gap-2 mb-8">
+              {categories.map((category, index) => (
+                <button
+                  key={index}
+                  className={`px-4 py-1.5 rounded-full transition-colors ${index === 0
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-white hover:bg-gray-50'
+                    }`}
+                >
+                  {category}
                 </button>
+              ))}
+            </div>
+
+            {/* Course Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {exampleCourses.map((course) => (
+                <div key={course.id} className="bg-white rounded-lg overflow-hidden shadow-sm">
+                  <img
+                    src={banner}
+                    alt="Course illustration"
+                    className="w-full aspect-[16/9] object-cover"
+                  />
+                  <div className="p-4">
+                    <span className="text-sm text-gray-500">{course.duration}</span>
+                    <h3 className="font-medium text-lg mb-2">{course.title}</h3>
+                    <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+                      {course.description}
+                    </p>
+                    <button className="w-full bg-blue-900 text-white py-2 rounded-md hover:bg-blue-800 transition-colors">
+                      Boshlash
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        ) : (
+          <>
+            {/* Dropdown and Info */}
+            <div className="flex items-center gap-2 mb-4">
+              <div className="relative">
+                <button
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className="flex items-center gap-2 bg-white px-4 py-2 rounded-md border"
+                >
+                  Bo'limi
+                  <span className="text-blue-500">Bo'limi nomi</span>
+                  <ChevronDown size={16} className={`transform transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {isDropdownOpen && (
+                  <div className="absolute top-full left-0 mt-1 w-48 bg-white border rounded-md shadow-lg z-10">
+                    <div className="py-1">
+                      <button className="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                        Bo'limi nomi
+                      </button>
+                      <button className="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                        Bo'limi nomi
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <span className="text-sm text-gray-500">100 kitob</span>
+            </div>
+
+            {/* Books Grid */}
+            <div className="bg-white rounded-lg shadow-sm">
+              <div className="grid grid-cols-1 md:grid-cols-2">
+                {exampleBooks.map((book, index) => (
+                  <div
+                    key={book.id}
+                    className={`flex items-center p-4 gap-3 ${index !== exampleBooks.length - 1 &&
+                      (index % 2 === 0 ? 'border-r md:border-b' : 'border-b')
+                      }`}
+                  >
+                    <FileText className="flex-shrink-0 text-gray-400" size={20} />
+                    <div className="flex-grow min-w-0 px-6">
+                      <div className="flex items-center gap-4">
+                        <span className="text-sm font-medium truncate flex-1">{book.name}</span>
+                        <span className="text-sm text-gray-500 truncate flex-1">{book.author}</span>
+                      </div>
+                    </div>
+                    <button className="flex-shrink-0 text-blue-500 hover:text-blue-700 text-sm">
+                      Batafsil
+                    </button>
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
-        </div>
+
+            {/* Pagination */}
+            {/* <div className="flex items-center justify-between mt-4">
+              <button
+                className="flex items-center gap-1 px-3 py-2 border rounded-md text-sm text-gray-600 hover:bg-gray-50"
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+              >
+                <ChevronLeft size={16} />
+                Previous
+              </button>
+              <div className="flex items-center gap-2">
+                {[1, 2, 3, '...', 8, 9, 10].map((page, index) => (
+                  <button
+                    key={index}
+                    className={`px-3 py-1 rounded-md text-sm ${currentPage === page
+                      ? 'bg-blue-500 text-white'
+                      : 'text-gray-600 hover:bg-gray-100'
+                      } ${page === '...' ? 'cursor-default hover:bg-transparent' : ''}`}
+                    onClick={() => page !== '...' && setCurrentPage(page)}
+                    disabled={page === '...'}
+                  >
+                    {page}
+                  </button>
+                ))}
+              </div>
+              <button
+                className="flex items-center gap-1 px-3 py-2 border rounded-md text-sm text-gray-600 hover:bg-gray-50"
+                onClick={() => setCurrentPage(prev => prev + 1)}
+                disabled={currentPage === 10}
+              >
+                Next
+                <ChevronRight size={16} />
+              </button>
+            </div> */}
+            <Pagination
+              currentPage={currentPage}
+              totalPages={10}
+              onPageChange={setCurrentPage}
+            />
+          </>
+        )}
       </div>
     </div>
   );
