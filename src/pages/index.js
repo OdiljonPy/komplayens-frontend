@@ -8,3 +8,4 @@ export { default as StatusCheck } from './StatusCheck';
 export { default as ComplianceOfficers } from './ComplianceOfficers';
 export { default as Violations } from './Violations';
 export { default as Announcements } from './Announcements';
+export { default as LandingPage } from './LandingPage';

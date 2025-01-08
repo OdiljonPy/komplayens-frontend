@@ -4,7 +4,7 @@ import banner from "../assets/banners/06.png"
 
 const NewsGrid = () => {
   return (
-    <div className="w-full max-w-7xl mx-auto py-4 mt-6">
+    <div className="w-full max-w-7xl mx-auto py-4 mt-6 px-3 md:px-0">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959]">Yangiliklar</h1>
 

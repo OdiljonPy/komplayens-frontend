@@ -34,7 +34,7 @@ const HeroCarousel = () => {
   const [swiper, setSwiper] = useState(null);
 
   return (
-    <div className="relative max-w-7xl mx-auto  h-[300px] md:h-[400px] overflow-hidden rounded-3xl">
+    <div className="relative max-w-7xl mx-auto  h-[300px] md:h-[400px] overflow-hidden rounded-3xl ">
       <Swiper
         spaceBetween={0}
         slidesPerView={1}

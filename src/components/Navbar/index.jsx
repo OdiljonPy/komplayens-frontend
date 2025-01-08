@@ -27,7 +27,7 @@ const Navbar = () => {
       twoLines: true,
       label1: 'menu.study_materials_1',
       label2: 'menu.study_materials_2',
-      to: '/'
+      to: '/educational-materials'
     },
     {
       id: 2,
@@ -113,14 +113,16 @@ const Navbar = () => {
         <div className="hidden xl:block">
           {/* Top row - with shadow and white background */}
           <div className="w-full bg-white shadow-md">
-            <div className="max-w-7xl mx-auto px-4">
+            <div className="max-w-7xl mx-auto ">
               <div className="flex justify-between items-center h-16">
                 <div className="flex items-center">
-                  <img
-                    className="h-8 w-auto mr-3"
-                    src={logo}
-                    alt="Logo"
-                  />
+                  <Link to="/">
+                    <img
+                      className="h-8 w-auto mr-3"
+                      src={logo}
+                      alt="Logo"
+                    />
+                  </Link>
                   <div className="text-sm text-gray-600">
                     <div>{t('platform_title_1')}</div>
                     <div>{t('platform_title_2')}</div>
@@ -166,7 +168,7 @@ const Navbar = () => {
 
           {/* Bottom row - transparent with border */}
           <div className="w-full border-b">
-            <div className="max-w-7xl mx-auto px-4">
+            <div className="max-w-7xl mx-auto ">
               <div className="flex justify-between items-center h-16">
                 <div className="flex flex-1 items-center justify-between">
                   {menuItems.map((item) => (
@@ -193,11 +195,13 @@ const Navbar = () => {
           <div className="max-w-7xl mx-auto px-4">
             <div className="flex justify-between items-center h-16">
               <div className="flex items-center">
-                <img
-                  className="h-8 w-auto mr-3"
-                  src={logo}
-                  alt="Logo"
-                />
+                <Link to="/">
+                  <img
+                    className="h-8 w-auto mr-3"
+                    src={logo}
+                    alt="Logo"
+                  />
+                </Link>
                 <div className="text-sm text-gray-600">
                   <div>{t('platform_title_1')}</div>
                   <div>{t('platform_title_2')}</div>
@@ -257,11 +261,13 @@ const Navbar = () => {
         <div className="md:hidden bg-white shadow-md">
           <div className="max-w-7xl mx-auto px-4">
             <div className="flex justify-between items-center h-16">
-              <img
-                className="h-8 w-auto"
-                src={logo}
-                alt="Logo"
-              />
+              <Link to="/">
+                <img
+                  className="h-8 w-auto"
+                  src={logo}
+                  alt="Logo"
+                />
+              </Link>
               <button
                 onClick={toggleMenu}
                 className="inline-flex items-center justify-center p-2 text-gray-700 hover:text-blue-600"
@@ -285,11 +291,13 @@ const Navbar = () => {
             {/* Modal */}
             <div className="fixed inset-0 z-50 flex flex-col bg-white">
               <div className="flex justify-between items-center h-16 px-4 border-b">
-                <img
-                  className="h-8 w-auto"
-                  src={logo}
-                  alt="Logo"
-                />
+                <Link to="/">
+                  <img
+                    className="h-8 w-auto"
+                    src={logo}
+                    alt="Logo"
+                  />
+                </Link>
                 <button
                   onClick={() => setIsOpen(false)}
                   className="inline-flex items-center justify-center p-2 text-gray-700 hover:text-blue-600"

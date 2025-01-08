@@ -7,7 +7,9 @@ const Footer = () => {
     <footer className="bg-[#2A2A2A] text-white py-12">
       <div className="container mx-auto px-4">
         <div className="flex flex-col items-center mb-12">
-          <img src={logo} alt="Logo" className="h-12 mb-4" />
+          <Link to="/">
+            <img src={logo} alt="Logo" className="h-12 mb-4" />
+          </Link>
           <h2 className="text-center text-xl font-medium max-w-md">
             Korrupsiyaviy omillarni profilaktika qilish platformasi
           </h2>
@@ -16,7 +18,7 @@ const Footer = () => {
         {/* Desktop Navigation */}
         <div className="hidden lg:grid grid-cols-5 gap-8 text-sm max-w-5xl mx-auto">
           <div className="text-start">
-            <Link to="/" className="block mb-4 hover:text-blue-400">O'quv-uslubiy materiallar</Link>
+            <Link to="/educational-materials" className="block mb-4 hover:text-blue-400">O'quv-uslubiy materiallar</Link>
             <Link to="/corruption-risks" className="block hover:text-blue-400">Korrupsiyaviy xavf-xatarlar</Link>
           </div>
           <div className="text-start">
@@ -40,7 +42,7 @@ const Footer = () => {
         {/* Mobile Navigation */}
         <div className="lg:hidden space-y-4 text-sm text-start ">
           <div className='space-y-2'>
-            <Link to="/" className="block hover:text-blue-400">O'quv-uslubiy materiallar</Link>
+            <Link to="/educational-materials" className="block hover:text-blue-400">O'quv-uslubiy materiallar</Link>
             <Link to="/corruption-risks" className="block hover:text-blue-400">Korrupsiyaviy xavf-xatarlar</Link>
           </div>
           <div className='space-y-2'>

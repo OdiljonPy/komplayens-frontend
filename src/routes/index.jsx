@@ -8,6 +8,7 @@ import {
   NewsReporting,
   BenefitsCalculator,
   Operations,
+  LandingPage,
   UsefulResources,
   StatusCheck,
   ComplianceOfficers,
@@ -22,6 +23,10 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
+        element: <LandingPage />
+      },
+      {
+        path: "/educational-materials",
         element: <EducationalMaterials />
       },
       {
