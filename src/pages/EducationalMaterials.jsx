@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Search, ChevronRight, ChevronDown, ChevronLeft, FileText } from 'lucide-react';
 import banner from "../assets/banners/07.png";
 import Pagination from '../components/Pagination';
-
+import { Link } from 'react-router-dom';
 const exampleCourses = [
   {
     id: 1,
@@ -113,9 +113,14 @@ export default function EducationalMaterials() {
                     <p className="text-sm text-gray-600 mb-4 line-clamp-2">
                       {course.description}
                     </p>
-                    <button className="w-full bg-blue-900 text-white py-2 rounded-md hover:bg-blue-800 transition-colors">
-                      Boshlash
-                    </button>
+                    <Link
+                      to={`/educational-materials/${course.id}`}
+                      className="text-blue-500 hover:text-blue-700"
+                    >
+                      <button className="w-full bg-blue-900 text-white py-2 rounded-md hover:bg-blue-800 transition-colors">
+                        Boshlash
+                      </button>
+                    </Link>
                   </div>
                 </div>
               ))}

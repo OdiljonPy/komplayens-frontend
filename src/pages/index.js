@@ -9,3 +9,4 @@ export { default as ComplianceOfficers } from './ComplianceOfficers';
 export { default as Violations } from './Violations';
 export { default as Announcements } from './Announcements';
 export { default as LandingPage } from './LandingPage';
+export { default as CourseItem } from './CourseItem';
