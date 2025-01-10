@@ -1,14 +1,7 @@
-// import React from 'react'
 
-// function Operations() {
-//   return (
-//     <div>Operations</div>
-//   )
-// }
-
-// export default Operations
 import React, { useState } from 'react';
 import { Search, ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Operations = () => {
   const [category, setCategory] = useState('Hammasi');
@@ -89,9 +82,11 @@ const Operations = () => {
               </div>
               <h3 className="text-lg font-semibold text-gray-800 mb-3 pr-24">{card.title}</h3>
               <p className="text-gray-600 mb-4">{card.description}</p>
-              <a href="#" className="text-[#024072] underline">
+              <Link
+                className="text-[#024072] underline"
+                to={`/operations/${card.id}`}>
                 Batafsil
-              </a>
+              </Link>
             </div>
           </div>
         ))}

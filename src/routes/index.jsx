@@ -13,9 +13,10 @@ import {
   StatusCheck,
   ComplianceOfficers,
   Violations,
-  Announcements
+  Announcements,
+  CourseItem,
+  OperationsItem
 } from "../pages";
-import CourseItem from "../pages/CourseItem";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -33,6 +34,10 @@ export const router = createBrowserRouter([
       {
         path: "/educational-materials/:courseId",
         element: <CourseItem />
+      },
+      {
+        path: "/operations/:operationId",
+        element: <OperationsItem />
       },
       {
         path: "corruption-risks",
