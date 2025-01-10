@@ -113,7 +113,7 @@ const Navbar = () => {
         <div className="hidden xl:block">
           {/* Top row - with shadow and white background */}
           <div className="w-full bg-white shadow-md">
-            <div className="max-w-7xl mx-auto ">
+            <div className="p-4 ">
               <div className="flex justify-between items-center h-16">
                 <div className="flex items-center">
                   <Link to="/">
@@ -168,7 +168,7 @@ const Navbar = () => {
 
           {/* Bottom row - transparent with border */}
           <div className="w-full border-b">
-            <div className="max-w-7xl mx-auto ">
+            <div className="p-4">
               <div className="flex justify-between items-center h-16">
                 <div className="flex flex-1 items-center justify-between">
                   {menuItems.map((item) => (

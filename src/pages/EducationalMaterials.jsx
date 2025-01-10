@@ -31,9 +31,9 @@ export default function EducationalMaterials() {
   const [currentPage, setCurrentPage] = useState(1);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 md:px-6">
+    <div className="p-4 pt-0">
       {/* Header with Breadcrumb */}
-      <div className="py-3 md:py-4">
+      <div className="py-3 md:py-4 pt-0">
         <div className="text-sm text-gray-600 flex items-center gap-1">
           <span>Bosh sahifa</span>
           <ChevronRight size={16} className="text-gray-400" />
@@ -156,7 +156,7 @@ export default function EducationalMaterials() {
             </div>
 
             {/* Books Grid */}
-            <div className="bg-white rounded-lg shadow-sm">
+            <div className="bg-white rounded-lg shadow-sm mb-8">
               <div className="grid grid-cols-1 md:grid-cols-2">
                 {exampleBooks.map((book, index) => (
                   <div
@@ -180,45 +180,55 @@ export default function EducationalMaterials() {
               </div>
             </div>
 
-            {/* Pagination */}
-            {/* <div className="flex items-center justify-between mt-4">
-              <button
-                className="flex items-center gap-1 px-3 py-2 border rounded-md text-sm text-gray-600 hover:bg-gray-50"
-                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                disabled={currentPage === 1}
-              >
-                <ChevronLeft size={16} />
-                Previous
+            {/* Pagination - Mobile */}
+            <div className="flex md:hidden justify-between items-center overflow-x-auto">
+              <button className="flex-shrink-0 flex items-center gap-1 px-3 py-2 text-gray-600">
+                <ChevronLeft size={20} />
+                <span>Oldingisi</span>
               </button>
-              <div className="flex items-center gap-2">
+
+              <div className="flex items-center gap-1 overflow-x-auto px-2">
                 {[1, 2, 3, '...', 8, 9, 10].map((page, index) => (
                   <button
                     key={index}
-                    className={`px-3 py-1 rounded-md text-sm ${currentPage === page
-                      ? 'bg-blue-500 text-white'
-                      : 'text-gray-600 hover:bg-gray-100'
-                      } ${page === '...' ? 'cursor-default hover:bg-transparent' : ''}`}
-                    onClick={() => page !== '...' && setCurrentPage(page)}
-                    disabled={page === '...'}
+                    className={`w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-md
+                ${page === 1 ? 'bg-blue-600 text-white' : 'text-gray-600'}`}
                   >
                     {page}
                   </button>
                 ))}
               </div>
-              <button
-                className="flex items-center gap-1 px-3 py-2 border rounded-md text-sm text-gray-600 hover:bg-gray-50"
-                onClick={() => setCurrentPage(prev => prev + 1)}
-                disabled={currentPage === 10}
-              >
-                Next
-                <ChevronRight size={16} />
+
+              <button className="flex-shrink-0 flex items-center gap-1 px-3 py-2 text-gray-600">
+                <span>Keyingisi</span>
+                <ChevronRight size={20} />
               </button>
-            </div> */}
-            <Pagination
-              currentPage={currentPage}
-              totalPages={10}
-              onPageChange={setCurrentPage}
-            />
+            </div>
+
+            {/* Pagination - Desktop */}
+            <div className="hidden md:flex justify-between items-center">
+              <button className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-md">
+                <ChevronLeft size={20} />
+                <span>Oldingisi</span>
+              </button>
+
+              <div className="flex items-center gap-2">
+                {[1, 2, 3, '...', 8, 9, 10].map((page, index) => (
+                  <button
+                    key={index}
+                    className={`w-8 h-8 flex items-center justify-center rounded-md
+                ${page === 1 ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-gray-100'}`}
+                  >
+                    {page}
+                  </button>
+                ))}
+              </div>
+
+              <button className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-md">
+                <span>Keyingisi</span>
+                <ChevronRight size={20} />
+              </button>
+            </div>
           </>
         )}
       </div>

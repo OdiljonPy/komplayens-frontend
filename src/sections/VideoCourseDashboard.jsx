@@ -50,8 +50,8 @@ const VideoCourseDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-3 md:px-0">
-      <div className="max-w-7xl mx-auto grid lg:grid-cols-12 md:grid-cols-2 grid-cols-1 gap-8">
+    <div className="min-h-screen bg-gray-50 py-8 px-4  mt-4">
+      <div className=" grid lg:grid-cols-12 md:grid-cols-2 grid-cols-1 gap-8">
         {/* Left Section */}
         <div className="lg:col-span-7">
           <div className="flex justify-between items-center mb-6">

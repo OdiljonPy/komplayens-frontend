@@ -1,9 +1,153 @@
-import React from 'react'
+// import React from 'react'
 
-function Operations() {
+// function Operations() {
+//   return (
+//     <div>Operations</div>
+//   )
+// }
+
+// export default Operations
+import React, { useState } from 'react';
+import { Search, ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
+
+const Operations = () => {
+  const [category, setCategory] = useState('Hammasi');
+  const [isOpen, setIsOpen] = useState(false);
+
+  const cards = Array(9).fill({
+    title: 'Etika masalalari va korrupsiyaga qarshi kurash: Jamiyatda odob-axloqni mustahkamlash',
+    description: 'Ushbu keysda davlat xizmatchisining shaxsiy manfaatlari va xizmat vazifalari oʻrtasidagi ziddiyat tahlil qilinadi.',
+    buttonText: 'Davlat xizmati'
+  });
+
+  const toggleDropdown = () => setIsOpen(!isOpen);
+
   return (
-    <div>Operations</div>
-  )
-}
+    <div className="min-h-screen bg-gray-50 p-4 md:p-6">
+      {/* Header */}
+      <div className="mb-6">
+        <h1 className="text-lg md:text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-6 md:mb-10">
+          Amaliyot: Kasbiy Odob-Axloq Qoidalari Bilan Ishlash
+        </h1>
+      </div>
 
-export default Operations
+      {/* Navigation Bar */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+        <div className="relative">
+          <button
+            onClick={toggleDropdown}
+            className="flex items-center gap-2 px-4 py-2 "
+          >
+            <span>Kategoriya: {category}</span>
+            <ChevronDown size={20} />
+          </button>
+
+          {isOpen && (
+            <div className="absolute top-full right-0 mt-1 w-48 bg-white border border-gray-200 rounded-xl shadow-lg z-10" style={{
+              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)'
+            }}>
+              <div className="py-1">
+                {["Bo'limi nomi", "Bo'limi nomi", "Bo'limi nomi", "Bo'limi nomi"].map((item, index) => (
+                  <button
+                    key={index}
+                    className="block w-full px-4 py-2 text-left hover:bg-gray-100"
+                    onClick={() => {
+                      setCategory(item);
+                      setIsOpen(false);
+                    }}
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="relative w-full md:w-64">
+          <input
+            type="text"
+            placeholder="Amaliyotni qidirish"
+            className="w-full px-4 py-2 pl-10 bg-white rounded-md shadow-sm border border-gray-200"
+          />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+        </div>
+      </div>
+
+      {/* Cards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        {cards.map((card, index) => (
+          <div key={index} className="bg-white rounded-lg shadow-sm  border-gray-200 overflow-hidden"
+            style={{
+              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+            }}>
+            <div className="p-6 relative">
+              <div className="absolute top-6 right-6">
+                <span className="px-3 py-1 bg-[#E5F4FF] text-[#595959] rounded-md text-sm">
+                  {card.buttonText}
+                </span>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-800 mb-3 pr-24">{card.title}</h3>
+              <p className="text-gray-600 mb-4">{card.description}</p>
+              <a href="#" className="text-[#024072] underline">
+                Batafsil
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Pagination - Mobile */}
+      <div className="flex md:hidden justify-between items-center overflow-x-auto">
+        <button className="flex-shrink-0 flex items-center gap-1 px-3 py-2 text-gray-600 bg-[#FFFFFF]  rounded-md ">
+          <ChevronLeft size={20} />
+          <span>Oldingisi</span>
+        </button>
+
+        <div className="flex items-center gap-1 overflow-x-auto px-2">
+          {[1, 2, 3, '...', 8, 9, 10].map((page, index) => (
+            <button
+              key={index}
+              className={`w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-md
+                ${page === 1 ? 'bg-blue-600 text-white' : 'text-gray-600'}`}
+            >
+              {page}
+            </button>
+          ))}
+        </div>
+
+        <button className="flex-shrink-0 flex items-center gap-1 px-3 py-2 text-gray-600 bg-[#FFFFFF] rounded-md ">
+          <span>Keyingisi</span>
+          <ChevronRight size={20} />
+        </button>
+      </div>
+
+      {/* Pagination - Desktop */}
+      <div className="hidden md:flex justify-between items-center">
+        <button className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-md bg-[#FFFFFF] rounded-md ">
+          <ChevronLeft size={20} />
+          <span>Oldingisi</span>
+        </button>
+
+        <div className="flex items-center gap-2">
+          {[1, 2, 3, '...', 8, 9, 10].map((page, index) => (
+            <button
+              key={index}
+              className={`w-8 h-8 flex items-center justify-center rounded-md
+                ${page === 1 ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-gray-100'}`}
+            >
+              {page}
+            </button>
+          ))}
+        </div>
+
+        <button className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-md bg-[#FFFFFF] rounded-md ">
+          <span>Keyingisi</span>
+          <ChevronRight size={20} />
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default Operations;

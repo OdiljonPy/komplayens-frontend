@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Search } from 'lucide-react';
+import { ChevronRight, Search } from 'lucide-react';
 import bank_logo from "../assets/icons/bank.png";
 import { useNavigate } from 'react-router-dom';
 
@@ -134,7 +134,7 @@ const ReportDetails = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="">
       <h2 className="text-xl font-medium text-gray-800 mb-6">Hodisa Tafsilotlari</h2>
 
       {/* Toggle Buttons */}
@@ -301,7 +301,7 @@ const ContactForm = () => {
   });
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="">
       <h2 className="text-xl font-medium text-gray-800 mb-6">
         Aloqador Shaxsning Ma'lumotlari
       </h2>
@@ -405,8 +405,15 @@ const NewsReporting = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 md:px-0 py-8">
+    <div className=" px-4 py-8 pt-0">
       {/* Title */}
+      <div className="py-3 md:py-4 pt-0">
+        <div className="text-sm text-gray-600 flex items-center gap-1">
+          <span>Bosh sahifa</span>
+          <ChevronRight size={16} className="text-gray-400" />
+          <span className='text-[#024072]'>Xabar yuborish</span>
+        </div>
+      </div>
       <div className="mb-6">
         <h1 className="text-2xl font-semibold text-gray-800">Xabar Yuborish</h1>
       </div>

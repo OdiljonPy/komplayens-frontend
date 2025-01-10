@@ -34,7 +34,7 @@ const HeroCarousel = () => {
   const [swiper, setSwiper] = useState(null);
 
   return (
-    <div className="relative max-w-7xl mx-auto  h-[300px] md:h-[400px] overflow-hidden rounded-3xl ">
+    <div className="relative p-4   h-[300px] md:h-[400px] overflow-hidden rounded-3xl " >
       <Swiper
         spaceBetween={0}
         slidesPerView={1}
@@ -59,7 +59,9 @@ const HeroCarousel = () => {
               }}
             >
               {/* Progress bars */}
-              <div className="absolute top-6 right-20 left-auto flex gap-1 z-10">
+              <div className="absolute top-6 right-20 left-auto flex gap-1 z-10" style={{
+                borderRadius: "20px"
+              }}>
                 {slides.map((_, i) => (
                   <div
                     key={i}
