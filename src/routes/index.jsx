@@ -17,7 +17,8 @@ import {
   CourseItem,
   OperationsItem,
   CorruptionRisksItem,
-  NewsItem
+  NewsItem,
+  BenefitsItem
 } from "../pages";
 export const router = createBrowserRouter([
   {
@@ -60,6 +61,10 @@ export const router = createBrowserRouter([
       {
         path: "benefits",
         element: <BenefitsCalculator />
+      },
+      {
+        path: "/benefits/:benefitId",
+        element: <BenefitsItem />
       },
       {
         path: "operations",

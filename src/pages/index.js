@@ -13,3 +13,4 @@ export { default as CourseItem } from './CourseItem';
 export { default as OperationsItem } from './OperationsItem';
 export { default as CorruptionRisksItem } from './CorruptionRisksItem';
 export { default as NewsItem } from './NewsItem';
+export { default as BenefitsItem } from './BenefitsItem';
