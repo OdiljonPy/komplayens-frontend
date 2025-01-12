@@ -1,9 +1,10 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Download, ChevronRight } from 'lucide-react';
-import html2pdf from 'html2pdf.js';
+
 
 const BenefitsItem = () => {
   const [currentStep, setCurrentStep] = useState(1);
+
   const [formData, setFormData] = useState({
     managerFIO: '',
     employeeFIO: '',
@@ -18,7 +19,8 @@ const BenefitsItem = () => {
     stir2: ''
   });
 
-  const documentRef = useRef(null);
+
+  const targetRef = useRef();
 
 
   const handleInputChange = (e) => {
@@ -28,28 +30,64 @@ const BenefitsItem = () => {
       [name]: value
     }));
   };
-  const handleDownload = () => {
-    const element = documentRef.current;
-    const opt = {
-      margin: 10,
-      filename: 'xabarnoma.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: {
-        scale: 2,
-        useCORS: true,
-        letterRendering: true
-      },
-      jsPDF: {
-        unit: 'mm',
-        format: 'a4',
-        orientation: 'portrait'
-      }
-    };
+  const handlePrint = () => {
+    const content = targetRef.current;
+    const printWindow = window.open('', '_blank');
 
-    html2pdf().set(opt).from(element).save();
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Xabarnoma</title>
+          <style>
+            body { 
+              font-family: Arial, sans-serif;
+              padding: 20px;
+              max-width: 800px;
+              margin: 0 auto;
+            }
+            table {
+              width: 100%;
+              border-collapse: collapse;
+              margin: 20px 0;
+            }
+            td, th {
+              border: 1px solid #ddd;
+              padding: 8px;
+            }
+            .header-text {
+              text-align: right;
+              margin-bottom: 30px;
+            }
+            .title {
+              text-align: center;
+              font-weight: bold;
+              font-size: 18px;
+              margin: 20px 0;
+            }
+            .section-title {
+              font-weight: bold;
+              margin: 15px 0;
+            }
+          </style>
+        </head>
+        <body>
+          ${content.innerHTML}
+          <script>
+            window.onload = function() {
+              window.print();
+              window.onafterprint = function() {
+                window.close();
+              }
+            }
+          </script>
+        </body>
+      </html>
+    `);
+
+    printWindow.document.close();
   };
   const Document = () => (
-    <div ref={documentRef} className="bg-white p-6">
+    <div ref={targetRef} className="bg-white p-6">
       <div className="text-right mb-8 text-sm">
         <p>га</p>
         <p className="break-words max-w-[300px] ml-auto">
@@ -360,7 +398,7 @@ const BenefitsItem = () => {
           </div>
 
           <button
-            onClick={handleDownload}
+            onClick={handlePrint}
             className="w-full bg-[#024072] text-white py-2.5 rounded-lg flex items-center justify-center gap-2 hover:bg-blue-700 transition-colors"
           >
             <Download className="w-5 h-5" />
