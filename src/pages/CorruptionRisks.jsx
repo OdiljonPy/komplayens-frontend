@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronRight, ChevronDown, Calendar, ArrowUpDown, Download } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import banner from "../assets/banners/08.png"
 export default function CorruptionRisks() {
   const [selectedSort, setSelectedSort] = useState('Eng yangisi');
@@ -68,9 +69,11 @@ export default function CorruptionRisks() {
           <ChevronRight className="h-4 w-4" />
           <span className="text-blue-900">Korrupsiyaviy xavf-xatarlar</span>
         </div>
-
+        <div className="p-4">
+          <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959]">Korrupsiyaviy xavf-xatarlar</h1>
+        </div>
         {/* Main Card */}
-        <div className=" mb-6 px-4 md:px-6 py-5">
+        <div className=" mb-6 px-4 py-5">
           <div className="flex flex-col md:flex-row gap-6">
             <div className="w-full md:w-1/3">
               <img
@@ -175,7 +178,9 @@ export default function CorruptionRisks() {
                   <span className="text-gray-500 font-medium">Holati</span>
                 </div>
                 <div className="px-4 py-3">
+
                   <span className="text-gray-500 font-medium">Natijalar</span>
+
                 </div>
                 <div className="px-4 py-3">
                   <span className="text-gray-500 font-medium">So'rovnomada qatnashish</span>
@@ -205,9 +210,13 @@ export default function CorruptionRisks() {
                     </div>
                     <div className="px-4 py-3">
                       {task.result === 'Natijalarni ko\'rish' ? (
-                        <button className="px-3 py-1.5 text-sm bg-[#024072] text-white rounded-md hover:bg-[#02386A]">
-                          {task.result}
-                        </button>
+                        <Link
+                          to={`/corruption-risks/${task.id}`}
+                        >
+                          <button className="px-3 py-1.5 text-sm bg-[#024072] text-white rounded-md hover:bg-[#02386A]">
+                            {task.result}
+                          </button>
+                        </Link>
                       ) : (
                         <span className="text-gray-600">{task.result}</span>
                       )}

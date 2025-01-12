@@ -11,3 +11,4 @@ export { default as Announcements } from './Announcements';
 export { default as LandingPage } from './LandingPage';
 export { default as CourseItem } from './CourseItem';
 export { default as OperationsItem } from './OperationsItem';
+export { default as CorruptionRisksItem } from './CorruptionRisksItem';

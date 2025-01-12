@@ -15,7 +15,8 @@ import {
   Violations,
   Announcements,
   CourseItem,
-  OperationsItem
+  OperationsItem,
+  CorruptionRisksItem
 } from "../pages";
 export const router = createBrowserRouter([
   {
@@ -42,6 +43,10 @@ export const router = createBrowserRouter([
       {
         path: "corruption-risks",
         element: <CorruptionRisks />
+      },
+      {
+        path: "/corruption-risks/:taskId",
+        element: <CorruptionRisksItem />
       },
       {
         path: "news",
