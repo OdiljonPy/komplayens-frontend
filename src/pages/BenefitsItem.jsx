@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import { Download, ChevronRight } from 'lucide-react';
-import html2pdf from 'html2pdf.js';
 
 const BenefitsItem = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -28,8 +27,10 @@ const BenefitsItem = () => {
       [name]: value
     }));
   };
-  const handleDownload = () => {
+  const handleDownload = async () => {
     const element = documentRef.current;
+    const html2pdf = (await import('html2pdf.js')).default;
+
     const opt = {
       margin: 10,
       filename: 'xabarnoma.pdf',
