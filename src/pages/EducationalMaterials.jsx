@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Search, ChevronRight, ChevronDown, ChevronLeft, FileText } from 'lucide-react';
 import banner from "../assets/banners/07.png";
-import Pagination from '../components/Pagination';
 import { Link } from 'react-router-dom';
 const exampleCourses = [
   {
