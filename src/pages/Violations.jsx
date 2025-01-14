@@ -68,8 +68,10 @@ function Violations() {
 
       {/* Pagination - Mobile */}
       <div className="flex md:hidden justify-between items-center overflow-x-auto">
-        <button className="flex-shrink-0 flex items-center gap-1 px-3 py-2 text-gray-600">
-          <ChevronLeft size={20} />
+        <button className="flex items-center gap-2 px-4 py-2 text-gray-600 border border-gray-200 bg-white rounded-md">
+          <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16.3332 10.6986H4.6665M4.6665 10.6986L10.4998 16.5319M4.6665 10.6986L10.4998 4.86523" stroke="#414651" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
           <span>Oldingisi</span>
         </button>
 
@@ -78,23 +80,27 @@ function Violations() {
             <button
               key={index}
               className={`w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-md
-                ${page === 1 ? 'bg-blue-600 text-white' : 'text-gray-600'}`}
+                ${page === 1 ? 'bg-[#F9F5FF] text-[#7F56D9]' : 'text-gray-600'}`}
             >
               {page}
             </button>
           ))}
         </div>
 
-        <button className="flex-shrink-0 flex items-center gap-1 px-3 py-2 text-gray-600">
+        <button className="flex items-center gap-2 px-4 py-2 text-gray-600 border border-gray-200 bg-white rounded-md">
           <span>Keyingisi</span>
-          <ChevronRight size={20} />
+          <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4.6665 10.6986H16.3332M16.3332 10.6986L10.4998 4.86523M16.3332 10.6986L10.4998 16.5319" stroke="#414651" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
         </button>
       </div>
 
       {/* Pagination - Desktop */}
       <div className="hidden md:flex justify-between items-center">
-        <button className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-md">
-          <ChevronLeft size={20} />
+        <button className="flex items-center gap-2 px-4 py-2 text-gray-600 border border-gray-200 bg-white rounded-md">
+          <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16.3332 10.6986H4.6665M4.6665 10.6986L10.4998 16.5319M4.6665 10.6986L10.4998 4.86523" stroke="#414651" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
           <span>Oldingisi</span>
         </button>
 
@@ -103,16 +109,18 @@ function Violations() {
             <button
               key={index}
               className={`w-8 h-8 flex items-center justify-center rounded-md
-                ${page === 1 ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-gray-100'}`}
+                ${page === 1 ? 'bg-[#F9F5FF] text-[#7F56D9]' : 'text-gray-600 hover:bg-gray-100'}`}
             >
               {page}
             </button>
           ))}
         </div>
 
-        <button className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-md">
+        <button className="flex items-center gap-2 px-4 py-2 text-gray-600 border border-gray-200 bg-white rounded-md">
           <span>Keyingisi</span>
-          <ChevronRight size={20} />
+          <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4.6665 10.6986H16.3332M16.3332 10.6986L10.4998 4.86523M16.3332 10.6986L10.4998 16.5319" stroke="#414651" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
         </button>
       </div>
     </div>

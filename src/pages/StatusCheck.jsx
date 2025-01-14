@@ -219,6 +219,7 @@ const TestQuestions = ({ onFinish }) => {
               >
                 ‹ Oldingisi
               </button>
+
             )}
             <button
               onClick={isLastQuestion ? onFinish : handleNext}

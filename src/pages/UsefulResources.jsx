@@ -1,7 +1,11 @@
 import React from 'react'
+
+import DocumentsCarousel from '../components/DocumentsCarousel';
+import LinksCarousel from '../components/LinksCarousel';
+
 import banner from "../assets/banners/08.png"
 import banner04 from "../assets/banners/04.png"
-import { ChevronRight, Download, Eye, Calendar, Link } from 'lucide-react'
+import { ChevronRight, Eye, Calendar } from 'lucide-react'
 import VideoCourseDashboard from '../sections/VideoCourseDashboard'
 function UsefulResources() {
   const documents = [
@@ -17,8 +21,6 @@ function UsefulResources() {
     { id: 4, name: "O'zbekiston Respublikasi Oliy Majlisining Qonunchilik palatasi" },
     { id: 5, name: "O'zbekiston Respublikasi Oliy Majlisining Qonunchilik palatasi" },
     { id: 6, name: "O'zbekiston Respublikasi Oliy Majlisining Qonunchilik palatasi" },
-    { id: 7, name: "O'zbekiston Respublikasi Oliy Majlisining Qonunchilik palatasi" },
-    { id: 8, name: "O'zbekiston Respublikasi Oliy Majlisining Qonunchilik palatasi" },
   ];
   return (
 
@@ -58,24 +60,7 @@ function UsefulResources() {
           </div>
         </div>
       </div>
-      <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-6">Maʼlumotnomalar</h1>
-
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        {documents.map((doc) => (
-          <div key={doc.id} className="bg-white p-4 rounded-lg shadow-sm">
-            <div className="flex justify-between items-start mb-3">
-              <div>
-                <p className="text-sm text-gray-500">{doc.name}</p>
-                <p className="text-xs text-gray-400">{doc.size}</p>
-              </div>
-              <button className="text-blue-600 hover:text-blue-800">
-                <Download className="h-5 w-5" />
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
+      <DocumentsCarousel documents={documents} />
       <div className="flex justify-between items-center mb-6 mt-12">
         <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959]">Yangiliklar</h1>
 
@@ -113,25 +98,7 @@ function UsefulResources() {
         ))}
       </div>
       <VideoCourseDashboard />
-      <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-6">Foydali havolalar</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 ">
-        {tests.map((test) => (
-          <div
-            key={test.id}
-            className="p-6 bg-white rounded-lg shadow-sm border hover:shadow-md transition-shadow"
-          >
-            <div className="flex items-center space-x-4">
-              <div>
-                <h3 className="font-medium text-gray-900">{test.name}</h3>
-                <div className="text-[#024073] text-sm hover:underline mt-2 w-full flex items-center gap-4 bg-[#F9F9F9] p-2 rounded-lg justify-center">
-                  <Link size={16} />
-                  <p className='text-[#024073]'>parlament.mygov.uz</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+      <LinksCarousel tests={tests} />
     </div>
 
   )

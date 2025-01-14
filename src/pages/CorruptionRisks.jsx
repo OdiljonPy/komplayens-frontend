@@ -238,8 +238,11 @@ export default function CorruptionRisks() {
           {/* Pagination */}
           <div className="px-4 mt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-2">
-              <button className="px-3 py-1 text-sm text-gray-600">
-                Oldingisi
+              <button className="flex items-center gap-2 px-4 py-2 text-gray-600 border border-gray-200 bg-white rounded-md">
+                <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M16.3332 10.6986H4.6665M4.6665 10.6986L10.4998 16.5319M4.6665 10.6986L10.4998 4.86523" stroke="#414651" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <span>Oldingisi</span>
               </button>
             </div>
 
@@ -248,7 +251,7 @@ export default function CorruptionRisks() {
                 <button
                   key={i}
                   className={`min-w-[32px] h-8 flex items-center justify-center rounded-md ${page === 1
-                    ? 'bg-blue-600 text-white'
+                    ? 'bg-[#F9F5FF] text-[#7F56D9]'
                     : 'text-gray-600 hover:bg-gray-100'
                     }`}
                 >
@@ -258,8 +261,11 @@ export default function CorruptionRisks() {
             </div>
 
             <div className="flex items-center gap-2">
-              <button className="px-3 py-1 text-sm text-gray-600">
-                Keyingisi
+              <button className="flex items-center gap-2 px-4 py-2 text-gray-600 border border-gray-200 bg-white rounded-md">
+                <span>Keyingisi</span>
+                <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4.6665 10.6986H16.3332M16.3332 10.6986L10.4998 4.86523M16.3332 10.6986L10.4998 16.5319" stroke="#414651" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
               </button>
             </div>
           </div>

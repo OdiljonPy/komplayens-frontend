@@ -50,8 +50,8 @@ const Pagination = ({ currentPage, totalPages = 10, onPageChange }) => {
         onClick={() => page !== '...' && onPageChange(page)}
         disabled={page === '...'}
         className={`px-2 py-1 ${currentPage === page
-            ? 'bg-blue-500 text-white'
-            : 'text-gray-600 hover:bg-gray-100'
+          ? 'bg-[#F9F5FF] text-[#7F56D9]'
+          : 'text-gray-600 hover:bg-gray-100'
           } rounded-md ${page === '...' ? 'cursor-default hover:bg-transparent' : ''}`}
       >
         {page}
