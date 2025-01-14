@@ -4,7 +4,6 @@ import login_bg from "../../assets/backgrounds/login_bg.png";
 import logo from "../../assets/logos/full_logo.png";
 import { Link } from 'react-router-dom';
 
-// FloatingLabelInput component
 const FloatingLabelInput = ({ label, type = "text", value, onChange, Icon }) => {
   const [isFocused, setIsFocused] = useState(false);
 
@@ -68,11 +67,13 @@ const Login = () => {
         <div className="w-full px-4 md:px-10 py-6 md:py-10 flex flex-col h-full">
           {/* Logo for desktop */}
           <div className="hidden md:block mb-8">
-            <img
-              src={logo}
-              alt="Company Logo"
-              className="h-8 w-auto"
-            />
+            <Link to="/">
+              <img
+                src={logo}
+                alt="Company Logo"
+                className="h-8 w-auto"
+              />
+            </Link>
           </div>
 
           <div className="flex-1">
@@ -131,11 +132,13 @@ const Login = () => {
 
           {/* Logo for mobile - at the bottom */}
           <div className="md:hidden mt-auto pt-6">
-            <img
-              src={logo}
-              alt="Company Logo"
-              className="h-8 w-auto mx-auto"
-            />
+            <Link to="/">
+              <img
+                src={logo}
+                alt="Company Logo"
+                className="h-8 w-auto mx-auto"
+              />
+            </Link>
           </div>
         </div>
       </div>
