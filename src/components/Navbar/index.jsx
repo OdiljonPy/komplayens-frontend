@@ -182,9 +182,11 @@ const Navbar = () => {
                     </Link>
                   ))}
                 </div>
-                <button className="bg-blue-900 text-white px-6 py-2 rounded text-sm ml-4">
-                  {t('login')}
-                </button>
+                <Link to="/login">
+                  <button className="bg-blue-900 text-white px-6 py-2 rounded text-sm ml-4">
+                    {t('login')}
+                  </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -239,9 +241,11 @@ const Navbar = () => {
                     </div>
                   )}
                 </div>
-                <button className="bg-blue-900 text-white px-6 py-2 rounded text-sm">
-                  {t('login')}
-                </button>
+                <Link to="/login">
+                  <button className="bg-blue-900 text-white px-6 py-2 rounded text-sm">
+                    {t('login')}
+                  </button>
+                </Link>
                 <button
                   onClick={toggleMenu}
                   className="inline-flex items-center justify-center p-2 text-gray-700 hover:text-blue-600"
@@ -344,9 +348,11 @@ const Navbar = () => {
                       {renderMenuItem(item, true)}
                     </Link>
                   ))}
-                  <button className="w-full mt-6 px-3 py-2 text-base font-medium bg-blue-900 text-white rounded">
-                    {t('login')}
-                  </button>
+                  <Link to="/login">
+                    <button className="w-full mt-6 px-3 py-2 text-base font-medium bg-blue-900 text-white rounded">
+                      {t('login')}
+                    </button>
+                  </Link>
                 </div>
               </div>
             </div>

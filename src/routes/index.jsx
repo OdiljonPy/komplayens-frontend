@@ -1,6 +1,7 @@
 // src/routes/index.jsx
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "../layouts/Layout";
+import AuthLayout from "../layouts/AuthLayout";
 import ErrorPage from "../components/ErrorPage";
 import {
   EducationalMaterials,
@@ -18,7 +19,9 @@ import {
   OperationsItem,
   CorruptionRisksItem,
   NewsItem,
-  BenefitsItem
+  BenefitsItem,
+  Register,
+  Login
 } from "../pages";
 export const router = createBrowserRouter([
   {
@@ -89,6 +92,20 @@ export const router = createBrowserRouter([
       {
         path: "announcements",
         element: <Announcements />
+      }
+    ]
+  },
+  {
+    path: "/",
+    element: <AuthLayout />,
+    children: [
+      {
+        path: "/register",
+        element: <Register />
+      },
+      {
+        path: "/login",
+        element: <Login />
       }
     ]
   }
