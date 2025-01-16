@@ -21,6 +21,7 @@ import {
   NewsItem,
   BenefitsItem,
   BenefitsItem2,
+  BenefitsItem3,
   Register,
   Login
 } from "../pages";
@@ -73,6 +74,10 @@ export const router = createBrowserRouter([
       {
         path: "/benefits/shablon2",
         element: <BenefitsItem2 />
+      },
+      {
+        path: "/benefits/shablon3",
+        element: <BenefitsItem3 />
       },
       {
         path: "operations",
