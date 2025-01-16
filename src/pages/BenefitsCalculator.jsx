@@ -43,17 +43,17 @@ const BenefitsCalculator = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6">
-            <Link to="/benefits/1">
+            <Link to="/benefits/shablon1">
               <button className="bg-[#024072] w-full text-white px-4 py-2 rounded-[12px] hover:bg-blue-900 transition-colors">
                 Forma 1 yaratish
               </button>
             </Link>
-            <Link to="/benefits/2">
+            <Link to="/benefits/shablon2">
               <button className="bg-[#024072] w-full text-white px-4 py-2 rounded-[12px] hover:bg-blue-900 transition-colors">
                 Forma 2 yaratish
               </button>
             </Link>
-            <Link to="/benefits/3">
+            <Link to="/benefits/shablon3">
               <button className="bg-[#024072] w-full text-white px-4 py-2 rounded-[12px] hover:bg-blue-900 transition-colors">
                 Forma 3 yaratish
               </button>
