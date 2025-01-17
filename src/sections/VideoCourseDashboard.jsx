@@ -1,25 +1,26 @@
-import React from 'react';
-import { Calendar } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, Tooltip, PieChart, Pie, Cell } from 'recharts';
+import React, { useState } from 'react';
+import { Calendar, ChevronDown } from 'lucide-react';
+import { PieChart, Pie, Cell } from 'recharts';
 import banner from "../assets/banners/04.png"
 
 const VideoCourseDashboard = () => {
+  const [selectedYear, setSelectedYear] = useState('2024-yil');
+
   const pieData = [
-    { name: 'Part 1', value: 44.55 },
-    { name: 'Part 1', value: 38.56 },
-    { name: 'Part 1', value: 30.12 }
+    { name: 'Qoniqarsiz', value: 44.55 },
+    { name: 'Qoniqarli', value: 38.56 },
+    { name: 'Yuqori', value: 32.00 }
   ];
 
-  const lineData = [
-    { name: 'Noyabr', actual: 15000, predicted: 12000 },
-    { name: '', actual: 17000, predicted: 14000 },
-    { name: '', actual: 13000, predicted: 16000 },
-    { name: '', actual: 19000, predicted: 15000 },
-    { name: '', actual: 16000, predicted: 18000 },
-    { name: 'Dekabr', actual: 20000, predicted: 19000 },
+  const progressData = [
+    { name: "Markaziy bank", value: 93 },
+    { name: "O'zkimyosanoat AJ", value: 90 },
+    { name: "O'zbekiston texnik jihatdan tartibga solish agentligi", value: 89 },
+    { name: "O'zbekneftgaz AJ", value: 88 },
+    { name: "O'zbekiston temir yo'llari AJ", value: 87 }
   ];
 
-  const COLORS = ['#1e40af', '#22c55e', '#6b7280'];
+  const COLORS = ['#ef4444', '#eab308', '#22c55e'];
 
   const courseData = [
     {
@@ -45,14 +46,10 @@ const VideoCourseDashboard = () => {
     }
   ];
 
-  const formatYAxis = (value) => {
-    return `${value / 1000}k`;
-  };
-
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4  mt-4">
-      <div className=" grid lg:grid-cols-12 md:grid-cols-2 grid-cols-1 gap-8">
-        {/* Left Section */}
+    <div className="min-h-screen bg-gray-50 py-8 px-4 mt-4">
+      <div className="grid lg:grid-cols-12 md:grid-cols-2 grid-cols-1 gap-8">
+        {/* Left Section - Video Courses */}
         <div className="lg:col-span-7">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-2xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959]">Video kurslar</h1>
@@ -107,60 +104,47 @@ const VideoCourseDashboard = () => {
         </div>
 
         {/* Right Section */}
-        <div className="lg:col-span-5 lg:space-y-6 md:space-y-4 space-y-2">
+        <div className="lg:col-span-5 space-y-4 sm:space-y-6">
           {/* Pie Chart Card */}
-          <div className="bg-white p-4 md:p-6 rounded-lg shadow-sm h-86" style={{
-            paddingBottom: "0"
-          }}>
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-semibold">Infografika</h2>
-              <span className="text-sm text-gray-500">1-31 Mart, 2024</span>
+          <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sm:gap-0 mb-6">
+              <h2 className="text-lg sm:text-2xl font-semibold text-gray-800">Idoralar ochiqlik indeksi</h2>
+              <button className="flex items-center gap-2 text-blue-500 hover:text-blue-600 text-base sm:text-lg">
+                2024-yil
+                <ChevronDown className="w-4 h-4" />
+              </button>
             </div>
-            <div className="flex flex-col md:grid md:grid-cols-2 items-center gap-4">
-              <div className="flex flex-row gap-2 md:gap-0 md:flex-col justify-between space-y-2">
-                <div key={0} className="flex items-center gap-2">
-                  <div className="w-1 h-12 rounded-sm" style={{ backgroundColor: COLORS[2] }}></div>
-                  <div className="flex-1">
-                    <div className="flex justify-between items-start flex-col">
-                      <span className="text-gray-600 text-[14px]">Part 1</span>
-                      <span className="font-medium text-[18px] md:text-[24px]">{pieData[2].value}%</span>
+
+            <div className="flex flex-col sm:flex-row items-start gap-6 sm:gap-8">
+              {/* Legend */}
+              <div className="w-full sm:w-auto flex flex-row sm:flex-col justify-between sm:justify-start gap-4 sm:gap-6 order-2 sm:order-1">
+                {pieData.map((item, index) => (
+                  <div key={index} className="flex items-center gap-3">
+                    <div className="w-1 h-8 mg:h-12 rounded-sm" style={{ backgroundColor: COLORS[2 - index] }}></div>
+                    <div>
+                      <div className="text-gray-500 text-[12px] md:text-sm">{item.name}</div>
+                      <div className="text-[14px]  md:text-xl  font-semibold">{item.value}%</div>
                     </div>
                   </div>
-                </div>
-                <div key={1} className="flex items-center gap-2">
-                  <div className="w-1 h-8 rounded-sm" style={{ backgroundColor: COLORS[1] }}></div>
-                  <div className="flex-1">
-                    <div className="flex justify-between items-start flex-col">
-                      <span className="text-gray-600 text-[14px]">Part 1</span>
-                      <span className="font-medium text-[18px] md:text-[24px]">{pieData[1].value}%</span>
-                    </div>
-                  </div>
-                </div>
-                <div key={2} className="flex items-center gap-2">
-                  <div className="w-1 h-8 rounded-sm" style={{ backgroundColor: COLORS[0] }}></div>
-                  <div className="flex-1">
-                    <div className="flex justify-between items-start flex-col">
-                      <span className="text-gray-600 text-[14px]">Part 1</span>
-                      <span className="font-medium text-[18px] md:text-[24px]">{pieData[0].value}%</span>
-                    </div>
-                  </div>
-                </div>
+                ))}
               </div>
-              <div className="flex justify-start">
-                <PieChart width={220} height={220} className="md:scale-125">
+
+              {/* Chart */}
+              <div className="w-full sm:w-auto flex justify-center sm:justify-end flex-1 order-1 sm:order-2">
+                <PieChart width={280} height={150} className="sm:scale-110 -mt-4">
                   <Pie
                     data={pieData}
-                    cx={96}
-                    cy={110}
+                    cx={140}
+                    cy={140}
                     startAngle={180}
                     endAngle={0}
-                    innerRadius={70}
-                    outerRadius={100}
-                    paddingAngle={5}
+                    innerRadius={90}
+                    outerRadius={120}
+                    paddingAngle={2}
                     dataKey="value"
                   >
                     {pieData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index]} />
+                      <Cell key={`cell-${index}`} fill={COLORS[2 - index]} />
                     ))}
                   </Pie>
                 </PieChart>
@@ -168,63 +152,33 @@ const VideoCourseDashboard = () => {
             </div>
           </div>
 
-          {/* Line Chart Card */}
-          <div className="bg-white p-4 md:p-6 rounded-lg shadow-sm h-86">
-            <div className="flex justify-start h-full">
-              <LineChart
-                width={350}
-                height={300}
-                data={lineData}
-                margin={{ top: 20, right: 20, left: 0, bottom: 20 }}
-                className="md:scale-110"
-              >
-                <defs>
-                  <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#1e40af" stopOpacity={0.1} />
-                    <stop offset="95%" stopColor="#1e40af" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <XAxis
-                  dataKey="name"
-                  axisLine={false}
-                  tickLine={false}
-                  tick={{ dy: 10 }}
-                />
-                <YAxis
-                  tickFormatter={formatYAxis}
-                  axisLine={false}
-                  tickLine={false}
-                  domain={[0, 25000]}
-                  ticks={[0, 5000, 10000, 15000, 20000, 25000]}
-                />
-                <Tooltip
-                  formatter={(value) => [`$${value.toLocaleString()}`, '']}
-                  contentStyle={{
-                    backgroundColor: '#1f2937',
-                    border: 'none',
-                    borderRadius: '0.375rem',
-                    color: 'white'
-                  }}
-                  labelStyle={{ color: 'white' }}
-                  cursor={false}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="actual"
-                  stroke="#1e40af"
-                  strokeWidth={2}
-                  dot={{ r: 4, fill: '#1e40af' }}
-                  fill="url(#colorUv)"
-                />
-                <Line
-                  type="monotone"
-                  dataKey="predicted"
-                  stroke="#f97316"
-                  strokeWidth={2}
-                  strokeDasharray="5 5"
-                  dot={{ r: 4, fill: '#f97316' }}
-                />
-              </LineChart>
+          {/* Progress Bars Card */}
+          <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-[14px] md:text-lg  font-semibold text-gray-800">
+                Faoliyat samaradorligi reytingi
+              </h2>
+              <button className="flex items-center gap-2 text-blue-500 hover:text-blue-600 text-[14px] md:text-base">
+                Eng baland
+                <ChevronDown className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="space-y-5">
+              {progressData.map((item, index) => (
+                <div key={index}>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-sm text-gray-600 flex-1 pr-4">{item.name}</span>
+                    <span className="font-semibold text-[#27D157] text-base sm:text-lg">{item.value}</span>
+                  </div>
+                  <div className="w-full bg-[#D7EBDD] rounded-full h-2.5">
+                    <div
+                      className="bg-[#27D157] h-2.5 rounded-full"
+                      style={{ width: `${item.value}%` }}
+                    ></div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
