@@ -23,7 +23,9 @@ import {
   BenefitsItem2,
   BenefitsItem3,
   Register,
-  Login
+  Login,
+  TrainingCourses,
+  ElectronicLibrary
 } from "../pages";
 export const router = createBrowserRouter([
   {
@@ -38,6 +40,14 @@ export const router = createBrowserRouter([
       {
         path: "/educational-materials",
         element: <EducationalMaterials />
+      },
+      {
+        path: "/training-courses",
+        element: <TrainingCourses />
+      },
+      {
+        path: "/electronic-library",
+        element: <ElectronicLibrary />
       },
       {
         path: "/educational-materials/:courseId",

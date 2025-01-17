@@ -16,5 +16,7 @@ export { default as NewsItem } from './NewsItem';
 export { default as BenefitsItem } from './BenefitsItem';
 export { default as BenefitsItem2 } from './BenefitsItem2';
 export { default as BenefitsItem3 } from './BenefitsItem3';
+export { default as TrainingCourses } from './TrainingCourses';
+export { default as ElectronicLibrary } from './ElectronicLibrary';
 export { default as Register } from './Auth/Register';
 export { default as Login } from './Auth/Login';
