@@ -24,9 +24,9 @@ const TestSelection = ({ onNext }) => {
           <input
             type="text"
             placeholder="Tashkilotni qidirish"
-            className="w-full p-4 pl-12 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-4 pr-12 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <Search className="absolute left-8 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+          <Search className="absolute right-8 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
         </div>
       </div>
 
@@ -34,15 +34,21 @@ const TestSelection = ({ onNext }) => {
         {tests.map((test) => (
           <div
             key={test.id}
-            className="p-6 bg-white rounded-lg shadow-sm border hover:shadow-md transition-shadow"
+            className="p-6 bg-white rounded-lg shadow-sm text-[#024073]  hover:bg-[#024072] hover:text-white transition-shadow "
+            style={{
+              boxShadow: '0px 0px 10px 0px #0C0C0D0D',
+              transition: 'all 0.3s ease-in-out'
+            }}
           >
             <div className="flex items-center space-x-4">
               <div className="w-12 h-12 bg-[#E6F4FF] rounded-[50%] flex items-center justify-center flex-shrink-0">
                 <img src={bank_logo} alt="Bank icon" className="w-8 h-8" />
               </div>
               <div>
-                <h3 className="font-medium text-gray-900">{test.name}</h3>
-                <button onClick={onNext} className="text-[#024073] text-sm hover:underline mt-2">
+                <h3 className="font-medium ">{test.name}</h3>
+                <button onClick={onNext} className=" text-sm hover:underline mt-2" style={{
+                  textDecoration: 'underline'
+                }}>
                   Tanlash
                 </button>
               </div>
@@ -475,11 +481,13 @@ const StatusCheck = () => {
               ))}
             </div>
 
+
             <button
               onClick={handleNext}
-              className="px-6 py-2 text-[#024073] border border-[#024073] rounded hover:bg-blue-50 w-full sm:w-auto"
+              className="px-6 py-2 text-[#024073] border border-[#024072] rounded-[13px] w-[186px] hover:bg-[#024072] hover:text-white  sm:w-auto flex items-center justify-center gap-2"
             >
-              {currentStep === 3 ? 'Yuborish' : 'Keyingisi'}
+              <p className="text-sm"> {currentStep === 3 ? 'Yuborish' : 'Keyingisi'}</p>
+              {currentStep !== 3 && <ChevronRight size={16} className="text-gray-400" />}
             </button>
           </div>
         </>

@@ -43,7 +43,7 @@ const CourseItem = () => {
       <div className="py-2 text-sm text-gray-600">
         <span>Bosh sahifa</span>
         <span className="mx-2">›</span>
-        <Link to="/educational-materials" className="text-[#024072]">O'quv-uslubiy materiallar</Link>
+        <Link to="/training-courses" className="text-[#024072]">O'quv-uslubiy materiallar</Link>
         <span className="mx-2">›</span>
         <span className="text-[#024072]">Korrupsiyaga qarshi kurash asoslari</span>
       </div>

@@ -50,9 +50,9 @@ const OrganizationSelection = ({ onNext }) => {
           <input
             type="text"
             placeholder="Tashkilotni qidirish"
-            className="w-full p-4 pl-12 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-4 pr-12 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+          <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
         </div>
       </div>
 
@@ -61,7 +61,10 @@ const OrganizationSelection = ({ onNext }) => {
         {organizations.map((org) => (
           <div
             key={org.id}
-            className="p-6 bg-white rounded-lg shadow-sm border hover:shadow-md transition-shadow"
+            className="p-6 bg-white rounded-lg shadow-sm  hover:shadow-md transition-shadow"
+            style={{
+              boxShadow: '0px 4px 29px 0px #0000001A',
+            }}
           >
             <div className="flex items-center space-x-4">
               <div className="
@@ -80,7 +83,9 @@ const OrganizationSelection = ({ onNext }) => {
                 <h3 className="font-medium text-gray-900">{org.name}</h3>
                 <button
                   onClick={onNext}
-                  className="text-[#024073] text-sm hover:underline mt-2"
+                  className="text-[#024073] text-sm hover:underline mt-2 " style={{
+                    textDecoration: 'underline'
+                  }}
                 >
                   Tanlash
                 </button>
@@ -145,26 +150,40 @@ const ReportDetails = () => {
       {/* Form Fields */}
       <div className="space-y-4">
         {/* Type Selection */}
-        <div className="relative">
-          <div className="text-sm text-gray-600 mb-1">
-            Xabar turini tanlash <span className="text-red-500">*</span>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="relative">
+            <div className="text-sm text-gray-600 mb-1">
+              Xabar turini tanlash <span className="text-red-500">*</span>
+            </div>
+            <select
+              className="w-full px-4 py-3 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+              value={formData.type}
+              onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+            >
+              <option value="Korrupsiyaviy huquqbuzarlik">Korrupsiyaviy huquqbuzarlik</option>
+            </select>
+            <div className="absolute right-4 top-[38px] pointer-events-none">
+              <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
           </div>
-          <select
-            className="w-full px-4 py-3 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
-            value={formData.type}
-            onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-          >
-            <option value="Korrupsiyaviy huquqbuzarlik">Korrupsiyaviy huquqbuzarlik</option>
-          </select>
-          <div className="absolute right-4 top-[38px] pointer-events-none">
-            <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-            </svg>
+          <div className="relative">
+            <div className="text-sm text-gray-600 mb-1">
+              Joylashuv <span className="text-red-500">*</span>
+            </div>
+            <input
+              type="text"
+              placeholder="viloyat, tuman/shahar"
+              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={formData.location}
+              onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+            />
           </div>
         </div>
 
         {/* Date and Time */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <div className="text-sm text-gray-600 mb-1">
               Sana <span className="text-red-500">*</span>
@@ -191,99 +210,91 @@ const ReportDetails = () => {
           </div>
         </div>
 
-        {/* Location */}
-        <div>
-          <div className="text-sm text-gray-600 mb-1">
-            Joylashuv <span className="text-red-500">*</span>
-          </div>
-          <input
-            type="text"
-            placeholder="viloyat, tuman/shahar"
-            className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={formData.location}
-            onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-          />
-        </div>
-
-        {/* Details */}
-        <div>
-          <div className="text-sm text-gray-600 mb-1">
-            Hodisa tafsilotlari
-          </div>
-          <textarea
-            rows={4}
-            placeholder="Hodisa tafsilotlari"
-            className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-            value={formData.details}
-            onChange={(e) => setFormData({ ...formData, details: e.target.value })}
-          />
-          <div className="text-right text-sm text-gray-500">
-            {formData.details.length}/460
-          </div>
-        </div>
-
-        {/* File Upload */}
-        <div className="border-2 border-dashed rounded-lg p-6">
-          {!file ? (
-            <div className="text-center">
-              <p className="text-gray-600 mb-2">
-                Faylni tanlang yoki shu yerga joylshtiring
-              </p>
-              <p className="text-sm text-gray-500 mb-4">
-                JPEG, PNG, PDF va MP4 formatlari, 50 MB gacha
-              </p>
-              <input
-                ref={fileInputRef}
-                type="file"
-                className="hidden"
-                accept=".jpg,.jpeg,.png,.pdf,.mp4"
-                onChange={handleFileChange}
-              />
-              <button
-                onClick={() => fileInputRef.current?.click()}
-                className="px-4 py-2 bg-white border rounded-lg text-gray-700 hover:bg-gray-50"
-              >
-                Faylni yuklash
-              </button>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div className="text-sm text-gray-600 mb-1">
+              Hodisa tafsilotlari
             </div>
-          ) : (
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <div className="p-2 bg-red-50 rounded">
-                  <svg className="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0h8v12H6V4z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <div>
-                  <p className="text-sm font-medium">{file.name}</p>
-                  <p className="text-xs text-gray-500">
-                    {Math.round(file.size / 1024)} KB
+            <textarea
+              rows={4}
+              placeholder="Hodisa tafsilotlari"
+              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              value={formData.details}
+              onChange={(e) => setFormData({ ...formData, details: e.target.value })}
+            />
+            <div className="text-right text-sm text-gray-500">
+              {formData.details.length}/460
+            </div>
+          </div>
+
+          {/* File Upload */}
+          <div>
+            <div className="text-sm text-gray-600 mb-1">
+              Fayl yuklash
+            </div>
+            <div className="border-2 border-dashed rounded-lg p-6">
+              {!file ? (
+                <div className="text-center">
+                  <p className="text-gray-600 mb-2">
+                    Faylni tanlang yoki shu yerga joylshtiring
                   </p>
+                  <p className="text-sm text-gray-500 mb-4">
+                    JPEG, PNG, PDF va MP4 formatlari, 50 MB gacha
+                  </p>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    className="hidden"
+                    accept=".jpg,.jpeg,.png,.pdf,.mp4"
+                    onChange={handleFileChange}
+                  />
+                  <button
+                    onClick={() => fileInputRef.current?.click()}
+                    className="px-4 py-2 bg-white border rounded-lg text-gray-700 hover:bg-gray-50"
+                  >
+                    Faylni yuklash
+                  </button>
                 </div>
-              </div>
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center">
-                  <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-[#024073] transition-all duration-300"
-                      style={{ width: `${uploadProgress}%` }}
-                    />
+              ) : (
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0">
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2 bg-red-50 rounded">
+                      <svg className="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0h8v12H6V4z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium">{file.name}</p>
+                      <p className="text-xs text-gray-500">
+                        {Math.round(file.size / 1024)} KB
+                      </p>
+                    </div>
                   </div>
-                  <span className="ml-2 text-sm text-gray-500">
-                    {uploadProgress}%
-                  </span>
+                  <div className="flex items-center space-x-4 w-full sm:w-auto">
+                    <div className="flex items-center flex-1 sm:flex-none">
+                      <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-[#024073] transition-all duration-300"
+                          style={{ width: `${uploadProgress}%` }}
+                        />
+                      </div>
+                      <span className="ml-2 text-sm text-gray-500">
+                        {uploadProgress}%
+                      </span>
+                    </div>
+                    <button
+                      onClick={removeFile}
+                      className="p-1 text-gray-400 hover:text-gray-600"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
-                <button
-                  onClick={removeFile}
-                  className="p-1 text-gray-400 hover:text-gray-600"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
+              )}
             </div>
-          )}
+          </div>
         </div>
       </div>
     </div>
@@ -471,9 +482,10 @@ const NewsReporting = () => {
         {/* Next Button */}
         <button
           onClick={handleNext}
-          className="px-6 py-2 text-[#024073] border border-[#024073] rounded hover:bg-blue-50 w-full sm:w-auto"
+          className="px-6 py-2 text-[#024073] border border-[#024072] rounded-[13px] w-[186px] hover:bg-blue-50  sm:w-auto flex items-center justify-center gap-2"
         >
-          {currentStep === 3 ? 'Yuborish' : 'Keyingisi'}
+          <p className="text-sm"> {currentStep === 3 ? 'Yuborish' : 'Keyingisi'}</p>
+          {currentStep !== 3 && <ChevronRight size={16} className="text-gray-400" />}
         </button>
       </div>
 

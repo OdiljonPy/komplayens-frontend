@@ -61,7 +61,10 @@ const EvaluationResults = () => {
 
   return (
     <div className="p-3 md:p-4 lg:p-4">
-      <div className="bg-white rounded-lg shadow-sm p-3 md:p-4 lg:p-6">
+      <div className="bg-white rounded-lg shadow-sm p-3 md:p-4 lg:p-6" style={{
+        boxShadow: '0px 4px 29px 0px #0000001A',
+        borderRadius: '10px'
+      }}>
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start xs:items-center gap-3 mb-4 md:mb-6">
           <h2 className="text-base md:text-lg lg:text-xl font-semibold text-[#1e293b]">
