@@ -24,6 +24,7 @@ import {
   BenefitsItem3,
   Register,
   Login,
+  ForgotPassword,
   TrainingCourses,
   ElectronicLibrary
 } from "../pages";
@@ -126,6 +127,10 @@ export const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />
+      },
+      {
+        path: "/forgot-password",
+        element: <ForgotPassword />
       }
     ]
   }

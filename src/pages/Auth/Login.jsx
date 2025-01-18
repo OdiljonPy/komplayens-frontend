@@ -8,7 +8,7 @@ const FloatingLabelInput = ({ label, type = "text", value, onChange, Icon }) => 
   const [isFocused, setIsFocused] = useState(false);
 
   return (
-    <div className="relative mb-10">
+    <div className="relative mb-4">
       <input
         type={type}
         value={value}
@@ -117,10 +117,10 @@ const Login = () => {
                     </button>
                   }
                 />
-                <div className="mt-4 flex justify-end">
-                  <a href="#" className="text-[#3981F7] text-sm">
+                <div className=" flex justify-end">
+                  <Link to="/forgot-password" className="text-[#3981F7] text-sm">
                     Parolni unutdingizmi?
-                  </a>
+                  </Link>
                 </div>
               </div>
 

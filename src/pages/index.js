@@ -20,3 +20,4 @@ export { default as TrainingCourses } from './TrainingCourses';
 export { default as ElectronicLibrary } from './ElectronicLibrary';
 export { default as Register } from './Auth/Register';
 export { default as Login } from './Auth/Login';
+export { default as ForgotPassword } from './Auth/ForgotPassword';

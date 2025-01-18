@@ -3,6 +3,7 @@ import { Eye } from 'lucide-react';
 import login_bg from "../../assets/backgrounds/login_bg.png";
 import logo from "../../assets/logos/full_logo.png";
 import { Link } from 'react-router-dom';
+import PhoneInput from '../../components/PhoneInput';
 
 // FloatingLabelInput component with fixed positioning
 const FloatingLabelInput = ({ label, type = "text", value, onChange, Icon }) => {
@@ -74,7 +75,7 @@ const Register = () => {
     organization: '',
     firstName: '',
     lastName: '',
-    phone: '',
+    phone: '+998 ',
     password: ''
   });
   const [showPassword, setShowPassword] = useState(false);
@@ -85,21 +86,30 @@ const Register = () => {
       [field]: e.target.value
     }));
   };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Get clean phone number for submission (just the 9 digits after +998)
+    const cleanPhone = formData.phone.replace(/\D/g, '').slice(3);
+    const submitData = {
+      ...formData,
+      phone: cleanPhone
+    };
+    console.log('Submitting:', submitData);
+    // Handle form submission
+  };
 
   return (
     <div className="flex h-screen w-screen overflow-hidden">
       {/* Left side - Image */}
       <div className="hidden md:block md:w-[60%] h-full">
-
         <img
           src={login_bg}
           alt="Contract signing"
           className="w-full h-full object-cover"
         />
-
       </div>
 
-      {/* Right side - Login Form */}
+      {/* Right side - Register Form */}
       <div className="w-full md:w-[40%] h-full flex flex-col overflow-y-auto bg-white">
         <div className="w-full px-4 md:px-10 py-6 md:py-10 flex flex-col h-full">
           {/* Logo for desktop */}
@@ -116,7 +126,7 @@ const Register = () => {
           <div className="flex-1">
             <h2 className="text-2xl font-semibold mb-6">Xush kelibsiz</h2>
 
-            <div className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-5">
               {/* Toggle Buttons */}
               <div className="flex space-x-4">
                 <button className="bg-[#3981F7] text-white px-6 py-2 rounded-md">
@@ -156,11 +166,9 @@ const Register = () => {
 
               {/* Phone Field */}
               <div>
-                <FloatingLabelInput
-                  label="Telefon nomer"
-                  type="tel"
+                <PhoneInput
                   value={formData.phone}
-                  onChange={handleChange('phone')}
+                  onChange={(value) => setFormData(prev => ({ ...prev, phone: value }))}
                 />
               </div>
 
@@ -180,17 +188,15 @@ const Register = () => {
                     </button>
                   }
                 />
-                <div className="mt-2 flex justify-end">
-                  <a href="#" className="text-[#3981F7] text-sm">
-                    Parolni unutdingizmi?
-                  </a>
-                </div>
               </div>
 
-              <button className="w-full bg-[#024072] text-white py-3 rounded-md">
+              <button
+                type="submit"
+                className="w-full bg-[#024072] text-white py-3 rounded-md"
+              >
                 Ro'yxatdan O'tish
               </button>
-            </div>
+            </form>
           </div>
 
           {/* Logo for mobile - at the bottom */}
