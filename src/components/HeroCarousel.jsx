@@ -1,40 +1,34 @@
+
 import { useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/autoplay';
-import heroimg from "../assets/backgrounds/hero_bg.png";
-
-const slides = [
-  {
-    title: "Muvofiq Tashkilotga Xabar Yuboring",
-    description: "Ushbu axborot tizimi orqali o'z ariza, taklif va shikoyatlaringizni tegishli tashkilotga yuborishingiz mumkin",
-    background: heroimg
-  },
-  {
-    title: "Muvofiq Tashkilotga Xabar Yuboring 2",
-    description: "Ushbu axborot tizimi orqali o'z ariza, taklif va shikoyatlaringizni tegishli tashkilotga yuborishingiz mumkin",
-    background: heroimg
-  },
-  {
-    title: "Muvofiq Tashkilotga Xabar Yuboring 3",
-    description: "Ushbu axborot tizimi orqali o'z ariza, taklif va shikoyatlaringizni tegishli tashkilotga yuborishingiz mumkin",
-    background: heroimg
-  },
-  {
-    title: "Muvofiq Tashkilotga Xabar Yuboring 4",
-    description: "Ushbu axborot tizimi orqali o'z ariza, taklif va shikoyatlaringizni tegishli tashkilotga yuborishingiz mumkin",
-    background: heroimg
-  }
-];
+import { sendRequest } from '../utils/apiFunctions'; // Update this path as needed
 
 const HeroCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [swiper, setSwiper] = useState(null);
+  const [slides, setSlides] = useState([]);
+
+  useEffect(() => {
+    const fetchBanners = async () => {
+      const response = await sendRequest({
+        method: 'GET',
+        url: 'banner/'
+      });
+
+      if (response.success && response.data.ok) {
+        setSlides(response.data.result);
+      }
+    };
+
+    fetchBanners();
+  }, []);
 
   return (
-    <div className="relative p-4   h-[300px] md:h-[400px] overflow-hidden rounded-3xl " >
+    <div className="relative p-4 h-[300px] md:h-[400px] overflow-hidden rounded-3xl">
       <Swiper
         spaceBetween={0}
         slidesPerView={1}
@@ -49,11 +43,11 @@ const HeroCarousel = () => {
         className="w-full h-full"
       >
         {slides.map((slide, index) => (
-          <SwiperSlide key={index}>
+          <SwiperSlide key={slide.id}>
             <div
               className="relative w-full h-full bg-gray-900/50"
               style={{
-                backgroundImage: `url(${slide.background})`,
+                backgroundImage: `url(${slide.image})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center'
               }}
@@ -85,7 +79,7 @@ const HeroCarousel = () => {
                     {slide.title}
                   </h1>
                   <p className="text-sm md:text-lg text-white/80">
-                    {slide.description}
+                    {slide.short_description}
                   </p>
                 </div>
               </div>

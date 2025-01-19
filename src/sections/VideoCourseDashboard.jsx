@@ -1,24 +1,63 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calendar, ChevronDown } from 'lucide-react';
 import { PieChart, Pie, Cell } from 'recharts';
-import banner from "../assets/banners/04.png"
+import banner from "../assets/banners/04.png";
+import { sendRequest } from '../utils/apiFunctions'; // Update this path
 
 const VideoCourseDashboard = () => {
-  const [selectedYear, setSelectedYear] = useState('2024-yil');
+  const [selectedYear, setSelectedYear] = useState(null);
+  const [years, setYears] = useState([]);
+  const [pieData, setPieData] = useState([]);
+  const [progressData, setProgressData] = useState([]);
+  const [isYearDropdownOpen, setIsYearDropdownOpen] = useState(false);
 
-  const pieData = [
-    { name: 'Qoniqarsiz', value: 44.55 },
-    { name: 'Qoniqarli', value: 38.56 },
-    { name: 'Yuqori', value: 32.00 }
-  ];
+  // Fetch years on component mount
+  useEffect(() => {
+    const fetchYears = async () => {
+      const response = await sendRequest({
+        method: 'GET',
+        url: 'statistic/year/'
+      });
 
-  const progressData = [
-    { name: "Markaziy bank", value: 93 },
-    { name: "O'zkimyosanoat AJ", value: 90 },
-    { name: "O'zbekiston texnik jihatdan tartibga solish agentligi", value: 89 },
-    { name: "O'zbekneftgaz AJ", value: 88 },
-    { name: "O'zbekiston temir yo'llari AJ", value: 87 }
-  ];
+      if (response.success && response.data.ok) {
+        setYears(response.data.result);
+        // Set initial selected year to the first year in the list
+        if (response.data.result.length > 0) {
+          setSelectedYear(response.data.result[0]);
+        }
+      }
+    };
+
+    fetchYears();
+  }, []);
+
+  // Fetch statistics when selected year changes
+  useEffect(() => {
+    const fetchStatistics = async () => {
+      if (!selectedYear) return;
+
+      const response = await sendRequest({
+        method: 'GET',
+        url: 'statistic/',
+        params: { year_id: selectedYear.id }
+      });
+
+      if (response.success && response.data.ok) {
+        const { rainbow, liner } = response.data.result;
+
+        // Transform rainbow data for pie chart
+        const transformedPieData = [
+          { name: 'Qoniqarsiz', value: rainbow.unsatisfactory },
+          { name: 'Qoniqarli', value: rainbow.satisfactory },
+          { name: 'Yuqori', value: rainbow.high }
+        ];
+        setPieData(transformedPieData);
+        setProgressData(liner);
+      }
+    };
+
+    fetchStatistics();
+  }, [selectedYear]);
 
   const COLORS = ['#ef4444', '#eab308', '#22c55e'];
 
@@ -109,10 +148,32 @@ const VideoCourseDashboard = () => {
           <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm">
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sm:gap-0 mb-6">
               <h2 className="text-lg sm:text-2xl font-semibold text-gray-800">Idoralar ochiqlik indeksi</h2>
-              <button className="flex items-center gap-2 text-blue-500 hover:text-blue-600 text-base sm:text-lg">
-                2024-yil
-                <ChevronDown className="w-4 h-4" />
-              </button>
+              <div className="relative">
+                <button
+                  onClick={() => setIsYearDropdownOpen(!isYearDropdownOpen)}
+                  className="flex items-center gap-2 text-blue-500 hover:text-blue-600 text-base sm:text-lg"
+                >
+                  {selectedYear ? `${selectedYear.year}-yil` : 'Yilni tanlang'}
+                  <ChevronDown className="w-4 h-4" />
+                </button>
+
+                {isYearDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-40 bg-white border rounded-md shadow-lg z-10">
+                    {years.map((year) => (
+                      <button
+                        key={year.id}
+                        onClick={() => {
+                          setSelectedYear(year);
+                          setIsYearDropdownOpen(false);
+                        }}
+                        className="w-full text-left px-4 py-2 hover:bg-gray-50 text-gray-700"
+                      >
+                        {year.year}-yil
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="flex flex-col sm:flex-row items-start gap-6 sm:gap-8">
@@ -123,7 +184,7 @@ const VideoCourseDashboard = () => {
                     <div className="w-1 h-8 mg:h-12 rounded-sm" style={{ backgroundColor: COLORS[2 - index] }}></div>
                     <div>
                       <div className="text-gray-500 text-[12px] md:text-sm">{item.name}</div>
-                      <div className="text-[14px]  md:text-xl  font-semibold">{item.value}%</div>
+                      <div className="text-[14px] md:text-xl font-semibold">{item.value}%</div>
                     </div>
                   </div>
                 ))}
@@ -155,7 +216,7 @@ const VideoCourseDashboard = () => {
           {/* Progress Bars Card */}
           <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-[14px] md:text-lg  font-semibold text-gray-800">
+              <h2 className="text-[14px] md:text-lg font-semibold text-gray-800">
                 Faoliyat samaradorligi reytingi
               </h2>
               <button className="flex items-center gap-2 text-blue-500 hover:text-blue-600 text-[14px] md:text-base">
@@ -166,15 +227,15 @@ const VideoCourseDashboard = () => {
 
             <div className="space-y-5">
               {progressData.map((item, index) => (
-                <div key={index}>
+                <div key={item.id}>
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-sm text-gray-600 flex-1 pr-4">{item.name}</span>
-                    <span className="font-semibold text-[#27D157] text-base sm:text-lg">{item.value}</span>
+                    <span className="font-semibold text-[#27D157] text-base sm:text-lg">{item.percentage}</span>
                   </div>
                   <div className="w-full bg-[#D7EBDD] rounded-full h-2.5">
                     <div
                       className="bg-[#27D157] h-2.5 rounded-full"
-                      style={{ width: `${item.value}%` }}
+                      style={{ width: `${item.percentage}%` }}
                     ></div>
                   </div>
                 </div>
