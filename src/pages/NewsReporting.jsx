@@ -1,7 +1,9 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { ChevronRight, Search } from 'lucide-react';
 import bank_logo from "../assets/icons/bank.png";
 import { useNavigate } from 'react-router-dom';
+import { sendRequest } from '../utils/apiFunctions';
+
 
 
 const ToggleButtons = ({ activeTab, onChange }) => {
@@ -29,18 +31,46 @@ const ToggleButtons = ({ activeTab, onChange }) => {
   );
 };
 // Step 1: Organization Selection Component
-const OrganizationSelection = ({ onNext }) => {
-  const organizations = [
-    { id: 1, name: "Davlat tashkilot no'mi" },
-    { id: 2, name: "Davlat tashkilot no'mi" },
-    { id: 3, name: "Davlat tashkilot no'mi" },
-    { id: 4, name: "Davlat tashkilot no'mi" },
-    { id: 5, name: "Davlat tashkilot no'mi" },
-    { id: 6, name: "Davlat tashkilot no'mi" },
-    { id: 7, name: "Davlat tashkilot no'mi" },
-    { id: 8, name: "Davlat tashkilot no'mi" },
-  ];
+const OrganizationSelection = ({ onNext, onSelect, selectedOrgId }) => {
+  const [organizations, setOrganizations] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [selectedOrg, setSelectedOrg] = useState(null);
 
+  const fetchOrganizations = async (query = '') => {
+    setLoading(true);
+    try {
+      const response = await sendRequest({
+        method: 'GET',
+        url: '/services/organization/',
+        params: query ? { q: query } : {}
+      });
+
+      if (response.success && response.data.ok) {
+        setOrganizations(response.data.result.content);
+      }
+    } catch (error) {
+      console.error('Error fetching organizations:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchOrganizations();
+  }, []);
+
+  const handleSearch = (value) => {
+    setSearchQuery(value);
+    fetchOrganizations(value);
+  };
+
+  const handleSelectOrg = (org) => {
+    setSelectedOrg(org);
+    if (onSelect) {
+      onSelect(org.id);
+    }
+  };
 
   return (
     <>
@@ -49,6 +79,8 @@ const OrganizationSelection = ({ onNext }) => {
         <div className="relative w-[400px]">
           <input
             type="text"
+            value={searchQuery}
+            onChange={(e) => handleSearch(e.target.value)}
             placeholder="Tashkilotni qidirish"
             className="w-full p-4 pr-12 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
@@ -56,34 +88,50 @@ const OrganizationSelection = ({ onNext }) => {
         </div>
       </div>
 
+      {/* Loading State */}
+      {loading && (
+        <div className="flex justify-center items-center py-8">
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#024072]"></div>
+        </div>
+      )}
+
       {/* Organizations Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {organizations.map((org) => (
-          <div
-            key={org.id}
-            className="p-6 bg-white rounded-lg shadow-sm  hover:shadow-md transition-shadow"
-            style={{
-              boxShadow: '0px 4px 29px 0px #0000001A',
-            }}
-          >
-            <div className="flex items-center space-x-4">
-              <div className="
-                w-12 h-12
-                bg-[#E6F4FF]
-                rounded-[50%]
-                flex items-center justify-center
-              ">
-                <img
-                  src={bank_logo}
-                  alt="Bank icon"
-                  className="w-8 h-8"
-                />
+      {!loading && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {organizations.map((org) => (
+            <div
+              key={org.id}
+              onClick={() => handleSelectOrg(org)}
+              className={`p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow h-[150px] flex flex-col justify-between cursor-pointer ${selectedOrg?.id === org.id ? 'bg-blue-50 border-2 border-[#024072]' : ''
+                }`}
+              style={{
+                boxShadow: '0px 4px 29px 0px #0000001A',
+              }}
+            >
+              <div className="flex items-start space-x-4">
+                <div className={`w-12 h-12 flex-shrink-0 ${selectedOrg?.id === org.id ? 'bg-blue-100' : 'bg-[#E6F4FF]'
+                  } rounded-[50%] flex items-center justify-center`}>
+                  <img
+                    src={bank_logo}
+                    alt="Bank icon"
+                    className="w-8 h-8"
+                  />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-medium text-gray-900 text-sm line-clamp-3">
+                    {org.name}
+                  </h3>
+                </div>
               </div>
-              <div>
-                <h3 className="font-medium text-gray-900">{org.name}</h3>
+              <div className="mt-2 flex justify-start pl-16">
                 <button
-                  onClick={onNext}
-                  className="text-[#024073] text-sm hover:underline mt-2 " style={{
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleSelectOrg(org);
+                  }}
+                  className={`text-[#024073] text-sm hover:underline ${selectedOrg?.id === org.id ? 'font-semibold' : ''
+                    }`}
+                  style={{
                     textDecoration: 'underline'
                   }}
                 >
@@ -91,32 +139,138 @@ const OrganizationSelection = ({ onNext }) => {
                 </button>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
+
+      {/* No Results Message */}
+      {!loading && organizations.length === 0 && (
+        <div className="text-center py-8 text-gray-500">
+          Tashkilotlar topilmadi
+        </div>
+      )}
     </>
   );
 };
 
 // Step 2: Report Details Component
-const ReportDetails = () => {
+const ReportDetails = ({ onFormDataChange, formData: initialFormData }) => {
   const [activeTab, setActiveTab] = useState('system');
-  const [formData, setFormData] = useState({
-    type: 'Korrupsiyaviy huquqbuzarlik',
-    date: '',
-    location: '',
-    time: '',
-    details: '',
+  const [violationTypes, setViolationTypes] = useState([]);
+  const [regions, setRegions] = useState([]);
+  const [districts, setDistricts] = useState([]);
+  const [loading, setLoading] = useState({
+    types: false,
+    regions: false,
+    districts: false
   });
+
+  const [formData, setFormData] = useState(initialFormData || {
+    type: '',
+    region: '',
+    district: '',
+    date: '',
+    time: '',
+    details: ''
+  });
+
   const [file, setFile] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const fileInputRef = useRef(null);
+
+  // Fetch violation types
+  useEffect(() => {
+    const fetchViolationTypes = async () => {
+      setLoading(prev => ({ ...prev, types: true }));
+      try {
+        const response = await sendRequest({
+          method: 'POST',
+          url: '/services/violation/report/types/'
+        });
+        if (response.success && response.data.ok) {
+          setViolationTypes(response.data.result);
+          if (response.data.result.length > 0 && !formData.type) {
+            handleFormChange('type', response.data.result[0].id);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching violation types:', error);
+      } finally {
+        setLoading(prev => ({ ...prev, types: false }));
+      }
+    };
+    fetchViolationTypes();
+  }, []);
+
+  // Fetch regions
+  useEffect(() => {
+    const fetchRegions = async () => {
+      setLoading(prev => ({ ...prev, regions: true }));
+      try {
+        const response = await sendRequest({
+          method: 'GET',
+          url: '/regions/'
+        });
+        if (response.success && response.data.ok) {
+          setRegions(response.data.result);
+        }
+      } catch (error) {
+        console.error('Error fetching regions:', error);
+      } finally {
+        setLoading(prev => ({ ...prev, regions: false }));
+      }
+    };
+    fetchRegions();
+  }, []);
+
+  // Fetch districts when region changes
+  useEffect(() => {
+    const fetchDistricts = async () => {
+      if (!formData.region) {
+        setDistricts([]);
+        return;
+      }
+
+      setLoading(prev => ({ ...prev, districts: true }));
+      try {
+        const response = await sendRequest({
+          method: 'GET',
+          url: `/region/${formData.region}/`
+        });
+        if (response.success && response.data.ok) {
+          setDistricts(response.data.result);
+        }
+      } catch (error) {
+        console.error('Error fetching districts:', error);
+      } finally {
+        setLoading(prev => ({ ...prev, districts: false }));
+      }
+    };
+
+    fetchDistricts();
+  }, [formData.region]);
+
+  // Update parent component when form data changes
+  useEffect(() => {
+    if (onFormDataChange) {
+      onFormDataChange(formData);
+    }
+  }, [formData, onFormDataChange]);
+
+  const handleFormChange = (field, value) => {
+    setFormData(prev => {
+      const newData = { ...prev, [field]: value };
+      if (field === 'region') {
+        newData.district = '';
+      }
+      return newData;
+    });
+  };
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
       setFile(selectedFile);
-      // Simulate upload progress
       setUploadProgress(0);
       const interval = setInterval(() => {
         setUploadProgress(prev => {
@@ -139,7 +293,7 @@ const ReportDetails = () => {
   };
 
   return (
-    <div className="">
+    <div>
       <h2 className="text-xl font-medium text-gray-800 mb-6">Hodisa Tafsilotlari</h2>
 
       {/* Toggle Buttons */}
@@ -149,8 +303,9 @@ const ReportDetails = () => {
 
       {/* Form Fields */}
       <div className="space-y-4">
-        {/* Type Selection */}
+        {/* Type Selection and Region/District */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Violation Type Select */}
           <div className="relative">
             <div className="text-sm text-gray-600 mb-1">
               Xabar turini tanlash <span className="text-red-500">*</span>
@@ -158,9 +313,16 @@ const ReportDetails = () => {
             <select
               className="w-full px-4 py-3 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
               value={formData.type}
-              onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+              onChange={(e) => handleFormChange('type', e.target.value)}
+              disabled={loading.types}
             >
-              <option value="Korrupsiyaviy huquqbuzarlik">Korrupsiyaviy huquqbuzarlik</option>
+              {loading.types ? (
+                <option>Yuklanmoqda...</option>
+              ) : (
+                violationTypes.map(type => (
+                  <option key={type.id} value={type.id}>{type.name}</option>
+                ))
+              )}
             </select>
             <div className="absolute right-4 top-[38px] pointer-events-none">
               <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -168,17 +330,54 @@ const ReportDetails = () => {
               </svg>
             </div>
           </div>
-          <div className="relative">
-            <div className="text-sm text-gray-600 mb-1">
-              Joylashuv <span className="text-red-500">*</span>
+
+          {/* Region/District Selects */}
+          <div className="space-y-4">
+            {/* Region Select */}
+            <div className="relative">
+              <div className="text-sm text-gray-600 mb-1">
+                Viloyat <span className="text-red-500">*</span>
+              </div>
+              <select
+                className="w-full px-4 py-3 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+                value={formData.region}
+                onChange={(e) => handleFormChange('region', e.target.value)}
+                disabled={loading.regions}
+              >
+                <option value="">Viloyatni tanlang</option>
+                {regions.map(region => (
+                  <option key={region.id} value={region.id}>{region.name}</option>
+                ))}
+              </select>
+              <div className="absolute right-4 top-[38px] pointer-events-none">
+                <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
             </div>
-            <input
-              type="text"
-              placeholder="viloyat, tuman/shahar"
-              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={formData.location}
-              onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-            />
+
+            {/* District Select */}
+            <div className="relative">
+              <div className="text-sm text-gray-600 mb-1">
+                Tuman <span className="text-red-500">*</span>
+              </div>
+              <select
+                className="w-full px-4 py-3 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+                value={formData.district}
+                onChange={(e) => handleFormChange('district', e.target.value)}
+                disabled={!formData.region || loading.districts}
+              >
+                <option value="">Tumanni tanlang</option>
+                {districts.map(district => (
+                  <option key={district.id} value={district.id}>{district.name}</option>
+                ))}
+              </select>
+              <div className="absolute right-4 top-[38px] pointer-events-none">
+                <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -190,10 +389,9 @@ const ReportDetails = () => {
             </div>
             <input
               type="date"
-              placeholder="dd/mm/yyyy"
               className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={formData.date}
-              onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+              onChange={(e) => handleFormChange('date', e.target.value)}
             />
           </div>
           <div>
@@ -202,15 +400,16 @@ const ReportDetails = () => {
             </div>
             <input
               type="time"
-              placeholder="--:--"
               className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={formData.time}
-              onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+              onChange={(e) => handleFormChange('time', e.target.value)}
             />
           </div>
         </div>
 
+        {/* Details and File Upload */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Details Textarea */}
           <div>
             <div className="text-sm text-gray-600 mb-1">
               Hodisa tafsilotlari
@@ -220,7 +419,8 @@ const ReportDetails = () => {
               placeholder="Hodisa tafsilotlari"
               className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
               value={formData.details}
-              onChange={(e) => setFormData({ ...formData, details: e.target.value })}
+              onChange={(e) => handleFormChange('details', e.target.value)}
+              maxLength={460}
             />
             <div className="text-right text-sm text-gray-500">
               {formData.details.length}/460
@@ -402,6 +602,30 @@ const NewsReporting = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [showModal, setShowModal] = useState(false);
 
+  const [selectedOrgId, setSelectedOrgId] = useState(null);
+
+  const [reportFormData, setReportFormData] = useState({
+    type: '',
+    region: '',
+    district: '',
+    date: '',
+    time: '',
+    details: '',
+  });
+
+  const [contactFormData, setContactFormData] = useState({
+    name: '',
+    position: '',
+    phone: ''
+  });
+
+  const handleReportFormChange = (data) => {
+    setReportFormData(data);
+  };
+  const handleContactFormChange = (data) => {
+    setContactFormData(data);
+  };
+
   const handleNext = () => {
     if (currentStep === 3) {
       setShowModal(true);
@@ -482,7 +706,9 @@ const NewsReporting = () => {
         {/* Next Button */}
         <button
           onClick={handleNext}
-          className="px-6 py-2 text-[#024073] border border-[#024072] rounded-[13px] w-[186px] hover:bg-blue-50  sm:w-auto flex items-center justify-center gap-2"
+          disabled={currentStep === 1 && !selectedOrgId}
+          // className="px-6 py-2 text-[#024073] border border-[#024072] rounded-[13px] w-[186px] hover:bg-blue-50  sm:w-auto flex items-center justify-center gap-2"
+          className={`px-6 py-2 text-[#024073] border border-[#024072] rounded-[13px] w-[186px] hover:bg-blue-50 sm:w-auto flex items-center justify-center gap-2 \${currentStep === 1 && !selectedOrgId ? 'opacity-50 cursor-not-allowed hover:bg-transparent' : ''}`}
         >
           <p className="text-sm"> {currentStep === 3 ? 'Yuborish' : 'Keyingisi'}</p>
           {currentStep !== 3 && <ChevronRight size={16} className="text-gray-400" />}
@@ -490,9 +716,15 @@ const NewsReporting = () => {
       </div>
 
       {/* Current Step Content */}
-      {currentStep === 1 && <OrganizationSelection onNext={handleNext} />}
-      {currentStep === 2 && <ReportDetails />}
-      {currentStep === 3 && <ContactForm />}
+      {currentStep === 1 && <OrganizationSelection onNext={handleNext} onSelect={setSelectedOrgId} selectedOrgId={selectedOrgId} />}
+      {currentStep === 2 && <ReportDetails
+        onFormDataChange={handleReportFormChange}
+        formData={reportFormData}
+      />}
+      {currentStep === 3 && <ContactForm
+        onFormDataChange={handleContactFormChange}
+        formData={contactFormData}
+      />}
 
       {/* Success Modal */}
       <SuccessModal
