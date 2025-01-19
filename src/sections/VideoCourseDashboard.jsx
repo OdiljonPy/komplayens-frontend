@@ -219,10 +219,10 @@ const VideoCourseDashboard = () => {
               <h2 className="text-[14px] md:text-lg font-semibold text-gray-800">
                 Faoliyat samaradorligi reytingi
               </h2>
-              <button className="flex items-center gap-2 text-blue-500 hover:text-blue-600 text-[14px] md:text-base">
+              {/* <button className="flex items-center gap-2 text-blue-500 hover:text-blue-600 text-[14px] md:text-base">
                 Eng baland
                 <ChevronDown className="w-4 h-4" />
-              </button>
+              </button> */}
             </div>
 
             <div className="space-y-5">
