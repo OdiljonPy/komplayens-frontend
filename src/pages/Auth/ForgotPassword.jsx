@@ -3,18 +3,39 @@ import { Link } from 'react-router-dom';
 import login_bg from "../../assets/backgrounds/login_bg.png";
 import logo from "../../assets/logos/full_logo.png";
 import PhoneInput from '../../components/PhoneInput';
-
+import { sendRequest } from '../../utils/apiFunctions';
 
 const ForgotPassword = () => {
   const [phoneNumber, setPhoneNumber] = useState('+998 ');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Get clean number for submission (just the 9 digits after +998)
     const cleanNumber = phoneNumber.replace(/\D/g, '').slice(3);
     if (cleanNumber.length === 9) {
-      console.log('Submitting phone number:', cleanNumber);
-      // Handle submission logic here
+      setLoading(true);
+      try {
+        const response = await sendRequest({
+          method: 'POST',
+          url: '/auth/password/recovery/',
+          data: {
+            phone_number: `+998${cleanNumber}`,
+          },
+        });
+        if (response.success) {
+          window.location.href = '/login';
+          setErrorMessage('');
+        } else {
+          const errorDetail = response.error.data?.detail || 'Password recovery failed. Please try again.';
+          setErrorMessage(errorDetail);
+        }
+      } catch (error) {
+        const errorDetail = error.response?.data?.detail || 'Password recovery failed. Please try again.';
+        setErrorMessage(errorDetail);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -46,6 +67,8 @@ const ForgotPassword = () => {
           <div className="flex-1">
             <h2 className="text-2xl font-semibold mb-6">Parolni tiklash</h2>
 
+
+
             <p className="text-gray-600 mb-8">
               Bog'langan telefon raqamingizni kiriting va biz sizga parol jo'natamiz
             </p>
@@ -55,12 +78,20 @@ const ForgotPassword = () => {
                 value={phoneNumber}
                 onChange={setPhoneNumber}
               />
+              {errorMessage && (
+                <p className="text-red-500 mb-4 text-center">{errorMessage}</p>
+              )}
 
               <button
                 type="submit"
                 className="w-full bg-[#024072] text-white py-3 rounded-md hover:bg-[#02355f] transition-colors"
+                disabled={loading}
               >
-                Parol Yuborish
+                {loading ? (
+                  "Yuborilmoqda..."
+                ) : (
+                  'Parol Yuborish'
+                )}
               </button>
 
               <div className="text-center">

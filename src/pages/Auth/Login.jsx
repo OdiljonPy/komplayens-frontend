@@ -3,6 +3,8 @@ import { Eye } from 'lucide-react';
 import login_bg from "../../assets/backgrounds/login_bg.png";
 import logo from "../../assets/logos/full_logo.png";
 import { Link } from 'react-router-dom';
+import PhoneInput from '../../components/PhoneInput';
+import { sendRequest } from '../../utils/apiFunctions';
 
 const FloatingLabelInput = ({ label, type = "text", value, onChange, Icon }) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -39,16 +41,54 @@ const FloatingLabelInput = ({ label, type = "text", value, onChange, Icon }) => 
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    login: '',
+    phone: '+998 ',
     password: ''
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (field) => (e) => {
+    const value = e.target.value;
+    // Clean up the phone number to remove non-numeric characters
+    const cleanedValue = field === 'phone' ? value.replace(/[^0-9+]/g, '') : value;
+
     setFormData(prev => ({
       ...prev,
-      [field]: e.target.value
+      [field]: cleanedValue
     }));
+    setErrorMessage(''); // Clear error message on input change
+  };
+
+  const handleLogin = async () => {
+    setLoading(true);
+    const { phone, password } = formData;
+
+    // Clean the phone number to remove spaces and dashes
+    const cleanedPhone = phone.replace(/[^0-9+]/g, ''); // Keep only numbers and the '+' sign
+
+    const response = await sendRequest({
+      method: 'POST',
+      url: '/auth/login/',
+      data: {
+        phone_number: cleanedPhone, // Send the cleaned phone number
+        password: password,
+      },
+    });
+
+    setLoading(false);
+
+    if (response.success) {
+      // Save tokens to local storage
+      localStorage.setItem('user', JSON.stringify(response.data.result));
+      // Redirect to home page
+      window.location.href = '/';
+    } else {
+      // Set error message to display to the user
+      const errorDetail = response.error.data?.detail || 'Login failed. Please try again.';
+      setErrorMessage(errorDetail);
+      console.error(response.error);
+    }
   };
 
   return (
@@ -94,10 +134,10 @@ const Login = () => {
 
               {/* Login Field */}
               <div >
-                <FloatingLabelInput
-                  label="Login"
-                  value={formData.login}
-                  onChange={handleChange('login')}
+
+                <PhoneInput
+                  value={formData.phone}
+                  onChange={(value) => setFormData(prev => ({ ...prev, phone: value }))}
                 />
               </div>
 
@@ -124,8 +164,18 @@ const Login = () => {
                 </div>
               </div>
 
-              <button className="w-full bg-[#024072] text-white py-3 rounded-md">
-                Tizimga Kirish
+              {errorMessage && (
+                <div className="text-red-500 text-center mb-4">
+                  {errorMessage}
+                </div>
+              )}
+
+              <button
+                className={`w-full bg-[#024072] text-white py-3 rounded-md ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                onClick={handleLogin}
+                disabled={loading}
+              >
+                {loading ? 'Yuklanmoqda...' : 'Tizimga Kirish'}
               </button>
             </div>
           </div>

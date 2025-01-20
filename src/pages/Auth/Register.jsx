@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { Eye } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Eye, ChevronDown } from 'lucide-react';
 import login_bg from "../../assets/backgrounds/login_bg.png";
 import logo from "../../assets/logos/full_logo.png";
 import { Link } from 'react-router-dom';
 import PhoneInput from '../../components/PhoneInput';
+import { sendRequest } from '../../utils/apiFunctions';
 
 // FloatingLabelInput component with fixed positioning
 const FloatingLabelInput = ({ label, type = "text", value, onChange, Icon }) => {
@@ -40,7 +41,7 @@ const FloatingLabelInput = ({ label, type = "text", value, onChange, Icon }) => 
 };
 
 // FloatingLabelSelect component with fixed positioning
-const FloatingLabelSelect = ({ label, options = [] }) => {
+const FloatingLabelSelect = ({ label, options = [], onChange }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [value, setValue] = useState('');
 
@@ -48,13 +49,20 @@ const FloatingLabelSelect = ({ label, options = [] }) => {
     <div className="relative mb-6">
       <select
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(e) => {
+          setValue(e.target.value);
+          onChange(e);
+        }}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         className="w-full p-3 border border-gray-200 rounded-md peer bg-white appearance-none"
       >
         <option value="" disabled></option>
-        <option>Tashkilotni no'mi</option>
+        {options.map(option => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
       </select>
       <label
         className={`absolute text-sm duration-150 transform 
@@ -66,6 +74,9 @@ const FloatingLabelSelect = ({ label, options = [] }) => {
       >
         {label}
       </label>
+      <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+        <ChevronDown className="h-5 w-5 text-gray-400" />
+      </div>
     </div>
   );
 };
@@ -79,23 +90,63 @@ const Register = () => {
     password: ''
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [organizations, setOrganizations] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchOrganizations = async () => {
+      const response = await sendRequest({
+        method: 'GET',
+        url: '/services/organization/',
+      });
+
+      if (response.success) {
+        setOrganizations(response.data.result.content);
+      } else {
+        console.error(response.error);
+      }
+    };
+
+    fetchOrganizations();
+  }, []);
 
   const handleChange = (field) => (e) => {
     setFormData(prev => ({
       ...prev,
       [field]: e.target.value
     }));
+    setErrorMessage('');
   };
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Get clean phone number for submission (just the 9 digits after +998)
-    const cleanPhone = formData.phone.replace(/\D/g, '').slice(3);
-    const submitData = {
-      ...formData,
-      phone: cleanPhone
-    };
-    console.log('Submitting:', submitData);
-    // Handle form submission
+    setLoading(true);
+    const { organization, firstName, lastName, phone, password } = formData;
+
+    const cleanedPhone = phone.replace(/[^0-9+]/g, '');
+
+    const response = await sendRequest({
+      method: 'POST',
+      url: '/auth/register/',
+      data: {
+        organization: organization,
+        first_name: firstName,
+        last_name: lastName,
+        password: password,
+        phone_number: cleanedPhone,
+      },
+    });
+
+    setLoading(false);
+
+    if (response.success) {
+      window.location.href = '/login';
+    } else {
+      const errorDetail = response.error.data?.detail || 'Registration failed. Please try again.';
+      setErrorMessage(errorDetail);
+      console.error(response.error);
+    }
   };
 
   return (
@@ -143,6 +194,8 @@ const Register = () => {
               <div>
                 <FloatingLabelSelect
                   label="Tashkilotni tanlang"
+                  options={organizations.map(org => ({ value: org.id, label: org.name }))}
+                  onChange={handleChange('organization')}
                 />
               </div>
 
@@ -189,14 +242,23 @@ const Register = () => {
                   }
                 />
               </div>
+              {errorMessage && (
+                <div className="text-red-500 text-center mb-4">
+                  {errorMessage}
+                </div>
+              )}
 
               <button
                 type="submit"
                 className="w-full bg-[#024072] text-white py-3 rounded-md"
+                disabled={loading}
               >
-                Ro'yxatdan O'tish
+                {loading ? 'Yuborilmoqda...' : 'Ro\'yxatdan O\'tish'}
               </button>
             </form>
+
+            {/* Error Message Display */}
+
           </div>
 
           {/* Logo for mobile - at the bottom */}
