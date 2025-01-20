@@ -104,13 +104,13 @@ const Navbar = () => {
             <div className="flex items-center justify-between h-16">
               {/* Logo and Title */}
               <div className="flex items-center space-x-4">
-                <Link to="/">
+                <Link to="/" className="flex items-center space-x-2">
                   <img src={logo} alt="Logo" className="h-8 w-auto" />
+                  <div className="text-sm hidden sm:block">
+                    <div>{t('platform_title_1')}</div>
+                    <div>{t('platform_title_2')}</div>
+                  </div>
                 </Link>
-                <div className="text-sm hidden sm:block">
-                  <div>{t('platform_title_1')}</div>
-                  <div>{t('platform_title_2')}</div>
-                </div>
               </div>
 
               {/* Right Side Items */}

@@ -1,5 +1,7 @@
 import axios from 'axios';
-const MainURL = 'http://176.221.28.202:8009/api/v1';
+// const MainURL = 'http://176.221.28.202:8009/api/v1';
+const MainURL = 'https://api.komplayens.uz/api/v1';
+
 const axiosInstance = axios.create({
   baseURL: MainURL,
   headers: {
