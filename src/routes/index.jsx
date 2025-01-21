@@ -26,7 +26,8 @@ import {
   Login,
   ForgotPassword,
   TrainingCourses,
-  ElectronicLibrary
+  ElectronicLibrary,
+  Handouts
 } from "../pages";
 export const router = createBrowserRouter([
   {
@@ -113,6 +114,10 @@ export const router = createBrowserRouter([
       {
         path: "announcements",
         element: <Announcements />
+      },
+      {
+        path: "handouts",
+        element: <Handouts />
       }
     ]
   },

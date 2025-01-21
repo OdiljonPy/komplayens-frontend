@@ -81,6 +81,10 @@ const Navbar = () => {
         {
           label: "E'lonlar",
           to: '/announcements'
+        },
+        {
+          label: "Tarqatma materiallar",
+          to: '/handouts'
         }
       ]
     }
