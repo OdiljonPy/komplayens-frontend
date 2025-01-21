@@ -10,6 +10,9 @@ const VideoCourseDashboard = () => {
   const [pieData, setPieData] = useState([]);
   const [progressData, setProgressData] = useState([]);
   const [isYearDropdownOpen, setIsYearDropdownOpen] = useState(false);
+  const [courses, setCourses] = useState([]);
+  const [orderBy, setOrderBy] = useState('new');
+  const [selectedDate, setSelectedDate] = useState('2024-12-18');
 
   // Fetch years on component mount
   useEffect(() => {
@@ -59,31 +62,29 @@ const VideoCourseDashboard = () => {
     fetchStatistics();
   }, [selectedYear]);
 
-  const COLORS = ['#ef4444', '#eab308', '#22c55e'];
+  // New useEffect for fetching courses
+  useEffect(() => {
+    const fetchCourses = async () => {
+      const response = await sendRequest({
+        method: 'GET',
+        url: '/services/training/',
+        params: {
+          from_date: selectedDate,
+          order_by: orderBy,
+          popular: true
+        }
+      });
 
-  const courseData = [
-    {
-      id: 1,
-      title: "Korrupsiyaga Qarshi Kurash Asoslari",
-      description: "Ushbu Kurs Korrupsiya Tushunchasi, Uning Asosiy Turlari Va Ijtimoiy-Iqtisodiy Oqibatlari Haqida Keng Qamrovli Bilim Beradi.",
-      views: 228,
-      date: "Avgust 18, 2024"
-    },
-    {
-      id: 2,
-      title: "Korrupsiyaga Qarshi Kurash Asoslari",
-      description: "Ushbu Kurs Korrupsiya Tushunchasi, Uning Asosiy Turlari Va Ijtimoiy-Iqtisodiy Oqibatlari Haqida Keng Qamrovli Bilim Beradi.",
-      views: 228,
-      date: "Avgust 18, 2024"
-    },
-    {
-      id: 3,
-      title: "Korrupsiyaga Qarshi Kurash Asoslari",
-      description: "Ushbu Kurs Korrupsiya Tushunchasi, Uning Asosiy Turlari Va Ijtimoiy-Iqtisodiy Oqibatlari Haqida Keng Qamrovli Bilim Beradi.",
-      views: 228,
-      date: "Avgust 18, 2024"
-    }
-  ];
+      if (response.success && response.data.ok) {
+        // Take only the first 3 courses
+        setCourses(response.data.result.content.slice(0, 3));
+      }
+    };
+
+    fetchCourses();
+  }, [orderBy, selectedDate]);
+
+  const COLORS = ['#ef4444', '#eab308', '#22c55e'];
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 mt-4">
@@ -100,8 +101,13 @@ const VideoCourseDashboard = () => {
           <div className="flex flex-col md:flex-row gap-4 mb-6">
             <div className="flex-1">
               <label className="block text-sm text-gray-600 mb-1">Saralash:</label>
-              <select className="w-full p-2 border rounded-md">
-                <option>Eng yangi</option>
+              <select
+                className="w-full p-2 border rounded-md"
+                value={orderBy}
+                onChange={(e) => setOrderBy(e.target.value)}
+              >
+                <option value="new">Eng yangi</option>
+                <option value="old">Eng eski</option>
               </select>
             </div>
             <div className="flex-1">
@@ -109,36 +115,52 @@ const VideoCourseDashboard = () => {
               <input
                 type="date"
                 className="w-full p-2 border rounded-md"
-                defaultValue="2024-12-18"
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
               />
             </div>
           </div>
 
           <div className="space-y-4">
-            {courseData.map(course => (
-              <div key={course.id} className="bg-white p-4 rounded-lg shadow-sm">
-                <div className="flex flex-col md:flex-row gap-4">
-                  <img src={banner} alt="" className='w-full md:w-48 h-32 bg-gray-200 rounded-md object-cover object-center' />
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold mb-2">{course.title}</h3>
-                    <p className="text-gray-600 mb-4">{course.description}</p>
-                    <div className="flex gap-4 text-gray-500">
-                      <span className="flex items-center gap-1">
-                        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                        </svg>
-                        {course.views}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Calendar className="w-4 h-4" />
-                        {course.date}
-                      </span>
+            {
+              courses.length !== 0 ? (
+                courses.map(course => (
+                  <div key={course.id} className="bg-white p-4 rounded-lg shadow-sm">
+                    <div className="flex flex-col md:flex-row gap-4">
+                      <img
+                        src={course.image}
+                        alt=""
+                        className='w-full md:w-48 h-32 bg-gray-200 rounded-md object-cover object-center'
+                      />
+                      <div className="flex-1">
+                        <h3 className="text-lg font-semibold mb-2">{course.name}</h3>
+                        <div
+                          className="text-gray-600 mb-4 line-clamp-3"
+                          dangerouslySetInnerHTML={{ __html: course.description }}
+                        />
+                        <div className="flex gap-4 text-gray-500">
+                          <span className="flex items-center gap-1">
+                            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                            {course.views}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Calendar className="w-4 h-4" />
+                            {course.video_length} min
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
+                ))
+              ) : (
+                <div className="flex justify-center items-center">
+                  <h1 className="text-2xl font-bold">No data found</h1>
                 </div>
-              </div>
-            ))}
+              )
+            }
           </div>
         </div>
 
