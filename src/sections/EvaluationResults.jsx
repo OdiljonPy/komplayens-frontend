@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronDown, ArrowUp, ArrowDown } from 'lucide-react';
-
+import { sendRequest } from '../utils/apiFunctions';
 const EvaluationResults = () => {
   const [selectedPeriod, setSelectedPeriod] = useState('2023-2024');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [years, setYears] = useState([]);
+  const [evaluationResults, setEvaluationResults] = useState([]);
+  const [selectedYear, setSelectedYear] = useState(null);
 
   const periods = ['2022-2023', '2023-2024', '2024-2025'];
 
@@ -13,38 +16,66 @@ const EvaluationResults = () => {
     { label: 'Qoniqarsiz', color: '#ef4444' }
   ];
 
-  const evaluationData = [
-    [
-      { name: "Markaziy bank", status: "yaxshi", change: 3 },
-      { name: "Turizm qo'mitasi", status: "qoniqarli", change: 3 },
-      { name: "Andijon viloyat hokimligi", status: "qoniqarsiz", change: -7 }
-    ],
-    [
-      { name: "O'zkimyosanoat AJ", status: "yaxshi", change: -7 },
-      { name: "Turizm qo'mitasi", status: "qoniqarli", change: -7 },
-      { name: "Andijon viloyat hokimligi", status: "qoniqarsiz", change: 3 }
-    ],
-    [
-      { name: "Markaziy bank", status: "yaxshi", change: 3 },
-      { name: "Turizm qo'mitasi", status: "qoniqarli", change: 0 },
-      { name: "Andijon viloyat hokimligi", status: "qoniqarsiz", change: -7 }
-    ],
-    [
-      { name: "O'zkimyosanoat AJ", status: "yaxshi", change: -7 },
-      { name: "Turizm qo'mitasi", status: "qoniqarli", change: 3 },
-      { name: "Andijon viloyat hokimligi", status: "qoniqarsiz", change: 3 }
-    ],
-    [
-      { name: "Markaziy bank", status: "yaxshi", change: 3 },
-      { name: "Turizm qo'mitasi", status: "qoniqarli", change: -7 },
-      { name: "Andijon viloyat hokimligi", status: "qoniqarsiz", change: -7 }
-    ],
-    [
-      { name: "O'zkimyosanoat AJ", status: "yaxshi", change: -7 },
-      { name: "Turizm qo'mitasi", status: "qoniqarli", change: 0 },
-      { name: "Andijon viloyat hokimligi", status: "qoniqarsiz", change: 3 }
-    ]
-  ];
+  // Fetch years when component mounts
+  useEffect(() => {
+    const fetchYears = async () => {
+      try {
+        const response = await sendRequest({ method: 'GET', url: '/statistic/year/' });
+        if (response.success) {
+          setYears(response.data.result);
+          // Set initial selected year to the first year in the list
+          if (response.data.result.length > 0) {
+            setSelectedYear(response.data.result[0].id);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching years:', error);
+      }
+    };
+    fetchYears();
+  }, []);
+
+  // Fetch evaluation data when selected year changes
+  useEffect(() => {
+    const fetchEvaluationData = async () => {
+      if (!selectedYear) return;
+
+      try {
+        const response = await sendRequest({ method: 'GET', url: `/statistic/quarterly/?year_id=${selectedYear}` });
+        if (response.success) {
+          // Transform API data to match the component's data structure
+          const transformedData = response.data.result.map(item => ({
+            name: item.name,
+            status: getStatus(item.this_year),
+            this_year: item.this_year,
+            first_quarter: item.first_quarter,
+            second_quarter: item.second_quarter,
+            third_quarter: item.third_quarter,
+            fourth_quarter: item.fourth_quarter,
+            fifth_quarter: item.fifth_quarter,
+            change: item.difference
+          }));
+
+          // Split into rows of 3 items each
+          const rows = [];
+          for (let i = 0; i < transformedData.length; i += 3) {
+            rows.push(transformedData.slice(i, i + 3));
+          }
+          setEvaluationResults(rows);
+        }
+      } catch (error) {
+        console.error('Error fetching evaluation data:', error);
+      }
+    };
+    fetchEvaluationData();
+  }, [selectedYear]);
+
+  // Helper function to determine status based on score
+  const getStatus = (score) => {
+    if (score >= 95) return 'yaxshi';
+    if (score >= 90) return 'qoniqarli';
+    return 'qoniqarsiz';
+  };
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -75,21 +106,21 @@ const EvaluationResults = () => {
               className="flex items-center gap-2 text-blue-500 hover:text-blue-600 px-2 py-1 md:px-3 md:py-1.5 rounded-lg text-sm"
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             >
-              {selectedPeriod}
+              {years.find(y => y.id === selectedYear)?.year || 'Select Year'}
               <ChevronDown className="w-4 h-4" />
             </button>
             {isDropdownOpen && (
               <div className="absolute right-0 mt-1 bg-white shadow-lg rounded-lg py-1 z-10 min-w-[120px]">
-                {periods.map((period) => (
+                {years.map((year) => (
                   <button
-                    key={period}
+                    key={year.id}
                     className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 text-gray-700"
                     onClick={() => {
-                      setSelectedPeriod(period);
+                      setSelectedYear(year.id);
                       setIsDropdownOpen(false);
                     }}
                   >
-                    {period}
+                    {year.year}
                   </button>
                 ))}
               </div>
@@ -109,34 +140,61 @@ const EvaluationResults = () => {
 
         {/* Results Table */}
         <div className="space-y-3 md:space-y-4">
-          {evaluationData.map((row, rowIndex) => (
+          {evaluationResults.map((row, rowIndex) => (
             <div key={rowIndex} className="flex flex-col md:flex-row gap-2 md:gap-4">
               {row.map((item, colIndex) => (
                 <div
                   key={colIndex}
-                  className="flex items-center justify-between flex-1 bg-[#F9F9F9] rounded-[4px] px-2 py-2 md:py-1.5"
+                  className="flex-1 bg-[#F9F9F9] rounded-[4px] p-3"
                 >
-                  <div className="flex items-center gap-2 min-w-0">
+                  {/* Organization Name and Status */}
+                  <div className="flex items-center gap-2 mb-3">
                     <div
                       className="w-2 h-2 rounded-full flex-shrink-0"
                       style={{ backgroundColor: getStatusColor(item.status) }}
                     ></div>
-                    <span className="text-xs md:text-sm text-gray-600 truncate">
+                    <span className="text-sm text-gray-600 max-w-[200px] truncate">
                       {item.name}
                     </span>
                   </div>
-                  <div
-                    className={`flex items-center gap-1 flex-shrink-0 ml-2 ${item.change > 0 ? 'text-green-500' : item.change < 0 ? 'text-red-500' : 'text-gray-500'
-                      }`}
-                  >
-                    {item.change !== 0 && (
-                      item.change > 0 ?
-                        <ArrowUp className="w-3 h-3 md:w-4 md:h-4" /> :
-                        <ArrowDown className="w-3 h-3 md:w-4 md:h-4" />
-                    )}
-                    <span className="text-xs md:text-sm">
-                      {item.change === 0 ? '0' : Math.abs(item.change)}
+
+                  {/* Quarters */}
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs text-gray-500">Choraklik kesmida</span>
+                    <div className="flex gap-3">
+                      <span className="text-xs">I</span>
+                      <span className="text-xs">II</span>
+                      <span className="text-xs">III</span>
+                      <span className="text-xs">IV</span>
+                      <span className="text-xs">V</span>
+                    </div>
+                  </div>
+
+                  {/* Scores and Change */}
+                  <div className="flex items-center justify-between">
+                    <span className={`text-sm ${item.status === 'yaxshi' ? 'text-green-500' :
+                      item.status === 'qoniqarli' ? 'text-yellow-500' : 'text-red-500'
+                      }`}>
+                      {item.this_year}
                     </span>
+                    <div className="flex items-center gap-3">
+                      {[item.first_quarter, item.second_quarter, item.third_quarter,
+                      item.fourth_quarter, item.fifth_quarter].map((score, idx) => (
+                        <span key={idx} className="text-xs text-gray-600">{score}</span>
+                      ))}
+                    </div>
+                    <div className={`flex items-center gap-1 ${item.change > 0 ? 'text-green-500' :
+                      item.change < 0 ? 'text-red-500' : 'text-gray-500'
+                      }`}>
+                      {item.change !== 0 && (
+                        item.change > 0 ?
+                          <ArrowUp className="w-3 h-3" /> :
+                          <ArrowDown className="w-3 h-3" />
+                      )}
+                      <span className="text-xs">
+                        {item.change === 0 ? '0' : Math.abs(item.change)}
+                      </span>
+                    </div>
                   </div>
                 </div>
               ))}
