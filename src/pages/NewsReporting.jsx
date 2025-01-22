@@ -184,7 +184,7 @@ const ReportDetails = ({ onFormDataChange, formData: initialFormData }) => {
       setLoading(prev => ({ ...prev, types: true }));
       try {
         const response = await sendRequest({
-          method: 'POST',
+          method: 'GET',
           url: '/services/violation/report/types/'
         });
         if (response.success && response.data.ok) {

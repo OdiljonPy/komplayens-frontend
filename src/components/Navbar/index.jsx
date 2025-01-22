@@ -70,10 +70,10 @@ const Navbar = () => {
       to: '/resources',
       dropdown: true,
       items: [
-        {
-          label: "Targ'ibot va foydali axborotlar",
-          to: '/resources'
-        },
+        // {
+        //   label: "Targ'ibot va foydali axborotlar",
+        //   to: '/resources'
+        // },
         {
           label: "Yangiliklar",
           to: '/violations'

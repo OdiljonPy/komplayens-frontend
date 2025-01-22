@@ -12,6 +12,9 @@ const OperationsItem = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [itemData, setItemData] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Check authentication on mount
   useEffect(() => {
@@ -74,19 +77,69 @@ const OperationsItem = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [originalTop]);
 
-  const comments = [
-    {
-      id: 1,
-      name: "Ism Familia",
-      date: "21.01.2020",
-      text: "Etika va korrupsiyaga qarshi kurash o'zaro chambarchas bog'liq bo'lib, ular jamiyatning ijtimoiy, iqtisodiy va madaniy rivojlanishida muhim ahamiyat kasb etadi."
-    },
-    // ... other comments
-  ];
+  // Fetch comments when component mounts
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const userStr = localStorage.getItem('user');
+        if (!userStr || !operationId) return;
+
+        const user = JSON.parse(userStr);
+        const response = await sendRequest({
+          method: 'GET',
+          url: '/services/officer/advice/list/',
+          params: {
+            professional_ethics: operationId
+          },
+          token: user.access_token
+        });
+
+        if (response.success) {
+          setComments(response.data.result.content);
+        }
+      } catch (error) {
+        console.error('Error fetching comments:', error);
+      }
+    };
+
+    fetchComments();
+  }, [operationId]);
 
   // Scroll to comment function
   const scrollToComment = () => {
     commentRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleSubmitComment = async () => {
+    if (!newComment.trim()) return;
+
+    try {
+      setIsSubmitting(true);
+      const userStr = localStorage.getItem('user');
+      if (!userStr || !operationId) return;
+
+      const user = JSON.parse(userStr);
+      const response = await sendRequest({
+        method: 'POST',
+        url: '/services/officer/advice/',
+        data: {
+          professional_ethics: operationId,
+          comment: newComment.trim()
+        },
+        token: user.access_token
+      });
+
+      if (response.success) {
+        // Add new comment to the list
+        setComments(prevComments => [...prevComments, response.data.result]);
+        // Clear the input
+        setNewComment('');
+      }
+    } catch (error) {
+      console.error('Error submitting comment:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -172,12 +225,14 @@ const OperationsItem = () => {
                     <div className="w-1 bg-[#B9B9B9] rounded-l-lg"></div>
                     <div className="p-6 flex-1">
                       <div className="flex items-center gap-3 mb-2">
-                        <span className={`font-medium ${comment.name === 'Siz' ? 'text-blue-600' : 'text-gray-900'}`}>
-                          {comment.name}
+                        <span className="font-medium text-gray-900">
+                          {comment.officer_full_name}
                         </span>
-                        <span className="text-sm text-gray-500">{comment.date}</span>
+                        <span className="text-sm text-gray-500">
+                          {new Date(comment.created_at).toLocaleDateString()}
+                        </span>
                       </div>
-                      <p className="text-gray-600">{comment.text}</p>
+                      <p className="text-gray-600">{comment.comment}</p>
                     </div>
                   </div>
                 </div>
@@ -192,16 +247,27 @@ const OperationsItem = () => {
                     rows={4}
                     className="w-full p-3 border border-gray-200 rounded-lg resize-none focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Kommentariya qo'shish"
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    maxLength={460}
                   ></textarea>
                   <div className="mt-4 flex justify-between items-center">
-                    <button className={`flex items-center gap-2 text-gray-600 border border-[#024072] rounded-md 
-                      hover:border-[#024072] hover:text-[#024072]
-                      ${isMobile ? 'px-2 py-1 text-sm' : 'px-3 py-2'}`}
+                    <button
+                      onClick={handleSubmitComment}
+                      disabled={!newComment.trim() || isSubmitting}
+                      className={`flex items-center gap-2 text-gray-600 border border-[#024072] rounded-md 
+                        hover:border-[#024072] hover:text-[#024072] transition-colors
+                        ${isMobile ? 'px-2 py-1 text-sm' : 'px-3 py-2'}
+                        ${(!newComment.trim() || isSubmitting) ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
                       <Plus size={isMobile ? 16 : 20} />
-                      <span>Kommentariya qoldirish</span>
+                      <span>
+                        {isSubmitting ? 'Yuborilmoqda...' : 'Kommentariya qoldirish'}
+                      </span>
                     </button>
-                    <span className="text-gray-400 text-sm">0/460</span>
+                    <span className="text-gray-400 text-sm">
+                      {newComment.length}/460
+                    </span>
                   </div>
                 </div>
               </div>

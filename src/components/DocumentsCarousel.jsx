@@ -1,12 +1,45 @@
-import React from 'react'
-
+import React, { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { Navigation, Autoplay } from 'swiper/modules';
 import { Download } from 'lucide-react';
+import { sendRequest } from '../utils/apiFunctions';
+import pdfImg from "../assets/icons/pdf.png"
 
-const DocumentsCarousel = ({ documents }) => {
+
+const DocumentsCarousel = () => {
+  const [documents, setDocuments] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchDocuments = async () => {
+      try {
+        const response = await sendRequest({
+          method: 'GET',
+          url: '/services/corruption/media/'
+        });
+        if (response.success) {
+          setDocuments(response.data.result);
+        }
+      } catch (error) {
+        console.error('Error fetching documents:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDocuments();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center py-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#024072]"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative" id="links-section">
       <div className="flex justify-between items-center mb-6">
@@ -54,15 +87,21 @@ const DocumentsCarousel = ({ documents }) => {
       >
         {documents.map((doc) => (
           <SwiperSlide key={doc.id}>
-            <div className="bg-white rounded-xl p-6 shadow-[0px_0px_10px_0px_rgba(0,0,0,0.05)]">
+            <div className="bg-[#F5F5F5] rounded-xl p-6 border border-[#DFDFDF] shadow-[0px_0px_10px_0px_rgba(0,0,0,0.05)]">
               <div className="flex justify-between items-start">
-                <div>
-                  <p className="text-[#595959] text-sm mb-1">{doc.name}</p>
-                  <p className="text-gray-400 text-xs">{doc.size}</p>
+                <div className="flex items-center gap-2 flex-row">
+                  <img src={pdfImg} alt="pdf" className="w-5 h-5" />
+                  <p className="text-[#595959] text-sm mb-1">{doc.filename}</p>
+
                 </div>
-                <button className="text-[#4985FF]">
+                <a
+                  href={doc.file}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#8C8C8C] hover:text-blue-600"
+                >
                   <Download className="w-5 h-5" strokeWidth={1.5} />
-                </button>
+                </a>
               </div>
             </div>
           </SwiperSlide>
@@ -72,4 +111,4 @@ const DocumentsCarousel = ({ documents }) => {
   );
 };
 
-export default DocumentsCarousel
+export default DocumentsCarousel;
