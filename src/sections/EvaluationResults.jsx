@@ -50,7 +50,8 @@ const EvaluationResults = () => {
             third_quarter: item.third_quarter,
             fourth_quarter: item.fourth_quarter,
             fifth_quarter: item.fifth_quarter,
-            change: item.difference
+            change: item.difference,
+            this_year: item.this_year
           }));
 
           // Split into rows of 3 items each
@@ -166,14 +167,16 @@ const EvaluationResults = () => {
           {getColumnData(evaluationResults.flat()).map((columnItems, columnIndex) => (
             <div key={columnIndex} className="flex flex-col gap-4">
               {/* Column Header */}
-              <div className=" rounded-lg p-3">
+              <div className="bg-gray-50 rounded-lg p-3">
                 <div className="flex items-center">
-                  <span className="text-sm text-gray-500 mr-4">Choraklik kesmida</span>
-                  <div className="grid grid-cols-5 flex-1">
+                  <span className="text-sm text-gray-500 min-w-[120px] mr-2">Choraklik kesmida</span>
+                  <div className="w-[50px] text-center"></div>
+                  <div className="grid grid-cols-5 flex-1 gap-2">
                     {['I', 'II', 'III', 'IV', 'V'].map((quarter, idx) => (
                       <div key={idx} className="text-center text-xs text-gray-500">{quarter}</div>
                     ))}
                   </div>
+                  <div className="w-[40px]"></div>
                 </div>
               </div>
 
@@ -183,6 +186,7 @@ const EvaluationResults = () => {
                   <div className="p-3">
                     {/* Name and Quarters Row */}
                     <div className="flex items-center">
+                      {/* Name and Status */}
                       <div className="flex items-center gap-2 min-w-[120px] mr-2 group relative">
                         <div
                           className="w-2 h-2 rounded-full flex-shrink-0"
@@ -192,7 +196,7 @@ const EvaluationResults = () => {
                           {truncateText(item.name)}
                         </span>
 
-                        {/* Updated Popover with better width */}
+                        {/* Popover */}
                         <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block z-10">
                           <div className="bg-gray-900 text-white text-sm rounded-lg py-2 px-3 whitespace-nowrap shadow-lg">
                             {item.name}
@@ -201,7 +205,15 @@ const EvaluationResults = () => {
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-5 flex-1">
+                      {/* This Year Score */}
+                      <div className={`text-sm font-medium w-[50px] text-center ${item.this_year > 80 ? 'text-green-500' :
+                        item.this_year >= 56 ? 'text-blue-500' : 'text-red-500'
+                        }`}>
+                        {item.this_year}
+                      </div>
+
+                      {/* Quarters */}
+                      <div className="grid grid-cols-5 gap-2 flex-1">
                         <div className="text-center text-sm">{item.first_quarter}</div>
                         <div className="text-center text-sm">{item.second_quarter}</div>
                         <div className="text-center text-sm">{item.third_quarter}</div>
@@ -209,34 +221,21 @@ const EvaluationResults = () => {
                         <div className="text-center text-sm">{item.fifth_quarter}</div>
                       </div>
 
-                      {/* Change indicator moved inline */}
-                      {item.change !== null ? (
-                        <div className={`flex items-center gap-1 ml-2 ${item.change > 0 ? 'text-green-500' :
-                          item.change < 0 ? 'text-red-500' : 'text-gray-500'
-                          }`}>
-                          {item.change !== 0 && (
-                            item.change > 0 ?
-                              <ArrowUp className="w-3 h-3" /> :
-                              <ArrowDown className="w-3 h-3" />
-                          )}
-                          <span className="text-xs font-medium">
-                            {item.change === 0 ? (
-                              <span className="text-xs font-medium flex items-center gap-1">
-                                <MinusCircle className="w-3 h-3" />
-                                0
-                              </span>
-                            ) : Math.abs(item.change)}
-                          </span>
-                        </div>
-                      ) : (<div className="flex items-center gap-1 ml-2 text-gray-500">
-                        <span className="text-xs font-medium flex items-center gap-1">
+                      {/* Updated Change Indicator */}
+                      <div className={`flex items-center gap-1 ml-2 ${item.change > 0 ? 'text-green-500' :
+                        item.change < 0 ? 'text-red-500' : 'text-gray-500'
+                        }`}>
+                        {item.change > 0 ? (
+                          <ArrowUp className="w-3 h-3" />
+                        ) : (
                           <MinusCircle className="w-3 h-3" />
-                          <span className="text-xs font-medium">
-                            0
-                          </span>
+                        )}
+                        <span className="text-xs font-medium">
+                          {item.change === null ? '0' :
+                            item.change === 0 ? '0' :
+                              Math.abs(item.change)}
                         </span>
-                      </div>)}
-
+                      </div>
                     </div>
                   </div>
                 </div>
