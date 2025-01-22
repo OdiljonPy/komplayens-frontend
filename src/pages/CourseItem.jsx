@@ -1,41 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Download } from 'lucide-react';
-import banner from "../assets/banners/04.png";
-import { Link } from 'react-router-dom';
-
+import { Link, useParams } from 'react-router-dom';
+import { sendRequest } from '../utils/apiFunctions';
 
 const CourseItem = () => {
-  const pageData = {
-    title: "Korrupsiyaga Qarshi Kurash Asoslari",
-    description: "Korrupsiya jamiyat rivojlanishiga katta to'sqinlik qiluvchi muammolardan biridir. Bu nafaqat iqtisodiy yo'qotishlarga, balki ijtimoiy adolatsizlik va davlatga bo'lgan ishonchning pasayishiga olib keladi.",
-    mainContent: {
-      definition: {
-        title: "Korrupsiya tushunchasi",
-        content: "Korrupsiya - bu shaxsning mansab vakolatlarini suiiste'mol qilishi orqali shaxsiy manfaatlarini ko'zlashidir."
+  const [courseData, setCourseData] = useState(null);
+  const { courseId } = useParams();
+
+  useEffect(() => {
+    const fetchCourseData = async () => {
+      const response = await sendRequest({
+        method: 'GET',
+        url: `/services/training/${courseId}/`
+      });
+
+      if (response.success) {
+        setCourseData(response.data.result);
       }
-    },
-    materials: [
-      {
-        title: "korrupsiya.pdf",
-        size: "1.05 MB",
-        type: "pdf"
-      },
-      {
-        title: "korrupsiya.pptx",
-        size: "1.51 MB",
-        type: "pptx"
-      }
-    ],
-    videoMaterials: [
-      {
-        title: "Korrupsiyaga Qarshi Kurashda Legal Demo",
-        thumbnail: banner,
-      },
-      {
-        title: "Korrupsiyaga Qarshi Kurashda Yang Demo",
-        thumbnail: banner,
-      }
-    ]
+    };
+
+    fetchCourseData();
+    window.scrollTo(0, 0);
+  }, [courseId]);
+
+  if (!courseData) return <div>Loading...</div>;
+
+  // Extract video ID from YouTube URL
+  const getYoutubeEmbedUrl = (url) => {
+    const videoId = url.split('?')[0].split('/').pop();
+    return `https://www.youtube.com/embed/${videoId}`;
   };
 
   return (
@@ -49,11 +42,10 @@ const CourseItem = () => {
       </div>
 
       <div className="py-6">
-        {/* Video section with reduced height */}
         <div className="relative w-full bg-black rounded-lg overflow-hidden h-96 mb-8">
           <iframe
             className="absolute top-0 left-0 w-full h-full"
-            src="https://www.youtube.com/embed/k_isLq_UEUE?si=yLiwvgHyHl-3UJnW"
+            src={getYoutubeEmbedUrl(courseData.video)}
             title="YouTube video player"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -62,65 +54,73 @@ const CourseItem = () => {
         </div>
 
         <h1 className="text-lg md:text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-6 md:mb-10">
-          {pageData.title}
+          {courseData.name}
         </h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
-            <p className="text-gray-700">{pageData.description}</p>
-
-            <div className="space-y-4">
-              <h2 className="text-md font-semibold">{pageData.mainContent.definition.title}</h2>
-              <p className="text-gray-700">{pageData.mainContent.definition.content}</p>
-            </div>
+            <div dangerouslySetInnerHTML={{ __html: courseData.description }} className="text-gray-700" />
           </div>
 
           <div className="space-y-8">
             <div className="bg-white p-6 rounded-lg shadow">
               <h3 className="font-semibold mb-4">Qo'shimcha Materiallar</h3>
               <div className="space-y-4">
-                {pageData.materials.map((material, index) => (
-                  <div key={index} className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-gray-100 rounded flex items-center justify-center">
-                        <span className="text-xs font-medium uppercase">{material.type}</span>
+                {
+                  courseData.materials.filter(material => material.type === "PDF").length !== 0 ? (
+                    courseData.materials.filter(material => material.type === "PDF").map((material) => (
+                      <div key={material.id} className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                          <div className="w-8 h-8 bg-gray-100 rounded flex items-center justify-center">
+                            <span className="text-xs font-medium uppercase">{material.type}</span>
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium">{material.filename}</p>
+                          </div>
+                        </div>
+                        <a href={material.file} download className="text-blue-600 hover:text-blue-700">
+                          <Download size={20} />
+                        </a>
                       </div>
-                      <div>
-                        <p className="text-sm font-medium">{material.title}</p>
-                        <p className="text-xs text-gray-500">{material.size}</p>
-                      </div>
+                    ))
+                  ) : (
+                    <div className="flex justify-center items-center">
+                      <h1 className="text-2xl font-bold">No data found</h1>
                     </div>
-                    <button className="text-blue-600 hover:text-blue-700">
-                      <Download size={20} />
-                    </button>
-                  </div>
-                ))}
+                  )
+                }
               </div>
             </div>
 
-            {/* Updated Video materials section to match the design */}
-            <h3 className="font-semibold ">Video Materiallar</h3>
-            <div className="bg-white p-4 rounded-lg shadow " style={{
-              marginTop: "1rem"
-            }}>
-              <div className="space-y-4">
-                {pageData.videoMaterials.map((video, index) => (
-                  <div key={index} className="flex items-start space-x-3">
-                    <div className="w-24 h-16 bg-gray-100 rounded overflow-hidden flex-shrink-0">
-                      <img
-                        src={video.thumbnail}
-                        alt={video.title}
-                        className="w-full h-full object-cover"
-                      />
+            <div>
+              <h3 className="font-semibold">Video Materiallar</h3>
+              <div className="bg-white p-4 rounded-lg shadow mt-4">
+                <div className="space-y-4">
+                  {courseData.materials.filter(material => material.type === "MP4").length !== 0 ? (
+                    courseData.materials.filter(material => material.type === "MP4").map((video) => (
+                      <div key={video.id} className="flex items-start space-x-3">
+                        <div className="w-24 h-16 bg-gray-100 rounded overflow-hidden flex-shrink-0">
+                          <img
+                            src={courseData.image}
+                            alt={video.video_title}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm text-gray-900 line-clamp-2 mb-1">{video.video_title}</p>
+                          <a href={video.video} target="_blank" rel="noopener noreferrer" className="text-blue-600 text-xs hover:underline">
+                            Ko'rish
+                          </a>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="flex justify-center items-center">
+                      <h1 className="text-2xl font-bold">No data found</h1>
                     </div>
-                    <div className="flex-1">
-                      <p className="text-sm text-gray-900 line-clamp-2 mb-1">{video.title}</p>
-                      <button className="text-blue-600 text-xs hover:underline">
-                        Bitafisi
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                  )
+                  }
+                </div>
               </div>
             </div>
           </div>
