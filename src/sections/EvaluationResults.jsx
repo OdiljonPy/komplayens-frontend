@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronDown, ArrowUp, ArrowDown } from 'lucide-react';
+import { ChevronDown, ArrowUp, ArrowDown, MinusCircle } from 'lucide-react';
 import { sendRequest } from '../utils/apiFunctions';
 const EvaluationResults = () => {
-  const [selectedPeriod, setSelectedPeriod] = useState('2023-2024');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [years, setYears] = useState([]);
   const [evaluationResults, setEvaluationResults] = useState([]);
   const [selectedYear, setSelectedYear] = useState(null);
 
-  const periods = ['2022-2023', '2023-2024', '2024-2025'];
-
   const categories = [
     { label: 'Yaxshi', color: '#22c55e' },
-    { label: 'Qoniqarli', color: '#eab308' },
+    { label: "Qoniqarli", color: '#3b82f6' },
     { label: 'Qoniqarsiz', color: '#ef4444' }
   ];
 
@@ -72,8 +69,8 @@ const EvaluationResults = () => {
 
   // Helper function to determine status based on score
   const getStatus = (score) => {
-    if (score >= 95) return 'yaxshi';
-    if (score >= 90) return 'qoniqarli';
+    if (score > 80) return 'yaxshi';
+    if (score >= 56) return 'qoniqarli';
     return 'qoniqarsiz';
   };
 
@@ -82,12 +79,38 @@ const EvaluationResults = () => {
       case 'yaxshi':
         return '#22c55e';
       case 'qoniqarli':
-        return '#eab308';
+        return '#3b82f6';
       case 'qoniqarsiz':
         return '#ef4444';
       default:
         return '#6b7280';
     }
+  };
+
+  // Helper function to split data into columns based on status
+  const getColumnData = (data) => {
+    const yaxshi = [];
+    const qoniqarli = [];
+    const qoniqarsiz = [];
+
+    data.forEach(item => {
+      const score = item.this_year;
+      if (score > 80) {
+        yaxshi.push(item);
+      } else if (score >= 56) {
+        qoniqarli.push(item);
+      } else {
+        qoniqarsiz.push(item);
+      }
+    });
+
+    return [yaxshi, qoniqarli, qoniqarsiz];
+  };
+
+  // Add this helper function to truncate text
+  const truncateText = (text, maxLength = 12) => {
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + '...';
   };
 
   return (
@@ -131,69 +154,89 @@ const EvaluationResults = () => {
         {/* Categories */}
         <div className="flex flex-wrap gap-3 md:gap-4 lg:gap-6 mb-4 md:mb-6">
           {categories.map((category, index) => (
-            <div key={index} className="flex items-center gap-2">
+            <div key={index} className="flex items-center gap-2 bg-[#F9F9F9] rounded-[4px] px-2 py-1">
               <div className="w-2 h-2 rounded-full" style={{ backgroundColor: category.color }}></div>
               <span className="text-xs md:text-sm text-gray-600">{category.label}</span>
             </div>
           ))}
         </div>
 
-        {/* Results Table */}
-        <div className="space-y-3 md:space-y-4">
-          {evaluationResults.map((row, rowIndex) => (
-            <div key={rowIndex} className="flex flex-col md:flex-row gap-2 md:gap-4">
-              {row.map((item, colIndex) => (
-                <div
-                  key={colIndex}
-                  className="flex-1 bg-[#F9F9F9] rounded-[4px] p-3"
-                >
-                  {/* Organization Name and Status */}
-                  <div className="flex items-center gap-2 mb-3">
-                    <div
-                      className="w-2 h-2 rounded-full flex-shrink-0"
-                      style={{ backgroundColor: getStatusColor(item.status) }}
-                    ></div>
-                    <span className="text-sm text-gray-600 max-w-[200px] truncate">
-                      {item.name}
-                    </span>
+        {/* Main Grid Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {getColumnData(evaluationResults.flat()).map((columnItems, columnIndex) => (
+            <div key={columnIndex} className="flex flex-col gap-4">
+              {/* Column Header */}
+              <div className=" rounded-lg p-3">
+                <div className="flex items-center">
+                  <span className="text-sm text-gray-500 mr-4">Choraklik kesmida</span>
+                  <div className="grid grid-cols-5 flex-1">
+                    {['I', 'II', 'III', 'IV', 'V'].map((quarter, idx) => (
+                      <div key={idx} className="text-center text-xs text-gray-500">{quarter}</div>
+                    ))}
                   </div>
+                </div>
+              </div>
 
-                  {/* Quarters */}
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs text-gray-500">Choraklik kesmida</span>
-                    <div className="flex gap-3">
-                      <span className="text-xs">I</span>
-                      <span className="text-xs">II</span>
-                      <span className="text-xs">III</span>
-                      <span className="text-xs">IV</span>
-                      <span className="text-xs">V</span>
-                    </div>
-                  </div>
+              {/* Column Cards */}
+              {columnItems.map((item, index) => (
+                <div key={index} className="bg-[#F9F9F9] rounded-[4px]">
+                  <div className="p-3">
+                    {/* Name and Quarters Row */}
+                    <div className="flex items-center">
+                      <div className="flex items-center gap-2 min-w-[120px] mr-2 group relative">
+                        <div
+                          className="w-2 h-2 rounded-full flex-shrink-0"
+                          style={{ backgroundColor: getStatusColor(getStatus(item.this_year)) }}
+                        />
+                        <span className="text-sm truncate cursor-help" title={item.name}>
+                          {truncateText(item.name)}
+                        </span>
 
-                  {/* Scores and Change */}
-                  <div className="flex items-center justify-between">
-                    <span className={`text-sm ${item.status === 'yaxshi' ? 'text-green-500' :
-                      item.status === 'qoniqarli' ? 'text-yellow-500' : 'text-red-500'
-                      }`}>
-                      {item.this_year}
-                    </span>
-                    <div className="flex items-center gap-3">
-                      {[item.first_quarter, item.second_quarter, item.third_quarter,
-                      item.fourth_quarter, item.fifth_quarter].map((score, idx) => (
-                        <span key={idx} className="text-xs text-gray-600">{score}</span>
-                      ))}
-                    </div>
-                    <div className={`flex items-center gap-1 ${item.change > 0 ? 'text-green-500' :
-                      item.change < 0 ? 'text-red-500' : 'text-gray-500'
-                      }`}>
-                      {item.change !== 0 && (
-                        item.change > 0 ?
-                          <ArrowUp className="w-3 h-3" /> :
-                          <ArrowDown className="w-3 h-3" />
-                      )}
-                      <span className="text-xs">
-                        {item.change === 0 ? '0' : Math.abs(item.change)}
-                      </span>
+                        {/* Updated Popover with better width */}
+                        <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block z-10">
+                          <div className="bg-gray-900 text-white text-sm rounded-lg py-2 px-3 whitespace-nowrap shadow-lg">
+                            {item.name}
+                            <div className="absolute -bottom-1 left-4 w-2 h-2 bg-gray-900 transform rotate-45"></div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-5 flex-1">
+                        <div className="text-center text-sm">{item.first_quarter}</div>
+                        <div className="text-center text-sm">{item.second_quarter}</div>
+                        <div className="text-center text-sm">{item.third_quarter}</div>
+                        <div className="text-center text-sm">{item.fourth_quarter}</div>
+                        <div className="text-center text-sm">{item.fifth_quarter}</div>
+                      </div>
+
+                      {/* Change indicator moved inline */}
+                      {item.change !== null ? (
+                        <div className={`flex items-center gap-1 ml-2 ${item.change > 0 ? 'text-green-500' :
+                          item.change < 0 ? 'text-red-500' : 'text-gray-500'
+                          }`}>
+                          {item.change !== 0 && (
+                            item.change > 0 ?
+                              <ArrowUp className="w-3 h-3" /> :
+                              <ArrowDown className="w-3 h-3" />
+                          )}
+                          <span className="text-xs font-medium">
+                            {item.change === 0 ? (
+                              <span className="text-xs font-medium flex items-center gap-1">
+                                <MinusCircle className="w-3 h-3" />
+                                0
+                              </span>
+                            ) : Math.abs(item.change)}
+                          </span>
+                        </div>
+                      ) : (<div className="flex items-center gap-1 ml-2 text-gray-500">
+                        <span className="text-xs font-medium flex items-center gap-1">
+                          <MinusCircle className="w-3 h-3" />
+                          <span className="text-xs font-medium">
+                            0
+                          </span>
+                        </span>
+                      </div>)}
+
                     </div>
                   </div>
                 </div>
