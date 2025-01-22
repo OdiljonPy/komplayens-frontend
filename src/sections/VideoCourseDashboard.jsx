@@ -13,6 +13,7 @@ const VideoCourseDashboard = () => {
   const [courses, setCourses] = useState([]);
   const [orderBy, setOrderBy] = useState('new');
   const [selectedDate, setSelectedDate] = useState('2024-12-18');
+  const [sortType, setSortType] = useState('high'); // 'high' or 'low'
 
   // Fetch years on component mount
   useEffect(() => {
@@ -47,7 +48,6 @@ const VideoCourseDashboard = () => {
 
       if (response.success && response.data.ok) {
         const { rainbow, liner } = response.data.result;
-
         // Transform rainbow data for pie chart
         const transformedPieData = [
           { name: 'Qoniqarsiz', value: rainbow.unsatisfactory },
@@ -55,12 +55,21 @@ const VideoCourseDashboard = () => {
           { name: 'Yuqori', value: rainbow.high }
         ];
         setPieData(transformedPieData);
-        setProgressData(liner);
+
+        // Sort liner data by percentage
+        const sortedData = [...liner].sort((a, b) => b.percentage - a.percentage);
+        const halfLength = Math.ceil(sortedData.length / 2);
+
+        // Take first half for high, second half for low
+        setProgressData(sortType === 'high' ?
+          sortedData.slice(0, halfLength) :
+          sortedData.slice(halfLength).reverse()
+        );
       }
     };
 
     fetchStatistics();
-  }, [selectedYear]);
+  }, [selectedYear, sortType]); // Add sortType to dependencies
 
   // New useEffect for fetching courses
   useEffect(() => {
@@ -237,14 +246,18 @@ const VideoCourseDashboard = () => {
 
           {/* Progress Bars Card */}
           <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm">
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex items-center mb-6 gap-2">
               <h2 className="text-[14px] md:text-lg font-semibold text-gray-800">
                 Faoliyat samaradorligi reytingi
               </h2>
-              {/* <button className="flex items-center gap-2 text-blue-500 hover:text-blue-600 text-[14px] md:text-base">
-                Eng baland
-                <ChevronDown className="w-4 h-4" />
-              </button> */}
+              <select
+                value={sortType}
+                onChange={(e) => setSortType(e.target.value)}
+                className="text-blue-500 hover:text-blue-600 text-[14px] md:text-base rounded-md px-2 py-1"
+              >
+                <option value="high">Eng baland</option>
+                <option value="low">Eng past</option>
+              </select>
             </div>
 
             <div className="space-y-5">
@@ -252,11 +265,13 @@ const VideoCourseDashboard = () => {
                 <div key={item.id}>
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-sm text-gray-600 flex-1 pr-4">{item.name}</span>
-                    <span className="font-semibold text-[#27D157] text-base sm:text-lg">{item.percentage}</span>
+                    <span className={`font-semibold ${sortType === 'high' ? 'text-[#27D157]' : 'text-[#ef4444]'} text-base sm:text-lg`}>
+                      {item.percentage}
+                    </span>
                   </div>
-                  <div className="w-full bg-[#D7EBDD] rounded-full h-2.5">
+                  <div className={`w-full ${sortType === 'high' ? 'bg-[#D7EBDD]' : 'bg-[#FFEBEB]'} rounded-full h-2.5`}>
                     <div
-                      className="bg-[#27D157] h-2.5 rounded-full"
+                      className={`${sortType === 'high' ? 'bg-[#27D157]' : 'bg-[#ef4444]'} h-2.5 rounded-full`}
                       style={{ width: `${item.percentage}%` }}
                     ></div>
                   </div>
