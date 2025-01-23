@@ -358,6 +358,28 @@ const ReportDetails = ({ onFormDataChange, onFileChange, formData: initialFormDa
     }
   };
 
+  // Add new function to validate form
+  const isFormValid = () => {
+    return (
+      formData.type &&
+      formData.region &&
+      formData.district &&
+      formData.date &&
+      formData.time
+      // Note: details and files are not required fields
+    );
+  };
+
+  // Add formValid state to parent component
+  useEffect(() => {
+    if (onFormDataChange) {
+      onFormDataChange({
+        ...formData,
+        isValid: isFormValid()
+      });
+    }
+  }, [formData]);
+
   return (
     <div>
       <h2 className="text-xl font-medium text-gray-800 mb-6">Hodisa Tafsilotlari</h2>
@@ -576,14 +598,25 @@ const ReportDetails = ({ onFormDataChange, onFileChange, formData: initialFormDa
   );
 };
 
-// Step 3: Report Confirmation Component
 
 // Contact Form Component
 const ContactForm = ({ formData, onFormDataChange }) => {
   const [showDeleteButtons, setShowDeleteButtons] = useState(false);
 
+  // Check if the last person's data is complete
+  const isLastPersonComplete = () => {
+    const lastPerson = formData[formData.length - 1];
+    return (
+      lastPerson.name.trim() !== '' &&
+      lastPerson.position.trim() !== '' &&
+      lastPerson.phone.length === 13 // Full phone number length including +998
+    );
+  };
+
   const handleAddPerson = () => {
-    onFormDataChange([...formData, { name: '', position: '', phone: '+998' }]);
+    if (isLastPersonComplete()) {
+      onFormDataChange([...formData, { name: '', position: '', phone: '+998' }]);
+    }
   };
 
   const handleRemovePerson = (index) => {
@@ -603,29 +636,34 @@ const ContactForm = ({ formData, onFormDataChange }) => {
 
   return (
     <div className="">
-      <div className="flex justify-between items-center mb-6">
+      {/* Updated header section for better responsiveness */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6 mb-6">
         <h2 className="text-xl font-medium text-gray-800">
           Aloqador Shaxsning Ma'lumotlari
         </h2>
-        <div className="flex gap-4">
+        <div className="flex  flex-col md:flex-row xs:flex-row gap-2 xs:gap-4 w-full sm:w-auto">
           <button
-            onClick={() => handleAddPerson()}
-            className="flex items-center gap-2 text-[#024073] hover:text-blue-700"
+            onClick={handleAddPerson}
+            disabled={!isLastPersonComplete()}
+            className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg border ${isLastPersonComplete()
+              ? 'text-[#024073] border-[#024073] hover:bg-blue-50'
+              : 'text-gray-400 border-gray-200 cursor-not-allowed'
+              }`}
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
             </svg>
-            Shaxsni qo'shish
+            <span>Shaxsni qo'shish</span>
           </button>
           {formData.length > 1 && (
             <button
               onClick={() => setShowDeleteButtons(!showDeleteButtons)}
-              className="flex items-center gap-2 text-red-600 hover:text-red-700"
+              className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-red-200 text-red-600 hover:bg-red-50"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
               </svg>
-              Shaxsni olib tashlash
+              <span>Shaxsni olib tashlash</span>
             </button>
           )}
         </div>
@@ -937,6 +975,39 @@ const NewsReporting = () => {
     }
   };
 
+  const isNextButtonDisabled = () => {
+    // Add email validation function
+    const isValidEmail = (email) => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    };
+
+    switch (currentStep) {
+      case 1:
+        return !selectedOrgId;
+      case 2:
+        return !reportFormData.isValid;
+      case 3:
+        // Validate contact form data
+        return !contactFormData.every(contact =>
+          contact.name && contact.position && contact.phone.length === 13
+        );
+      case 4:
+        // If anonymous, only require phone number
+        // If not anonymous, require all fields including valid email
+        if (isAnonymous) {
+          return !reporterFormData.phone || reporterFormData.phone.length !== 13;
+        }
+        return !reporterFormData.name ||
+          !reporterFormData.phone ||
+          reporterFormData.phone.length !== 13 ||
+          !reporterFormData.email ||
+          !isValidEmail(reporterFormData.email);
+      default:
+        return false;
+    }
+  };
+
   return (
     <div className=" px-4 py-8 pt-0">
       {/* Title */}
@@ -1010,8 +1081,11 @@ const NewsReporting = () => {
         {/* Next Button */}
         <button
           onClick={handleNext}
-          disabled={currentStep === 1 && !selectedOrgId}
-          className={`px-6 py-2 text-[#024073] border border-[#024072] rounded-[13px] w-[186px] hover:bg-blue-50 sm:w-auto flex items-center justify-center gap-2 ${currentStep === 1 && !selectedOrgId ? 'opacity-50 cursor-not-allowed hover:bg-transparent' : ''}`}
+          disabled={isNextButtonDisabled()}
+          className={`px-6 py-2 text-[#024073] border border-[#024072] rounded-[13px] w-[186px] hover:bg-blue-50 sm:w-auto flex items-center justify-center gap-2 ${isNextButtonDisabled()
+            ? 'opacity-50 cursor-not-allowed hover:bg-transparent'
+            : ''
+            }`}
         >
           <p className="text-sm">{currentStep === 4 ? 'Yuborish' : 'Keyingisi'}</p>
           {currentStep !== 4 && <ChevronRight size={16} className="text-gray-400" />}
