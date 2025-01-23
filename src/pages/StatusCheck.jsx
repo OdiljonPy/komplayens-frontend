@@ -76,7 +76,7 @@ const TestSelection = ({ onNext, onSelect, selectedTestId }) => {
             <div
               key={test.id}
               onClick={() => handleSelectTest(test)}
-              className={`p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow h-[150px] flex flex-col justify-between cursor-pointer ${selectedTest?.id === test.id ? 'bg-blue-50 border-2 border-[#024072]' : ''
+              className={`p-6  rounded-lg shadow-sm hover:shadow-md transition-shadow h-[150px] flex flex-col justify-between cursor-pointer ${selectedTest?.id === test.id ? ' border-2 bg-[#024072] text-white' : ''
                 }`}
               style={{
                 boxShadow: '0px 4px 29px 0px #0000001A',
@@ -88,7 +88,7 @@ const TestSelection = ({ onNext, onSelect, selectedTestId }) => {
                   <img src={test.image} alt="Bank icon" className="w-8 h-8" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-medium text-gray-900 text-sm line-clamp-3">
+                  <h3 className={`font-medium text-gray-900 text-sm line-clamp-3 ${selectedTest?.id === test.id ? 'text-white' : ''}`}>
                     {test.name}
                   </h3>
                 </div>
@@ -99,10 +99,11 @@ const TestSelection = ({ onNext, onSelect, selectedTestId }) => {
                     e.stopPropagation();
                     handleSelectTest(test);
                   }}
-                  className={`text-[#024073] text-sm hover:underline ${selectedTest?.id === test.id ? 'font-semibold' : ''
+                  className={` text-sm hover:underline ${selectedTest?.id === test.id ? 'text-white' : 'text-[#024073]'
                     }`}
                   style={{
-                    textDecoration: 'underline'
+                    textDecoration: 'underline',
+                    transition: 'all 0.3s ease-in-out'
                   }}
                 >
                   Tanlash
@@ -232,10 +233,11 @@ const OrganizationList = ({ onSelect, selectedOrgId }) => {
             <div
               key={org.id}
               onClick={() => handleSelectOrg(org)}
-              className={`p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow h-[150px] flex flex-col justify-between cursor-pointer ${selectedOrg?.id === org.id ? 'bg-blue-50 border-2 border-[#024072]' : ''
+              className={`p-6  rounded-lg shadow-sm hover:shadow-md transition-shadow h-[150px] flex flex-col justify-between cursor-pointer ${selectedOrg?.id === org.id ? ' border-2 bg-[#024072] text-white' : ''
                 }`}
               style={{
                 boxShadow: '0px 4px 29px 0px #0000001A',
+                transition: 'all 0.3s ease-in-out'
               }}
             >
               <div className="flex items-start space-x-4">
@@ -244,7 +246,7 @@ const OrganizationList = ({ onSelect, selectedOrgId }) => {
                   <img src={bank_logo} alt="Organization icon" className="w-8 h-8" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-medium text-gray-900 text-sm line-clamp-3">
+                  <h3 className={`font-medium text-gray-900 text-sm line-clamp-3 ${selectedOrg?.id === org.id ? 'text-white' : ''}`}>
                     {org.name}
                   </h3>
                 </div>
@@ -255,10 +257,11 @@ const OrganizationList = ({ onSelect, selectedOrgId }) => {
                     e.stopPropagation();
                     handleSelectOrg(org);
                   }}
-                  className={`text-[#024073] text-sm hover:underline ${selectedOrg?.id === org.id ? 'font-semibold' : ''
+                  className={` text-sm hover:underline ${selectedOrg?.id === org.id ? 'text-white' : 'text-[#024073]'
                     }`}
                   style={{
-                    textDecoration: 'underline'
+                    textDecoration: 'underline',
+                    transition: 'all 0.3s ease-in-out'
                   }}
                 >
                   Tanlash
@@ -286,42 +289,44 @@ const TestQuestions = ({ onFinish, selectedTestId, selectedOrgId }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchQuestions();
-  }, []);
+    const fetchQuestions = async () => {
+      try {
+        const response = await sendRequest({
+          method: 'GET',
+          url: `/services/honesty/test/`,
+          params: { category_id: selectedTestId }
+        });
 
-  const fetchQuestions = async () => {
-    try {
-      const response = await sendRequest({
-        method: 'GET',
-        url: `/services/honesty/test/`,
-        params: { category_id: selectedTestId }
-      });
-
-      if (response.success && response.data.ok) {
-        if (!response.data.new) {
-          onFinish(response.data);
-          return;
+        if (response.success && response.data.ok) {
+          if (!response.data.new) {
+            onFinish(response.data);
+            return;
+          }
+          setQuestions(response.data.result);
         }
-        setQuestions(response.data.result);
+      } catch (error) {
+        console.error('Error fetching questions:', error);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error('Error fetching questions:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
 
-  if (loading && questions.length === 0) {
-    return (
-      <div className="flex justify-center items-center py-8">
-        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#024072]"></div>
-      </div>
-    );
-  }
+    fetchQuestions();
+  }, [selectedTestId, onFinish]);
 
-  if (!loading && questions.length === 0) {
-    return null;
-  }
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          handleSubmitTest();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   const handleSubmitTest = async () => {
     const formattedAnswers = questions.map(question => ({
@@ -350,19 +355,17 @@ const TestQuestions = ({ onFinish, selectedTestId, selectedOrgId }) => {
     }
   };
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          handleSubmitTest();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
+  if (loading && questions.length === 0) {
+    return (
+      <div className="flex justify-center items-center py-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#024072]"></div>
+      </div>
+    );
+  }
+
+  if (!loading && questions.length === 0) {
+    return null;
+  }
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -604,7 +607,7 @@ const StatusCheck = () => {
   };
 
   return (
-    <div className="w-full px-4 py-8">
+    <div className="w-full px-4 py-8 pt-16 md:pt-0">
       <div className="flex items-center gap-2 text-sm text-gray-600 mb-6 overflow-x-auto whitespace-nowrap">
         <span>Bosh sahifa</span>
         <ChevronRight className="h-4 w-4 flex-shrink-0" />
