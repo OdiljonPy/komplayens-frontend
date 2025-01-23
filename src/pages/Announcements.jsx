@@ -39,17 +39,17 @@ function Announcements() {
   };
 
   return (
-    <div className="p-4 pt-0">
+    <div className="px-4 pt-12 md:pt-0">
       <div className="py-4 pb-0 ">
         <h1 className="text-lg md:text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-6 md:mb-10">
           E'lonlar
         </h1>
       </div>
-      <div className="flex flex-wrap gap-2 mb-8">
+      <div className="flex overflow-x-auto whitespace-nowrap md:flex-wrap gap-2 mb-8 pb-2 hide-scrollbar">
         {categories.map((category, index) => (
           <button
             key={index}
-            className={`px-4 py-1.5 rounded-[20px] transition-colors ${index === 0
+            className={`px-4 py-1.5 rounded-[8px] transition-colors flex-shrink-0 ${index === 0
               ? 'bg-blue-500 text-white'
               : 'bg-white hover:bg-gray-50'
               }`}

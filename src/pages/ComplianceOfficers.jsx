@@ -72,9 +72,9 @@ const ComplianceOfficers = () => {
       </div>
 
       {/* Header */}
-      <div className=" mb-4">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          <h1 className="text-lg md:text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-6 md:mb-10">
+      <div className="mb-4">
+        <div className="flex flex-col md:flex-row justify-between gap-4">
+          <h1 className="text-lg md:text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] flex items-center gap-2">
             Komplayens ofitserlar
           </h1>
           <div className="relative w-full md:w-64">
