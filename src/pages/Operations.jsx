@@ -127,7 +127,7 @@ const Operations = () => {
     }));
   };
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-6">
+    <div className="min-h-screen bg-gray-50 p-4 pt-16 md:p-6 md:pt-6">
       {/* Header */}
       <div className="mb-6">
         <h1 className="text-lg md:text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-6 md:mb-10">
@@ -142,17 +142,19 @@ const Operations = () => {
             onClick={toggleDropdown}
             className="flex items-center gap-2 px-4 py-2"
           >
-            <span>Kategoriya: {professions.find(p => p.id === selectedProfession)?.name || 'Hammasi'}</span>
-            <ChevronDown size={20} />
+            <span className="text-gray-600">Kategoriya:
+              <span className="text-[#3981F7] ml-2">
+                {professions.find(p => p.id === selectedProfession)?.name || 'Hammasi'}
+              </span>
+            </span>
+            <ChevronDown size={20} className="text-gray-400" />
           </button>
 
           {isOpen && (
-            <div className="absolute top-full right-0 mt-1 w-48 bg-white border border-gray-200 rounded-xl shadow-lg z-10" style={{
-              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)'
-            }}>
-              <div className="py-1">
+            <div className="absolute top-full left-0 mt-1 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+              <div className="py-1 text-gray-600">
                 <button
-                  className="block w-full px-4 py-2 text-left hover:bg-gray-100"
+                  className="block w-full px-4 py-3 text-left hover:bg-gray-50 text-[#3981F7]"
                   onClick={() => handleProfessionSelect(null)}
                 >
                   Hammasi
@@ -160,7 +162,7 @@ const Operations = () => {
                 {professions.map((profession) => (
                   <button
                     key={profession.id}
-                    className="block w-full px-4 py-2 text-left hover:bg-gray-100"
+                    className="block w-full px-4 py-3 text-left hover:bg-gray-50 text-gray-600"
                     onClick={() => handleProfessionSelect(profession.id)}
                   >
                     {profession.name}

@@ -143,10 +143,13 @@ const OperationsItem = () => {
   };
 
   return (
-    <div className="p-4">
+
+
+    <div className="px-4 sm:px-6 py-6 space-y-6">
+      {/* Dilemma Section */}
       <header>
-        <div className="px-4 sm:px-6 py-6 flex justify-between items-center">
-          <h1 className="text-lg md:text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959]">
+        <div className="pt-10 md:pt-0 flex justify-between items-center">
+          <h1 className="text-sm md:text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959]">
             {itemData?.title}
           </h1>
           <span className="text-blue-600 text-sm bg-blue-50 px-3 rounded">
@@ -154,127 +157,123 @@ const OperationsItem = () => {
           </span>
         </div>
       </header>
-
-      <main className="px-4 sm:px-6 py-6 space-y-6">
-        {/* Dilemma Section */}
-        <div ref={dilemmaRef}>
-          <div className={`bg-white transition-all duration-300 ease-in-out
+      <div ref={dilemmaRef}>
+        <div className={`bg-white transition-all duration-300 ease-in-out
             ${isSticky ? 'fixed top-0 left-0 right-0 z-50 shadow-md' : ''}
             ${isSticky && isMobile ? 'px-2 py-2' : ''}
           `}>
-            <div className={`${isSticky ? 'p-6' : ''}`}>
-              <div className="bg-white rounded-lg shadow-sm">
-                <div className="flex">
-                  <div className="w-1 bg-[#3982f771] rounded-l-lg"></div>
-                  <div className={`flex-1 ${isMobile ? 'px-4 py-4' : 'px-6 py-5'}`}>
-                    <h2 className={`font-medium text-gray-900 mb-4 ${isMobile ? 'text-lg' : 'text-xl'}`}>
-                      Dilemma
-                    </h2>
-                    <p className={`text-gray-600 mb-6 ${isMobile ? 'text-sm' : 'text-base'}`}>
-                      {itemData?.case}
-                    </p>
-                    {isAuthenticated && (
-                      <div className="flex items-center gap-6">
-                        <button
-                          onClick={scrollToComment}
-                          className={`flex items-center gap-2 text-gray-600 border rounded-md 
+          <div className={`${isSticky ? 'p-6' : ''}`}>
+            <div className="bg-white rounded-lg shadow-sm">
+              <div className="flex">
+                <div className="w-1 bg-[#3982f771] rounded-l-lg"></div>
+                <div className={`flex-1 ${isMobile ? 'px-4 py-4' : 'px-6 py-5'}`}>
+                  <h2 className={`font-medium text-gray-900 mb-4 ${isMobile ? 'text-lg' : 'text-xl'}`}>
+                    Dilemma
+                  </h2>
+                  <p className={`text-gray-600 mb-6 ${isMobile ? 'text-sm' : 'text-base'}`}>
+                    {itemData?.case}
+                  </p>
+                  {isAuthenticated && (
+                    <div className="flex items-center gap-6">
+                      <button
+                        onClick={scrollToComment}
+                        className={`flex items-center gap-2 text-gray-600 border rounded-md 
                             border-[#024072] hover:border-blue-600 hover:text-blue-600
                             ${isMobile ? 'px-2 py-1' : 'px-3 py-2'}`}
-                        >
-                          <Plus size={isMobile ? 16 : 20} />
-                          <span className={`${isMobile ? 'text-xs' : 'text-sm'}`}>
-                            Kommentariya qo'shish
-                          </span>
-                        </button>
-                        <div className="flex items-center gap-2 text-gray-500">
-                          <MessageSquare size={isMobile ? 16 : 20} />
-                          <span className={`${isMobile ? 'text-xs' : 'text-sm'}`}>32</span>
-                        </div>
+                      >
+                        <Plus size={isMobile ? 16 : 20} />
+                        <span className={`${isMobile ? 'text-xs' : 'text-sm'}`}>
+                          Kommentariya qo'shish
+                        </span>
+                      </button>
+                      <div className="flex items-center gap-2 text-gray-500">
+                        <MessageSquare size={isMobile ? 16 : 20} />
+                        <span className={`${isMobile ? 'text-xs' : 'text-sm'}`}>32</span>
                       </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Spacer div */}
-        {isSticky && <div className={isMobile ? 'h-32' : 'h-48'} />}
+      {/* Spacer div */}
+      {isSticky && <div className={isMobile ? 'h-32' : 'h-48'} />}
 
-        {/* Expert Analysis Section */}
-        <div className="bg-white rounded-lg shadow-sm">
-          <div className="flex">
-            <div className="p-6 flex-1">
-              <h2 className="text-xl font-medium text-gray-900 mb-6">Ekspert xulosasi</h2>
-              <div
-                className="text-gray-600 text-base mb-6"
-                dangerouslySetInnerHTML={{ __html: itemData?.description }}
-              />
-            </div>
+      {/* Expert Analysis Section */}
+      <div className="bg-white rounded-lg shadow-sm">
+        <div className="flex">
+          <div className="p-6 flex-1">
+            <h2 className="text-xl font-medium text-gray-900 mb-6">Ekspert xulosasi</h2>
+            <div
+              className="text-gray-600 text-base mb-6"
+              dangerouslySetInnerHTML={{ __html: itemData?.description }}
+            />
           </div>
         </div>
+      </div>
 
-        {isAuthenticated && (
-          <>
-            {/* Comments Section */}
-            <div className="space-y-4">
-              {comments.map((comment) => (
-                <div key={comment.id} className="bg-white rounded-lg shadow-sm">
-                  <div className="flex">
-                    <div className="w-1 bg-[#B9B9B9] rounded-l-lg"></div>
-                    <div className="p-6 flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <span className="font-medium text-gray-900">
-                          {comment.officer_full_name}
-                        </span>
-                        <span className="text-sm text-gray-500">
-                          {new Date(comment.created_at).toLocaleDateString()}
-                        </span>
-                      </div>
-                      <p className="text-gray-600">{comment.comment}</p>
+      {isAuthenticated && (
+        <>
+          {/* Comments Section */}
+          <div className="space-y-4">
+            {comments.map((comment) => (
+              <div key={comment.id} className="bg-white rounded-lg shadow-sm">
+                <div className="flex">
+                  <div className="w-1 bg-[#B9B9B9] rounded-l-lg"></div>
+                  <div className="p-6 flex-1">
+                    <div className="flex items-center gap-3 mb-2">
+                      <span className="font-medium text-gray-900">
+                        {comment.officer_full_name}
+                      </span>
+                      <span className="text-sm text-gray-500">
+                        {new Date(comment.created_at).toLocaleDateString()}
+                      </span>
                     </div>
+                    <p className="text-gray-600">{comment.comment}</p>
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
+          </div>
 
-            {/* Comment Input */}
-            <div className="bg-white rounded-lg shadow-sm" ref={commentRef}>
-              <div className="flex">
-                <div className="p-6 flex-1">
-                  <textarea
-                    rows={4}
-                    className="w-full p-3 border border-gray-200 rounded-lg resize-none focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Kommentariya qo'shish"
-                    value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
-                    maxLength={460}
-                  ></textarea>
-                  <div className="mt-4 flex justify-between items-center">
-                    <button
-                      onClick={handleSubmitComment}
-                      disabled={!newComment.trim() || isSubmitting}
-                      className={`flex items-center gap-2 text-gray-600 border border-[#024072] rounded-md 
+          {/* Comment Input */}
+          <div className="bg-white rounded-lg shadow-sm" ref={commentRef}>
+            <div className="flex">
+              <div className="p-6 flex-1">
+                <textarea
+                  rows={4}
+                  className="w-full p-3 border border-gray-200 rounded-lg resize-none focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Kommentariya qo'shish"
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                  maxLength={460}
+                ></textarea>
+                <div className="mt-4 flex justify-between items-center">
+                  <button
+                    onClick={handleSubmitComment}
+                    disabled={!newComment.trim() || isSubmitting}
+                    className={`flex items-center gap-2 text-gray-600 border border-[#024072] rounded-md 
                         hover:border-[#024072] hover:text-[#024072] transition-colors
                         ${isMobile ? 'px-2 py-1 text-sm' : 'px-3 py-2'}
                         ${(!newComment.trim() || isSubmitting) ? 'opacity-50 cursor-not-allowed' : ''}`}
-                    >
-                      <Plus size={isMobile ? 16 : 20} />
-                      <span>
-                        {isSubmitting ? 'Yuborilmoqda...' : 'Kommentariya qoldirish'}
-                      </span>
-                    </button>
-                    <span className="text-gray-400 text-sm">
-                      {newComment.length}/460
+                  >
+                    <Plus size={isMobile ? 16 : 20} />
+                    <span>
+                      {isSubmitting ? 'Yuborilmoqda...' : 'Kommentariya qoldirish'}
                     </span>
-                  </div>
+                  </button>
+                  <span className="text-gray-400 text-sm">
+                    {newComment.length}/460
+                  </span>
                 </div>
               </div>
             </div>
-          </>
-        )}
-      </main>
+          </div>
+        </>
+      )}
     </div>
   );
 };
