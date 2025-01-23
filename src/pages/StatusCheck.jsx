@@ -1,61 +1,120 @@
-
-
 import React, { useState, useEffect } from 'react';
 import { ChevronRight, Search, X, ChevronLeft } from 'lucide-react';
+
+import { sendRequest } from '../utils/apiFunctions';
 import bank_logo from "../assets/icons/bank.png";
 import file_icon from "../assets/icons/file-check.png";
 
-const TestSelection = ({ onNext }) => {
-  const tests = [
-    { id: 1, name: "Test turi" },
-    { id: 2, name: "Test turi" },
-    { id: 3, name: "Test turi" },
-    { id: 4, name: "Test turi" },
-    { id: 5, name: "Test turi" },
-    { id: 6, name: "Test turi" },
-    { id: 7, name: "Test turi" },
-    { id: 8, name: "Test turi" },
-  ];
+const TestSelection = ({ onNext, onSelect, selectedTestId }) => {
+  const [tests, setTests] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [selectedTest, setSelectedTest] = useState(null);
+
+  const fetchTests = async (query = '') => {
+    setLoading(true);
+    try {
+      const response = await sendRequest({
+        method: 'GET',
+        url: '/services/honesty/category/',
+        params: query ? { q: query } : {}
+      });
+
+      if (response.success && response.data.ok) {
+        setTests(response.data.result);
+      }
+    } catch (error) {
+      console.error('Error fetching tests:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTests();
+  }, []);
+
+  const handleSearch = (value) => {
+    setSearchQuery(value);
+    fetchTests(value);
+  };
+
+  const handleSelectTest = (test) => {
+    setSelectedTest(test);
+    if (onSelect) {
+      onSelect(test.id);
+    }
+  };
 
   return (
     <>
       <div className="flex justify-center mb-8">
-        <div className="relative w-full max-w-md px-4">
+        <div className="relative w-full max-w-[400px]">
           <input
             type="text"
+            value={searchQuery}
+            onChange={(e) => handleSearch(e.target.value)}
             placeholder="Tashkilotni qidirish"
             className="w-full p-4 pr-12 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <Search className="absolute right-8 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+          <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 px-4">
-        {tests.map((test) => (
-          <div
-            key={test.id}
-            className="p-6 bg-white rounded-lg shadow-sm text-[#024073]  hover:bg-[#024072] hover:text-white transition-shadow "
-            style={{
-              boxShadow: '0px 0px 10px 0px #0C0C0D0D',
-              transition: 'all 0.3s ease-in-out'
-            }}
-          >
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-[#E6F4FF] rounded-[50%] flex items-center justify-center flex-shrink-0">
-                <img src={bank_logo} alt="Bank icon" className="w-8 h-8" />
+      {loading && (
+        <div className="flex justify-center items-center py-8">
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#024072]"></div>
+        </div>
+      )}
+
+      {!loading && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {tests.map((test) => (
+            <div
+              key={test.id}
+              onClick={() => handleSelectTest(test)}
+              className={`p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow h-[150px] flex flex-col justify-between cursor-pointer ${selectedTest?.id === test.id ? 'bg-blue-50 border-2 border-[#024072]' : ''
+                }`}
+              style={{
+                boxShadow: '0px 4px 29px 0px #0000001A',
+              }}
+            >
+              <div className="flex items-start space-x-4">
+                <div className={`w-12 h-12 flex-shrink-0 ${selectedTest?.id === test.id ? 'bg-blue-100' : 'bg-[#E6F4FF]'
+                  } rounded-[50%] flex items-center justify-center`}>
+                  <img src={test.image} alt="Bank icon" className="w-8 h-8" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-medium text-gray-900 text-sm line-clamp-3">
+                    {test.name}
+                  </h3>
+                </div>
               </div>
-              <div>
-                <h3 className="font-medium ">{test.name}</h3>
-                <button onClick={onNext} className=" text-sm hover:underline mt-2" style={{
-                  textDecoration: 'underline'
-                }}>
+              <div className="mt-2 flex justify-start pl-16">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleSelectTest(test);
+                  }}
+                  className={`text-[#024073] text-sm hover:underline ${selectedTest?.id === test.id ? 'font-semibold' : ''
+                    }`}
+                  style={{
+                    textDecoration: 'underline'
+                  }}
+                >
                   Tanlash
                 </button>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
+
+      {!loading && tests.length === 0 && (
+        <div className="text-center py-8 text-gray-500">
+          Testlar topilmadi
+        </div>
+      )}
     </>
   );
 };
@@ -98,67 +157,203 @@ const SelectionModal = ({ isOpen, onClose, onSelect }) => {
     </div>
   );
 };
-const questions = [
-  {
-    id: 1,
-    text: "Korrupsiyaning asosiy ko'rinishlari nimalardan iborat?",
-    options: ["Poraxo'rlik", "Vakolatlarni suiiste'mol qilish", "Davlat mablag'larini talon-toroj qilish"],
-  },
-  {
-    id: 2,
-    text: "Davlat xizmatchilarining manfaatlar to'qnashuvi nima?",
-    options: ["Shaxsiy manfaat", "Rasmiy vazifalar", "Qarama-qarshilik holati"],
-  },
-  {
-    id: 3,
-    text: "Korrupsiyaga qarshi kurashish qonunchiligining asosiy tamoyillari?",
-    options: ["Qonuniylik", "Fuqarolar huquqlari ustuvorligi", "Ochiqlik va shaffoflik"],
-  },
-  {
-    id: 4,
-    text: "Korrupsiyaviy xatti-harakatlar to'g'risida xabar berish tartibi?",
-    options: ["Yozma murojaat", "Ishonch telefoni", "Elektron platforma"],
-  },
-  {
-    id: 5,
-    text: "Davlat xizmatchilarining kasbiy odob-axloq qoidalari?",
-    options: ["Xolislik", "Adolatlilik", "Mas'uliyatlilik"],
-  },
-  {
-    id: 6,
-    text: "Korrupsiyaga qarshi kurashishning asosiy yo'nalishlari?",
-    options: ["Profilaktika", "Huquqni muhofaza qilish", "Xalqaro hamkorlik"],
-  },
-  {
-    id: 7,
-    text: "Korrupsiyaga qarshi monitoring nima?",
-    options: ["Ma'lumotlarni yig'ish", "Tahlil qilish", "Baholash"],
-  },
-  {
-    id: 8,
-    text: "Davlat xizmatchilarining daromadlarini deklaratsiya qilish tartibi?",
-    options: ["Yillik deklaratsiya", "Elektron shaklda", "Belgilangan muddatda"],
-  },
-  {
-    id: 9,
-    text: "Korrupsiyaga qarshi kurashish bo'yicha davlat siyosati?",
-    options: ["Milliy strategiya", "Davlat dasturi", "Yo'l xaritasi"],
-  },
-  {
-    id: 10,
-    text: "Korrupsiyaga qarshi ekspertiza nima?",
-    options: ["Hujjatlarni o'rganish", "Tahlil qilish", "Xulosa berish"],
-  }
-];
-const TestQuestions = ({ onFinish }) => {
+
+const OrganizationList = ({ onSelect, selectedOrgId }) => {
+  const [organizations, setOrganizations] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [selectedOrg, setSelectedOrg] = useState(null);
+
+  const fetchOrganizations = async (query = '') => {
+    setLoading(true);
+    try {
+      const response = await sendRequest({
+        method: 'GET',
+        url: '/services/organization/',
+        params: query ? { q: query } : {}
+      });
+
+      if (response.success && response.data.ok) {
+        setOrganizations(response.data.result.content);
+      }
+    } catch (error) {
+      console.error('Error fetching organizations:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchOrganizations();
+  }, []);
+
+  const handleSearch = (value) => {
+    setSearchQuery(value);
+    fetchOrganizations(value);
+  };
+
+  const handleSelectOrg = (org) => {
+    setSelectedOrg(org);
+    if (onSelect) {
+      onSelect(org.id);
+    }
+  };
+
+  return (
+    <>
+      <div className="flex justify-center mb-8">
+        <div className="relative w-[400px]">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => handleSearch(e.target.value)}
+            placeholder="Tashkilotni qidirish"
+            className="w-full p-4 pr-12 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+        </div>
+      </div>
+
+      {loading && (
+        <div className="flex justify-center items-center py-8">
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#024072]"></div>
+        </div>
+      )}
+
+      {!loading && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {organizations.map((org) => (
+            <div
+              key={org.id}
+              onClick={() => handleSelectOrg(org)}
+              className={`p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow h-[150px] flex flex-col justify-between cursor-pointer ${selectedOrg?.id === org.id ? 'bg-blue-50 border-2 border-[#024072]' : ''
+                }`}
+              style={{
+                boxShadow: '0px 4px 29px 0px #0000001A',
+              }}
+            >
+              <div className="flex items-start space-x-4">
+                <div className={`w-12 h-12 flex-shrink-0 ${selectedOrg?.id === org.id ? 'bg-blue-100' : 'bg-[#E6F4FF]'
+                  } rounded-[50%] flex items-center justify-center`}>
+                  <img src={bank_logo} alt="Organization icon" className="w-8 h-8" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-medium text-gray-900 text-sm line-clamp-3">
+                    {org.name}
+                  </h3>
+                </div>
+              </div>
+              <div className="mt-2 flex justify-start pl-16">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleSelectOrg(org);
+                  }}
+                  className={`text-[#024073] text-sm hover:underline ${selectedOrg?.id === org.id ? 'font-semibold' : ''
+                    }`}
+                  style={{
+                    textDecoration: 'underline'
+                  }}
+                >
+                  Tanlash
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {!loading && organizations.length === 0 && (
+        <div className="text-center py-8 text-gray-500">
+          Tashkilotlar topilmadi
+        </div>
+      )}
+    </>
+  );
+};
+
+const TestQuestions = ({ onFinish, selectedTestId, selectedOrgId }) => {
+  const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState({});
   const [timeLeft, setTimeLeft] = useState(14 * 60);
-  const [showQuestionGrid, setShowQuestionGrid] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchQuestions();
+  }, []);
+
+  const fetchQuestions = async () => {
+    try {
+      const response = await sendRequest({
+        method: 'GET',
+        url: `/services/honesty/test/`,
+        params: { category_id: selectedTestId }
+      });
+
+      if (response.success && response.data.ok) {
+        if (!response.data.new) {
+          onFinish(response.data);
+          return;
+        }
+        setQuestions(response.data.result);
+      }
+    } catch (error) {
+      console.error('Error fetching questions:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading && questions.length === 0) {
+    return (
+      <div className="flex justify-center items-center py-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#024072]"></div>
+      </div>
+    );
+  }
+
+  if (!loading && questions.length === 0) {
+    return null;
+  }
+
+  const handleSubmitTest = async () => {
+    const formattedAnswers = questions.map(question => ({
+      test: question.id,
+      answer: answers[question.id] || null
+    }));
+
+    try {
+      const params = { category_id: selectedTestId };
+      if (selectedOrgId) {
+        params.organization_id = selectedOrgId;
+      }
+
+      const response = await sendRequest({
+        method: 'POST',
+        url: '/services/honesty/test/result/',
+        params,
+        data: formattedAnswers
+      });
+
+      if (response.success && response.data) {
+        onFinish(response.data);
+      }
+    } catch (error) {
+      console.error('Error submitting test:', error);
+    }
+  };
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeLeft((prev) => prev > 0 ? prev - 1 : 0);
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          handleSubmitTest();
+          return 0;
+        }
+        return prev - 1;
+      });
     }, 1000);
     return () => clearInterval(timer);
   }, []);
@@ -169,178 +364,132 @@ const TestQuestions = ({ onFinish }) => {
     return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
-  const handleAnswerSelect = (optionIndex) => {
-    setAnswers(prev => ({
-      ...prev,
-      [currentQuestionIndex + 1]: optionIndex
-    }));
-  };
-
-  const handleNext = () => {
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(prev => prev + 1);
-    }
-  };
-
-  const handlePrev = () => {
-    if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(prev => prev - 1);
-    }
-  };
-
-  const handleQuestionClick = (index) => {
-    setCurrentQuestionIndex(index);
-    setShowQuestionGrid(false);
-  };
-
   const currentQuestion = questions[currentQuestionIndex];
-  const selectedAnswer = answers[currentQuestionIndex + 1];
-  const isLastQuestion = currentQuestionIndex === questions.length - 1;
 
   return (
     <div className="px-4">
-      {/* Steps and Navigation Header */}
       <div className="mb-8">
-        <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-4">Halollik Test</h1>
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
-          <div className="flex items-center gap-2 w-full sm:w-auto">
-            {[1, 2, 3].map((step) => (
-              <React.Fragment key={step}>
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center
-                  ${step <= 2 ? 'bg-[#024073] text-white' : 'bg-gray-200'}`}>
-                  {step <= 2 ? '✓' : ''}
-                </div>
-                {step < 3 && (
-                  <div className={`w-12 sm:w-20 h-1 ${step === 1 ? 'bg-[#024073]' : 'bg-gray-200'}`} />
-                )}
-              </React.Fragment>
-            ))}
-          </div>
-
-          <div className="flex gap-4 w-full sm:w-auto">
-            {currentQuestionIndex > 0 && (
-              <button
-                onClick={handlePrev}
-                className="px-4 sm:px-6 py-2 border rounded-md text-[#024073] w-full sm:w-auto"
-              >
-                ‹ Oldingisi
-              </button>
-
-            )}
-            <button
-              onClick={isLastQuestion ? onFinish : handleNext}
-              className="px-4 sm:px-6 py-2 border rounded-md bg-[#024073] text-white w-full sm:w-auto"
-              style={{
-                backgroundColor: isLastQuestion ? 'orange' : '#024073',
-                color: 'white',
-                borderColor: isLastQuestion ? 'orange' : '#024073',
-              }}
-            >
-              {isLastQuestion ? 'Tugatish' : 'Keyingisi ›'}
-            </button>
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959]">Halollik Testi</h1>
+          <div className="text-gray-600">
+            Qolgan vaqt: {formatTime(timeLeft)}
           </div>
         </div>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-8">
-        {/* Left Side - Question */}
         <div className="flex-1">
-          <h3 className="text-lg sm:text-xl mb-8">
-            {currentQuestionIndex + 1}. {currentQuestion.text}
-          </h3>
+          <div className="mb-8">
+            <h3 className="text-lg sm:text-xl" dangerouslySetInnerHTML={{ __html: `${currentQuestionIndex + 1}. ${currentQuestion.question}` }} />
+          </div>
+
           <div className="space-y-4">
-            {currentQuestion.options.map((option, idx) => (
+            {currentQuestion.answers.map((option, idx) => (
               <label
-                key={idx}
-                className="flex items-center gap-3 relative cursor-pointer p-3 hover:bg-gray-50 rounded"
+                key={option.id}
+                className={`flex items-center gap-3 p-4 rounded-lg cursor-pointer transition-all ${answers[currentQuestion.id] === option.id
+                  ? 'bg-blue-50 border-2 border-[#024072]'
+                  : 'hover:bg-gray-50 border-2 border-transparent'
+                  }`}
               >
                 <input
                   type="radio"
-                  name={`question-${currentQuestionIndex + 1}`}
-                  checked={selectedAnswer === idx}
-                  onChange={() => handleAnswerSelect(idx)}
+                  name={`question-${currentQuestion.id}`}
+                  checked={answers[currentQuestion.id] === option.id}
+                  onChange={() => setAnswers(prev => ({
+                    ...prev,
+                    [currentQuestion.id]: option.id
+                  }))}
                   className="w-4 h-4 border-2 border-gray-300"
                 />
-                <span className="text-gray-700">{option}</span>
+                <span className="text-gray-700" dangerouslySetInnerHTML={{ __html: option.answer }} />
               </label>
             ))}
           </div>
         </div>
 
-        {/* Right Side - Status Card */}
         <div className="w-full lg:w-64">
-          <div className="bg-white p-6 rounded-lg">
-            <div className="flex justify-between items-center mb-6">
-              <div className="text-gray-600">
-                Qolgan vaqt: {formatTime(timeLeft)}
+          <div className="bg-white p-6 rounded-lg shadow-sm">
+            <div className="text-right mb-4">
+              <div className="text-sm text-gray-500">To'g'ri javoblar</div>
+              <div className="text-2xl font-bold">
+                {Object.keys(answers).length}/{questions.length}
               </div>
-              <button
-                onClick={() => setShowQuestionGrid(!showQuestionGrid)}
-                className="lg:hidden text-blue-600"
-              >
-                {showQuestionGrid ? 'Yashirish' : "Ko'rsatish"}
-              </button>
             </div>
-            <div className={`grid grid-cols-5 gap-1 ${showQuestionGrid ? 'block' : 'hidden lg:grid'}`}>
-              {Array.from({ length: 10 }, (_, i) => (
+            <div className="grid grid-cols-7 gap-1">
+              {questions.map((_, idx) => (
                 <div
-                  key={i}
-                  onClick={() => handleQuestionClick(i)}
-                  className={`w-8 h-8 flex items-center justify-center rounded text-sm cursor-pointer
-                    ${i === currentQuestionIndex ? 'bg-blue-600 text-white' :
-                      answers[i + 1] !== undefined ? 'bg-blue-100 text-blue-600' :
-                        'text-gray-600 hover:bg-gray-100'}`}
+                  key={idx}
+                  onClick={() => setCurrentQuestionIndex(idx)}
+                  className={`w-6 h-6 flex items-center justify-center rounded cursor-pointer text-xs
+                    ${idx === currentQuestionIndex ? 'bg-blue-600 text-white' :
+                      answers[questions[idx].id] ? 'bg-blue-100 text-blue-600' :
+                        'bg-gray-100 text-gray-600'}`}
                 >
-                  {i + 1}
+                  {idx + 1}
                 </div>
               ))}
             </div>
           </div>
         </div>
       </div>
+
+      <div className="flex justify-between mt-8">
+        <button
+          onClick={() => currentQuestionIndex > 0 && setCurrentQuestionIndex(prev => prev - 1)}
+          className="px-6 py-2 border rounded text-[#024073]"
+          disabled={currentQuestionIndex === 0}
+        >
+          ‹ Oldingisi
+        </button>
+        {currentQuestionIndex === questions.length - 1 ? (
+          <button
+            onClick={handleSubmitTest}
+            className="px-6 py-2 rounded bg-orange-500 text-white"
+          >
+            Tugatish
+          </button>
+        ) : (
+          <button
+            onClick={() => setCurrentQuestionIndex(prev => prev + 1)}
+            className="px-6 py-2 border rounded bg-[#024073] text-white"
+          >
+            Keyingisi ›
+          </button>
+        )}
+      </div>
     </div>
   );
 };
 
-const TestResults = ({ answers, questions }) => {
-  const correctAnswers = Object.entries(answers).filter(([_, value]) => value === 1).length;
-  const percentage = Math.round((correctAnswers / questions.length) * 100);
+const TestResults = ({ testData }) => {
+  const percentage = testData.percent;
+  const questions = testData.result;
 
   return (
     <div className="px-4">
-      <div className="flex flex-col sm:flex-row justify-between gap-4 mb-8">
-        <div>
-          <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-4">Halollik Testi</h1>
-        </div>
-        <div className="flex gap-4">
-          <button className="px-4 sm:px-6 py-2 bg-white border rounded hover:bg-gray-50 w-full sm:w-auto">
-            ‹ Oldingisi
-          </button>
-          <button className="px-4 sm:px-6 py-2 bg-[#024073] text-white rounded w-full sm:w-auto">
-            Keyingisi ›
-          </button>
-        </div>
+      <div className="mb-8">
+        <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959]">Halollik Testi</h1>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-8">
-        {/* Questions Results - Left Side */}
         <div className="flex-1 space-y-8">
           {questions.map((question, index) => {
-            const selectedAnswerIdx = answers[index + 1];
-            const isCorrect = selectedAnswerIdx === 1;
+            const userResult = question.user_result;
+            const selectedAnswer = question.answers.find(a => a.id === userResult?.answer);
+            const correctAnswer = question.answers.find(a => a.is_true);
 
             return (
-              <div key={index} className="space-y-3">
-                <h3 className="text-base sm:text-lg">
-                  {index + 1}. {question.text}
-                </h3>
+              <div key={question.id} className="space-y-3">
+                <h3 className="text-lg" dangerouslySetInnerHTML={{ __html: `${index + 1}. ${question.question}` }} />
+
                 <div className="space-y-2">
-                  {question.options.map((option, idx) => {
-                    const isSelected = selectedAnswerIdx === idx;
-                    const isCorrectAnswer = idx === 1;
+                  {question.answers.map((answer) => {
+                    const isSelected = userResult?.answer === answer.id;
+                    const isCorrect = answer.is_true;
 
                     return (
-                      <div key={idx} className="flex items-center gap-3">
+                      <div key={answer.id} className="flex items-center gap-3">
                         <div className="relative flex items-center">
                           <input
                             type="radio"
@@ -350,33 +499,30 @@ const TestResults = ({ answers, questions }) => {
                           />
                           {isSelected && (
                             <div className={`absolute -left-0.5 -top-0.5 w-5 h-5 rounded-full border-2 
-                              ${isCorrectAnswer ? 'border-green-500' : 'border-red-500'}`}
+                              ${isCorrect ? 'border-green-500' : 'border-red-500'}`}
                             />
                           )}
                         </div>
-                        <span className={`text-sm sm:text-base ${isSelected ? (isCorrectAnswer ? 'text-green-600' : 'text-red-500') : ''}`}>
-                          {option}
-                          {isSelected && (
-                            <span className="ml-2 text-sm sm:text-base italic">
-                              {isCorrectAnswer ? "To'g'ri" : "Noto'g'ri"}
-                            </span>
-                          )}
-                        </span>
+                        <span
+                          className={`${isSelected ? (isCorrect ? 'text-green-600' : 'text-red-500') : ''}`}
+                          dangerouslySetInnerHTML={{ __html: answer.answer }}
+                        />
+                        {isSelected && (
+                          <span className="ml-2 italic">
+                            {isCorrect ? "To'g'ri" : "Noto'g'ri"}
+                          </span>
+                        )}
                       </div>
                     );
                   })}
                 </div>
-                {!isCorrect && (
+
+                {userResult && !userResult.result && (
                   <div className="bg-[#F3FFF3] p-4 rounded-md">
                     <div className="text-green-600 font-medium mb-2">
-                      To'g'ri javob: {question.options[1]}
+                      To'g'ri javob: <span dangerouslySetInnerHTML={{ __html: correctAnswer?.answer }} />
                     </div>
-                    <p className="text-gray-600 text-sm">
-                      {question.options[1]} — bu shaxs yoki tashkilot tomonidan ularga berilgan rasmiy
-                      vakolatlarni noto'g'ri yoki noqonuniy maqsadlarda qo'llash jarayoni. Ushbu harakat odatda shaxsiy
-                      manfaat ko'zlash yoki o'z vakolat doirasidan chetga chiqib, qonun yoki qoidalarni buzish orqali
-                      amalga oshiriladi.
-                    </p>
+                    <div className="text-gray-600 text-sm" dangerouslySetInnerHTML={{ __html: question.advice }} />
                   </div>
                 )}
               </div>
@@ -384,36 +530,23 @@ const TestResults = ({ answers, questions }) => {
           })}
         </div>
 
-        {/* Results Card - Right Side */}
         <div className="w-full lg:w-64">
           <div className="sticky top-8">
-            <div className="bg-white p-6 rounded-lg mb-6">
+            <div className="bg-white p-6 rounded-lg shadow-sm mb-6">
               <div className="text-right mb-4">
                 <div className="text-sm text-gray-500">To'g'ri javob</div>
                 <div className="text-2xl font-bold">{percentage}%</div>
               </div>
               <div className="grid grid-cols-7 gap-1">
-                {Array.from({ length: 28 }, (_, i) => {
-                  const questionNumber = i + 1;
-                  const isAnswered = answers[questionNumber] !== undefined;
-                  const isCorrect = answers[questionNumber] === 1;
-
-                  let bgColorClass = 'bg-gray-100 text-gray-600';
-                  if (isAnswered) {
-                    bgColorClass = isCorrect
-                      ? 'bg-[#F3FFF3] text-green-600'
-                      : 'bg-[#FFF3F3] text-red-500';
-                  }
-
-                  return (
-                    <div
-                      key={i}
-                      className={`w-6 h-6 flex items-center justify-center rounded text-xs ${bgColorClass}`}
-                    >
-                      {questionNumber}
-                    </div>
-                  );
-                })}
+                {questions.map((question, i) => (
+                  <div
+                    key={i}
+                    className={`w-6 h-6 flex items-center justify-center rounded text-xs
+                      ${question.user_result?.result ? 'bg-[#F3FFF3] text-green-600' : 'bg-[#FFF3F3] text-red-500'}`}
+                  >
+                    {i + 1}
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -426,26 +559,46 @@ const TestResults = ({ answers, questions }) => {
 const StatusCheck = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [showModal, setShowModal] = useState(false);
-  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [selectedTestId, setSelectedTestId] = useState(null);
+  const [selectedOrgId, setSelectedOrgId] = useState(null);
+  const [membershipType, setMembershipType] = useState(null);
   const [answers, setAnswers] = useState({});
+  const [showQuestions, setShowQuestions] = useState(false);
+  const [testResults, setTestResults] = useState(null);
+  const [testQuestions, setTestQuestions] = useState(null);
 
   const handleNext = () => {
-    if (currentStep === 1) {
+    if (currentStep === 1 && selectedTestId) {
       setShowModal(true);
-    } else if (currentStep === 2) {
+    } else if (currentStep === 2 && selectedOrgId) {
+      setShowQuestions(true);
       setCurrentStep(3);
+    } else if (currentStep === 3) {
+      setCurrentStep(4);
     }
   };
 
-  const handleAnswerSelect = (questionId, answerIndex) => {
-    setAnswers(prev => ({
-      ...prev,
-      [questionId]: answerIndex
-    }));
+  const handleMembershipSelect = (type) => {
+    setMembershipType(type);
+    setShowModal(false);
+    setCurrentStep(2);
+  };
+
+  const handleTestSelect = (id) => {
+    setSelectedTestId(id);
+  };
+
+  const handleOrgSelect = (id) => {
+    setSelectedOrgId(id);
+  };
+
+  const handleTestFinish = (data) => {
+    setTestResults(data);
+    setCurrentStep(4);
   };
 
   return (
-    <div className="w-full px-4 py-8 ">
+    <div className="w-full px-4 py-8">
       <div className="flex items-center gap-2 text-sm text-gray-600 mb-6 overflow-x-auto whitespace-nowrap">
         <span>Bosh sahifa</span>
         <ChevronRight className="h-4 w-4 flex-shrink-0" />
@@ -457,63 +610,133 @@ const StatusCheck = () => {
           <div className="mb-6">
             <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-4">Halollik Test</h1>
           </div>
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0 mb-8">
-            <div className="flex items-center space-x-2 min-w-[280px] sm:w-[400px]">
-              {[1, 2, 3].map((step, index) => (
-                <React.Fragment key={step}>
-                  <div className="flex-shrink-0">
-                    <div className={`w-8 h-8 ${currentStep >= step ? 'bg-[#024073]' : 'bg-gray-300'} 
-                      rounded-full flex items-center justify-center`}
-                    >
-                      {currentStep >= step ? (
-                        <svg className="w-4 h-4 text-white" viewBox="0 0 20 20" fill="currentColor">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                      ) : (
-                        <span className="w-2 h-2 bg-white rounded-full" />
-                      )}
+
+          <div className="flex flex-col gap-8">
+            {/* Progress Steps and Next Button Row */}
+            <div className="flex justify-between items-center">
+              <div className="flex items-center space-x-2 min-w-[280px] sm:w-[400px]">
+                {[1, 2, 3].map((step, index) => (
+                  <React.Fragment key={step}>
+                    <div className="flex-shrink-0">
+                      <div className={`w-8 h-8 ${currentStep >= step ? 'bg-[#024073]' : 'bg-gray-300'} 
+                        rounded-full flex items-center justify-center`}
+                      >
+                        {currentStep >= step ? (
+                          <svg className="w-4 h-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                        ) : (
+                          <span className="w-2 h-2 bg-white rounded-full" />
+                        )}
+                      </div>
                     </div>
-                  </div>
-                  {index < 2 && (
-                    <div className={`flex-grow h-1 ${currentStep > step ? 'bg-[#024073]' : 'bg-gray-300'}`} />
-                  )}
-                </React.Fragment>
-              ))}
+                    {index < 2 && (
+                      <div className={`flex-grow h-1 ${currentStep > step ? 'bg-[#024073]' : 'bg-gray-300'}`} />
+                    )}
+                  </React.Fragment>
+                ))}
+              </div>
+
+              <button
+                onClick={handleNext}
+                disabled={!selectedTestId}
+                className={`px-6 py-2 border rounded-[13px] w-[186px] flex items-center justify-center gap-2 ${!selectedTestId
+                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                  : 'text-[#024073] border-[#024072] hover:bg-[#024072] hover:text-white'
+                  }`}
+              >
+                <p className="text-sm">Keyingisi</p>
+                <ChevronRight size={16} className="text-gray-400" />
+              </button>
             </div>
 
+            {/* Test Selection Component */}
+            <TestSelection
+              onSelect={handleTestSelect}
+              selectedTestId={selectedTestId}
+            />
+          </div>
 
-            <button
-              onClick={handleNext}
-              className="px-6 py-2 text-[#024073] border border-[#024072] rounded-[13px] w-[186px] hover:bg-[#024072] hover:text-white  sm:w-auto flex items-center justify-center gap-2"
-            >
-              <p className="text-sm"> {currentStep === 3 ? 'Yuborish' : 'Keyingisi'}</p>
-              {currentStep !== 3 && <ChevronRight size={16} className="text-gray-400" />}
-            </button>
+          {/* Selection Modal */}
+          <SelectionModal
+            isOpen={showModal}
+            onClose={() => setShowModal(false)}
+            onSelect={handleMembershipSelect}
+          />
+        </>
+      )}
+
+      {currentStep === 2 && membershipType === "member" && (
+        <>
+          <div className="mb-6">
+            <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-4">Halollik Test</h1>
+          </div>
+
+          <div className="flex flex-col gap-8">
+            <div className="flex justify-between items-center">
+              <div className="flex items-center space-x-2 min-w-[280px] sm:w-[400px]">
+                {[1, 2, 3, 4].map((step, index) => (
+                  <React.Fragment key={step}>
+                    <div className="flex-shrink-0">
+                      <div className={`w-8 h-8 ${currentStep >= step ? 'bg-[#024073]' : 'bg-gray-300'} 
+                        rounded-full flex items-center justify-center`}
+                      >
+                        {currentStep >= step ? (
+                          <svg className="w-4 h-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                        ) : (
+                          <span className="w-2 h-2 bg-white rounded-full" />
+                        )}
+                      </div>
+                    </div>
+                    {index < 3 && (
+                      <div className={`flex-grow h-1 ${currentStep > step ? 'bg-[#024073]' : 'bg-gray-300'}`} />
+                    )}
+                  </React.Fragment>
+                ))}
+              </div>
+
+              <button
+                onClick={handleNext}
+                disabled={!selectedOrgId}
+                className={`px-6 py-2 border rounded-[13px] w-[186px] flex items-center justify-center gap-2 ${!selectedOrgId
+                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                  : 'text-[#024073] border-[#024072] hover:bg-[#024072] hover:text-white'
+                  }`}
+              >
+                <p className="text-sm">Keyingisi</p>
+                <ChevronRight size={16} className="text-gray-400" />
+              </button>
+            </div>
+
+            <OrganizationList
+              onSelect={handleOrgSelect}
+              selectedOrgId={selectedOrgId}
+            />
           </div>
         </>
       )}
 
-      {currentStep === 1 && <TestSelection onNext={handleNext} />}
-      {currentStep === 2 && (
+      {currentStep === 2 && membershipType === "non-member" && (
         <TestQuestions
-          currentQuestion={currentQuestion}
-          selectedAnswer={answers[currentQuestion + 1]}
-          onAnswerSelect={handleAnswerSelect}
-          onFinish={() => {
-            setCurrentStep(3);
-          }}
+          onFinish={handleTestFinish}
+          selectedTestId={selectedTestId}
+          selectedOrgId={selectedOrgId}
         />
       )}
-      {currentStep === 3 && <TestResults answers={answers} questions={questions} />}
 
-      <SelectionModal
-        isOpen={showModal}
-        onClose={() => setShowModal(false)}
-        onSelect={() => {
-          setShowModal(false);
-          setCurrentStep(2);
-        }}
-      />
+      {currentStep === 3 && showQuestions && (
+        <TestQuestions
+          onFinish={handleTestFinish}
+          selectedTestId={selectedTestId}
+          selectedOrgId={selectedOrgId}
+        />
+      )}
+
+      {currentStep === 4 && testResults && (
+        <TestResults testData={testResults} />
+      )}
     </div>
   );
 };
