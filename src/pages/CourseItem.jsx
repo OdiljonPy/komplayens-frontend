@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Download } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 import { sendRequest } from '../utils/apiFunctions';
+import pdf from "../assets/icons/pdf.png";
 
 const CourseItem = () => {
   const [courseData, setCourseData] = useState(null);
@@ -63,41 +64,33 @@ const CourseItem = () => {
           </div>
 
           <div className="space-y-8">
-            <div className="bg-white p-6 rounded-lg shadow">
-              <h3 className="font-semibold mb-4">Qo'shimcha Materiallar</h3>
-              <div className="space-y-4">
-                {
-                  courseData.materials.filter(material => material.type === "PDF").length !== 0 ? (
-                    courseData.materials.filter(material => material.type === "PDF").map((material) => (
-                      <div key={material.id} className="flex items-center justify-between">
-                        <div className="flex items-center space-x-3">
-                          <div className="w-8 h-8 bg-gray-100 rounded flex items-center justify-center">
-                            <span className="text-xs font-medium uppercase">{material.type}</span>
-                          </div>
-                          <div>
-                            <p className="text-sm font-medium">{material.filename}</p>
-                          </div>
-                        </div>
-                        <a href={material.file} download className="text-blue-600 hover:text-blue-700">
-                          <Download size={20} />
-                        </a>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="flex justify-center items-center">
-                      <h1 className="text-2xl font-bold">No data found</h1>
-                    </div>
-                  )
-                }
-              </div>
-            </div>
-
-            <div>
-              <h3 className="font-semibold">Video Materiallar</h3>
-              <div className="bg-white p-4 rounded-lg shadow mt-4">
+            {courseData.materials.filter(material => material.type === "PDF").length > 0 && (
+              <div className="bg-white p-6 rounded-lg shadow">
+                <h3 className="font-semibold mb-4">Qo'shimcha Materiallar</h3>
                 <div className="space-y-4">
-                  {courseData.materials.filter(material => material.type === "MP4").length !== 0 ? (
-                    courseData.materials.filter(material => material.type === "MP4").map((video) => (
+                  {courseData.materials.filter(material => material.type === "PDF").map((material) => (
+                    <div key={material.id} className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <img src={pdf} alt="pdf" className="w-6 h-6" />
+                        <div>
+                          <p className="text-sm font-medium">{material.filename}</p>
+                        </div>
+                      </div>
+                      <a href={material.file} download className="text-blue-600 hover:text-blue-700">
+                        <Download size={20} />
+                      </a>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {courseData.materials.filter(material => material.type === "MP4").length > 0 && (
+              <div>
+                <h3 className="font-semibold">Video Materiallar</h3>
+                <div className="bg-white p-4 rounded-lg shadow mt-4">
+                  <div className="space-y-4">
+                    {courseData.materials.filter(material => material.type === "MP4").map((video) => (
                       <div key={video.id} className="flex items-start space-x-3">
                         <div className="w-24 h-16 bg-gray-100 rounded overflow-hidden flex-shrink-0">
                           <img
@@ -113,16 +106,11 @@ const CourseItem = () => {
                           </a>
                         </div>
                       </div>
-                    ))
-                  ) : (
-                    <div className="flex justify-center items-center">
-                      <h1 className="text-2xl font-bold">No data found</h1>
-                    </div>
-                  )
-                  }
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

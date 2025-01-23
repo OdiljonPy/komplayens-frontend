@@ -134,14 +134,15 @@ const OrganizationSelection = ({ onNext, onSelect, selectedOrgId }) => {
             <div
               key={org.id}
               onClick={() => handleSelectOrg(org)}
-              className={`p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow h-[150px] flex flex-col justify-between cursor-pointer ${selectedOrg?.id === org.id ? 'bg-blue-50 border-2 border-[#024072]' : ''
+              className={`p-6  rounded-lg shadow-sm hover:shadow-md transition-shadow h-[150px] flex flex-col justify-between cursor-pointer ${selectedOrg?.id === org.id ? 'bg-[#024072]' : ''
                 }`}
               style={{
                 boxShadow: '0px 4px 29px 0px #0000001A',
+                transition: 'all 0.3s ease-in-out',
               }}
             >
               <div className="flex items-start space-x-4">
-                <div className={`w-12 h-12 flex-shrink-0 ${selectedOrg?.id === org.id ? 'bg-blue-100' : 'bg-[#E6F4FF]'
+                <div className={`w-12 h-12 flex-shrink-0 ${selectedOrg?.id === org.id ? 'bg-white' : 'bg-[#E6F4FF]'
                   } rounded-[50%] flex items-center justify-center`}>
                   <img
                     src={bank_logo}
@@ -150,7 +151,8 @@ const OrganizationSelection = ({ onNext, onSelect, selectedOrgId }) => {
                   />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-medium text-gray-900 text-sm line-clamp-3">
+                  <h3 className={`font-medium text-sm line-clamp-3 ${selectedOrg?.id === org.id ? 'text-white' : 'text-gray-900'
+                    }`}>
                     {org.name}
                   </h3>
                 </div>
@@ -161,7 +163,7 @@ const OrganizationSelection = ({ onNext, onSelect, selectedOrgId }) => {
                     e.stopPropagation();
                     handleSelectOrg(org);
                   }}
-                  className={`text-[#024073] text-sm hover:underline ${selectedOrg?.id === org.id ? 'font-semibold' : ''
+                  className={`text-sm hover:underline ${selectedOrg?.id === org.id ? 'text-white font-semibold' : 'text-[#024073]'
                     }`}
                   style={{
                     textDecoration: 'underline'
