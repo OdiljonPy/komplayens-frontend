@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import PhoneInput from '../../components/PhoneInput';
 import { sendRequest } from '../../utils/apiFunctions';
 
-const FloatingLabelInput = ({ label, type = "text", value, onChange, Icon }) => {
+const FloatingLabelInput = ({ label, type = "text", value, onChange, Icon, required }) => {
   const [isFocused, setIsFocused] = useState(false);
 
   return (
@@ -19,6 +19,7 @@ const FloatingLabelInput = ({ label, type = "text", value, onChange, Icon }) => 
         onBlur={() => setIsFocused(false)}
         className="w-full p-3 border border-gray-200 rounded-md peer bg-white"
         placeholder=" "
+        required={required}
       />
       <label
         className={`absolute text-sm duration-150 transform 
@@ -91,6 +92,12 @@ const Login = () => {
     }
   };
 
+  // Add this function to check if form is valid
+  const isFormValid = () => {
+    const cleanedPhone = formData.phone.replace(/[^0-9+]/g, '');
+    return cleanedPhone.length >= 13 && formData.password.length >= 1;
+  };
+
   return (
     <div className="flex h-screen w-screen overflow-hidden">
       {/* Left side - Image */}
@@ -134,10 +141,10 @@ const Login = () => {
 
               {/* Login Field */}
               <div >
-
                 <PhoneInput
                   value={formData.phone}
                   onChange={(value) => setFormData(prev => ({ ...prev, phone: value }))}
+                  required
                 />
               </div>
 
@@ -148,6 +155,7 @@ const Login = () => {
                   type={showPassword ? "text" : "password"}
                   value={formData.password}
                   onChange={handleChange('password')}
+                  required
                   Icon={
                     <button
                       type="button"
@@ -171,9 +179,9 @@ const Login = () => {
               )}
 
               <button
-                className={`w-full bg-[#024072] text-white py-3 rounded-md ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                className={`w-full bg-[#024072] text-white py-3 rounded-md ${(loading || !isFormValid()) ? 'opacity-50 cursor-not-allowed' : ''}`}
                 onClick={handleLogin}
-                disabled={loading}
+                disabled={loading || !isFormValid()}
               >
                 {loading ? 'Yuklanmoqda...' : 'Tizimga Kirish'}
               </button>

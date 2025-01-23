@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Eye, ChevronDown } from 'lucide-react';
 import login_bg from "../../assets/backgrounds/login_bg.png";
 import logo from "../../assets/logos/full_logo.png";
@@ -42,41 +42,67 @@ const FloatingLabelInput = ({ label, type = "text", value, onChange, Icon }) => 
 
 // FloatingLabelSelect component with fixed positioning
 const FloatingLabelSelect = ({ label, options = [], onChange }) => {
-  const [isFocused, setIsFocused] = useState(false);
-  const [value, setValue] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleSelect = (option) => {
+    setSelectedOption(option);
+    onChange({ target: { value: option.value } });
+    setIsOpen(false);
+  };
 
   return (
-    <div className="relative mb-6">
-      <select
-        value={value}
-        onChange={(e) => {
-          setValue(e.target.value);
-          onChange(e);
-        }}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        className="w-full p-3 border border-gray-200 rounded-md peer bg-white appearance-none"
+    <div className="relative mb-6" ref={dropdownRef}>
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full p-3 h-[50px] border border-gray-200 rounded-md bg-white text-left relative"
       >
-        <option value="" disabled></option>
-        {options.map(option => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+        <span className={`block truncate ${selectedOption ? 'text-black' : 'text-gray-400'}`}>
+          {selectedOption ? selectedOption.label : ''}
+        </span>
+      </button>
+
       <label
-        className={`absolute text-sm duration-150 transform 
-          ${isFocused || value
-            ? 'text-gray-600 bg-white px-1 text-sm -translate-y-1/2 top-0 left-2 z-10'
+        className={`absolute text-sm duration-150 transform bg-white px-1
+          ${selectedOption || isOpen
+            ? 'text-gray-600 -translate-y-1/2 top-0 left-2 z-30'
             : 'text-gray-400 top-1/2 left-3 -translate-y-1/2'
           }
         `}
       >
         {label}
       </label>
+
       <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-        <ChevronDown className="h-5 w-5 text-gray-400" />
+        <ChevronDown className={`h-5 w-5 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </div>
+
+      {isOpen && (
+        <div className="absolute w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg z-50 max-h-60 overflow-y-auto">
+          {options.map((option) => (
+            <div
+              key={option.value}
+              className="px-4 py-2 cursor-pointer hover:bg-gray-100 truncate"
+              onClick={() => handleSelect(option)}
+            >
+              {option.label}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
@@ -147,6 +173,17 @@ const Register = () => {
       setErrorMessage(errorDetail);
       console.error(response.error);
     }
+  };
+
+  // Add validation function
+  const isFormValid = () => {
+    return (
+      formData.organization &&
+      formData.firstName.trim() &&
+      formData.lastName.trim() &&
+      formData.phone.replace(/[^0-9+]/g, '').length >= 13 && // Validate phone length
+      formData.password.length >= 6 // Minimum password length
+    );
   };
 
   return (
@@ -250,8 +287,9 @@ const Register = () => {
 
               <button
                 type="submit"
-                className="w-full bg-[#024072] text-white py-3 rounded-md"
-                disabled={loading}
+                className={`w-full py-3 rounded-md ${isFormValid() ? 'bg-[#024072] text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  }`}
+                disabled={loading || !isFormValid()}
               >
                 {loading ? 'Yuborilmoqda...' : 'Ro\'yxatdan O\'tish'}
               </button>
