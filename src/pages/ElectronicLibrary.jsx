@@ -94,24 +94,33 @@ export default function ElectronicLibrary() {
   return (
     <div className="p-4 pt-0">
       {/* Breadcrumb section remains the same */}
+      <div className="py-3 md:py-4 pt-0">
+        <div className="text-sm text-gray-600 flex items-center gap-1">
+          <span>Bosh sahifa</span>
+          <ChevronRight size={16} className="text-gray-400" />
+          <span className='text-[#024072]'>Ta'lim</span>
+        </div>
+      </div>
 
       <div className="py-4 md:py-6">
         {/* Title section remains the same */}
-
+        <h1 className="text-lg md:text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-6 md:mb-10">
+          Ta'lim
+        </h1>
         {/* Navigation and Search */}
         <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
           {/* Tabs remain the same */}
           <div className="p-1 rounded-lg inline-flex w-full md:w-auto overflow-x-auto bg-white">
             <Link to="/training-courses">
               <button
-                className={`flex-1 md:flex-none px-4 py-2 rounded-md transition-colors whitespace-nowrap bg-[#F5F5F5] text-[#595959] `}
+                className={`flex-1 md:flex-none px-4 py-2 rounded-md transition-colors whitespace-nowrap text-[#595959] `}
               >
                 O'quv Kurslari
               </button>
             </Link>
             <Link to="/electronic-library">
               <button
-                className={`flex-1 md:flex-none px-4 py-2 rounded-md transition-colors whitespace-nowrap bg-white `}
+                className={`flex-1 md:flex-none px-4 py-2 rounded-md transition-colors whitespace-nowrap bg-[#F5F5F5] text-[#595959] `}
               >
                 Elektron Kutubxona
               </button>

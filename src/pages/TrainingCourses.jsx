@@ -71,7 +71,7 @@ export default function TrainingCourses() {
 
       <div className="py-4 md:py-6">
         <h1 className="text-lg md:text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-6 md:mb-10">
-          Ta'lim
+          Oʻquv-uslubiy materiallar
         </h1>
 
         {/* Navigation and Search Container */}
