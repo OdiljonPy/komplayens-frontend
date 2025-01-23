@@ -294,7 +294,7 @@ export default function CorruptionRisks() {
                 <img
                   src={aboutInfo.image}
                   alt={aboutInfo.title}
-                  className="w-full h-auto rounded-lg"
+                  className="w-full max-h-[250px] rounded-lg"
                 />
               )}
             </div>

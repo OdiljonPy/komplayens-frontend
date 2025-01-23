@@ -2,6 +2,12 @@ import React, { useState, useEffect } from 'react'
 
 import { sendRequest } from '../utils/apiFunctions';
 import { ChevronRight } from 'lucide-react'
+
+import pdf from "../assets/icons/pdf.png"
+import ppt from "../assets/icons/ppt.png"
+import xls from "../assets/icons/xls.png"
+import zip from "../assets/icons/zip.png"
+
 function Handouts() {
   const [mainData, setMainData] = useState(null);
   const [categories, setCategories] = useState([]);
@@ -121,7 +127,6 @@ function Handouts() {
             rounded-lg shadow-sm appearance-none cursor-pointer
             focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100
             hover:border-gray-400 transition-colors duration-200
-            bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23424242%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.4-12.8z%22%2F%3E%3C%2Fsvg%3E')] 
             bg-[length:12px_12px] bg-[right_1rem_center] bg-no-repeat"
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
@@ -160,36 +165,44 @@ function Handouts() {
       </div>
 
       {/* Updated Files Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {handouts.map((handout) => (
-          <div key={handout.id} className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8">
-                  <img
-                    src="/pdf-icon.svg"
-                    alt="File icon"
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-700">{handout.name}</p>
+      {
+        handouts.length !== 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {handouts.map((handout) => (
+              <div key={handout.id} className="bg-[#F5F5F5] border border-[#DFDFDF] rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8">
+                      <img
+                        src={handout.type === "ZIP" ? zip : handout.type === "PPT" ? ppt : handout.type === "XLS" ? xls : pdf}
+                        alt="File icon"
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-700">{handout.name}</p>
+                    </div>
+                  </div>
+                  <a
+                    href={handout.file}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-500 hover:text-gray-700"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                  </a>
                 </div>
               </div>
-              <a
-                href={handout.file}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-500 hover:text-gray-700"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
-              </a>
-            </div>
+            ))}
           </div>
-        ))}
-      </div>
+        ) : (
+          <div className="flex justify-center items-center w-full">
+            <h1 className="text-2xl font-bold">No data found</h1>
+          </div>
+        )
+      }
 
       {/* Pagination */}
       {pagination.totalPages > 1 && (
