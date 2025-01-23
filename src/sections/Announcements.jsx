@@ -35,24 +35,24 @@ const Announcements = () => {
               <img
                 src={announcement.image || banner}
                 alt="Seminar"
-                className="w-full h-full max-h-[200px] object-cover"
+                className="w-full h-full max-h-[200px] object-cover rounded-[8px]"
               />
             </div>
 
             <div className="px-4 pb-4">
-              <h3 className="text-base font-medium mb-3 text-gray-800">
+              <h3 className="text-base font-medium mb-3 text-[#595959]">
                 {announcement.title || "Default Title"}
               </h3>
 
-              <div className="flex justify-between text-gray-500 text-sm bg-[#F9F9F9] p-4 rounded-[8px]">
+              <div className="flex justify-between text-[#595959] text-sm bg-[#F9F9F9] p-4 rounded-[8px]">
                 <div className="flex items-center gap-1">
                   <Eye size={14} />
                   <span>{announcement.views || 0}</span>
                 </div>
 
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-1 text-[#595959]">
                   <Calendar size={14} />
-                  <span>{announcement.date || "N/A"}</span>
+                  <span>{announcement.date || ""}</span>
                 </div>
               </div>
             </div>

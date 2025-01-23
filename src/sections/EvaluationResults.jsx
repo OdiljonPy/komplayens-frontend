@@ -9,7 +9,7 @@ const EvaluationResults = () => {
 
   const categories = [
     { label: 'Yaxshi', color: '#22c55e' },
-    { label: "Qoniqarli", color: '#3b82f6' },
+    { label: "Qoniqarli", color: '#FF9437' },
     { label: 'Qoniqarsiz', color: '#ef4444' }
   ];
 
@@ -121,7 +121,7 @@ const EvaluationResults = () => {
         borderRadius: '10px'
       }}>
         {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start xs:items-center gap-3 mb-4 md:mb-6">
+        <div className="flex  md:flex-row justify-between items-start xs:items-center gap-3 mb-4 md:mb-6">
           <h2 className="text-base md:text-lg lg:text-xl font-semibold text-[#1e293b]">
             Baholash natijalari
           </h2>
@@ -166,8 +166,8 @@ const EvaluationResults = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {getColumnData(evaluationResults.flat()).map((columnItems, columnIndex) => (
             <div key={columnIndex} className="flex flex-col gap-4">
-              {/* Column Header */}
-              <div className="bg-gray-50 rounded-lg p-3">
+              {/* Column Header - Show always on desktop, but only with items on mobile */}
+              <div className={`bg-gray-50 rounded-lg p-3 ${columnItems.length === 0 ? 'hidden md:block' : ''}`}>
                 <div className="flex items-center">
                   <span className="text-sm text-gray-500 min-w-[120px] mr-2">Choraklik kesmida</span>
                   <div className="w-[50px] text-center"></div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, ChevronDown } from 'lucide-react';
+import { Calendar, ChevronDown, ArrowRight } from 'lucide-react';
 import { PieChart, Pie, Cell } from 'recharts';
 import { sendRequest } from '../utils/apiFunctions'; // Update this path
 
@@ -15,6 +15,7 @@ const VideoCourseDashboard = () => {
   const [orderBy, setOrderBy] = useState('new');
   const [selectedDate, setSelectedDate] = useState('2024-12-18');
   const [sortType, setSortType] = useState('high'); // 'high' or 'low'
+  const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
 
   // Fetch years on component mount
   useEffect(() => {
@@ -103,9 +104,12 @@ const VideoCourseDashboard = () => {
         <div className="lg:col-span-7">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-2xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959]">Video kurslar</h1>
-            <button className="px-4 py-2 bg-white text-gray-700 rounded-md hover:bg-gray-50">
-              Batafsil
-            </button>
+            <Link to="/training-courses">
+              <button className="px-4 py-2 bg-white text-gray-700 rounded-[12px] flex items-center gap-2">
+                <span className='text-[14px]'>Batafsil</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </Link>
           </div>
 
           <div className="flex flex-col md:flex-row gap-4 mb-6">
@@ -135,7 +139,9 @@ const VideoCourseDashboard = () => {
             {
               courses.length !== 0 ? (
                 courses.map(course => (
-                  <div key={course.id} className="bg-white p-4 rounded-lg shadow-sm">
+                  <div key={course.id} className="bg-white p-4 rounded-lg " style={{
+                    boxShadow: '0px 0px 32px 0px #00000012'
+                  }}>
                     <Link to={`/educational-materials/${course.id}`}>
                       <div className="flex flex-col md:flex-row gap-4">
                         <img
@@ -180,7 +186,8 @@ const VideoCourseDashboard = () => {
         <div className="lg:col-span-5 space-y-4 sm:space-y-6">
           {/* Pie Chart Card */}
           <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm">
-            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sm:gap-0 mb-6">
+            {/* Header section */}
+            <div className="flex flex-row justify-between items-center gap-4 sm:gap-0 mb-6">
               <h2 className="text-lg sm:text-2xl font-semibold text-gray-800">Idoralar ochiqlik indeksi</h2>
               <div className="relative">
                 <button
@@ -210,39 +217,80 @@ const VideoCourseDashboard = () => {
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-start gap-6 sm:gap-8">
-              {/* Legend */}
-              <div className="w-full sm:w-auto flex flex-row sm:flex-col justify-between sm:justify-start gap-4 sm:gap-6 order-2 sm:order-1">
-                {pieData.map((item, index) => (
-                  <div key={index} className="flex items-center gap-3">
-                    <div className="w-1 h-8 mg:h-12 rounded-sm" style={{ backgroundColor: COLORS[2 - index] }}></div>
-                    <div>
-                      <div className="text-gray-500 text-[12px] md:text-sm">{item.name}</div>
-                      <div className="text-[14px] md:text-xl font-semibold">{item.value}%</div>
+            <div className="flex flex-col gap-6">
+              {/* Mobile View */}
+              <div className="flex flex-col gap-6 sm:hidden">
+                {/* Chart */}
+                {/* Legend for Mobile */}
+                <div className="w-full flex flex-row justify-center gap-6">
+                  {pieData.map((item, index) => (
+                    <div key={index} className="flex items-center gap-2">
+                      <div className="w-1 h-10 rounded-sm" style={{ backgroundColor: COLORS[2 - index] }}></div>
+                      <div>
+                        <div className="text-gray-500 text-xs">{item.name}</div>
+                        <div className="text-sm font-semibold">{item.value}%</div>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+                <div className="w-full flex justify-center">
+                  <PieChart width={280} height={180} className="scale-90">
+                    <Pie
+                      data={pieData}
+                      cx={140}
+                      cy={140}
+                      startAngle={180}
+                      endAngle={0}
+                      innerRadius={90}
+                      outerRadius={120}
+                      paddingAngle={2}
+                      dataKey="value"
+                    >
+                      {pieData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[2 - index]} />
+                      ))}
+                    </Pie>
+                  </PieChart>
+                </div>
+
+
               </div>
 
-              {/* Chart */}
-              <div className="w-full sm:w-auto flex justify-center sm:justify-end flex-1 order-1 sm:order-2">
-                <PieChart width={280} height={150} className="sm:scale-110 -mt-4">
-                  <Pie
-                    data={pieData}
-                    cx={140}
-                    cy={140}
-                    startAngle={180}
-                    endAngle={0}
-                    innerRadius={90}
-                    outerRadius={120}
-                    paddingAngle={2}
-                    dataKey="value"
-                  >
-                    {pieData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[2 - index]} />
-                    ))}
-                  </Pie>
-                </PieChart>
+              {/* Desktop View */}
+              <div className="hidden sm:flex sm:flex-row sm:items-start sm:gap-8">
+                {/* Legend for Desktop */}
+                <div className="w-auto flex flex-col justify-start gap-6">
+                  {pieData.map((item, index) => (
+                    <div key={index} className="flex items-center gap-2">
+                      <div className="w-1 h-8 rounded-sm" style={{ backgroundColor: COLORS[2 - index] }}></div>
+                      <div>
+                        <div className="text-gray-500 text-sm">{item.name}</div>
+                        <div className="text-xl font-semibold">{item.value}%</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Chart */}
+                <div className="w-auto flex justify-end flex-1">
+                  <PieChart width={280} height={180} className="scale-110">
+                    <Pie
+                      data={pieData}
+                      cx={140}
+                      cy={140}
+                      startAngle={180}
+                      endAngle={0}
+                      innerRadius={90}
+                      outerRadius={120}
+                      paddingAngle={2}
+                      dataKey="value"
+                    >
+                      {pieData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[2 - index]} />
+                      ))}
+                    </Pie>
+                  </PieChart>
+                </div>
               </div>
             </div>
           </div>
@@ -253,14 +301,38 @@ const VideoCourseDashboard = () => {
               <h2 className="text-[14px] md:text-lg font-semibold text-gray-800">
                 Faoliyat samaradorligi reytingi
               </h2>
-              <select
-                value={sortType}
-                onChange={(e) => setSortType(e.target.value)}
-                className="text-blue-500 hover:text-blue-600 text-[14px] md:text-base rounded-md px-2 py-1"
-              >
-                <option value="high">Eng baland</option>
-                <option value="low">Eng past</option>
-              </select>
+              <div className="relative">
+                <button
+                  onClick={() => setIsSortDropdownOpen(!isSortDropdownOpen)}
+                  className="flex items-center gap-2 text-blue-500 hover:text-blue-600 text-[14px] md:text-base"
+                >
+                  {sortType === 'high' ? 'Eng baland' : 'Eng past'}
+                  <ChevronDown className="w-4 h-4" />
+                </button>
+
+                {isSortDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-40 bg-white border rounded-md shadow-lg z-10">
+                    <button
+                      onClick={() => {
+                        setSortType('high');
+                        setIsSortDropdownOpen(false);
+                      }}
+                      className="w-full text-left px-4 py-2 hover:bg-gray-50 text-gray-700"
+                    >
+                      Eng baland
+                    </button>
+                    <button
+                      onClick={() => {
+                        setSortType('low');
+                        setIsSortDropdownOpen(false);
+                      }}
+                      className="w-full text-left px-4 py-2 hover:bg-gray-50 text-gray-700"
+                    >
+                      Eng past
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="space-y-5">

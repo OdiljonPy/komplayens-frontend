@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Eye, Calendar } from 'lucide-react';
 import { sendRequest } from '../utils/apiFunctions';
+import { Link } from 'react-router-dom';
 
 const NewsGrid = () => {
   const [news, setNews] = useState([]);
@@ -43,33 +44,35 @@ const NewsGrid = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {news.map((item) => (
-          <div key={item.id} className="flex bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-3">
-            <div className="w-24 h-24 flex-shrink-0">
-              <img
-                src={item.image}
-                alt={item.title}
-                className="w-full h-full object-cover rounded-lg"
-              />
-            </div>
+          <Link to={`/news/${item.id}`}>
+            <div key={item.id} className="flex bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-3">
+              <div className="w-24 h-24 flex-shrink-0">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="w-full h-full object-cover rounded-lg"
+                />
+              </div>
 
-            <div className="ml-3 flex flex-col flex-grow">
-              <h3 className="text-sm font-medium mb-auto line-clamp-2">
-                {item.title}
-              </h3>
+              <div className="ml-3 flex flex-col flex-grow">
+                <h3 className="text-sm font-medium mb-auto line-clamp-2">
+                  {item.title}
+                </h3>
 
-              <div className="flex justify-between text-gray-500 text-xs bg-[#F9F9F9] p-3 rounded-[8px]">
-                <div className="flex items-center gap-1">
-                  <Eye size={12} />
-                  <span>{item.views}</span>
-                </div>
+                <div className="flex justify-between text-gray-500 text-xs bg-[#F9F9F9] p-3 rounded-[8px]">
+                  <div className="flex items-center gap-1">
+                    <Eye size={12} />
+                    <span>{item.views}</span>
+                  </div>
 
-                <div className="flex items-center gap-1">
-                  <Calendar size={12} />
-                  <span>{formatDate(item.published_date)}</span>
+                  <div className="flex items-center gap-1">
+                    <Calendar size={12} />
+                    <span>{formatDate(item.published_date)}</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

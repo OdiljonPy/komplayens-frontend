@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -28,7 +27,7 @@ const HeroCarousel = () => {
   }, []);
 
   return (
-    <div className="relative p-4 h-[300px] md:h-[400px] overflow-hidden rounded-3xl">
+    <div className="relative p-4 h-[300px] md:h-[400px] overflow-hidden rounded-3xl mt-16 md:mt-0">
       <Swiper
         spaceBetween={0}
         slidesPerView={1}
