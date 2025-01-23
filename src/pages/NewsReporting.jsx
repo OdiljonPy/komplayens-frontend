@@ -4,7 +4,36 @@ import bank_logo from "../assets/icons/bank.png";
 import { useNavigate } from 'react-router-dom';
 import { sendRequest } from '../utils/apiFunctions';
 
+const PhoneInput = ({ value, onChange }) => {
+  const handlePhoneChange = (e) => {
+    let inputValue = e.target.value;
 
+    // Remove all non-numeric characters except '+'
+    inputValue = inputValue.replace(/[^0-9+]/g, '');
+
+    // Ensure the value starts with +998
+    if (!inputValue.startsWith('+998')) {
+      inputValue = '+998';
+    }
+
+    // Limit to +998 plus 9 digits
+    if (inputValue.length > 13) {
+      inputValue = inputValue.slice(0, 13);
+    }
+
+    onChange(inputValue);
+  };
+
+  return (
+    <input
+      type="tel"
+      value={value || '+998'}
+      onChange={handlePhoneChange}
+      placeholder="+998 (99) 998-98-98"
+      className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+  );
+};
 
 const ToggleButtons = ({ activeTab, onChange }) => {
   return (
@@ -154,7 +183,7 @@ const OrganizationSelection = ({ onNext, onSelect, selectedOrgId }) => {
 };
 
 // Step 2: Report Details Component
-const ReportDetails = ({ onFormDataChange, formData: initialFormData }) => {
+const ReportDetails = ({ onFormDataChange, onFileChange, formData: initialFormData }) => {
   const [activeTab, setActiveTab] = useState('system');
   const [violationTypes, setViolationTypes] = useState([]);
   const [regions, setRegions] = useState([]);
@@ -174,8 +203,7 @@ const ReportDetails = ({ onFormDataChange, formData: initialFormData }) => {
     details: ''
   });
 
-  const [file, setFile] = useState(null);
-  const [uploadProgress, setUploadProgress] = useState(0);
+  const [files, setFiles] = useState(initialFormData?.files || []);
   const fileInputRef = useRef(null);
 
   // Fetch violation types
@@ -257,6 +285,13 @@ const ReportDetails = ({ onFormDataChange, formData: initialFormData }) => {
     }
   }, [formData, onFormDataChange]);
 
+  // Update parent component when files change
+  useEffect(() => {
+    if (onFileChange) {
+      onFileChange(files);
+    }
+  }, [files, onFileChange]);
+
   const handleFormChange = (field, value) => {
     setFormData(prev => {
       const newData = { ...prev, [field]: value };
@@ -268,25 +303,51 @@ const ReportDetails = ({ onFormDataChange, formData: initialFormData }) => {
   };
 
   const handleFileChange = (event) => {
-    const selectedFile = event.target.files[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-      setUploadProgress(0);
+    const selectedFiles = Array.from(event.target.files);
+    const newFiles = selectedFiles.map(file => ({
+      file,
+      progress: 0,
+      id: Math.random().toString(36).substr(2, 9)
+    }));
+
+    setFiles(prev => {
+      const updatedFiles = [...prev, ...newFiles];
+      if (onFileChange) {
+        onFileChange(updatedFiles);
+      }
+      return updatedFiles;
+    });
+
+    // Simulate upload progress for each file
+    newFiles.forEach(fileObj => {
       const interval = setInterval(() => {
-        setUploadProgress(prev => {
-          if (prev >= 100) {
-            clearInterval(interval);
-            return 100;
+        setFiles(prev => {
+          const updatedFiles = prev.map(f => {
+            if (f.id === fileObj.id && f.progress < 100) {
+              return { ...f, progress: f.progress + 10 };
+            }
+            return f;
+          });
+          if (onFileChange) {
+            onFileChange(updatedFiles);
           }
-          return prev + 10;
+          return updatedFiles;
         });
       }, 200);
-    }
+
+      setTimeout(() => clearInterval(interval), 2000);
+    });
   };
 
-  const removeFile = () => {
-    setFile(null);
-    setUploadProgress(0);
+  const removeFile = (fileId) => {
+    setFiles(prev => {
+      const updatedFiles = prev.filter(f => f.id !== fileId);
+      if (onFileChange) {
+        onFileChange(updatedFiles);
+      }
+      return updatedFiles;
+    });
+
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
@@ -303,35 +364,64 @@ const ReportDetails = ({ onFormDataChange, formData: initialFormData }) => {
 
       {/* Form Fields */}
       <div className="space-y-4">
-        {/* Type Selection and Region/District */}
+        {/* Type Selection and Region/District with Date/Time */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {/* Violation Type Select */}
-          <div className="relative">
-            <div className="text-sm text-gray-600 mb-1">
-              Xabar turini tanlash <span className="text-red-500">*</span>
+          {/* Left Column */}
+          <div className="space-y-4">
+            {/* Violation Type Select */}
+            <div className="relative">
+              <div className="text-sm text-gray-600 mb-1">
+                Xabar turini tanlash <span className="text-red-500">*</span>
+              </div>
+              <select
+                className="w-full px-4 py-3 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+                value={formData.type}
+                onChange={(e) => handleFormChange('type', e.target.value)}
+                disabled={loading.types}
+              >
+                {loading.types ? (
+                  <option>Yuklanmoqda...</option>
+                ) : (
+                  violationTypes.map(type => (
+                    <option key={type.id} value={type.id}>{type.name}</option>
+                  ))
+                )}
+              </select>
+              <div className="absolute right-4 top-[38px] pointer-events-none">
+                <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
             </div>
-            <select
-              className="w-full px-4 py-3 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
-              value={formData.type}
-              onChange={(e) => handleFormChange('type', e.target.value)}
-              disabled={loading.types}
-            >
-              {loading.types ? (
-                <option>Yuklanmoqda...</option>
-              ) : (
-                violationTypes.map(type => (
-                  <option key={type.id} value={type.id}>{type.name}</option>
-                ))
-              )}
-            </select>
-            <div className="absolute right-4 top-[38px] pointer-events-none">
-              <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-              </svg>
+
+            {/* Date and Time */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <div className="text-sm text-gray-600 mb-1">
+                  Sana <span className="text-red-500">*</span>
+                </div>
+                <input
+                  type="date"
+                  className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={formData.date}
+                  onChange={(e) => handleFormChange('date', e.target.value)}
+                />
+              </div>
+              <div>
+                <div className="text-sm text-gray-600 mb-1">
+                  Vaqt <span className="text-red-500">*</span>
+                </div>
+                <input
+                  type="time"
+                  className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={formData.time}
+                  onChange={(e) => handleFormChange('time', e.target.value)}
+                />
+              </div>
             </div>
           </div>
 
-          {/* Region/District Selects */}
+          {/* Right Column - Region/District */}
           <div className="space-y-4">
             {/* Region Select */}
             <div className="relative">
@@ -381,32 +471,6 @@ const ReportDetails = ({ onFormDataChange, formData: initialFormData }) => {
           </div>
         </div>
 
-        {/* Date and Time */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <div className="text-sm text-gray-600 mb-1">
-              Sana <span className="text-red-500">*</span>
-            </div>
-            <input
-              type="date"
-              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={formData.date}
-              onChange={(e) => handleFormChange('date', e.target.value)}
-            />
-          </div>
-          <div>
-            <div className="text-sm text-gray-600 mb-1">
-              Vaqt <span className="text-red-500">*</span>
-            </div>
-            <input
-              type="time"
-              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={formData.time}
-              onChange={(e) => handleFormChange('time', e.target.value)}
-            />
-          </div>
-        </div>
-
         {/* Details and File Upload */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* Details Textarea */}
@@ -433,64 +497,70 @@ const ReportDetails = ({ onFormDataChange, formData: initialFormData }) => {
               Fayl yuklash
             </div>
             <div className="border-2 border-dashed rounded-lg p-6">
-              {!file ? (
-                <div className="text-center">
-                  <p className="text-gray-600 mb-2">
-                    Faylni tanlang yoki shu yerga joylshtiring
-                  </p>
-                  <p className="text-sm text-gray-500 mb-4">
-                    JPEG, PNG, PDF va MP4 formatlari, 50 MB gacha
-                  </p>
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    className="hidden"
-                    accept=".jpg,.jpeg,.png,.pdf,.mp4"
-                    onChange={handleFileChange}
-                  />
-                  <button
-                    onClick={() => fileInputRef.current?.click()}
-                    className="px-4 py-2 bg-white border rounded-lg text-gray-700 hover:bg-gray-50"
-                  >
-                    Faylni yuklash
-                  </button>
-                </div>
-              ) : (
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0">
-                  <div className="flex items-center space-x-3">
-                    <div className="p-2 bg-red-50 rounded">
-                      <svg className="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0h8v12H6V4z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium">{file.name}</p>
-                      <p className="text-xs text-gray-500">
-                        {Math.round(file.size / 1024)} KB
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-4 w-full sm:w-auto">
-                    <div className="flex items-center flex-1 sm:flex-none">
-                      <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-[#024073] transition-all duration-300"
-                          style={{ width: `${uploadProgress}%` }}
-                        />
+              <div className="text-center mb-4">
+                <p className="text-gray-600 mb-2">
+                  Faylni tanlang yoki shu yerga joylshtiring
+                </p>
+                <p className="text-sm text-gray-500 mb-4">
+                  JPEG, PNG, PDF va MP4 formatlari, 50 MB gacha
+                </p>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  className="hidden"
+                  accept=".jpg,.jpeg,.png,.pdf,.mp4"
+                  onChange={handleFileChange}
+                  multiple
+                />
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="px-4 py-2 bg-white border rounded-lg text-gray-700 hover:bg-gray-50"
+                >
+                  Faylni yuklash
+                </button>
+              </div>
+
+              {/* Uploaded Files List */}
+              {files.length > 0 && (
+                <div className="space-y-3 mt-4">
+                  {files.map((fileObj) => (
+                    <div key={fileObj.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0">
+                      <div className="flex items-center space-x-3">
+                        <div className="p-2 bg-red-50 rounded">
+                          <svg className="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0h8v12H6V4z" clipRule="evenodd" />
+                          </svg>
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium">{fileObj.file.name}</p>
+                          <p className="text-xs text-gray-500">
+                            {Math.round(fileObj.file.size / 1024)} KB
+                          </p>
+                        </div>
                       </div>
-                      <span className="ml-2 text-sm text-gray-500">
-                        {uploadProgress}%
-                      </span>
+                      <div className="flex items-center space-x-4 w-full sm:w-auto">
+                        <div className="flex items-center flex-1 sm:flex-none">
+                          <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
+                            <div
+                              className="h-full bg-[#024073] transition-all duration-300"
+                              style={{ width: `${fileObj.progress}%` }}
+                            />
+                          </div>
+                          <span className="ml-2 text-sm text-gray-500">
+                            {fileObj.progress}%
+                          </span>
+                        </div>
+                        <button
+                          onClick={() => removeFile(fileObj.id)}
+                          className="p-1 text-gray-400 hover:text-red-600"
+                        >
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
+                      </div>
                     </div>
-                    <button
-                      onClick={removeFile}
-                      className="p-1 text-gray-400 hover:text-gray-600"
-                    >
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
-                  </div>
+                  ))}
                 </div>
               )}
             </div>
@@ -504,20 +574,146 @@ const ReportDetails = ({ onFormDataChange, formData: initialFormData }) => {
 // Step 3: Report Confirmation Component
 
 // Contact Form Component
-const ContactForm = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    position: '',
-    phone: ''
-  });
+const ContactForm = ({ formData, onFormDataChange }) => {
+  const [showDeleteButtons, setShowDeleteButtons] = useState(false);
+
+  const handleAddPerson = () => {
+    onFormDataChange([...formData, { name: '', position: '', phone: '+998' }]);
+  };
+
+  const handleRemovePerson = (index) => {
+    const newData = formData.filter((_, i) => i !== index);
+    onFormDataChange(newData);
+  };
+
+  const handleInputChange = (index, field, value) => {
+    const newData = formData.map((item, i) => {
+      if (i === index) {
+        return { ...item, [field]: value };
+      }
+      return item;
+    });
+    onFormDataChange(newData);
+  };
 
   return (
     <div className="">
-      <h2 className="text-xl font-medium text-gray-800 mb-6">
-        Aloqador Shaxsning Ma'lumotlari
-      </h2>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-xl font-medium text-gray-800">
+          Aloqador Shaxsning Ma'lumotlari
+        </h2>
+        <div className="flex gap-4">
+          <button
+            onClick={() => handleAddPerson()}
+            className="flex items-center gap-2 text-[#024073] hover:text-blue-700"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+            </svg>
+            Shaxsni qo'shish
+          </button>
+          {formData.length > 1 && (
+            <button
+              onClick={() => setShowDeleteButtons(!showDeleteButtons)}
+              className="flex items-center gap-2 text-red-600 hover:text-red-700"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+              Shaxsni olib tashlash
+            </button>
+          )}
+        </div>
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="space-y-6">
+        {formData.map((person, index) => (
+          <div key={index} className="relative">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Name Input */}
+              <div>
+                <div className="text-sm text-gray-600 mb-1">
+                  F.I.Sh <span className="text-red-500">*</span>
+                </div>
+                <input
+                  type="text"
+                  value={person.name}
+                  onChange={(e) => handleInputChange(index, 'name', e.target.value)}
+                  placeholder="Murodov Islom"
+                  className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              {/* Position Input */}
+              <div>
+                <div className="text-sm text-gray-600 mb-1">
+                  Lavozimi <span className="text-red-500">*</span>
+                </div>
+                <input
+                  type="text"
+                  value={person.position}
+                  onChange={(e) => handleInputChange(index, 'position', e.target.value)}
+                  placeholder="Lavozimi"
+                  className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              {/* Phone Input with Delete Button */}
+              <div className="flex gap-2 items-end">
+                <div className="flex-1">
+                  <div className="text-sm text-gray-600 mb-1">
+                    Telefon raqami <span className="text-red-500">*</span>
+                  </div>
+                  <PhoneInput
+                    value={person.phone}
+                    onChange={(value) => handleInputChange(index, 'phone', value)}
+                  />
+                </div>
+                {showDeleteButtons && formData.length > 1 && (
+                  <button
+                    onClick={() => handleRemovePerson(index)}
+                    className="h-[46px] w-[46px] flex items-center justify-center text-gray-400 hover:text-red-600 border border-gray-200 rounded-lg"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// First, add new component for Reporter Information
+const ReporterInfo = ({ formData, onFormDataChange, isAnonymous, onAnonymousChange }) => {
+  return (
+    <div>
+      <h2 className="text-xl font-medium text-gray-800 mb-6">Xabar Yuborish</h2>
+
+      {/* Toggle Buttons */}
+      <div className="mb-6">
+        <div className="inline-flex bg-gray-100 rounded-lg p-1">
+          <button
+            className={`px-4 py-2 rounded-md ${!isAnonymous ? 'bg-white shadow-sm text-[#024073]' : 'text-gray-500'}`}
+            onClick={() => onAnonymousChange(false)}
+          >
+            Xabar Beruvchi Haqida Ma'lumot
+          </button>
+          <button
+            className={`px-4 py-2 rounded-md ${isAnonymous ? 'bg-white shadow-sm text-[#024073]' : 'text-gray-500'}`}
+            onClick={() => onAnonymousChange(true)}
+          >
+            Anonomim Xabar Qoldirish
+          </button>
+        </div>
+      </div>
+
+      {/* Form Fields */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Name Input */}
         <div>
           <div className="text-sm text-gray-600 mb-1">
@@ -526,23 +722,10 @@ const ContactForm = () => {
           <input
             type="text"
             value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            placeholder="Murodov Islom"
+            onChange={(e) => onFormDataChange({ ...formData, name: e.target.value })}
+            placeholder="Islomov Murod"
             className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-
-        {/* Position Input */}
-        <div>
-          <div className="text-sm text-gray-600 mb-1">
-            Lavozimi <span className="text-red-500">*</span>
-          </div>
-          <input
-            type="text"
-            value={formData.position}
-            onChange={(e) => setFormData({ ...formData, position: e.target.value })}
-            placeholder="Lavozimi"
-            className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={isAnonymous}
           />
         </div>
 
@@ -551,12 +734,24 @@ const ContactForm = () => {
           <div className="text-sm text-gray-600 mb-1">
             Telefon raqami <span className="text-red-500">*</span>
           </div>
-          <input
-            type="tel"
+          <PhoneInput
             value={formData.phone}
-            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-            placeholder="+998 (99) 998-98-98"
+            onChange={(value) => onFormDataChange({ ...formData, phone: value })}
+          />
+        </div>
+
+        {/* Email Input */}
+        <div>
+          <div className="text-sm text-gray-600 mb-1">
+            Elektron pochta <span className="text-red-500">*</span>
+          </div>
+          <input
+            type="email"
+            value={formData.email}
+            onChange={(e) => onFormDataChange({ ...formData, email: e.target.value })}
+            placeholder="Elektron pochta"
             className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={isAnonymous}
           />
         </div>
       </div>
@@ -601,9 +796,9 @@ const NewsReporting = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [showModal, setShowModal] = useState(false);
-
   const [selectedOrgId, setSelectedOrgId] = useState(null);
 
+  // Update reportFormData to include files
   const [reportFormData, setReportFormData] = useState({
     type: '',
     region: '',
@@ -611,24 +806,88 @@ const NewsReporting = () => {
     date: '',
     time: '',
     details: '',
+    files: [], // Add files array to store uploaded files
   });
 
-  const [contactFormData, setContactFormData] = useState({
+  const [contactFormData, setContactFormData] = useState([{
     name: '',
     position: '',
-    phone: ''
+    phone: '+998'
+  }]);
+
+  // Add new states for reporter information
+  const [reporterFormData, setReporterFormData] = useState({
+    name: '',
+    phone: '+998',
+    email: ''
   });
+  const [isAnonymous, setIsAnonymous] = useState(false);
 
   const handleReportFormChange = (data) => {
-    setReportFormData(data);
+    setReportFormData(prev => ({
+      ...prev,
+      ...data
+    }));
   };
-  const handleContactFormChange = (data) => {
-    setContactFormData(data);
+
+  // Add new handler for file updates
+  const handleFileChange = (files) => {
+    setReportFormData(prev => ({
+      ...prev,
+      files: files
+    }));
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const formData = new FormData();
+
+      // Single value fields
+      formData.append('organization', selectedOrgId);
+      formData.append('event_time', `${reportFormData.date}T${reportFormData.time}`);
+      formData.append('region', reportFormData.region);
+      formData.append('district', reportFormData.district);
+      formData.append('report_type', reportFormData.type);
+      formData.append('comment', reportFormData.details);
+
+      // Reporter info
+      formData.append('informant_full_name', reporterFormData.name);
+      formData.append('informant_phone_number', reporterFormData.phone);
+      formData.append('informant_email', reporterFormData.email);
+      formData.append('is_anonim', isAnonymous.toString());
+
+      // Multiple files
+      reportFormData.files.forEach(fileObj => {
+        formData.append('file', fileObj.file);
+      });
+
+      // Multiple contact persons
+      contactFormData.forEach((contact, index) => {
+        formData.append('full_name', contact.name);
+        formData.append('position', contact.position);
+        formData.append('phone_number', contact.phone);
+      });
+
+      const response = await fetch('https://api.komplayens.uz/api/v1/services/violation/report/', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      // If successful, show modal
+      setShowModal(true);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      // Here you might want to show an error message to the user
+    }
   };
 
   const handleNext = () => {
-    if (currentStep === 3) {
-      setShowModal(true);
+    if (currentStep === 4) {
+      handleSubmit(); // Call submit instead of directly showing modal
     } else {
       setCurrentStep(prev => prev + 1);
     }
@@ -637,6 +896,40 @@ const NewsReporting = () => {
   const handleModalClose = () => {
     setShowModal(false);
     navigate('/');
+  };
+
+  // Update the steps rendering to include the new component
+  const renderCurrentStep = () => {
+    switch (currentStep) {
+      case 1:
+        return <OrganizationSelection onNext={handleNext} onSelect={setSelectedOrgId} selectedOrgId={selectedOrgId} />;
+      case 2:
+        return (
+          <ReportDetails
+            onFormDataChange={handleReportFormChange}
+            onFileChange={handleFileChange}
+            formData={reportFormData}
+          />
+        );
+      case 3:
+        return (
+          <ContactForm
+            onFormDataChange={setContactFormData}
+            formData={contactFormData}
+          />
+        );
+      case 4:
+        return (
+          <ReporterInfo
+            formData={reporterFormData}
+            onFormDataChange={setReporterFormData}
+            isAnonymous={isAnonymous}
+            onAnonymousChange={setIsAnonymous}
+          />
+        );
+      default:
+        return null;
+    }
   };
 
   return (
@@ -693,12 +986,18 @@ const NewsReporting = () => {
               )}
             </div>
           </div>
-          <div className="flex-grow h-1 bg-gray-300"></div>
+          <div className={`flex-grow h-1 ${currentStep >= 4 ? 'bg-[#024073]' : 'bg-gray-300'}`}></div>
 
           {/* Step 4 */}
           <div className="flex-shrink-0">
-            <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-              <span className="w-2 h-2 bg-white rounded-full"></span>
+            <div className={`w-8 h-8 ${currentStep >= 4 ? 'bg-[#024073]' : 'bg-gray-300'} rounded-full flex items-center justify-center`}>
+              {currentStep >= 4 ? (
+                <svg className="w-4 h-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
+              ) : (
+                <span className="w-2 h-2 bg-white rounded-full"></span>
+              )}
             </div>
           </div>
         </div>
@@ -707,24 +1006,15 @@ const NewsReporting = () => {
         <button
           onClick={handleNext}
           disabled={currentStep === 1 && !selectedOrgId}
-          // className="px-6 py-2 text-[#024073] border border-[#024072] rounded-[13px] w-[186px] hover:bg-blue-50  sm:w-auto flex items-center justify-center gap-2"
-          className={`px-6 py-2 text-[#024073] border border-[#024072] rounded-[13px] w-[186px] hover:bg-blue-50 sm:w-auto flex items-center justify-center gap-2 \${currentStep === 1 && !selectedOrgId ? 'opacity-50 cursor-not-allowed hover:bg-transparent' : ''}`}
+          className={`px-6 py-2 text-[#024073] border border-[#024072] rounded-[13px] w-[186px] hover:bg-blue-50 sm:w-auto flex items-center justify-center gap-2 ${currentStep === 1 && !selectedOrgId ? 'opacity-50 cursor-not-allowed hover:bg-transparent' : ''}`}
         >
-          <p className="text-sm"> {currentStep === 3 ? 'Yuborish' : 'Keyingisi'}</p>
-          {currentStep !== 3 && <ChevronRight size={16} className="text-gray-400" />}
+          <p className="text-sm">{currentStep === 4 ? 'Yuborish' : 'Keyingisi'}</p>
+          {currentStep !== 4 && <ChevronRight size={16} className="text-gray-400" />}
         </button>
       </div>
 
       {/* Current Step Content */}
-      {currentStep === 1 && <OrganizationSelection onNext={handleNext} onSelect={setSelectedOrgId} selectedOrgId={selectedOrgId} />}
-      {currentStep === 2 && <ReportDetails
-        onFormDataChange={handleReportFormChange}
-        formData={reportFormData}
-      />}
-      {currentStep === 3 && <ContactForm
-        onFormDataChange={handleContactFormChange}
-        formData={contactFormData}
-      />}
+      {renderCurrentStep()}
 
       {/* Success Modal */}
       <SuccessModal
