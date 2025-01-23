@@ -86,12 +86,15 @@ const OrganizationSelection = ({ onNext, onSelect, selectedOrgId }) => {
   };
 
   useEffect(() => {
-    fetchOrganizations();
-  }, []);
+    const debounceTimer = setTimeout(() => {
+      fetchOrganizations(searchQuery);
+    }, searchQuery ? 500 : 0);
+
+    return () => clearTimeout(debounceTimer);
+  }, [searchQuery]);
 
   const handleSearch = (value) => {
     setSearchQuery(value);
-    fetchOrganizations(value);
   };
 
   const handleSelectOrg = (org) => {

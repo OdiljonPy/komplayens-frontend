@@ -31,12 +31,15 @@ const TestSelection = ({ onNext, onSelect, selectedTestId }) => {
   };
 
   useEffect(() => {
-    fetchTests();
-  }, []);
+    const debounceTimer = setTimeout(() => {
+      fetchTests(searchQuery);
+    }, searchQuery ? 500 : 0);
+
+    return () => clearTimeout(debounceTimer);
+  }, [searchQuery]);
 
   const handleSearch = (value) => {
     setSearchQuery(value);
-    fetchTests(value);
   };
 
   const handleSelectTest = (test) => {
@@ -184,12 +187,15 @@ const OrganizationList = ({ onSelect, selectedOrgId }) => {
   };
 
   useEffect(() => {
-    fetchOrganizations();
-  }, []);
+    const debounceTimer = setTimeout(() => {
+      fetchOrganizations(searchQuery);
+    }, searchQuery ? 500 : 0);
+
+    return () => clearTimeout(debounceTimer);
+  }, [searchQuery]);
 
   const handleSearch = (value) => {
     setSearchQuery(value);
-    fetchOrganizations(value);
   };
 
   const handleSelectOrg = (org) => {
@@ -202,7 +208,7 @@ const OrganizationList = ({ onSelect, selectedOrgId }) => {
   return (
     <>
       <div className="flex justify-center mb-8">
-        <div className="relative w-[400px]">
+        <div className="relative w-full max-w-[400px]">
           <input
             type="text"
             value={searchQuery}

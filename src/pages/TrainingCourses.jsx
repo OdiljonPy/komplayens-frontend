@@ -12,6 +12,11 @@ export default function TrainingCourses() {
   const [selectedCategory, setSelectedCategory] = useState(1);
   const [pagination, setPagination] = useState({});
 
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+    setPagination(prev => ({ ...prev, currentPage: 1 }));
+  };
+
   useEffect(() => {
     const fetchCategories = async () => {
       const response = await sendRequest({ method: 'GET', url: '/services/training/category/' });
@@ -19,7 +24,9 @@ export default function TrainingCourses() {
         setCategories(response.data.result);
       }
     };
-
+    fetchCategories();
+  }, [])
+  useEffect(() => {
     const fetchCourses = async (page = 1) => {
       const response = await sendRequest({
         method: 'GET',
@@ -35,9 +42,14 @@ export default function TrainingCourses() {
       }
     };
 
-    fetchCategories();
-    fetchCourses();
-  }, [searchTerm, selectedCategory]);
+
+
+    const debounceTimer = setTimeout(() => {
+      fetchCourses(pagination.currentPage || 1);
+    }, searchTerm ? 500 : 0);
+
+    return () => clearTimeout(debounceTimer);
+  }, [searchTerm, selectedCategory, pagination.currentPage]);
 
   const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= pagination.totalPages) {
@@ -87,7 +99,7 @@ export default function TrainingCourses() {
               type="text"
               placeholder="Tashkilotni qidirish"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={handleSearch}
               className="w-full pr-10 pl-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
             />
             <Search className="absolute right-3 top-2.5 text-gray-400" size={20} />

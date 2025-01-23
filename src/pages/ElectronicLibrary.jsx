@@ -64,7 +64,7 @@ export default function ElectronicLibrary() {
       }
     };
 
-    const debounceTimer = setTimeout(fetchBooks, searchQuery ? 300 : 0);
+    const debounceTimer = setTimeout(fetchBooks, searchQuery ? 500 : 0);
     return () => clearTimeout(debounceTimer);
   }, [selectedCategory, pagination.currentPage, pagination.pageSize, searchQuery]);
 

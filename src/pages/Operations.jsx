@@ -9,6 +9,7 @@ const Operations = () => {
   const [cards, setCards] = useState([]);
   const [selectedProfession, setSelectedProfession] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
   const [pagination, setPagination] = useState({
     currentPage: 1,
     totalPages: 1,
@@ -29,6 +30,14 @@ const Operations = () => {
   }, []);
 
   useEffect(() => {
+    const debounceTimer = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery);
+    }, 500);
+
+    return () => clearTimeout(debounceTimer);
+  }, [searchQuery]);
+
+  useEffect(() => {
     const fetchCards = async () => {
       const params = {
         page: pagination.currentPage,
@@ -39,8 +48,8 @@ const Operations = () => {
         params.profession_id = selectedProfession;
       }
 
-      if (searchQuery) {
-        params.q = searchQuery;
+      if (debouncedSearchQuery) {
+        params.q = debouncedSearchQuery;
       }
 
       const response = await sendRequest({
@@ -59,7 +68,7 @@ const Operations = () => {
     };
 
     fetchCards();
-  }, [selectedProfession, searchQuery, pagination.currentPage, pagination.pageSize]);
+  }, [selectedProfession, debouncedSearchQuery, pagination.currentPage, pagination.pageSize]);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -168,9 +177,9 @@ const Operations = () => {
             value={searchQuery}
             onChange={handleSearch}
             placeholder="Amaliyotni qidirish"
-            className="w-full px-4 py-2 pl-10 bg-white rounded-md shadow-sm border border-gray-200"
+            className="w-full px-4 py-2 pr-10 bg-white rounded-md shadow-sm border border-gray-200"
           />
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+          <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
         </div>
       </div>
 

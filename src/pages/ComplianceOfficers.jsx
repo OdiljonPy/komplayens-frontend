@@ -42,13 +42,16 @@ const ComplianceOfficers = () => {
   };
 
   useEffect(() => {
-    fetchOrganizations(1);
-  }, []);
+    const debounceTimer = setTimeout(() => {
+      fetchOrganizations(1, searchQuery);
+    }, searchQuery ? 500 : 0);
+
+    return () => clearTimeout(debounceTimer);
+  }, [searchQuery]);
 
   const handleSearch = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
-    fetchOrganizations(1, query);
   };
 
   const handlePageChange = (page) => {
