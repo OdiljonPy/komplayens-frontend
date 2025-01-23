@@ -147,7 +147,7 @@ export default function ElectronicLibrary() {
               <div className="bg-white rounded-lg">
                 {/* Updated Department Selector */}
                 <div className="p-4 border-b">
-                  <div className="flex-col md:flex-row flex items-center gap-2">
+                  <div className="flex-row flex items-center gap-2">
                     <div className="relative">
                       <button
                         onClick={() => setIsDropdownOpen(!isDropdownOpen)}

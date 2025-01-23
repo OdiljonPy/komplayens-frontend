@@ -256,10 +256,9 @@ const Navbar = () => {
                     onClick={() => item.dropdown && toggleMobileDropdown(index)}
                     className="flex items-center justify-between w-full py-2 text-gray-700"
                   >
-                    <Link to={item.to}>{item.title}</Link>
+                    <Link to={item.to} onClick={() => setIsMobileMenuOpen(false)}>{item.title}</Link>
                     {item.dropdown && (
-                      <ChevronDown className={`h-4 w-4 transform transition-transform duration-200 ${activeMobileDropdown === index ? 'rotate-180' : ''
-                        }`} />
+                      <ChevronDown className={`h-4 w-4 transform transition-transform duration-200 ${activeMobileDropdown === index ? 'rotate-180' : ''}`} />
                     )}
                   </button>
                   {item.dropdown && activeMobileDropdown === index && (
@@ -268,6 +267,7 @@ const Navbar = () => {
                         <Link
                           key={subIndex}
                           to={subItem.to}
+                          onClick={() => setIsMobileMenuOpen(false)}
                           className="block py-2 text-sm text-gray-600 hover:text-blue-600"
                         >
                           {subItem.label}

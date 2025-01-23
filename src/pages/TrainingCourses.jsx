@@ -1,22 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Search, ChevronRight } from 'lucide-react';
+import { Search, ChevronRight, Clock, Eye, ChevronLeft } from 'lucide-react';
 import banner from "../assets/banners/07.png";
 import { Link } from 'react-router-dom';
 import { sendRequest } from '../utils/apiFunctions';
 
-const exampleCourses = [
-  {
-    id: 1,
-    title: "Korrupsiyaga qarshi kurash asoslari",
-    description: "Ushbu kurs korrupsiya tushunchasi, uning asosiy turlari, oqibatlari va unga qarshi kurash usullarini o'rgatadi",
-    duration: "14 daqiqa",
-  },
-].concat(Array(11).fill(null).map((_, i) => ({
-  id: i + 2,
-  title: "Korrupsiyaga qarshi kurash asoslari",
-  description: "Ushbu kurs korrupsiya tushunchasi, uning asosiy turlari, oqibatlari va unga qarshi kurash usullarini o'rgatadi",
-  duration: "14 daqiqa",
-})));
 
 export default function TrainingCourses() {
   const [categories, setCategories] = useState([]);
@@ -108,12 +95,12 @@ export default function TrainingCourses() {
         </div>
 
         {/* Category Selection */}
-        <div className="flex flex-wrap gap-2 mb-8">
+        <div className="flex overflow-x-auto gap-2 mb-8 pb-2">
           {categories.map((category) => (
             <button
               key={category.id}
               onClick={() => setSelectedCategory(category.id)}
-              className={`px-4 py-1.5 rounded-full transition-colors ${selectedCategory === category.id
+              className={`px-4 py-1.5 rounded-full transition-colors whitespace-nowrap ${selectedCategory === category.id
                 ? 'bg-blue-500 text-white'
                 : 'bg-white hover:bg-gray-50'
                 }`}
@@ -132,24 +119,33 @@ export default function TrainingCourses() {
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {courses.map((course) => (
-                  <div key={course.id} className="bg-white rounded-lg overflow-hidden shadow-sm">
+                  <div key={course.id} className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                     <img
                       src={course.image || banner}
                       alt="Course illustration"
                       className="w-full aspect-[16/9] object-cover"
                     />
                     <div className="p-4">
-                      <span className="text-sm text-gray-500">{course.video_length} min</span>
-                      <h3 className="font-medium text-lg mb-2">{course.name}</h3>
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="flex items-center gap-1 text-[#667085]">
+                          <Clock size={16} className="text-[#667085]" />
+                          <span className="text-sm">{course.video_length} daqiqa</span>
+                        </div>
+                        <div className="flex items-center gap-1 text-[#667085]">
+                          <Eye size={16} className="text-[#667085]" />
+                          <span className="text-sm">228</span>
+                        </div>
+                      </div>
+                      <h3 className="font-medium text-[#024072] text-lg mb-2">{course.name}</h3>
                       <div
-                        className="text-sm text-gray-600 mb-4 line-clamp-2"
+                        className="text-sm text-[#4D4D4D] mb-4 line-clamp-2"
                         dangerouslySetInnerHTML={{ __html: course.description }}
                       />
                       <Link
                         to={`/educational-materials/${course.id}`}
-                        className="text-blue-500 hover:text-blue-700"
+                        className="block"
                       >
-                        <button className="w-full bg-blue-900 text-white py-2 rounded-md hover:bg-blue-800 transition-colors">
+                        <button className="w-full bg-[#024072] text-white py-2 rounded-md hover:bg-[#02386A] transition-colors">
                           Boshlash
                         </button>
                       </Link>
@@ -164,6 +160,7 @@ export default function TrainingCourses() {
                   disabled={pagination.currentPage === 1}
                   className="flex items-center gap-2 px-4 py-2 text-gray-600 border border-gray-200 bg-white rounded-md"
                 >
+                  <ChevronLeft size={16} className="text-[#024072]" />
                   <span>Oldingisi</span>
                 </button>
 
@@ -186,6 +183,7 @@ export default function TrainingCourses() {
                   className="flex items-center gap-2 px-4 py-2 text-gray-600 border border-gray-200 bg-white rounded-md"
                 >
                   <span>Keyingisi</span>
+                  <ChevronRight size={16} className="text-[#024072]" />
                 </button>
               </div></>
           )

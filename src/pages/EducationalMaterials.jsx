@@ -41,8 +41,7 @@ export default function EducationalMaterials() {
       </div>
 
       <div className="py-4 md:py-6">
-        <h1 className="text-lg md:text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-6 md:mb-10">
-          Oʻquv-uslubiy materiallar        </h1>
+        <h1 className="text-lg md:text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-6 md:mb-10">Oʻquv-uslubiy materiallar</h1>
 
         {/* Navigation and Search Container */}
         <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
