@@ -31,10 +31,10 @@ const NewsItem = () => {
   if (!newsData) return null;
 
   return (
-    <div className="p-4 bg-gray-50">
+    <div className="px-4 pt-16 md:pt-0 bg-gray-50">
       {/* Navigation */}
-      <div className="py-3 md:py-4 pt-0">
-        <div className="text-sm text-gray-600 flex items-center gap-1">
+      <div className="py-3 md:py-4 pt-0 overflow-x-auto">
+        <div className="text-sm text-gray-600 flex items-center gap-1 whitespace-nowrap min-w-max">
           <span>Bosh sahifa</span>
           <ChevronRight size={16} className="text-gray-400" />
           <Link to="/violations" className='text-gray-400'>Yangiliklar</Link>
@@ -87,7 +87,7 @@ const NewsItem = () => {
                 <Link
                   to={`/news/${item.id}`}
                   key={item.id}
-                  className="flex space-x-4 bg-white rounded-lg shadow hover:bg-gray-100 p-3 rounded-lg"
+                  className="flex space-x-4 bg-white shadow hover:bg-gray-100 p-3 rounded-lg"
                 >
                   <img
                     src={item.image}
