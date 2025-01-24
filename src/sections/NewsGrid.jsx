@@ -2,9 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Eye, Calendar } from 'lucide-react';
 import { sendRequest } from '../utils/apiFunctions';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const NewsGrid = () => {
+  const { t } = useTranslation();
   const [news, setNews] = useState([]);
+
+  const months = t('months', { returnObjects: true });
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -26,11 +30,6 @@ const NewsGrid = () => {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    const months = [
-      'Yanvar', 'Fevral', 'Mart', 'Aprel',
-      'May', 'Iyun', 'Iyul', 'Avgust',
-      'Sentabr', 'Oktabr', 'Noyabr', 'Dekabr'
-    ];
     return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
   };
 
@@ -38,7 +37,7 @@ const NewsGrid = () => {
     <div className="w-full p-4 my-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959]">
-          Yangiliklar
+          {t('news.title')}
         </h1>
       </div>
 

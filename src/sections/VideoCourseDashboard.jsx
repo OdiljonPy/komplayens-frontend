@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Calendar, ChevronDown, ArrowRight } from 'lucide-react';
 import { PieChart, Pie, Cell } from 'recharts';
 import { sendRequest } from '../utils/apiFunctions'; // Update this path
+import { useTranslation } from 'react-i18next';
 
 import { Link } from 'react-router-dom';
 
 const VideoCourseDashboard = () => {
+  const { t } = useTranslation();
   const [selectedYear, setSelectedYear] = useState(null);
   const [years, setYears] = useState([]);
   const [pieData, setPieData] = useState([]);
@@ -52,9 +54,9 @@ const VideoCourseDashboard = () => {
         const { rainbow, liner } = response.data.result;
         // Transform rainbow data for pie chart
         const transformedPieData = [
-          { name: 'Qoniqarsiz', value: rainbow.unsatisfactory },
-          { name: 'Qoniqarli', value: rainbow.satisfactory },
-          { name: 'Yuqori', value: rainbow.high }
+          { name: t('ratings.unsatisfactory'), value: rainbow.unsatisfactory },
+          { name: t('ratings.satisfactory'), value: rainbow.satisfactory },
+          { name: t('ratings.high'), value: rainbow.high }
         ];
         setPieData(transformedPieData);
 
@@ -103,10 +105,12 @@ const VideoCourseDashboard = () => {
         {/* Left Section - Video Courses */}
         <div className="lg:col-span-7">
           <div className="flex justify-between items-center mb-6">
-            <h1 className="text-2xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959]">Video kurslar</h1>
+            <h1 className="text-2xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959]">
+              {t('videoCourses.title')}
+            </h1>
             <Link to="/training-courses">
               <button className="px-4 py-2 bg-white text-gray-700 rounded-[12px] flex items-center gap-2">
-                <span className='text-[14px]'>Batafsil</span>
+                <span className='text-[14px]'>{t('common.details')}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </Link>
@@ -114,18 +118,18 @@ const VideoCourseDashboard = () => {
 
           <div className="flex flex-col md:flex-row gap-4 mb-6">
             <div className="flex-1">
-              <label className="block text-sm text-gray-600 mb-1">Saralash:</label>
+              <label className="block text-sm text-gray-600 mb-1">{t('common.sort')}:</label>
               <select
                 className="w-full p-2 border rounded-md"
                 value={orderBy}
                 onChange={(e) => setOrderBy(e.target.value)}
               >
-                <option value="new">Eng yangi</option>
-                <option value="old">Eng eski</option>
+                <option value="new">{t('sort.newest')}</option>
+                <option value="old">{t('sort.oldest')}</option>
               </select>
             </div>
             <div className="flex-1">
-              <label className="block text-sm text-gray-600 mb-1">Sana</label>
+              <label className="block text-sm text-gray-600 mb-1">{t('common.date')}</label>
               <input
                 type="date"
                 className="w-full p-2 border rounded-md"
@@ -188,7 +192,9 @@ const VideoCourseDashboard = () => {
           <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm">
             {/* Header section */}
             <div className="flex flex-row justify-between items-center gap-4 sm:gap-0 mb-6">
-              <h2 className="text-lg sm:text-2xl font-semibold text-gray-800">Idoralar ochiqlik indeksi</h2>
+              <h2 className="text-lg sm:text-2xl font-semibold text-gray-800">
+                {t('dashboard.openness_index')}
+              </h2>
               <div className="relative">
                 <button
                   onClick={() => setIsYearDropdownOpen(!isYearDropdownOpen)}
@@ -299,14 +305,14 @@ const VideoCourseDashboard = () => {
           <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm">
             <div className="flex items-center mb-6 gap-2">
               <h2 className="text-[14px] md:text-lg font-semibold text-gray-800">
-                Faoliyat samaradorligi reytingi
+                {t('dashboard.performance_rating')}
               </h2>
               <div className="relative">
                 <button
                   onClick={() => setIsSortDropdownOpen(!isSortDropdownOpen)}
                   className="flex items-center gap-2 text-blue-500 hover:text-blue-600 text-[14px] md:text-base"
                 >
-                  {sortType === 'high' ? 'Eng baland' : 'Eng past'}
+                  {sortType === 'high' ? t('sort.highest') : t('sort.lowest')}
                   <ChevronDown className="w-4 h-4" />
                 </button>
 
@@ -319,7 +325,7 @@ const VideoCourseDashboard = () => {
                       }}
                       className="w-full text-left px-4 py-2 hover:bg-gray-50 text-gray-700"
                     >
-                      Eng baland
+                      {t('sort.highest')}
                     </button>
                     <button
                       onClick={() => {
@@ -328,7 +334,7 @@ const VideoCourseDashboard = () => {
                       }}
                       className="w-full text-left px-4 py-2 hover:bg-gray-50 text-gray-700"
                     >
-                      Eng past
+                      {t('sort.lowest')}
                     </button>
                   </div>
                 )}

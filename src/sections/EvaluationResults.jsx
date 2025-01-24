@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronDown, ArrowUp, ArrowDown, MinusCircle } from 'lucide-react';
 import { sendRequest } from '../utils/apiFunctions';
+import { useTranslation } from 'react-i18next';
+
 const EvaluationResults = () => {
+  const { t } = useTranslation();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [years, setYears] = useState([]);
   const [evaluationResults, setEvaluationResults] = useState([]);
   const [selectedYear, setSelectedYear] = useState(null);
 
   const categories = [
-    { label: 'Yaxshi', color: '#22c55e' },
-    { label: "Qoniqarli", color: '#FF9437' },
-    { label: 'Qoniqarsiz', color: '#ef4444' }
+    { label: t('evaluation.status.good'), color: '#22c55e' },
+    { label: t('evaluation.status.satisfactory'), color: '#FF9437' },
+    { label: t('evaluation.status.unsatisfactory'), color: '#ef4444' }
   ];
 
   // Fetch years when component mounts
@@ -121,9 +124,9 @@ const EvaluationResults = () => {
         borderRadius: '10px'
       }}>
         {/* Header */}
-        <div className="flex  md:flex-row justify-between items-start xs:items-center gap-3 mb-4 md:mb-6">
+        <div className="flex md:flex-row justify-between items-start xs:items-center gap-3 mb-4 md:mb-6">
           <h2 className="text-base md:text-lg lg:text-xl font-semibold text-[#1e293b]">
-            Baholash natijalari
+            {t('evaluation.title')}
           </h2>
           <div className="relative">
             <button
@@ -169,7 +172,7 @@ const EvaluationResults = () => {
               {/* Column Header - Show always on desktop, but only with items on mobile */}
               <div className={`bg-gray-50 rounded-lg p-3 ${columnItems.length === 0 ? 'hidden md:block' : ''}`}>
                 <div className="flex items-center">
-                  <span className="text-sm text-gray-500 min-w-[120px] mr-2">Choraklik kesmida</span>
+                  <span className="text-sm text-gray-500 min-w-[120px] mr-2">{t('evaluation.quarterly_section')}</span>
                   <div className="w-[50px] text-center"></div>
                   <div className="grid grid-cols-5 flex-1 gap-2">
                     {['I', 'II', 'III', 'IV', 'V'].map((quarter, idx) => (

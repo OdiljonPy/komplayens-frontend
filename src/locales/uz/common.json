@@ -63,5 +63,61 @@
     "announcements": "E'lonlar",
     "handouts": "Tarqatma materiallar",
     "phone": "+998 71 222-77-77"
+  },
+  "common": {
+    "details": "Batafsil",
+    "sort": "Saralash",
+    "date": "Sana",
+    "noData": "Ma'lumot topilmadi"
+  },
+  "sort": {
+    "newest": "Eng yangi",
+    "oldest": "Eng eski",
+    "highest": "Eng baland",
+    "lowest": "Eng past"
+  },
+  "announcements": {
+    "title": "E'lonlar"
+  },
+  "news": {
+    "title": "Yangiliklar"
+  },
+  "videoCourses": {
+    "title": "Video kurslar",
+    "length": "min"
+  },
+  "dashboard": {
+    "openness_index": "Idoralar ochiqlik indeksi",
+    "performance_rating": "Faoliyat samaradorligi reytingi",
+    "select_year": "Yilni tanlang",
+    "year_suffix": "-yil"
+  },
+  "months": [
+    "Yanvar",
+    "Fevral",
+    "Mart",
+    "Aprel",
+    "May",
+    "Iyun",
+    "Iyul",
+    "Avgust",
+    "Sentabr",
+    "Oktabr",
+    "Noyabr",
+    "Dekabr"
+  ],
+  "ratings": {
+    "unsatisfactory": "Qoniqarsiz",
+    "satisfactory": "Qoniqarli",
+    "high": "Yuqori"
+  },
+  "evaluation": {
+    "title": "Baholash natijalari",
+    "quarterly_section": "Choraklik bo'limi",
+    "status": {
+      "good": "Yaxshi",
+      "satisfactory": "Qoniqarli",
+      "unsatisfactory": "Qoniqarsiz"
+    }
   }
 }

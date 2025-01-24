@@ -63,5 +63,61 @@
     "announcements": "Announcements",
     "handouts": "Handouts",
     "phone": "+998 71 222-77-77"
+  },
+  "common": {
+    "details": "Details",
+    "sort": "Sort",
+    "date": "Date",
+    "noData": "No data found"
+  },
+  "sort": {
+    "newest": "Newest",
+    "oldest": "Oldest",
+    "highest": "Highest",
+    "lowest": "Lowest"
+  },
+  "announcements": {
+    "title": "Announcements"
+  },
+  "news": {
+    "title": "News"
+  },
+  "videoCourses": {
+    "title": "Video Courses",
+    "length": "min"
+  },
+  "dashboard": {
+    "openness_index": "Institution Openness Index",
+    "performance_rating": "Performance Rating",
+    "select_year": "Select Year",
+    "year_suffix": "-year"
+  },
+  "months": [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ],
+  "ratings": {
+    "unsatisfactory": "Unsatisfactory",
+    "satisfactory": "Satisfactory",
+    "high": "High"
+  },
+  "evaluation": {
+    "title": "Evaluation Results",
+    "quarterly_section": "Quarterly section",
+    "status": {
+      "good": "Good",
+      "satisfactory": "Satisfactory",
+      "unsatisfactory": "Unsatisfactory"
+    }
   }
 }

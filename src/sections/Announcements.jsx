@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Eye, Calendar } from 'lucide-react';
 import banner from "../assets/banners/05.png"
+import { useTranslation } from 'react-i18next';
 
 import { sendRequest } from '../utils/apiFunctions';
 
 
 const Announcements = () => {
+  const { t } = useTranslation();
   const [announcements, setAnnouncements] = useState([]);
 
   useEffect(() => {
@@ -26,7 +28,9 @@ const Announcements = () => {
 
   return (
     <div className="w-full p-4 mt-4">
-      <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-6">E'lonlar</h1>
+      <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-6">
+        {t('announcements.title')}
+      </h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {announcements.map((announcement, idx) => (
