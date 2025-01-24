@@ -68,7 +68,10 @@
     "details": "Подробнее",
     "sort": "Сортировка",
     "date": "Дата",
-    "noData": "Данные не найдены"
+    "noData": "Данные не найдены",
+    "loading": "Загрузка...",
+    "sending": "Отправка...",
+    "go_back": "Вернуться назад"
   },
   "sort": {
     "newest": "Самые новые",
@@ -119,5 +122,18 @@
       "satisfactory": "Удовлетворительно",
       "unsatisfactory": "Неудовлетворительно"
     }
+  },
+  "auth": {
+    "welcome": "Добро пожаловать",
+    "login": "Войти",
+    "register": "Регистрация",
+    "password": "Пароль",
+    "forgot_password": "Забыли пароль?",
+    "reset_password": "Сброс пароля",
+    "reset_password_description": "Введите привязанный номер телефона, и мы отправим вам пароль",
+    "send_password": "Отправить пароль",
+    "select_organization": "Выберите организацию",
+    "first_name": "Имя",
+    "last_name": "Фамилия"
   }
 }

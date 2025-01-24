@@ -5,6 +5,7 @@ import logo from "../../assets/logos/full_logo.png";
 import { Link } from 'react-router-dom';
 import PhoneInput from '../../components/PhoneInput';
 import { sendRequest } from '../../utils/apiFunctions';
+import { useTranslation } from 'react-i18next';
 
 const FloatingLabelInput = ({ label, type = "text", value, onChange, Icon, required }) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -41,6 +42,7 @@ const FloatingLabelInput = ({ label, type = "text", value, onChange, Icon, requi
 };
 
 const Login = () => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     phone: '+998 ',
     password: ''
@@ -124,18 +126,18 @@ const Login = () => {
           </div>
 
           <div className="flex-1">
-            <h2 className="text-2xl font-semibold mb-6">Xush kelibsiz</h2>
+            <h2 className="text-2xl font-semibold mb-6">{t('auth.welcome')}</h2>
 
             <div className="space-y-5 ">
               {/* Toggle Buttons */}
               <div className="flex space-x-4 mb-10">
                 <Link to="/register">
                   <button className="text-gray-600 px-6 py-2">
-                    Ro'yxatdan O'tish
+                    {t('auth.register')}
                   </button>
                 </Link>
                 <button className="bg-[#3981F7] text-white px-6 py-2 rounded-md">
-                  Tizimga Kirish
+                  {t('auth.login')}
                 </button>
               </div>
 
@@ -151,7 +153,7 @@ const Login = () => {
               {/* Password Field */}
               <div>
                 <FloatingLabelInput
-                  label="Parol"
+                  label={t('auth.password')}
                   type={showPassword ? "text" : "password"}
                   value={formData.password}
                   onChange={handleChange('password')}
@@ -165,9 +167,9 @@ const Login = () => {
                     </button>
                   }
                 />
-                <div className=" flex justify-end">
+                <div className="flex justify-end">
                   <Link to="/forgot-password" className="text-[#3981F7] text-sm">
-                    Parolni unutdingizmi?
+                    {t('auth.forgot_password')}
                   </Link>
                 </div>
               </div>
@@ -183,7 +185,7 @@ const Login = () => {
                 onClick={handleLogin}
                 disabled={loading || !isFormValid()}
               >
-                {loading ? 'Yuklanmoqda...' : 'Tizimga Kirish'}
+                {loading ? t('common.loading') : t('auth.login')}
               </button>
             </div>
           </div>

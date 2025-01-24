@@ -5,6 +5,7 @@ import logo from "../../assets/logos/full_logo.png";
 import { Link } from 'react-router-dom';
 import PhoneInput from '../../components/PhoneInput';
 import { sendRequest } from '../../utils/apiFunctions';
+import { useTranslation } from 'react-i18next';
 
 // FloatingLabelInput component with fixed positioning
 const FloatingLabelInput = ({ label, type = "text", value, onChange, Icon }) => {
@@ -119,6 +120,7 @@ const Register = () => {
   const [organizations, setOrganizations] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchOrganizations = async () => {
@@ -212,17 +214,17 @@ const Register = () => {
           </div>
 
           <div className="flex-1">
-            <h2 className="text-2xl font-semibold mb-6">Xush kelibsiz</h2>
+            <h2 className="text-2xl font-semibold mb-6">{t('auth.welcome')}</h2>
 
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Toggle Buttons */}
               <div className="flex space-x-4">
                 <button className="bg-[#3981F7] text-white px-6 py-2 rounded-md">
-                  Ro'yxatdan O'tish
+                  {t('auth.register')}
                 </button>
                 <Link to="/login">
                   <button className="text-gray-600 px-6 py-2">
-                    Tizimga Kirish
+                    {t('auth.login')}
                   </button>
                 </Link>
               </div>
@@ -230,25 +232,24 @@ const Register = () => {
               {/* Organization Field */}
               <div>
                 <FloatingLabelSelect
-                  label="Tashkilotni tanlang"
+                  label={t('auth.select_organization')}
                   options={organizations.map(org => ({ value: org.id, label: org.name }))}
                   onChange={handleChange('organization')}
                 />
               </div>
 
-              {/* Name Field */}
+              {/* Name Fields */}
               <div>
                 <FloatingLabelInput
-                  label="Ism"
+                  label={t('auth.first_name')}
                   value={formData.firstName}
                   onChange={handleChange('firstName')}
                 />
               </div>
 
-              {/* Family Name Field */}
               <div>
                 <FloatingLabelInput
-                  label="Familiya"
+                  label={t('auth.last_name')}
                   value={formData.lastName}
                   onChange={handleChange('lastName')}
                 />
@@ -265,7 +266,7 @@ const Register = () => {
               {/* Password Field */}
               <div>
                 <FloatingLabelInput
-                  label="Parol"
+                  label={t('auth.password')}
                   type={showPassword ? "text" : "password"}
                   value={formData.password}
                   onChange={handleChange('password')}
@@ -287,11 +288,10 @@ const Register = () => {
 
               <button
                 type="submit"
-                className={`w-full py-3 rounded-md ${isFormValid() ? 'bg-[#024072] text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                  }`}
+                className={`w-full py-3 rounded-md ${isFormValid() ? 'bg-[#024072] text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
                 disabled={loading || !isFormValid()}
               >
-                {loading ? 'Yuborilmoqda...' : 'Ro\'yxatdan O\'tish'}
+                {loading ? t('common.sending') : t('auth.register')}
               </button>
             </form>
 

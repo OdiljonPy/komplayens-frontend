@@ -68,7 +68,10 @@
     "details": "Batafsil",
     "sort": "Saralash",
     "date": "Sana",
-    "noData": "Ma'lumot topilmadi"
+    "noData": "Ma'lumot topilmadi",
+    "loading": "Yuklanmoqda...",
+    "sending": "Yuborilmoqda...",
+    "go_back": "Orqaga qaytish"
   },
   "sort": {
     "newest": "Eng yangi",
@@ -119,5 +122,18 @@
       "satisfactory": "Qoniqarli",
       "unsatisfactory": "Qoniqarsiz"
     }
+  },
+  "auth": {
+    "welcome": "Xush kelibsiz",
+    "login": "Tizimga kirish",
+    "register": "Ro'yxatdan o'tish",
+    "password": "Parol",
+    "forgot_password": "Parolni unutdingizmi?",
+    "reset_password": "Parolni tiklash",
+    "reset_password_description": "Bog'langan telefon raqamingizni kiriting va biz sizga parol jo'natamiz",
+    "send_password": "Parol yuborish",
+    "select_organization": "Tashkilotni tanlang",
+    "first_name": "Ism",
+    "last_name": "Familiya"
   }
 }

@@ -4,11 +4,13 @@ import login_bg from "../../assets/backgrounds/login_bg.png";
 import logo from "../../assets/logos/full_logo.png";
 import PhoneInput from '../../components/PhoneInput';
 import { sendRequest } from '../../utils/apiFunctions';
+import { useTranslation } from 'react-i18next';
 
 const ForgotPassword = () => {
   const [phoneNumber, setPhoneNumber] = useState('+998 ');
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -65,12 +67,10 @@ const ForgotPassword = () => {
           </div>
 
           <div className="flex-1">
-            <h2 className="text-2xl font-semibold mb-6">Parolni tiklash</h2>
-
-
+            <h2 className="text-2xl font-semibold mb-6">{t('auth.reset_password')}</h2>
 
             <p className="text-gray-600 mb-8">
-              Bog'langan telefon raqamingizni kiriting va biz sizga parol jo'natamiz
+              {t('auth.reset_password_description')}
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -87,11 +87,7 @@ const ForgotPassword = () => {
                 className="w-full bg-[#024072] text-white py-3 rounded-md hover:bg-[#02355f] transition-colors"
                 disabled={loading}
               >
-                {loading ? (
-                  "Yuborilmoqda..."
-                ) : (
-                  'Parol Yuborish'
-                )}
+                {loading ? t('common.sending') : t('auth.send_password')}
               </button>
 
               <div className="text-center">
@@ -99,7 +95,7 @@ const ForgotPassword = () => {
                   to="/login"
                   className="text-[#024072] hover:text-[#02355f] transition-colors"
                 >
-                  Orqaga Qaytish
+                  {t('common.go_back')}
                 </Link>
               </div>
             </form>

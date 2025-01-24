@@ -68,7 +68,10 @@
     "details": "Details",
     "sort": "Sort",
     "date": "Date",
-    "noData": "No data found"
+    "noData": "No data found",
+    "loading": "Yuklanmoqda...",
+    "sending": "Yuborilmoqda...",
+    "go_back": "Orqaga Qaytish"
   },
   "sort": {
     "newest": "Newest",
@@ -119,5 +122,18 @@
       "satisfactory": "Satisfactory",
       "unsatisfactory": "Unsatisfactory"
     }
+  },
+  "auth": {
+    "welcome": "Welcome",
+    "login": "Login",
+    "register": "Register",
+    "password": "Password",
+    "forgot_password": "Forgot password?",
+    "reset_password": "Reset Password",
+    "reset_password_description": "Enter your linked phone number and we will send you a password",
+    "send_password": "Send Password",
+    "select_organization": "Select Organization",
+    "first_name": "First Name",
+    "last_name": "Last Name"
   }
 }
