@@ -19,6 +19,10 @@ export const sendRequest = async ({ method, url, data = {}, token = null, params
   if (token) {
     axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token.replace(/^"|"$/g, '')}`;
   }
+  // Add language header based on current language
+  const currentLang = localStorage.getItem('i18nextLng') || 'uz';
+  axiosInstance.defaults.headers.common['Accept-Language'] = currentLang;
+
   try {
     const response = await axiosInstance({
       method,

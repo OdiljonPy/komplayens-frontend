@@ -44,7 +44,7 @@ const NewsGrid = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {news.map((item) => (
-          <Link to={`/news/${item.id}`}>
+          <Link to={`/news/${item.id}`} key={item.id}>
             <div key={item.id} className="flex bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-3">
               <div className="w-24 h-24 flex-shrink-0">
                 <img

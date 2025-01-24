@@ -4,6 +4,8 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 
 import commonUZ from '../locales/uz/common.json';
 import commonRU from '../locales/ru/common.json';
+import commonENG from '../locales/en/common.json';
+
 
 i18n
   .use(LanguageDetector)
@@ -15,6 +17,9 @@ i18n
       },
       ru: {
         common: commonRU,
+      },
+      en: {
+        common: commonENG,
       },
     },
     fallbackLng: 'uz',

@@ -18,5 +18,50 @@
     "compliance_2": "офицеры",
     "news": "Новости",
     "announcements": "Объявления"
+  },
+  "video_courses": {
+    "video_course": "Видеокурсы",
+    "detail": "Подробно",
+    "sorting": "Сортировка",
+    "date": "Дата"
+  },
+  "educational_materials": {
+    "home": "Главная страница",
+    "education": "Образование",
+    "education_course": "Учебные курсы",
+    "electronic_library": "Электронная библиотека",
+    "start": "Начинать",
+    "next": "Следующий",
+    "prev": "Предыдущий"
+  },
+  "report": {
+    "send_message": "Отправить сообщение",
+    "search_input": "Поиск организации",
+    "benifits": "Конфликт интересов"
+  },
+  "practice": {
+    "title_1": "Работа с правилами этикета",
+    "search": "Поиск стажировки"
+  },
+  "resources": {
+    "certificate": "Справки",
+    "useful_links": "Полезные Ссылки"
+  },
+  "navbar": {
+    "education_resources": "Образовательные ресурсы",
+    "training_courses": "Учебные курсы",
+    "electronic_library": "Электронная библиотека",
+    "corruption_risks": "Коррупционные риски",
+    "report": "Сообщить",
+    "conflict_of_interest": "Конфликт интересов",
+    "surveys": "Опросы",
+    "practice": "Практика",
+    "compliance_officers": "Комплаенс офицеры",
+    "integrity_test": "Тест на честность",
+    "useful_resources": "Полезные ресурсы",
+    "news": "Новости",
+    "announcements": "Объявления",
+    "handouts": "Раздаточные материалы",
+    "phone": "+998 71 222-77-77"
   }
 }

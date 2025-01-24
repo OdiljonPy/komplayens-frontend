@@ -1,0 +1,67 @@
+{
+  "platform_title_1": "Corruption factors",
+  "platform_title_2": "Platform for Prevention",
+  "login": "Login",
+  "menu": {
+    "study_materials_1": "Educational-methodological",
+    "study_materials_2": "Materials",
+    "corruption_risks_1": "Corruption-related",
+    "corruption_risks_2": "risks and threats",
+    "report": "Report",
+    "conflict_1": "Benefits",
+    "conflict_2": "Conflict",
+    "activity": "Practice",
+    "useful_info_1": "Promotion",
+    "useful_info_2": "Information",
+    "integrity_test": "Honesty test",
+    "compliance_1": "Compliance",
+    "compliance_2": "officers",
+    "news": "News",
+    "announcements": "Announcements"
+  },
+  "video_courses": {
+    "video_course": "Video Course",
+    "detail": "Detail",
+    "sorting": "Sorting",
+    "date": "Date"
+  },
+  "educational_materials": {
+    "home": "Home page",
+    "education": "Education",
+    "education_course": "Education course",
+    "electronic_library": "Electronic Library",
+    "start": "Start",
+    "next": "Next",
+    "prev": "Prev"
+  },
+  "report": {
+    "send_message": "Send message",
+    "search_input": "Search for an organization",
+    "benifits": "Conflict of Interest"
+  },
+  "practice": {
+    "title_1": "Working with the rules of etiquette",
+    "search": "Searching for an internship"
+  },
+  "resources": {
+    "certificate": "Certificate",
+    "useful_links": "Useful Links"
+  },
+  "navbar": {
+    "education_resources": "Educational Resources",
+    "training_courses": "Training Courses",
+    "electronic_library": "Electronic Library",
+    "corruption_risks": "Corruption Risks",
+    "report": "Report",
+    "conflict_of_interest": "Conflict of Interest",
+    "surveys": "Surveys",
+    "practice": "Practice",
+    "compliance_officers": "Compliance Officers",
+    "integrity_test": "Integrity Test",
+    "useful_resources": "Useful Resources",
+    "news": "News",
+    "announcements": "Announcements",
+    "handouts": "Handouts",
+    "phone": "+998 71 222-77-77"
+  }
+}

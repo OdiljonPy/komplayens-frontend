@@ -1,5 +1,5 @@
 // src/routes/index.jsx
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import Layout from "../layouts/Layout";
 import AuthLayout from "../layouts/AuthLayout";
 import ErrorPage from "../components/ErrorPage";
@@ -29,34 +29,42 @@ import {
   ElectronicLibrary,
   Handouts
 } from "../pages";
+
+// Add language redirect for root path
+const defaultLanguage = 'uz';
+
 export const router = createBrowserRouter([
   {
     path: "/",
+    element: <Navigate to={`/${defaultLanguage}`} replace />
+  },
+  {
+    path: "/:lang",
     element: <Layout />,
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "/",
+        path: "",
         element: <LandingPage />
       },
       {
-        path: "/educational-materials",
+        path: "educational-materials",
         element: <EducationalMaterials />
       },
       {
-        path: "/training-courses",
+        path: "training-courses",
         element: <TrainingCourses />
       },
       {
-        path: "/electronic-library",
+        path: "electronic-library",
         element: <ElectronicLibrary />
       },
       {
-        path: "/educational-materials/:courseId",
+        path: "educational-materials/:courseId",
         element: <CourseItem />
       },
       {
-        path: "/operations/:operationId",
+        path: "operations/:operationId",
         element: <OperationsItem />
       },
       {
@@ -64,7 +72,7 @@ export const router = createBrowserRouter([
         element: <CorruptionRisks />
       },
       {
-        path: "/corruption-risks/:taskId",
+        path: "corruption-risks/:taskId",
         element: <CorruptionRisksItem />
       },
       {
@@ -72,7 +80,7 @@ export const router = createBrowserRouter([
         element: <NewsReporting />
       },
       {
-        path: "/news/:newsId",
+        path: "news/:newsId",
         element: <NewsItem />
       },
       {
@@ -80,15 +88,15 @@ export const router = createBrowserRouter([
         element: <BenefitsCalculator />
       },
       {
-        path: "/benefits/shablon1",
+        path: "benefits/shablon1",
         element: <BenefitsItem />
       },
       {
-        path: "/benefits/shablon2",
+        path: "benefits/shablon2",
         element: <BenefitsItem2 />
       },
       {
-        path: "/benefits/shablon3",
+        path: "benefits/shablon3",
         element: <BenefitsItem3 />
       },
       {
@@ -122,19 +130,19 @@ export const router = createBrowserRouter([
     ]
   },
   {
-    path: "/",
+    path: "/:lang",
     element: <AuthLayout />,
     children: [
       {
-        path: "/register",
+        path: "register",
         element: <Register />
       },
       {
-        path: "/login",
+        path: "login",
         element: <Login />
       },
       {
-        path: "/forgot-password",
+        path: "forgot-password",
         element: <ForgotPassword />
       }
     ]

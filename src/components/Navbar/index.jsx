@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Phone, ChevronDown, Menu, X } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import logo from "../../assets/logos/logo.png";
 
 
@@ -10,80 +10,100 @@ const Navbar = () => {
   const [activeMobileDropdown, setActiveMobileDropdown] = useState(null);
   const [isLangOpen, setIsLangOpen] = useState(false);
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Add effect to handle language changes
+  useEffect(() => {
+    const currentLang = i18n.language;
+    const currentPath = location.pathname;
+    const pathWithoutLang = currentPath.replace(/^\/(uz|ru|en)/, '');
+
+    if (!currentPath.startsWith(`/${currentLang}`)) {
+      navigate(`/${currentLang}${pathWithoutLang}`, { replace: true });
+    }
+
+    // Remove the force reload as it might cause issues
+    // Instead, wait for translations to load
+    i18n.loadNamespaces(['translation']).then(() => {
+      // Optional: you can force a component re-render here if needed
+    });
+  }, [i18n.language]);
+
+  // Add this helper function to handle link paths
+  const getLocalizedPath = (path) => {
+    return `/${i18n.language}${path}`;
+  };
 
   const menuItems = [
     {
-      title: "Ta'lim resurslari",
+      title: t('navbar.education_resources'),
       dropdown: true,
       items: [
         {
-          label: "O'quv kurslari",
+          label: t('navbar.training_courses'),
           to: '/training-courses'
         },
         {
-          label: "Elektron kutubxona",
+          label: t('navbar.electronic_library'),
           to: '/electronic-library'
         },
         {
-          label: "Korrupsiyaviy xavf-xatarlar",
+          label: t('navbar.corruption_risks'),
           to: '/corruption-risks'
         }
       ]
     },
     {
-      title: "Xabar berish",
+      title: t('navbar.report'),
       to: '/news',
       dropdown: true,
       items: [
         {
-          label: "Xabar berish",
+          label: t('navbar.report'),
           to: '/news'
         },
         {
-          label: "Manfaatlar to'qnashuvi",
+          label: t('navbar.conflict_of_interest'),
           to: '/benefits'
         }
       ]
     },
     {
-      title: "So'rovnomalar",
+      title: t('navbar.surveys'),
       to: '/',
       dropdown: true,
       items: [
         {
-          label: "Amaliyot",
+          label: t('navbar.practice'),
           to: '/operations'
         },
         {
-          label: "Komplayens ofitserlar",
+          label: t('navbar.compliance_officers'),
           to: '/compliance'
         }
       ]
     },
     {
-      title: "Halollik testi",
+      title: t('navbar.integrity_test'),
       to: '/status',
       dropdown: false
     },
     {
-      title: "Foydali resurslar",
+      title: t('navbar.useful_resources'),
       to: '/resources',
       dropdown: true,
       items: [
-        // {
-        //   label: "Targ'ibot va foydali axborotlar",
-        //   to: '/resources'
-        // },
         {
-          label: "Yangiliklar",
+          label: t('navbar.news'),
           to: '/violations'
         },
         {
-          label: "E'lonlar",
+          label: t('navbar.announcements'),
           to: '/announcements'
         },
         {
-          label: "Tarqatma materiallar",
+          label: t('navbar.handouts'),
           to: '/handouts'
         }
       ]
@@ -91,12 +111,37 @@ const Navbar = () => {
   ];
 
   const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng);
+    i18n.changeLanguage(lng).then(() => {
+      const currentPath = location.pathname;
+      const pathWithoutLang = currentPath.replace(/^\/(uz|ru|en)/, '');
+      navigate(`/${lng}${pathWithoutLang}`, { replace: true });
+      window.location.reload();
+    });
     setIsLangOpen(false);
   };
 
   const toggleMobileDropdown = (index) => {
     setActiveMobileDropdown(activeMobileDropdown === index ? null : index);
+  };
+
+  // Update language buttons to use current language
+  const languageOptions = [
+    {
+      code: 'uz', label: 'O\'ZB'
+    },
+    {
+      code: 'ru', label: 'РУС'
+    },
+    {
+      code: 'en', label: 'ENG'
+    }
+  ];
+
+  // Helper function to get current language label
+  const getCurrentLanguageLabel = () => {
+    const currentLang = i18n.language;
+    const option = languageOptions.find(opt => opt.code === currentLang);
+    return option ? option.label : 'O\'ZB'; // default to O'ZB if not found
   };
 
   return (
@@ -108,7 +153,7 @@ const Navbar = () => {
             <div className="flex items-center justify-between h-16">
               {/* Logo and Title */}
               <div className="flex items-center space-x-4">
-                <Link to="/" className="flex items-center space-x-2">
+                <Link to={getLocalizedPath('/')} className="flex items-center space-x-2">
                   <img src={logo} alt="Logo" className="h-8 w-auto" />
                   <div className="text-sm hidden sm:block">
                     <div>{t('platform_title_1')}</div>
@@ -131,29 +176,27 @@ const Navbar = () => {
                     className="flex items-center space-x-2 px-3 py-1 text-sm text-gray-700"
                   >
                     <div className="w-5 h-5 rounded-full bg-blue-100"></div>
-                    <span>{i18n.language === 'uz' ? 'O\'ZB' : 'РУС'}</span>
+                    <span>{getCurrentLanguageLabel()}</span>
                     <ChevronDown className="h-4 w-4" />
                   </button>
 
                   {isLangOpen && (
                     <div className="absolute right-0 mt-2 w-24 bg-white rounded-md shadow-lg z-50">
-                      <button
-                        onClick={() => changeLanguage('uz')}
-                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      >
-                        O'ZB
-                      </button>
-                      <button
-                        onClick={() => changeLanguage('ru')}
-                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      >
-                        РУС
-                      </button>
+                      {languageOptions.map((lang) => (
+                        <button
+                          key={lang.code}
+                          onClick={() => changeLanguage(lang.code)}
+                          className={`block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ${i18n.language === lang.code ? 'bg-gray-100' : ''
+                            }`}
+                        >
+                          {lang.label}
+                        </button>
+                      ))}
                     </div>
                   )}
                 </div>
 
-                <Link to="/login" className="hidden md:block">
+                <Link to={getLocalizedPath('/login')} className="hidden md:block">
                   <button className="bg-blue-900 text-white px-6 py-2 rounded text-sm">
                     {t('login')}
                   </button>
@@ -183,7 +226,7 @@ const Navbar = () => {
                 {menuItems.map((item, index) => (
                   <div key={index} className="relative group">
                     <Link
-                      to={item.to}
+                      to={item.to ? getLocalizedPath(item.to) : '#'}
                       className="flex items-center space-x-1 py-2 text-gray-700 hover:text-blue-600"
                     >
                       <span>{item.title}</span>
@@ -194,7 +237,7 @@ const Navbar = () => {
                         {item.items.map((subItem, subIndex) => (
                           <Link
                             key={subIndex}
-                            to={subItem.to}
+                            to={getLocalizedPath(subItem.to)}
                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                           >
                             {subItem.label}
@@ -226,23 +269,21 @@ const Navbar = () => {
                   className="flex items-center space-x-2 px-2 py-1 text-sm"
                 >
                   <div className="w-5 h-5 rounded-full bg-blue-100"></div>
-                  <span>{i18n.language === 'uz' ? 'O\'ZB' : 'РУС'}</span>
+                  <span>{getCurrentLanguageLabel()}</span>
                   <ChevronDown className="h-4 w-4" />
                 </button>
                 {isLangOpen && (
                   <div className="absolute right-0 mt-2 w-24 bg-white rounded-md shadow-lg z-50">
-                    <button
-                      onClick={() => changeLanguage('uz')}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      O'ZB
-                    </button>
-                    <button
-                      onClick={() => changeLanguage('ru')}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      РУС
-                    </button>
+                    {languageOptions.map((lang) => (
+                      <button
+                        key={lang.code}
+                        onClick={() => changeLanguage(lang.code)}
+                        className={`block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ${i18n.language === lang.code ? 'bg-gray-100' : ''
+                          }`}
+                      >
+                        {lang.label}
+                      </button>
+                    ))}
                   </div>
                 )}
               </div>
@@ -256,7 +297,12 @@ const Navbar = () => {
                     onClick={() => item.dropdown && toggleMobileDropdown(index)}
                     className="flex items-center justify-between w-full py-2 text-gray-700"
                   >
-                    <Link to={item.to} onClick={() => setIsMobileMenuOpen(false)}>{item.title}</Link>
+                    <Link
+                      to={item.to ? getLocalizedPath(item.to) : '#'}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      {item.title}
+                    </Link>
                     {item.dropdown && (
                       <ChevronDown className={`h-4 w-4 transform transition-transform duration-200 ${activeMobileDropdown === index ? 'rotate-180' : ''}`} />
                     )}
@@ -266,7 +312,7 @@ const Navbar = () => {
                       {item.items.map((subItem, subIndex) => (
                         <Link
                           key={subIndex}
-                          to={subItem.to}
+                          to={getLocalizedPath(subItem.to)}
                           onClick={() => setIsMobileMenuOpen(false)}
                           className="block py-2 text-sm text-gray-600 hover:text-blue-600"
                         >
@@ -280,7 +326,7 @@ const Navbar = () => {
             </nav>
 
             {/* Mobile Login Button */}
-            <Link to="/login">
+            <Link to={getLocalizedPath('/login')}>
               <button className="w-full bg-blue-900 text-white px-6 py-2 rounded text-sm">
                 {t('login')}
               </button>

@@ -18,5 +18,50 @@
     "compliance_2": "ofitserlar",
     "news": "Yangiliklar",
     "announcements": "E'lonlar"
+  },
+  "video_courses": {
+    "video_course": "Video Kurslar",
+    "detail": "Batafsil",
+    "sorting": "Saralash",
+    "date": "Sana"
+  },
+  "educational_materials": {
+    "home": "Bosh sahifa",
+    "education": "Ta'lim",
+    "education_course": "O'quv Kurslari",
+    "electronic_library": "Elektron Kutubxona",
+    "start": "Boshlash",
+    "next": "Keyingisi",
+    "prev": "Oldingisi"
+  },
+  "report": {
+    "send_massage": "Xabar yuborish",
+    "search_input": "Tashkilotni qidirish",
+    "benifits": "Manfaatlar to'qnashuvi "
+  },
+  "practice": {
+    "title_1": "Odob axloq qoidalari bilan ishlash",
+    "search": "Amaliyotni qidirish"
+  },
+  "resources": {
+    "certificate": "Malumotnomalar",
+    "useful_links": "Foydali havolalar"
+  },
+  "navbar": {
+    "education_resources": "Ta'lim resurslari",
+    "training_courses": "O'quv kurslari",
+    "electronic_library": "Elektron kutubxona",
+    "corruption_risks": "Korrupsiyaviy xavf-xatarlar",
+    "report": "Xabar berish",
+    "conflict_of_interest": "Manfaatlar to'qnashuvi",
+    "surveys": "So'rovnomalar",
+    "practice": "Amaliyot",
+    "compliance_officers": "Komplayens ofitserlar",
+    "integrity_test": "Halollik testi",
+    "useful_resources": "Foydali resurslar",
+    "news": "Yangiliklar",
+    "announcements": "E'lonlar",
+    "handouts": "Tarqatma materiallar",
+    "phone": "+998 71 222-77-77"
   }
 }
