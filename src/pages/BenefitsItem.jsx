@@ -614,87 +614,89 @@ const BenefitsItem = () => {
   };
 
   return (
-    <div className="p-4 pt-12 md:pt-0">
-      <div className="mb-4 md:mb-6">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
-          {/* Title */}
-          <h1 className="text-xl md:text-2xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] whitespace-normal flex-shrink-0">
-            {t('pages.benefits.title')}
-          </h1>
+    <div className="container mx-auto">
+      <div className="px-4 md:px-0 pt-12 md:pt-0">
+        <div className="mb-4 md:mb-6">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
+            {/* Title */}
+            <h1 className="text-xl md:text-2xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] whitespace-normal flex-shrink-0">
+              {t('pages.benefits.title')}
+            </h1>
 
-          {/* Buttons */}
-          {currentStep === 1 ? (
-            <button
-              onClick={handleNext}
-              disabled={!isStep1Valid()}
-              className={`w-full sm:w-auto px-4 md:px-6 py-2.5 text-white rounded transition-colors duration-200 text-sm md:text-base flex items-center justify-center ${isStep1Valid() ? 'bg-[#024073] hover:bg-blue-700' : 'bg-gray-400 cursor-not-allowed'
-                }`}
-            >
-              <span>{t('pages.benefits.next')}</span>
-              <span className="ml-1">›</span>
-            </button>
-          ) : (
-            <button
-              onClick={generatePDF}
-              disabled={!isStep2Valid()}
-              className={`w-full sm:w-auto px-4 md:px-6 py-2.5 text-white rounded transition-colors duration-200 text-sm md:text-base flex items-center justify-center gap-2 ${isStep2Valid() ? 'bg-[#024073] hover:bg-blue-700' : 'bg-gray-400 cursor-not-allowed'
-                }`}
-            >
-              <Download className="w-4 h-4 md:w-5 md:h-5" />
-              <span className="whitespace-nowrap">{t('pages.benefits.generateNotification')}</span>
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* Steps indicator */}
-      <div className="flex items-center space-x-2 mb-8 min-w-[280px] sm:w-[400px]">
-        <div className="flex-shrink-0">
-          <div className="w-8 h-8 bg-[#024073] rounded-full flex items-center justify-center">
-            <svg className="w-4 h-4 text-white" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-            </svg>
-          </div>
-        </div>
-        <div className={`flex-grow h-1 ${currentStep >= 2 ? 'bg-[#024073]' : 'bg-gray-300'}`} />
-        <div className="flex-shrink-0">
-          <div className={`w-8 h-8 ${currentStep >= 2 ? 'bg-[#024073]' : 'bg-gray-300'} rounded-full flex items-center justify-center`}>
-            {currentStep >= 2 ? (
-              <svg className="w-4 h-4 text-white" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-              </svg>
+            {/* Buttons */}
+            {currentStep === 1 ? (
+              <button
+                onClick={handleNext}
+                disabled={!isStep1Valid()}
+                className={`w-full sm:w-auto px-4 md:px-6 py-2.5 text-white rounded transition-colors duration-200 text-sm md:text-base flex items-center justify-center ${isStep1Valid() ? 'bg-[#024073] hover:bg-blue-700' : 'bg-gray-400 cursor-not-allowed'
+                  }`}
+              >
+                <span>{t('pages.benefits.next')}</span>
+                <span className="ml-1">›</span>
+              </button>
             ) : (
-              <span className="w-2 h-2 bg-white rounded-full" />
+              <button
+                onClick={generatePDF}
+                disabled={!isStep2Valid()}
+                className={`w-full sm:w-auto px-4 md:px-6 py-2.5 text-white rounded transition-colors duration-200 text-sm md:text-base flex items-center justify-center gap-2 ${isStep2Valid() ? 'bg-[#024073] hover:bg-blue-700' : 'bg-gray-400 cursor-not-allowed'
+                  }`}
+              >
+                <Download className="w-4 h-4 md:w-5 md:h-5" />
+                <span className="whitespace-nowrap">{t('pages.benefits.generateNotification')}</span>
+              </button>
             )}
           </div>
         </div>
-      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* LEFT SIDE - Forms */}
-        <div className="lg:col-span-5">
-          {currentStep === 1 ? (
-            <Step1Form formData={formData} handleInputChange={handleInputChange} />
-          ) : (
-            <Step2Form
-              formData={formData}
-              handleInputChange={handleInputChange}
-              handleGeneratePDF={generatePDF}
-            />
-          )}
+        {/* Steps indicator */}
+        <div className="flex items-center space-x-2 mb-8 min-w-[280px] sm:w-[400px]">
+          <div className="flex-shrink-0">
+            <div className="w-8 h-8 bg-[#024073] rounded-full flex items-center justify-center">
+              <svg className="w-4 h-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+              </svg>
+            </div>
+          </div>
+          <div className={`flex-grow h-1 ${currentStep >= 2 ? 'bg-[#024073]' : 'bg-gray-300'}`} />
+          <div className="flex-shrink-0">
+            <div className={`w-8 h-8 ${currentStep >= 2 ? 'bg-[#024073]' : 'bg-gray-300'} rounded-full flex items-center justify-center`}>
+              {currentStep >= 2 ? (
+                <svg className="w-4 h-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
+              ) : (
+                <span className="w-2 h-2 bg-white rounded-full" />
+              )}
+            </div>
+          </div>
         </div>
 
-        {/* RIGHT SIDE - Preview */}
-        <div className="lg:col-span-7">
-          {currentStep === 1 ? (
-            <FirstDocument ref={firstPageRef} formData={formData} />
-          ) : (
-            <SecondDocument ref={secondPageRef} formData={formData} />
-          )}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          {/* LEFT SIDE - Forms */}
+          <div className="lg:col-span-5">
+            {currentStep === 1 ? (
+              <Step1Form formData={formData} handleInputChange={handleInputChange} />
+            ) : (
+              <Step2Form
+                formData={formData}
+                handleInputChange={handleInputChange}
+                handleGeneratePDF={generatePDF}
+              />
+            )}
+          </div>
+
+          {/* RIGHT SIDE - Preview */}
+          <div className="lg:col-span-7">
+            {currentStep === 1 ? (
+              <FirstDocument ref={firstPageRef} formData={formData} />
+            ) : (
+              <SecondDocument ref={secondPageRef} formData={formData} />
+            )}
+          </div>
         </div>
+
+
       </div>
-
-
     </div>
   );
 };

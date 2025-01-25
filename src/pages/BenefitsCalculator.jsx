@@ -97,42 +97,44 @@ const BenefitsCalculator = () => {
   }
 
   return (
-    <div className="px-4 py-8 pt-14 md:pt-0">
-      <h1 className="text-lg md:text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-6 md:mb-10">
-        {t('pages.benefits.title')}
-      </h1>
+    <div className="container mx-auto">
+      <div className="px-4 md:px-0 py-8 pt-14 md:pt-0">
+        <h1 className="text-lg md:text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-6 md:mb-10">
+          {t('pages.benefits.title')}
+        </h1>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Image Section */}
-        <div className="overflow-hidden rounded-[24px] max-h-[320px]">
-          <img src={aboutData.image} alt={aboutData.title} className="w-full h-full object-cover" />
-        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Image Section */}
+          <div className="overflow-hidden rounded-[24px] max-h-[320px]">
+            <img src={aboutData.image} alt={aboutData.title} className="w-full h-full object-cover" />
+          </div>
 
-        {/* Content Section */}
-        <div className="space-y-4">
-          <h2 className="text-lg font-semibold text-gray-800">
-            {aboutData.title}
-          </h2>
-          <p className="text-gray-600 leading-relaxed whitespace-pre-line">
-            {aboutData.short_description}
-          </p>
+          {/* Content Section */}
+          <div className="space-y-4">
+            <h2 className="text-lg font-semibold text-gray-800">
+              {aboutData.title}
+            </h2>
+            <p className="text-gray-600 leading-relaxed whitespace-pre-line">
+              {aboutData.short_description}
+            </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6">
-            <Link to={getLocalizedPath("/benefits/shablon1")}>
-              <button className="bg-[#024072] w-full text-white px-4 py-2 rounded-[12px] hover:bg-blue-900 transition-colors">
-                {t('pages.benefits.button1')}
-              </button>
-            </Link>
-            <Link to={getLocalizedPath("/benefits/shablon2")}>
-              <button className="bg-[#024072] w-full text-white px-4 py-2 rounded-[12px] hover:bg-blue-900 transition-colors">
-                {t('pages.benefits.button2')}
-              </button>
-            </Link>
-            <Link to={getLocalizedPath("/benefits/shablon3")}>
-              <button className="bg-[#024072] w-full text-white px-4 py-2 rounded-[12px] hover:bg-blue-900 transition-colors">
-                {t('pages.benefits.button3')}
-              </button>
-            </Link>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6">
+              <Link to={getLocalizedPath("/benefits/shablon1")}>
+                <button className="bg-[#024072] w-full text-white px-4 py-2 rounded-[12px] hover:bg-blue-900 transition-colors">
+                  {t('pages.benefits.button1')}
+                </button>
+              </Link>
+              <Link to={getLocalizedPath("/benefits/shablon2")}>
+                <button className="bg-[#024072] w-full text-white px-4 py-2 rounded-[12px] hover:bg-blue-900 transition-colors">
+                  {t('pages.benefits.button2')}
+                </button>
+              </Link>
+              <Link to={getLocalizedPath("/benefits/shablon3")}>
+                <button className="bg-[#024072] w-full text-white px-4 py-2 rounded-[12px] hover:bg-blue-900 transition-colors">
+                  {t('pages.benefits.button3')}
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

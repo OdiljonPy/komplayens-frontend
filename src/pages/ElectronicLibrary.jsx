@@ -196,11 +196,11 @@ const ElectronicLibrary = () => {
   };
 
   return (
-    <div className="w-full pt-14 md:pt-0">
+    <div className="container mx-auto">
       {loading ? (
         <ElectronicLibrarySkeleton />
       ) : (
-        <div className="w-full p-4">
+        <div className="w-full px-4 md:px-0">
           {/* Breadcrumb */}
           <div className="py-3 md:py-4 pt-0">
             <div className="text-sm text-gray-600 flex items-center gap-1">

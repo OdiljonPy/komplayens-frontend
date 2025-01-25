@@ -47,11 +47,11 @@ const CorruptionRisksItem = () => {
   };
 
   return (
-    <>
+    <div className="container mx-auto">
       {loading ? (
         <CorruptionRisksItemSkeleton />
       ) : (
-        <div className="w-full p-4">
+        <div className="w-full px-4 md:px-0">
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 text-sm text-gray-600 mb-6">
             <span>{t('pages.corruptionRisks.breadcrumb.home')}</span>
@@ -94,7 +94,7 @@ const CorruptionRisksItem = () => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

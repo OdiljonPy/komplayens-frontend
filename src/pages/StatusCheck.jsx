@@ -844,144 +844,146 @@ const StatusCheck = () => {
   };
 
   return (
-    <div className="w-full px-4 py-8 pt-16 md:pt-0">
-      <div className="flex items-center gap-2 text-sm text-gray-600 mb-6 overflow-x-auto whitespace-nowrap">
-        <span>{t('pages.statusCheck.breadcrumb.home')}</span>
-        <ChevronRight className="h-4 w-4 flex-shrink-0" />
-        <span className="text-[#024073]">{t('pages.statusCheck.breadcrumb.test')}</span>
-      </div>
+    <div className="container mx-auto">
+      <div className="w-full px-4 md:px-0 py-8 pt-16 md:pt-0">
+        <div className="flex items-center gap-2 text-sm text-gray-600 mb-6 overflow-x-auto whitespace-nowrap">
+          <span>{t('pages.statusCheck.breadcrumb.home')}</span>
+          <ChevronRight className="h-4 w-4 flex-shrink-0" />
+          <span className="text-[#024073]">{t('pages.statusCheck.breadcrumb.test')}</span>
+        </div>
 
-      {currentStep === 1 && (
-        <>
-          <div className="mb-6">
-            <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-4">
-              {t('menu.integrity_test')}
-            </h1>
-          </div>
-
-          <div className="flex flex-col gap-8">
-            <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
-              <div className="flex items-center space-x-2 min-w-[280px] sm:w-[400px]">
-                {[1, 2, 3].map((step, index) => (
-                  <React.Fragment key={step}>
-                    <div className="flex-shrink-0">
-                      <div className={`w-8 h-8 ${currentStep >= step ? 'bg-[#024073]' : 'bg-gray-300'} 
-                        rounded-full flex items-center justify-center`}
-                      >
-                        {currentStep >= step ? (
-                          <svg className="w-4 h-4 text-white" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                          </svg>
-                        ) : (
-                          <span className="w-2 h-2 bg-white rounded-full" />
-                        )}
-                      </div>
-                    </div>
-                    {index < 2 && (
-                      <div className={`flex-grow h-1 ${currentStep > step ? 'bg-[#024073]' : 'bg-gray-300'}`} />
-                    )}
-                  </React.Fragment>
-                ))}
-              </div>
-
-              <button
-                onClick={handleNext}
-                disabled={!selectedTestId}
-                className={`px-6 py-2 border rounded-[13px] w-[186px] flex items-center justify-center gap-2 ${!selectedTestId
-                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                  : 'text-[#024073] border-[#024072] hover:bg-[#024072] hover:text-white'
-                  }`}
-              >
-                <p className="text-sm">{t('pages.statusCheck.steps.next')}</p>
-                <ChevronRight size={16} className="text-gray-400" />
-              </button>
+        {currentStep === 1 && (
+          <>
+            <div className="mb-6">
+              <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-4">
+                {t('menu.integrity_test')}
+              </h1>
             </div>
 
-            <TestSelection
-              onSelect={handleTestSelect}
-              selectedTestId={selectedTestId}
-            />
-          </div>
+            <div className="flex flex-col gap-8">
+              <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
+                <div className="flex items-center space-x-2 min-w-[280px] sm:w-[400px]">
+                  {[1, 2, 3].map((step, index) => (
+                    <React.Fragment key={step}>
+                      <div className="flex-shrink-0">
+                        <div className={`w-8 h-8 ${currentStep >= step ? 'bg-[#024073]' : 'bg-gray-300'} 
+                        rounded-full flex items-center justify-center`}
+                        >
+                          {currentStep >= step ? (
+                            <svg className="w-4 h-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                          ) : (
+                            <span className="w-2 h-2 bg-white rounded-full" />
+                          )}
+                        </div>
+                      </div>
+                      {index < 2 && (
+                        <div className={`flex-grow h-1 ${currentStep > step ? 'bg-[#024073]' : 'bg-gray-300'}`} />
+                      )}
+                    </React.Fragment>
+                  ))}
+                </div>
 
-          <SelectionModal
-            isOpen={showModal}
-            onClose={() => setShowModal(false)}
-            onSelect={handleMembershipSelect}
+                <button
+                  onClick={handleNext}
+                  disabled={!selectedTestId}
+                  className={`px-6 py-2 border rounded-[13px] w-[186px] flex items-center justify-center gap-2 ${!selectedTestId
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'text-[#024073] border-[#024072] hover:bg-[#024072] hover:text-white'
+                    }`}
+                >
+                  <p className="text-sm">{t('pages.statusCheck.steps.next')}</p>
+                  <ChevronRight size={16} className="text-gray-400" />
+                </button>
+              </div>
+
+              <TestSelection
+                onSelect={handleTestSelect}
+                selectedTestId={selectedTestId}
+              />
+            </div>
+
+            <SelectionModal
+              isOpen={showModal}
+              onClose={() => setShowModal(false)}
+              onSelect={handleMembershipSelect}
+            />
+          </>
+        )}
+
+        {currentStep === 2 && membershipType === "member" && (
+          <>
+            <div className="mb-6">
+              <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-4">{t('pages.statusCheck.breadcrumb.test')}</h1>
+            </div>
+
+            <div className="flex flex-col gap-8">
+              <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
+                <div className="flex items-center space-x-2 min-w-[280px] sm:w-[400px]">
+                  {[1, 2, 3, 4].map((step, index) => (
+                    <React.Fragment key={step}>
+                      <div className="flex-shrink-0">
+                        <div className={`w-8 h-8 ${currentStep >= step ? 'bg-[#024073]' : 'bg-gray-300'} 
+                        rounded-full flex items-center justify-center`}
+                        >
+                          {currentStep >= step ? (
+                            <svg className="w-4 h-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                          ) : (
+                            <span className="w-2 h-2 bg-white rounded-full" />
+                          )}
+                        </div>
+                      </div>
+                      {index < 3 && (
+                        <div className={`flex-grow h-1 ${currentStep > step ? 'bg-[#024073]' : 'bg-gray-300'}`} />
+                      )}
+                    </React.Fragment>
+                  ))}
+                </div>
+
+                <button
+                  onClick={handleNext}
+                  disabled={!selectedOrgId}
+                  className={`px-6 py-2 border rounded-[13px] w-[186px] flex items-center justify-center gap-2 ${!selectedOrgId
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'text-[#024073] border-[#024072] hover:bg-[#024072] hover:text-white'
+                    }`}
+                >
+                  <p className="text-sm">{t('pages.statusCheck.steps.next')}</p>
+                  <ChevronRight size={16} className="text-gray-400" />
+                </button>
+              </div>
+
+              <OrganizationList
+                onSelect={handleOrgSelect}
+                selectedOrgId={selectedOrgId}
+              />
+            </div>
+          </>
+        )}
+
+        {currentStep === 2 && membershipType === "non-member" && (
+          <TestQuestions
+            onFinish={handleTestFinish}
+            selectedTestId={selectedTestId}
+            selectedOrgId={selectedOrgId}
           />
-        </>
-      )}
+        )}
 
-      {currentStep === 2 && membershipType === "member" && (
-        <>
-          <div className="mb-6">
-            <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-4">{t('pages.statusCheck.breadcrumb.test')}</h1>
-          </div>
+        {currentStep === 3 && showQuestions && (
+          <TestQuestions
+            onFinish={handleTestFinish}
+            selectedTestId={selectedTestId}
+            selectedOrgId={selectedOrgId}
+          />
+        )}
 
-          <div className="flex flex-col gap-8">
-            <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
-              <div className="flex items-center space-x-2 min-w-[280px] sm:w-[400px]">
-                {[1, 2, 3, 4].map((step, index) => (
-                  <React.Fragment key={step}>
-                    <div className="flex-shrink-0">
-                      <div className={`w-8 h-8 ${currentStep >= step ? 'bg-[#024073]' : 'bg-gray-300'} 
-                        rounded-full flex items-center justify-center`}
-                      >
-                        {currentStep >= step ? (
-                          <svg className="w-4 h-4 text-white" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                          </svg>
-                        ) : (
-                          <span className="w-2 h-2 bg-white rounded-full" />
-                        )}
-                      </div>
-                    </div>
-                    {index < 3 && (
-                      <div className={`flex-grow h-1 ${currentStep > step ? 'bg-[#024073]' : 'bg-gray-300'}`} />
-                    )}
-                  </React.Fragment>
-                ))}
-              </div>
-
-              <button
-                onClick={handleNext}
-                disabled={!selectedOrgId}
-                className={`px-6 py-2 border rounded-[13px] w-[186px] flex items-center justify-center gap-2 ${!selectedOrgId
-                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                  : 'text-[#024073] border-[#024072] hover:bg-[#024072] hover:text-white'
-                  }`}
-              >
-                <p className="text-sm">{t('pages.statusCheck.steps.next')}</p>
-                <ChevronRight size={16} className="text-gray-400" />
-              </button>
-            </div>
-
-            <OrganizationList
-              onSelect={handleOrgSelect}
-              selectedOrgId={selectedOrgId}
-            />
-          </div>
-        </>
-      )}
-
-      {currentStep === 2 && membershipType === "non-member" && (
-        <TestQuestions
-          onFinish={handleTestFinish}
-          selectedTestId={selectedTestId}
-          selectedOrgId={selectedOrgId}
-        />
-      )}
-
-      {currentStep === 3 && showQuestions && (
-        <TestQuestions
-          onFinish={handleTestFinish}
-          selectedTestId={selectedTestId}
-          selectedOrgId={selectedOrgId}
-        />
-      )}
-
-      {currentStep === 4 && testResults && (
-        <TestResults testData={testResults} />
-      )}
+        {currentStep === 4 && testResults && (
+          <TestResults testData={testResults} />
+        )}
+      </div>
     </div>
   );
 };

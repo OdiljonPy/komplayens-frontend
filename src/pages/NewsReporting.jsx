@@ -1010,89 +1010,91 @@ const NewsReporting = () => {
   };
 
   return (
-    <div className="px-4 py-8 pt-14 md:pt-0">
-      <div className="py-3 md:py-4 pt-0">
-        <div className="text-sm text-gray-600 flex items-center gap-1">
-          <span>{t('pages.newsReporting.breadcrumbs.home')}</span>
-          <ChevronRight size={16} className="text-gray-400" />
-          <span className='text-[#024072]'>{t('pages.newsReporting.breadcrumbs.report')}</span>
-        </div>
-      </div>
-      <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-gray-800">{t('pages.newsReporting.title')}</h1>
-      </div>
-
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0 mb-8">
-        <div className="flex items-center space-x-2 min-w-[280px] sm:w-[400px]">
-          <div className="flex-shrink-0">
-            <div className="w-8 h-8 bg-[#024073] rounded-full flex items-center justify-center">
-              <svg className="w-4 h-4 text-white" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-              </svg>
-            </div>
-          </div>
-          <div className={`flex-grow h-1 ${currentStep >= 2 ? 'bg-[#024073]' : 'bg-gray-300'}`}></div>
-
-          <div className="flex-shrink-0">
-            <div className={`w-8 h-8 ${currentStep >= 2 ? 'bg-[#024073]' : 'bg-gray-300'} rounded-full flex items-center justify-center`}>
-              {currentStep >= 2 ? (
-                <svg className="w-4 h-4 text-white" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                </svg>
-              ) : (
-                <span className="w-2 h-2 bg-white rounded-full"></span>
-              )}
-            </div>
-          </div>
-          <div className={`flex-grow h-1 ${currentStep >= 3 ? 'bg-[#024073]' : 'bg-gray-300'}`}></div>
-
-          <div className="flex-shrink-0">
-            <div className={`w-8 h-8 ${currentStep >= 3 ? 'bg-[#024073]' : 'bg-gray-300'} rounded-full flex items-center justify-center`}>
-              {currentStep >= 3 ? (
-                <svg className="w-4 h-4 text-white" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                </svg>
-              ) : (
-                <span className="w-2 h-2 bg-white rounded-full"></span>
-              )}
-            </div>
-          </div>
-          <div className={`flex-grow h-1 ${currentStep >= 4 ? 'bg-[#024073]' : 'bg-gray-300'}`}></div>
-
-          <div className="flex-shrink-0">
-            <div className={`w-8 h-8 ${currentStep >= 4 ? 'bg-[#024073]' : 'bg-gray-300'} rounded-full flex items-center justify-center`}>
-              {currentStep >= 4 ? (
-                <svg className="w-4 h-4 text-white" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                </svg>
-              ) : (
-                <span className="w-2 h-2 bg-white rounded-full"></span>
-              )}
-            </div>
+    <div className="container mx-auto">
+      <div className="px-4 md:px-0 py-8 pt-14 md:pt-0">
+        <div className="py-3 md:py-4 pt-0">
+          <div className="text-sm text-gray-600 flex items-center gap-1">
+            <span>{t('pages.newsReporting.breadcrumbs.home')}</span>
+            <ChevronRight size={16} className="text-gray-400" />
+            <span className='text-[#024072]'>{t('pages.newsReporting.breadcrumbs.report')}</span>
           </div>
         </div>
+        <div className="mb-6">
+          <h1 className="text-2xl font-semibold text-gray-800">{t('pages.newsReporting.title')}</h1>
+        </div>
 
-        <button
-          onClick={handleNext}
-          disabled={isNextButtonDisabled()}
-          className={`px-6 py-2 text-[#024073] border border-[#024072] rounded-[13px] w-[186px] hover:bg-blue-50 sm:w-auto flex items-center justify-center gap-2 ${isNextButtonDisabled() ? 'opacity-50 cursor-not-allowed hover:bg-transparent' : ''
-            }`}
-        >
-          <p className="text-sm">
-            {currentStep === 4
-              ? t('pages.newsReporting.submitButton')
-              : t('pages.newsReporting.nextButton')}
-          </p>
-          {currentStep !== 4 && <ChevronRight size={16} className="text-gray-400" />}
-        </button>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0 mb-8">
+          <div className="flex items-center space-x-2 min-w-[280px] sm:w-[400px]">
+            <div className="flex-shrink-0">
+              <div className="w-8 h-8 bg-[#024073] rounded-full flex items-center justify-center">
+                <svg className="w-4 h-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
+              </div>
+            </div>
+            <div className={`flex-grow h-1 ${currentStep >= 2 ? 'bg-[#024073]' : 'bg-gray-300'}`}></div>
+
+            <div className="flex-shrink-0">
+              <div className={`w-8 h-8 ${currentStep >= 2 ? 'bg-[#024073]' : 'bg-gray-300'} rounded-full flex items-center justify-center`}>
+                {currentStep >= 2 ? (
+                  <svg className="w-4 h-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                ) : (
+                  <span className="w-2 h-2 bg-white rounded-full"></span>
+                )}
+              </div>
+            </div>
+            <div className={`flex-grow h-1 ${currentStep >= 3 ? 'bg-[#024073]' : 'bg-gray-300'}`}></div>
+
+            <div className="flex-shrink-0">
+              <div className={`w-8 h-8 ${currentStep >= 3 ? 'bg-[#024073]' : 'bg-gray-300'} rounded-full flex items-center justify-center`}>
+                {currentStep >= 3 ? (
+                  <svg className="w-4 h-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                ) : (
+                  <span className="w-2 h-2 bg-white rounded-full"></span>
+                )}
+              </div>
+            </div>
+            <div className={`flex-grow h-1 ${currentStep >= 4 ? 'bg-[#024073]' : 'bg-gray-300'}`}></div>
+
+            <div className="flex-shrink-0">
+              <div className={`w-8 h-8 ${currentStep >= 4 ? 'bg-[#024073]' : 'bg-gray-300'} rounded-full flex items-center justify-center`}>
+                {currentStep >= 4 ? (
+                  <svg className="w-4 h-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                ) : (
+                  <span className="w-2 h-2 bg-white rounded-full"></span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <button
+            onClick={handleNext}
+            disabled={isNextButtonDisabled()}
+            className={`px-6 py-2 text-[#024073] border border-[#024072] rounded-[13px] w-[186px] hover:bg-blue-50 sm:w-auto flex items-center justify-center gap-2 ${isNextButtonDisabled() ? 'opacity-50 cursor-not-allowed hover:bg-transparent' : ''
+              }`}
+          >
+            <p className="text-sm">
+              {currentStep === 4
+                ? t('pages.newsReporting.submitButton')
+                : t('pages.newsReporting.nextButton')}
+            </p>
+            {currentStep !== 4 && <ChevronRight size={16} className="text-gray-400" />}
+          </button>
+        </div>
+
+        {renderCurrentStep()}
+
+        <SuccessModal
+          isOpen={showModal}
+          onClose={handleModalClose}
+        />
       </div>
-
-      {renderCurrentStep()}
-
-      <SuccessModal
-        isOpen={showModal}
-        onClose={handleModalClose}
-      />
     </div>
   );
 };
