@@ -116,135 +116,200 @@ const EvaluationResults = () => {
     return text.substring(0, maxLength) + '...';
   };
 
+  const LoadingSkeleton = () => (
+    <div className="animate-pulse">
+      {/* Header Skeleton */}
+      <div className="flex md:flex-row justify-between items-start xs:items-center gap-3 mb-4 md:mb-6">
+        <div className="h-6 bg-gray-200 rounded w-48"></div>
+        <div className="h-6 bg-gray-200 rounded w-32"></div>
+      </div>
+
+      {/* Categories Skeleton */}
+      <div className="flex flex-wrap gap-3 md:gap-4 lg:gap-6 mb-4 md:mb-6">
+        {[1, 2, 3].map((item) => (
+          <div key={item} className="h-6 bg-gray-200 rounded w-24"></div>
+        ))}
+      </div>
+
+      {/* Table Header Skeleton */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {[1, 2, 3].map((col) => (
+          <div key={col} className="flex flex-col gap-4">
+            <div className="bg-gray-100 rounded-lg p-3">
+              <div className="flex items-center">
+                <div className="h-4 bg-gray-200 rounded w-24"></div>
+                <div className="w-[50px]"></div>
+                <div className="grid grid-cols-5 flex-1 gap-2">
+                  {[1, 2, 3, 4, 5].map((q) => (
+                    <div key={q} className="h-4 bg-gray-200 rounded"></div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Row Skeletons */}
+            {[1, 2, 3, 4, 5].map((row) => (
+              <div key={row} className="bg-gray-50 rounded-[4px] p-3">
+                <div className="flex items-center">
+                  <div className="flex items-center gap-2 min-w-[120px] mr-2">
+                    <div className="w-2 h-2 rounded-full bg-gray-200"></div>
+                    <div className="h-4 bg-gray-200 rounded w-20"></div>
+                  </div>
+                  <div className="w-[50px] text-center">
+                    <div className="h-4 bg-gray-200 rounded mx-auto w-8"></div>
+                  </div>
+                  <div className="grid grid-cols-5 gap-2 flex-1">
+                    {[1, 2, 3, 4, 5].map((q) => (
+                      <div key={q} className="h-4 bg-gray-200 rounded mx-auto w-8"></div>
+                    ))}
+                  </div>
+                  <div className="w-[40px] ml-2">
+                    <div className="h-4 bg-gray-200 rounded w-6"></div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
   return (
     <div className="p-3 md:p-4 lg:p-4">
       <div className="bg-white rounded-lg shadow-sm p-3 md:p-4 lg:p-6" style={{
         boxShadow: '0px 4px 29px 0px #0000001A',
         borderRadius: '10px'
       }}>
-        {/* Header */}
-        <div className="flex md:flex-row justify-between items-start xs:items-center gap-3 mb-4 md:mb-6">
-          <h2 className="text-base md:text-lg lg:text-xl font-semibold text-[#1e293b]">
-            {t('evaluation.title')}
-          </h2>
-          <div className="relative">
-            <button
-              className="flex items-center gap-2 text-blue-500 hover:text-blue-600 px-2 py-1 md:px-3 md:py-1.5 rounded-lg text-sm"
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            >
-              {years.find(y => y.id === selectedYear)?.year || 'Select Year'}
-              <ChevronDown className="w-4 h-4" />
-            </button>
-            {isDropdownOpen && (
-              <div className="absolute right-0 mt-1 bg-white shadow-lg rounded-lg py-1 z-10 min-w-[120px]">
-                {years.map((year) => (
-                  <button
-                    key={year.id}
-                    className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 text-gray-700"
-                    onClick={() => {
-                      setSelectedYear(year.id);
-                      setIsDropdownOpen(false);
-                    }}
-                  >
-                    {year.year}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Categories */}
-        <div className="flex flex-wrap gap-3 md:gap-4 lg:gap-6 mb-4 md:mb-6">
-          {categories.map((category, index) => (
-            <div key={index} className="flex items-center gap-2 bg-[#F9F9F9] rounded-[4px] px-2 py-1">
-              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: category.color }}></div>
-              <span className="text-xs md:text-sm text-gray-600">{category.label}</span>
-            </div>
-          ))}
-        </div>
-
-        {/* Main Grid Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {getColumnData(evaluationResults.flat()).map((columnItems, columnIndex) => (
-            <div key={columnIndex} className="flex flex-col gap-4">
-              {/* Column Header - Show always on desktop, but only with items on mobile */}
-              <div className={`bg-gray-50 rounded-lg p-3 ${columnItems.length === 0 ? 'hidden md:block' : ''}`}>
-                <div className="flex items-center">
-                  <span className="text-sm text-gray-500 min-w-[120px] mr-2">{t('evaluation.quarterly_section')}</span>
-                  <div className="w-[50px] text-center"></div>
-                  <div className="grid grid-cols-5 flex-1 gap-2">
-                    {['I', 'II', 'III', 'IV', 'V'].map((quarter, idx) => (
-                      <div key={idx} className="text-center text-xs text-gray-500">{quarter}</div>
+        {evaluationResults.length === 0 ? (
+          <LoadingSkeleton />
+        ) : (
+          <>
+            {/* Header */}
+            <div className="flex md:flex-row justify-between items-start xs:items-center gap-3 mb-4 md:mb-6">
+              <h2 className="text-base md:text-lg lg:text-xl font-semibold text-[#1e293b]">
+                {t('evaluation.title')}
+              </h2>
+              <div className="relative">
+                <button
+                  className="flex items-center gap-2 text-blue-500 hover:text-blue-600 px-2 py-1 md:px-3 md:py-1.5 rounded-lg text-sm"
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                >
+                  {years.find(y => y.id === selectedYear)?.year || 'Select Year'}
+                  <ChevronDown className="w-4 h-4" />
+                </button>
+                {isDropdownOpen && (
+                  <div className="absolute right-0 mt-1 bg-white shadow-lg rounded-lg py-1 z-10 min-w-[120px]">
+                    {years.map((year) => (
+                      <button
+                        key={year.id}
+                        className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 text-gray-700"
+                        onClick={() => {
+                          setSelectedYear(year.id);
+                          setIsDropdownOpen(false);
+                        }}
+                      >
+                        {year.year}
+                      </button>
                     ))}
                   </div>
-                  <div className="w-[40px]"></div>
-                </div>
+                )}
               </div>
+            </div>
 
-              {/* Column Cards */}
-              {columnItems.map((item, index) => (
-                <div key={index} className="bg-[#F9F9F9] rounded-[4px]">
-                  <div className="p-3">
-                    {/* Name and Quarters Row */}
-                    <div className="flex items-center">
-                      {/* Name and Status */}
-                      <div className="flex items-center gap-2 min-w-[120px] mr-2 group relative">
-                        <div
-                          className="w-2 h-2 rounded-full flex-shrink-0"
-                          style={{ backgroundColor: getStatusColor(getStatus(item.this_year)) }}
-                        />
-                        <span className="text-sm truncate cursor-help" title={item.name}>
-                          {truncateText(item.name)}
-                        </span>
-
-                        {/* Popover */}
-                        <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block z-10">
-                          <div className="bg-gray-900 text-white text-sm rounded-lg py-2 px-3 whitespace-nowrap shadow-lg">
-                            {item.name}
-                            <div className="absolute -bottom-1 left-4 w-2 h-2 bg-gray-900 transform rotate-45"></div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* This Year Score */}
-                      <div className={`text-sm font-medium w-[50px] text-center ${item.this_year > 80 ? 'text-green-500' :
-                        item.this_year >= 56 ? 'text-blue-500' : 'text-red-500'
-                        }`}>
-                        {item.this_year}
-                      </div>
-
-                      {/* Quarters */}
-                      <div className="grid grid-cols-5 gap-2 flex-1">
-                        <div className="text-center text-sm">{item.first_quarter}</div>
-                        <div className="text-center text-sm">{item.second_quarter}</div>
-                        <div className="text-center text-sm">{item.third_quarter}</div>
-                        <div className="text-center text-sm">{item.fourth_quarter}</div>
-                        <div className="text-center text-sm">{item.fifth_quarter}</div>
-                      </div>
-
-                      {/* Updated Change Indicator */}
-                      <div className={`flex items-center gap-1 ml-2 ${item.change > 0 ? 'text-green-500' :
-                        item.change < 0 ? 'text-red-500' : 'text-gray-500'
-                        }`}>
-                        {item.change > 0 ? (
-                          <ArrowUp className="w-3 h-3" />
-                        ) : (
-                          <MinusCircle className="w-3 h-3" />
-                        )}
-                        <span className="text-xs font-medium">
-                          {item.change === null ? '0' :
-                            item.change === 0 ? '0' :
-                              Math.abs(item.change)}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+            {/* Categories */}
+            <div className="flex flex-wrap gap-3 md:gap-4 lg:gap-6 mb-4 md:mb-6">
+              {categories.map((category, index) => (
+                <div key={index} className="flex items-center gap-2 bg-[#F9F9F9] rounded-[4px] px-2 py-1">
+                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: category.color }}></div>
+                  <span className="text-xs md:text-sm text-gray-600">{category.label}</span>
                 </div>
               ))}
             </div>
-          ))}
-        </div>
+
+            {/* Main Grid Layout */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {getColumnData(evaluationResults.flat()).map((columnItems, columnIndex) => (
+                <div key={columnIndex} className="flex flex-col gap-4">
+                  {/* Column Header - Show always on desktop, but only with items on mobile */}
+                  <div className={`bg-gray-50 rounded-lg p-3 ${columnItems.length === 0 ? 'hidden md:block' : ''}`}>
+                    <div className="flex items-center">
+                      <span className="text-sm text-gray-500 min-w-[120px] mr-2">{t('evaluation.quarterly_section')}</span>
+                      <div className="w-[50px] text-center"></div>
+                      <div className="grid grid-cols-5 flex-1 gap-2">
+                        {['I', 'II', 'III', 'IV', 'V'].map((quarter, idx) => (
+                          <div key={idx} className="text-center text-xs text-gray-500">{quarter}</div>
+                        ))}
+                      </div>
+                      <div className="w-[40px]"></div>
+                    </div>
+                  </div>
+
+                  {/* Column Cards */}
+                  {columnItems.map((item, index) => (
+                    <div key={index} className="bg-[#F9F9F9] rounded-[4px]">
+                      <div className="p-3">
+                        {/* Name and Quarters Row */}
+                        <div className="flex items-center">
+                          {/* Name and Status */}
+                          <div className="flex items-center gap-2 min-w-[120px] mr-2 group relative">
+                            <div
+                              className="w-2 h-2 rounded-full flex-shrink-0"
+                              style={{ backgroundColor: getStatusColor(getStatus(item.this_year)) }}
+                            />
+                            <span className="text-sm truncate cursor-help" title={item.name}>
+                              {truncateText(item.name)}
+                            </span>
+
+                            {/* Popover */}
+                            <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block z-10">
+                              <div className="bg-gray-900 text-white text-sm rounded-lg py-2 px-3 whitespace-nowrap shadow-lg">
+                                {item.name}
+                                <div className="absolute -bottom-1 left-4 w-2 h-2 bg-gray-900 transform rotate-45"></div>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* This Year Score */}
+                          <div className={`text-sm font-medium w-[50px] text-center ${item.this_year > 80 ? 'text-green-500' :
+                            item.this_year >= 56 ? 'text-blue-500' : 'text-red-500'
+                            }`}>
+                            {item.this_year}
+                          </div>
+
+                          {/* Quarters */}
+                          <div className="grid grid-cols-5 gap-2 flex-1">
+                            <div className="text-center text-sm">{item.first_quarter}</div>
+                            <div className="text-center text-sm">{item.second_quarter}</div>
+                            <div className="text-center text-sm">{item.third_quarter}</div>
+                            <div className="text-center text-sm">{item.fourth_quarter}</div>
+                            <div className="text-center text-sm">{item.fifth_quarter}</div>
+                          </div>
+
+                          {/* Updated Change Indicator */}
+                          <div className={`flex items-center gap-1 ml-2 ${item.change > 0 ? 'text-green-500' :
+                            item.change < 0 ? 'text-red-500' : 'text-gray-500'
+                            }`}>
+                            {item.change > 0 ? (
+                              <ArrowUp className="w-3 h-3" />
+                            ) : (
+                              <MinusCircle className="w-3 h-3" />
+                            )}
+                            <span className="text-xs font-medium">
+                              {item.change === null ? '0' :
+                                item.change === 0 ? '0' :
+                                  Math.abs(item.change)}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
