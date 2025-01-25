@@ -176,7 +176,7 @@ const EvaluationResults = () => {
   );
 
   return (
-    <div className="p-3 md:p-4 lg:p-4">
+    <div className="container mx-auto px-4 md:px-0">
       <div className="bg-white rounded-lg shadow-sm p-3 md:p-4 lg:p-6" style={{
         boxShadow: '0px 4px 29px 0px #0000001A',
         borderRadius: '10px'

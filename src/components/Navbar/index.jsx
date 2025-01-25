@@ -145,7 +145,7 @@ const Navbar = () => {
       <div className="fixed top-0 left-0 right-0 z-50 bg-white shadow-lg">
         {/* Top Bar */}
         <div className="border-b">
-          <div className=" px-4">
+          <div className="container mx-auto">
             <div className="flex items-center justify-between h-16">
               {/* Logo and Title */}
               <div className="flex items-center space-x-4">
@@ -216,7 +216,7 @@ const Navbar = () => {
 
         {/* Desktop Navigation */}
         <div className="hidden md:block bg-white">
-          <div className=" px-4">
+          <div className="container mx-auto">
             <div className="flex items-center justify-between h-14">
               <nav className="flex space-x-10">
                 {menuItems.map((item, index) => (

@@ -39,86 +39,88 @@ const HeroCarousel = () => {
   );
 
   return (
-    <div className="relative p-4 h-[300px] md:h-[400px] overflow-hidden rounded-3xl mt-16 md:mt-0">
-      <Swiper
-        spaceBetween={0}
-        slidesPerView={1}
-        loop={true}
-        autoplay={{
-          delay: 5000,
-          disableOnInteraction: false,
-        }}
-        modules={[Autoplay]}
-        onSwiper={setSwiper}
-        onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
-        className="w-full h-full"
-      >
-        {slides.length === 0 ? (
-          <SwiperSlide>
-            <LoadingSkeleton />
-          </SwiperSlide>
-        ) : (
-          slides.map((slide, index) => (
-            <SwiperSlide key={slide.id}>
-              <div
-                className="relative w-full h-full bg-gray-900/50"
-                style={{
-                  backgroundImage: `url(${slide.image})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center'
-                }}
-              >
-                {/* Progress bars */}
-                <div className="absolute top-6 right-20 left-auto flex gap-1 z-10" style={{
-                  borderRadius: "20px"
-                }}>
-                  {slides.map((_, i) => (
-                    <div
-                      key={i}
-                      className="h-0.5 w-16 rounded-full overflow-hidden bg-white/30"
-                    >
+    <div className="container mx-auto ">
+      <div className="relative h-[300px] md:h-[400px] overflow-hidden rounded-3xl mt-16 md:mt-0">
+        <Swiper
+          spaceBetween={0}
+          slidesPerView={1}
+          loop={true}
+          autoplay={{
+            delay: 5000,
+            disableOnInteraction: false,
+          }}
+          modules={[Autoplay]}
+          onSwiper={setSwiper}
+          onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
+          className="w-full h-full"
+        >
+          {slides.length === 0 ? (
+            <SwiperSlide>
+              <LoadingSkeleton />
+            </SwiperSlide>
+          ) : (
+            slides.map((slide, index) => (
+              <SwiperSlide key={slide.id}>
+                <div
+                  className="relative w-full h-full bg-gray-900/50"
+                  style={{
+                    backgroundImage: `url(${slide.image})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                  }}
+                >
+                  {/* Progress bars */}
+                  <div className="absolute top-6 right-20 left-auto flex gap-1 z-10" style={{
+                    borderRadius: "20px"
+                  }}>
+                    {slides.map((_, i) => (
                       <div
-                        className="h-full bg-white transition-all duration-500"
-                        style={{
-                          width: i === activeIndex ? '100%' : '0%',
-                          transitionDuration: i === activeIndex ? '5000ms' : '0ms'
-                        }}
-                      />
-                    </div>
-                  ))}
-                </div>
+                        key={i}
+                        className="h-0.5 w-16 rounded-full overflow-hidden bg-white/30"
+                      >
+                        <div
+                          className="h-full bg-white transition-all duration-500"
+                          style={{
+                            width: i === activeIndex ? '100%' : '0%',
+                            transitionDuration: i === activeIndex ? '5000ms' : '0ms'
+                          }}
+                        />
+                      </div>
+                    ))}
+                  </div>
 
-                {/* Content */}
-                <div className="absolute inset-0 bg-gradient-to-r from-gray-900/80 to-transparent">
-                  <div className="p-8 md:p-12 max-w-xl h-full flex flex-col justify-center">
-                    <h1 className="text-2xl md:text-4xl font-bold text-white mb-4">
-                      {slide.title}
-                    </h1>
-                    <p className="text-sm md:text-lg text-white/80">
-                      {slide.short_description}
-                    </p>
+                  {/* Content */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-gray-900/80 to-transparent">
+                    <div className="p-8 md:p-12 max-w-xl h-full flex flex-col justify-center">
+                      <h1 className="text-2xl md:text-4xl font-bold text-white mb-4">
+                        {slide.title}
+                      </h1>
+                      <p className="text-sm md:text-lg text-white/80">
+                        {slide.short_description}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </SwiperSlide>
-          ))
-        )}
-      </Swiper>
+              </SwiperSlide>
+            ))
+          )}
+        </Swiper>
 
-      {/* Navigation buttons */}
-      <div className="absolute bottom-8 right-8 flex gap-2 z-10">
-        <button
-          onClick={() => swiper?.slidePrev()}
-          className="bg-white/10 hover:bg-white/20 rounded-full p-2 backdrop-blur-sm transition-colors"
-        >
-          <ChevronLeft className="w-4 h-4 text-white" />
-        </button>
-        <button
-          onClick={() => swiper?.slideNext()}
-          className="bg-white/10 hover:bg-white/20 rounded-full p-2 backdrop-blur-sm transition-colors"
-        >
-          <ChevronRight className="w-4 h-4 text-white" />
-        </button>
+        {/* Navigation buttons */}
+        <div className="absolute bottom-8 right-8 flex gap-2 z-10">
+          <button
+            onClick={() => swiper?.slidePrev()}
+            className="bg-white/10 hover:bg-white/20 rounded-full p-2 backdrop-blur-sm transition-colors"
+          >
+            <ChevronLeft className="w-4 h-4 text-white" />
+          </button>
+          <button
+            onClick={() => swiper?.slideNext()}
+            className="bg-white/10 hover:bg-white/20 rounded-full p-2 backdrop-blur-sm transition-colors"
+          >
+            <ChevronRight className="w-4 h-4 text-white" />
+          </button>
+        </div>
       </div>
     </div>
   );

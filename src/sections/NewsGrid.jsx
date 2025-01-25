@@ -70,50 +70,52 @@ const NewsGrid = () => {
   );
 
   return (
-    <div className="w-full p-4 my-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959]">
-          {t('news.title')}
-        </h1>
-      </div>
+    <div className="w-full mt-8">
+      <div className="container mx-auto px-4 md:px-0">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959]">
+            {t('news.title')}
+          </h1>
+        </div>
 
-      {news.length === 0 ? (
-        <NewsGridSkeleton />
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {news.map((item) => (
-            <Link to={getLocalizedPath(`/news/${item.id}`)} key={item.id}>
-              <div key={item.id} className="flex bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-3">
-                <div className="w-24 h-24 flex-shrink-0">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-full h-full object-cover rounded-lg"
-                  />
-                </div>
+        {news.length === 0 ? (
+          <NewsGridSkeleton />
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {news.map((item) => (
+              <Link to={getLocalizedPath(`/news/${item.id}`)} key={item.id}>
+                <div key={item.id} className="flex bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-3">
+                  <div className="w-24 h-24 flex-shrink-0">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-full h-full object-cover rounded-lg"
+                    />
+                  </div>
 
-                <div className="ml-3 flex flex-col flex-grow">
-                  <h3 className="text-sm font-medium mb-auto line-clamp-2">
-                    {item.title}
-                  </h3>
+                  <div className="ml-3 flex flex-col flex-grow">
+                    <h3 className="text-sm font-medium mb-auto line-clamp-2">
+                      {item.title}
+                    </h3>
 
-                  <div className="flex justify-between text-gray-500 text-xs bg-[#F9F9F9] p-3 rounded-[8px]">
-                    <div className="flex items-center gap-1">
-                      <Eye size={12} />
-                      <span>{item.views}</span>
-                    </div>
+                    <div className="flex justify-between text-gray-500 text-xs bg-[#F9F9F9] p-3 rounded-[8px]">
+                      <div className="flex items-center gap-1">
+                        <Eye size={12} />
+                        <span>{item.views}</span>
+                      </div>
 
-                    <div className="flex items-center gap-1">
-                      <Calendar size={12} />
-                      <span>{formatDate(item.published_date)}</span>
+                      <div className="flex items-center gap-1">
+                        <Calendar size={12} />
+                        <span>{formatDate(item.published_date)}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      )}
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
