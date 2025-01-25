@@ -5,6 +5,10 @@ import { useTranslation } from 'react-i18next';
 
 const BenefitsCalculator = () => {
   const { t } = useTranslation();
+  const { i18n } = useTranslation();
+  const getLocalizedPath = (path) => {
+    return `/${i18n.language}${path}`;
+  };
   const [aboutData, setAboutData] = useState({
     title: '',
     short_description: '',
@@ -76,17 +80,17 @@ const BenefitsCalculator = () => {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6">
-            <Link to="/benefits/shablon1">
+            <Link to={getLocalizedPath("/benefits/shablon1")}>
               <button className="bg-[#024072] w-full text-white px-4 py-2 rounded-[12px] hover:bg-blue-900 transition-colors">
                 {t('pages.benefits.form1.buttonText')}
               </button>
             </Link>
-            <Link to="/benefits/shablon2">
+            <Link to={getLocalizedPath("/benefits/shablon2")}>
               <button className="bg-[#024072] w-full text-white px-4 py-2 rounded-[12px] hover:bg-blue-900 transition-colors">
                 {t('pages.benefits.form2.buttonText')}
               </button>
             </Link>
-            <Link to="/benefits/shablon3">
+            <Link to={getLocalizedPath("/benefits/shablon3")}>
               <button className="bg-[#024072] w-full text-white px-4 py-2 rounded-[12px] hover:bg-blue-900 transition-colors">
                 {t('pages.benefits.form3.buttonText')}
               </button>

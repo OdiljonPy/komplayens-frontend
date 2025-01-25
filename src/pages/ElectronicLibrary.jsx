@@ -5,7 +5,10 @@ import { sendRequest } from '../utils/apiFunctions'; // Update this path
 import { useTranslation } from 'react-i18next';
 
 export default function ElectronicLibrary() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const getLocalizedPath = (path) => {
+    return `/${i18n.language}${path}`;
+  };
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -113,12 +116,12 @@ export default function ElectronicLibrary() {
         {/* Navigation and Search */}
         <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
           <div className="p-1 rounded-lg inline-flex w-full md:w-auto overflow-x-auto bg-white">
-            <Link to="/training-courses">
+            <Link to={getLocalizedPath("/training-courses")}>
               <button className="flex-1 md:flex-none px-4 py-2 rounded-md transition-colors whitespace-nowrap text-[#595959]">
                 {t('pages.electronicLibrary.tabs.trainingCourses')}
               </button>
             </Link>
-            <Link to="/electronic-library">
+            <Link to={getLocalizedPath("/electronic-library")}>
               <button className="flex-1 md:flex-none px-4 py-2 rounded-md transition-colors whitespace-nowrap bg-[#F5F5F5] text-[#595959]">
                 {t('pages.electronicLibrary.tabs.electronicLibrary')}
               </button>

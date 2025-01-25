@@ -6,7 +6,10 @@ import { sendRequest } from '../utils/apiFunctions';
 import pdf from "../assets/icons/pdf.png";
 
 const CourseItem = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const getLocalizedPath = (path) => {
+    return `/${i18n.language}${path}`;
+  };
   const [courseData, setCourseData] = useState(null);
   const { courseId } = useParams();
 
@@ -39,7 +42,7 @@ const CourseItem = () => {
       <div className="py-2 text-sm text-gray-600">
         <span>{t('pages.courseItem.breadcrumb.home')}</span>
         <span className="mx-2">›</span>
-        <Link to="/training-courses" className="text-[#024072]">
+        <Link to={getLocalizedPath("/training-courses")} className="text-[#024072]">
           {t('pages.courseItem.breadcrumb.materials')}
         </Link>
         <span className="mx-2">›</span>

@@ -3,11 +3,10 @@ import { Calendar, ChevronDown, ArrowRight } from 'lucide-react';
 import { PieChart, Pie, Cell } from 'recharts';
 import { sendRequest } from '../utils/apiFunctions'; // Update this path
 import { useTranslation } from 'react-i18next';
-
 import { Link } from 'react-router-dom';
 
 const VideoCourseDashboard = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [selectedYear, setSelectedYear] = useState(null);
   const [years, setYears] = useState([]);
   const [pieData, setPieData] = useState([]);
@@ -99,6 +98,11 @@ const VideoCourseDashboard = () => {
 
   const COLORS = ['#ef4444', '#eab308', '#22c55e'];
 
+  // Add helper function for localized paths
+  const getLocalizedPath = (path) => {
+    return `/${i18n.language}${path}`;
+  };
+
   return (
     <div className=" bg-gray-50 py-8 px-4 mt-4">
       <div className="grid lg:grid-cols-12 md:grid-cols-2 grid-cols-1 gap-8">
@@ -108,7 +112,7 @@ const VideoCourseDashboard = () => {
             <h1 className="text-2xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959]">
               {t('videoCourses.title')}
             </h1>
-            <Link to="/training-courses">
+            <Link to={getLocalizedPath('/training-courses')}>
               <button className="px-4 py-2 bg-white text-gray-700 rounded-[12px] flex items-center gap-2">
                 <span className='text-[14px]'>{t('common.details')}</span>
                 <ArrowRight className="w-4 h-4" />
@@ -146,7 +150,7 @@ const VideoCourseDashboard = () => {
                   <div key={course.id} className="bg-white p-4 rounded-lg " style={{
                     boxShadow: '0px 0px 32px 0px #00000012'
                   }}>
-                    <Link to={`/educational-materials/${course.id}`}>
+                    <Link to={getLocalizedPath(`/educational-materials/${course.id}`)}>
                       <div className="flex flex-col md:flex-row gap-4">
                         <img
                           src={course.image}

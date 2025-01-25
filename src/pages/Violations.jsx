@@ -5,7 +5,10 @@ import { sendRequest } from '../utils/apiFunctions';
 import { useTranslation } from 'react-i18next';
 
 function Violations() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const getLocalizedPath = (path) => {
+    return `/${i18n.language}${path}`;
+  };
   const [categories, setCategories] = useState([]);
   const [news, setNews] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -173,7 +176,7 @@ function Violations() {
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8 border-b pb-8 min-h-[500px]">
               {news.map((item) => (
-                <Link to={`/news/${item.id}`} key={item.id} className="flex bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-3" style={{
+                <Link to={getLocalizedPath(`/news/${item.id}`)} key={item.id} className="flex bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-3" style={{
                   maxHeight: "150px"
                 }}>
                   <div className="w-32 h-full flex-shrink-0">

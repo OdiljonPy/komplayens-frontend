@@ -5,7 +5,10 @@ import { useTranslation } from 'react-i18next';
 import { sendRequest } from '../utils/apiFunctions';
 
 const NewsItem = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const getLocalizedPath = (path) => {
+    return `/${i18n.language}${path}`;
+  };
   const { newsId } = useParams();
   const [newsData, setNewsData] = useState(null);
 
@@ -39,7 +42,7 @@ const NewsItem = () => {
         <div className="text-sm text-gray-600 flex items-center gap-1 whitespace-nowrap min-w-max">
           <span>{t('pages.newsItem.breadcrumb.home')}</span>
           <ChevronRight size={16} className="text-gray-400" />
-          <Link to="/news" className='text-gray-400'>{t('pages.newsItem.breadcrumb.news')}</Link>
+          <Link to={getLocalizedPath("/violations")} className='text-gray-400'>{t('pages.newsItem.breadcrumb.news')}</Link>
           <ChevronRight size={16} className="text-gray-400" />
           <span className='text-[#024072]'>{newsData.title}</span>
         </div>
@@ -87,7 +90,7 @@ const NewsItem = () => {
             <div className="space-y-4">
               {newsData.additional.map((item) => (
                 <Link
-                  to={`/news/${item.id}`}
+                  to={getLocalizedPath(`/news/${item.id}`)}
                   key={item.id}
                   className="flex space-x-4 bg-white shadow hover:bg-gray-100 p-3 rounded-lg"
                 >

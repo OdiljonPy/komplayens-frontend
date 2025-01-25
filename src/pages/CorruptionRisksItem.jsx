@@ -4,8 +4,12 @@ import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
+
 const CorruptionRisksItem = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const getLocalizedPath = (path) => {
+    return `/${i18n.language}${path}`;
+  };
 
   return (
     <div className="w-full p-4">
@@ -13,7 +17,7 @@ const CorruptionRisksItem = () => {
       <div className="flex items-center gap-2 text-sm text-gray-600 mb-6">
         <span>{t('pages.corruptionRisks.breadcrumb.home')}</span>
         <ChevronRight className="h-4 w-4" />
-        <Link to="/corruption-risks">
+        <Link to={getLocalizedPath("/corruption-risks")}>
           <span>{t('pages.corruptionRisks.breadcrumb.risks')}</span>
         </Link>
         <ChevronRight className="h-4 w-4" />

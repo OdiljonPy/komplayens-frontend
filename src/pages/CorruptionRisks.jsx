@@ -5,8 +5,6 @@ import pdfImg from "../assets/icons/pdf.png"
 import { sendRequest } from '../utils/apiFunctions';
 import { useTranslation } from 'react-i18next';
 
-
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 import { DateRange } from 'react-date-range';
@@ -19,11 +17,13 @@ import { Navigation, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
+
 const Filters = ({ onFilterChange }) => {
+  const { t } = useTranslation();
+
   const [selectedSort, setSelectedSort] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('');
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
-  const { t } = useTranslation();
   const [dateRange, setDateRange] = useState([
     {
       startDate: null,
@@ -167,6 +167,10 @@ const Filters = ({ onFilterChange }) => {
 
 export default function CorruptionRisks() {
   const { t } = useTranslation();
+  const { i18n } = useTranslation();
+  const getLocalizedPath = (path) => {
+    return `/${i18n.language}${path}`;
+  };
   const [selectedSort, setSelectedSort] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('');
   const [startDate, setStartDate] = useState('');
@@ -459,7 +463,7 @@ export default function CorruptionRisks() {
                         <div className="px-4 py-3">
                           {task.status != 1 ? (
                             <Link
-                              to={`/corruption-risks/${task.id}`}
+                              to={getLocalizedPath(`/corruption-risks/${task.id}`)}
                             >
                               <button className="px-3 py-1.5 text-sm bg-[#024072] text-white rounded-md hover:bg-[#02386A]">
                                 Natijalarni ko'rish

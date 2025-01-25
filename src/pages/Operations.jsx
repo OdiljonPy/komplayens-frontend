@@ -5,7 +5,10 @@ import { useTranslation } from 'react-i18next';
 import { sendRequest } from '../utils/apiFunctions';
 
 const Operations = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const getLocalizedPath = (path) => {
+    return `/${i18n.language}${path}`;
+  };
   const [isOpen, setIsOpen] = useState(false);
   const [professions, setProfessions] = useState([]);
   const [cards, setCards] = useState([]);
@@ -203,7 +206,7 @@ const Operations = () => {
               <p className="text-gray-600 mb-4">{card.case}</p>
               <Link
                 className="text-[#024072] underline"
-                to={`/operations/${card.id}`}
+                to={getLocalizedPath(`/operations/${card.id}`)}
               >
                 {t('pages.operations.details')}
               </Link>

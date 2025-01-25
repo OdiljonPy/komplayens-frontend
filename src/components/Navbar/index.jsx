@@ -22,11 +22,7 @@ const Navbar = () => {
     if (!currentPath.startsWith(`/${currentLang}`)) {
       navigate(`/${currentLang}${pathWithoutLang}`, { replace: true });
     }
-
-    // Remove the force reload as it might cause issues
-    // Instead, wait for translations to load
     i18n.loadNamespaces(['translation']).then(() => {
-      // Optional: you can force a component re-render here if needed
     });
   }, [i18n.language]);
 

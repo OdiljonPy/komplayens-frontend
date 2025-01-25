@@ -54,7 +54,6 @@ const EvaluationResults = () => {
             fourth_quarter: item.fourth_quarter,
             fifth_quarter: item.fifth_quarter,
             change: item.difference,
-            this_year: item.this_year
           }));
 
           // Split into rows of 3 items each
