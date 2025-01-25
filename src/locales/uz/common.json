@@ -443,42 +443,68 @@
     },
     "benefits": {
       "title": "Manfaatlar to'qnashuvi",
+      "generateNotification": "Xabarnoma yaratish",
+      "button1": "Form 1",
+      "button2": "Form 2",
+      "button3": "Form 3",
+      "next": "Keyingisi",
       "form1": {
-        "name": "Manfaatlar to'qnashuvi deklaratsiyasi",
-        "employeeInfo": "Xodim ma'lumotlari",
-        "relativeInfo": "Yaqin qarindosh ma'lumotlari",
-        "legalEntityInfo": "Yuridik shaxs ma'lumotlari",
+        "to": "Kimga",
+        "from": "Kimdan",
+        "notification": "XABARNOMA",
+        "introText": "Ushbu xabarnoma orqali manfaatlar to'qnashuviga olib kelishi mumkin bo'lgan quyidagi holatlar to'g'risida xabar beraman:",
+        "employeeInfoTitle": "1. Xodim ma'lumotlari",
+        "idCardInfo": "ID-karta yoki biometrik pasport ma'lumotlari",
+        "pinfl": "Jismoniy shaxsning shaxsiy identifikatsiya raqami (JSHSHIR)",
+        "relatedPersons": "2. Aloqador shaxslarga oid ma'lumotlar",
+        "relativeInfoTitle": "Yaqin qarindosh ma'lumotlari",
+        "fullName": "Familiya, ismi, otasining ismi",
+        "position": "Lavozim",
+        "passportInfo": "Passport ma'lumotlari",
+        "passportDate": "Passport berilgan sana",
+        "supervisorInfo": "Rahbar ma'lumotlari",
+        "supervisorPosition": "Rahbar lavozimi",
+        "supervisorFullName": "Rahbar F.I.O",
+        "employeePosition": "Xodim lavozimi",
+        "employeeFullName": "Xodim F.I.O",
         "personalSignature": "Shaxsiy imzo",
-        "date": "Sana",
-        "buttonText": "Form 1"
+        "relativePassportInfo": "Qarindoshning ID-kartasi yoki biometrik pasport ma'lumotlari",
+        "relativePinfl": "Qarindoshning JSHSHIR",
+        "tables": {
+          "employeeTable": {
+            "idCardInfo": "ID-karta yoki biometrik pasport ma'lumotlari",
+            "pinfl": "Jismoniy shaxsning shaxsiy identifikatsiya raqami (JSHSHIR)"
+          },
+          "relativeTable": {
+            "fullName": "Familiya, ismi, otasining ismi",
+            "idCardInfo": "ID-karta yoki biometrik pasport ma'lumotlari",
+            "pinfl": "Jismoniy shaxsning shaxsiy identifikatsiya raqami (JSHSHIR)"
+          },
+          "legalEntity1": {
+            "title": "Xodim qaysi yuridik shaxsning ustav fondi aktsiyalariga yoki ulushlariga egalik qilsa",
+            "name": "Yuridik shaxsning nomi",
+            "tin": "STIR"
+          },
+          "legalEntity2": {
+            "title": "Xodimning yaqin qarindoshi qaysi yuridik shaxsning ustav fondi aktsiyalariga egalik qilsa",
+            "name": "Yuridik shaxsning nomi",
+            "tin": "STIR"
+          }
+        }
       },
       "form2": {
-        "title": "Manfaatlar to'qnashuvi deklaratsiyasi",
-        "employeeInfo": "Xodim ma'lumotlari",
-        "relativeInfo": "Yaqin qarindosh ma'lumotlari",
-        "legalEntityInfo": "Yuridik shaxs ma'lumotlari",
-        "personalSignature": "Shaxsiy imzo",
-        "date": "Sana",
-        "buttonText": "Form 2"
+        "infoNote": "* Agar xodim aloqador shaxslarning ID-karta (biometrik pasport), JSHSHIR yoki STIR ma'lumotlariga ega bo'lmasa, tegishli pozitsiyalarda «ma'lumot mavjud emas» deb ko'rsatishi mumkin.",
+        "conflictInfo": "3. Mavjud manfaatlar to'qnashuvi to'g'risida ma'lumot",
+        "existingConflict": "Mavjud manfaatlar to'qnashuvi to'g'risida ma'lumot",
+        "employeePosition": "Xodimning lavozimi",
+        "supervisorPosition": "Xodimning bevosita rahbari lavozimi",
+        "measures": "Mavjud manfaatlar to'qnashuvini tartibga solish bo'yicha ko'rilgan chora",
+        "registrationInfo": "Mavjud manfaatlar to'qnashuvi aniqlangan holatlar Manfaatlar to'qnashuvini hisobga olish reestriga ro'yxatga olingan sanasi va tartib raqami: 20___ yil \"___\" \"___________\" -son."
       },
-      "form3": {
-        "title": "Aloqador shaxslarning ehtimoliy manfaatlar to'qnashuvi to'g'risidagi deklaratsiya",
-        "declaration": "DEKLARATSIYA",
-        "employeeInfo": "Xodim ma'lumotlari",
-        "relativeInfo": "Qarindoshlik ma'lumotlari",
-        "legalEntityInfo": "Yuridik shaxs ma'lumotlari",
-        "personalSignature": "Shaxsiy imzo yoki elektron raqamli imzo",
-        "date": "Sana",
-        "buttonText": "Form 3"
-      },
-      "next": "Keyingisi",
-      "generateNotification": "Xabarnomani shakllantirish",
       "employeeInfo": "Xodim ma'lumotlari",
-      "supervisorInfo": "Rahbar ma'lumotlari",
       "relativeInfo": "Yaqin qarindosh ma'lumotlari",
       "personalSignature": "Shaxsiy imzo",
-      "measures": "Ko'rilgan choralar",
-      "description": "Tavsif"
+      "measures": "Mavjud manfaatlar to'qnashuvini tartibga solish bo'yicha ko'rilgan chora"
     },
     "courseItem": {
       "breadcrumb": {
@@ -490,6 +516,194 @@
       "videoMaterials": "Video materiallar",
       "watch": "Ko'rish",
       "loading": "Yuklanmoqda..."
+    },
+    "benefits2": {
+      "form1": {
+        "supervisorInfo": "Rahbar ma'lumotlari",
+        "supervisorFullName": "Rahbarning F.I.O",
+        "supervisorPosition": "Rahbar lavozimi",
+        "employeeInfo": "Xodim ma'lumotlari",
+        "employeeFullName": "Xodimning F.I.O",
+        "employeePosition": "Xodim lavozimi",
+        "passportInfo": "Pasport ma'lumotlari",
+        "passportSeries": "Pasport seriyasi",
+        "passportIssueDate": "Berilgan sanasi",
+        "pinfl": "JSHSHIR",
+        "legalEntityName": "Yuridik shaxsning nomi",
+        "tin": "STIR"
+      },
+      "form2": {
+        "title": "Manfaatlar to'qnashuvi to'g'risidagi axborot",
+        "date": "Sana",
+        "description": "Qisqacha tavsif",
+        "descriptionPlaceholder": "Tavsifni kiriting",
+        "additionalInfo": "Qo'shimcha ma'lumotlar",
+        "additionalInfoNote": "(xodim tomonidan manfaatlar to'qnashuvi vaziyati sifatida baholanadigan boshqa holatlar ko'rsatiladi)"
+      },
+      "documents": {
+        "first": {
+          "mainTitle": "XODIMNING EHTIMOLIY MANFAATLAR TO'QNASHUVINI TUSHUNISHI",
+          "declarationText": "Men, quyida imzo chekuvchi, ushbu deklaratsiyani to'ldirish paytida menga ma'lum bo'lgan barcha manfaatlar to'qnashuvi holatlarini halol va vijdonan oshkor etaman.",
+          "employeeInfoTitle": "1. XODIM TO'G'RISIDA MA'LUMOT",
+          "fullNameNote": "(familiya, ismi, otasining ismi)",
+          "positionNote": "(lavozimi)",
+          "footnote": "* Agar xodim unga aloqador shaxslarning ID-karta (biometrik pasport), JSHSHIR yoki STIR ma'lumotlariga ega bo'lmasa, u tomonidan tegishli pozitsiyalarda \"ma'lumotga ega emasman\" deb izoh ko'rsatilishi mumkin",
+          "table": {
+            "header": {
+              "fullName": "F.I.O",
+              "position": "Lavozimi",
+              "passportInfo": "Passport ma'lumotlari",
+              "pinfl": "JSHSHIR",
+              "legalEntityName": "Yuridik shaxs nomi",
+              "tin": "STIR",
+              "footnote": "* Agar xodim unga aloqador shaxslarning ID-karta (biometrik pasport), JSHSHIR yoki STIR ma'lumotlariga ega bo'lmasa, u tomonidan tegishli pozitsiyalarda \"ma'lumotga ega emasman\" deb izoh ko'rsatilishi mumkin",
+              "legalEntityInfo1": "Xodim qaysi yuridik shaxsning ustav fondi (ustav kapitali) aktsiyalariga egalik qilsa yoki boshqaruv organlari rahbari yoki a'zosi bo'lsa, o'sha yuridik shaxsga oid ma'lumotlar",
+              "legalEntityInfo2": "Xodimning yaqin qarindoshiga oid ma'lumotlar",
+              "relatedPersonInfo": "Aloqador shaxsga oid ma'lumotlar",
+              "relativeInfo": "Xodimning yaqin qarindoshiga oid ma'lumotlar"
+            }
+          }
+        },
+        "second": {
+          "title": "Manfaatlar to'qnashuvi tushunishidagi ma'lumotnoma",
+          "pageNumber": "{{page}}-bet",
+          "table": {
+            "header": {
+              "date": "Sana",
+              "description": "Tavsif",
+              "additionalInfo": "Qo'shimcha ma'lumotlar"
+            }
+          },
+          "section3Title": "3. MAVJUD MANFAATLAR TO'QNASHUVI TO'G'RISIDA MA'LUMOT",
+          "section4Title": "4. QO'SHIMCHA MA'LUMOTLAR",
+          "additionalInfoNote": "(xodim tomonidan manfaatlar to'qnashuvi vaziyati sifatida baholanadigan boshqa holatlar ko'rsatiladi)",
+          "registrationInfo": "Ehtimoliy manfaatlar to'qnashuvi aniqlangan holatlar Manfaatlar to'qnashuvini hisobga olish reestriga ro'yxatga olingan sanasi va raqami: 20___ yil \"___\" \"___________\" -son.",
+          "fillingDate": "To'ldirilgan sana 20___ yil \"___\" ___________",
+          "employeePosition": "Xodimning lavozimi",
+          "personalSignature": "Shaxsiy imzo yoki elektron raqamli imzosi",
+          "idCardInfo": "Identifikatsiya ID-kartasi yoki biometrik pasport ma'lumotlari (seriyasi, raqami, berilgan sanasi)",
+          "pinflInfo": "Jismoniy shaxsning shaxsiy identifikatsiya raqami (JSHSHIR) (mavjud bo'lgan taqdirda)",
+          "relatedPersonTitle": "2. Aloqador shaxsga oid ma'lumotlar*",
+          "relativeInfo": "Xodimning yaqin qarindoshiga oid ma'lumotlar",
+          "fullName": "Familiya, ismi, otasining ismi",
+          "idCardPassportInfo": "Identifikatsiya ID-kartasi yoki biometrik pasport ma'lumotlari",
+          "legalEntityInfo1": "Xodim qaysi yuridik shaxsning ustav fondi (ustav kapitali) aktsiyalariga ega ulushlarga malik qilsa yoki boshqaruv organlari rahbari yoki a'zosi bo'lsa, o'sha yuridik shaxsga oid ma'lumotlar",
+          "legalEntityInfo2": "Xodimning yaqin qarindoshi qaysi yuridik shaxsning ustav fondi (ustav kapitali) aktsiyalariga ega ulushlarga malik qilsa yoki boshqaruv organlari rahbari yoki a'zosi bo'lsa, o'sha yuridik shaxsga oid ma'lumotlar",
+          "legalEntityName": "Yuridik shaxsning nomi",
+          "tin": "STIR",
+          "infoNote": "*Xodim unga aloqador shaxslarning identifikatsiya ID-kartasi (biometrik pasporti), JSHSHIR, STIR bo'yicha ma'lumotlarni olish imkoniyatiga ega bo'lmasa, u tomonidan tegishli pozitsiyalarda \"ma'lumotga ega emasman\" deb izoh ko'rsatilishi mumkin"
+        }
+      }
+    },
+    "benefits3": {
+      "Step1Form": {
+        "supervisorInfo": "Rahbar ma'lumotlari",
+        "supervisorFullName": "Rahbarning F.I.O",
+        "supervisorPosition": "Rahbar lavozimi",
+        "employeeInfo": "Xodim ma'lumotlari",
+        "employeeFullName": "Xodimning F.I.O",
+        "employeePosition": "Xodim lavozimi",
+        "passportInfo": "Pasport ma'lumotlari",
+        "passportSeries": "Pasport seriyasi",
+        "passportIssueDate": "Berilgan sanasi",
+        "pinfl": "JSHSHIR",
+        "legalEntityName": "Yuridik shaxsning nomi",
+        "tin": "STIR"
+      },
+      "Step2Form": {
+        "description": "Tavsif",
+        "descriptionPlaceholder": "Tavsifni kiriting",
+        "additionalInfo": "Qo'shimcha ma'lumotlar",
+        "additionalInfoNote": "(xodim tomonidan manfaatlar to'qnashuvi vaziyati sifatida baholanadigan boshqa holatlar ko'rsatiladi)"
+      },
+      "documents": {
+        "first": {
+          "mainTitle": "XODIMNING EHTIMOLIY MANFAATLAR TO'QNASHUVI TO'G'RISIDAGI DEKLARATSIYASI",
+          "declarationText": "Men, quyida imzo chekuvchi, ushbu deklaratsiyani to'ldirish paytida menga ma'lum bo'lgan manfaatlar to'qnashuvining barcha holatlarini halol va vijdonan oshkor qilaman.",
+          "employeeInfoTitle": "1. XODIM TO'G'RISIDA MA'LUMOT",
+          "fullNameNote": "(familiyasi, ismi, otasining ismi)",
+          "fullName": "F.I.O",
+          "positionNote": "(lavozimi)",
+          "relativeInfo": "Xodimning yaqin qarindoshiga oid ma'lumotlar",
+          "passportInfo": "Passport ma'lumotlari",
+          "relatedPersonTitle": "2. Aloqador shaxsga oid ma'lumotlar*",
+          "pinfl": "JSHSHIR",
+          "legalEntityName": "Yuridik shaxs nomi",
+          "tin": "STIR",
+          "table": {
+            "header": {
+              "fullName": "F.I.O",
+              "position": "Lavozimi",
+              "passportInfo": "Passport ma'lumotlari",
+              "pinfl": "JSHSHIR",
+              "legalEntityName": "Yuridik shaxs nomi",
+              "tin": "STIR",
+              "legalEntityInfo1": "Xodim qaysi yuridik shaxsning ustav fondi (ustav kapitali) aktsiyalariga ega ulushlarga malik qilsa yoki boshqaruv organlari rahbari yoki a'zosi bo'lsa, o'sha yuridik shaxsga oid ma'lumotlar",
+              "legalEntityInfo2": "Xodimning yaqin qarindoshi qaysi yuridik shaxsning ustav fondi (ustav kapitali) aktsiyalariga ega ulushlarga malik qilsa yoki boshqaruv organlari rahbari yoki a'zosi bo'lsa, o'sha yuridik shaxsga oid ma'lumotlar",
+              "relatedPersonInfo": "Aloqador shaxsga oid ma'lumotlar",
+              "relativeInfo": "Xodimning yaqin qarindoshiga oid ma'lumotlar"
+            }
+          },
+          "footnote": "*Xodim unga aloqador shaxslarning identifikatsiya ID-kartasi (biometrik pasporti), JSHSHIR, STIR bo'yicha ma'lumotlarni olish imkoniyatiga ega bo'lmasa, u tomonidan tegishli pozitsiyalarda \"ma'lumotga ega emasman\" deb izoh ko'rsatilishi mumkin"
+        },
+        "second": {
+          "title": "Manfaatlar to'qnashuvi tushunishidagi ma'lumotnoma",
+          "pageNumber": "{{page}}-bet",
+          "table": {
+            "header": {
+              "date": "Sana",
+              "description": "Tavsif",
+              "additionalInfo": "Qo'shimcha ma'lumotlar"
+            }
+          },
+          "section3Title": "3. MAVJUD MANFAATLAR TO'QNASHUVI TO'G'RISIDA MA'LUMOT",
+          "section4Title": "4. QO'SHIMCHA MA'LUMOTLAR",
+          "additionalInfoNote": "(xodim tomonidan manfaatlar to'qnashuvi vaziyati sifatida baholanadigan boshqa holatlar ko'rsatiladi)",
+          "registrationInfo": "Ehtimoliy manfaatlar to'qnashuvi aniqlangan holatlar Manfaatlar to'qnashuvini hisobga olish reestriga ro'yxatga olingan sanasi va raqami: 20___ yil \"___\" \"___________\" -son.",
+          "fillingDate": "To'ldirilgan sana 20___ yil \"___\" ___________",
+          "employeePosition": "Xodimning lavozimi",
+          "personalSignature": "Shaxsiy imzo yoki elektron raqamli imzosi",
+          "idCardInfo": "Identifikatsiya ID-kartasi yoki biometrik pasport ma'lumotlari (seriyasi, raqami, berilgan sanasi)",
+          "pinflInfo": "Jismoniy shaxsning shaxsiy identifikatsiya raqami (JSHSHIR) (mavjud bo'lgan taqdirda)",
+          "relatedPersonTitle": "2. Aloqador shaxsga oid ma'lumotlar*",
+          "relativeInfo": "Xodimning yaqin qarindoshiga oid ma'lumotlar",
+          "fullName": "Familiya, ismi, otasining ismi",
+          "idCardPassportInfo": "Identifikatsiya ID-kartasi yoki biometrik pasport ma'lumotlari",
+          "legalEntityInfo1": "Xodim qaysi yuridik shaxsning ustav fondi (ustav kapitali) aktsiyalariga ega ulushlarga malik qilsa yoki boshqaruv organlari rahbari yoki a'zosi bo'lsa, o'sha yuridik shaxsga oid ma'lumotlar",
+          "legalEntityInfo2": "Xodimning yaqin qarindoshi qaysi yuridik shaxsning ustav fondi (ustav kapitali) aktsiyalariga ega ulushlarga malik qilsa yoki boshqaruv organlari rahbari yoki a'zosi bo'lsa, o'sha yuridik shaxsga oid ma'lumotlar",
+          "legalEntityName": "Yuridik shaxsning nomi",
+          "tin": "STIR",
+          "infoNote": "*Xodim unga aloqador shaxslarning identifikatsiya ID-kartasi (biometrik pasporti), JSHSHIR, STIR bo'yicha ma'lumotlarni olish imkoniyatiga ega bo'lmasa, u tomonidan tegishli pozitsiyalarda \"ma'lumotga ega emasman\" deb izoh ko'rsatilishi mumkin"
+        }
+      },
+      "documents2": {
+        "mainTitle": "Aloqador shaxslarning ehtimoliy manfaatlar to'qnashuvi tushunishidagi ma'lumotnoma",
+        "declarationText": "DEKLARATSIYA",
+        "introText": "Men _________________________, ushbu deklaratsiyada aloqador shaxs",
+        "nameNote": "(familiyasi, ismi, otasining ismi)",
+        "purposeText": "sifatida ehtimoliy manfaatlar to'qnashuvi vaziyatini halol va vijdonan oshkor qilaman.",
+        "relatedPerson": "Aloqador shaxs",
+        "signature": {
+          "title": "Shaxsiy imzo yoki elektron",
+          "subtitle": "raqamli imzo",
+          "name": "(F.I.O)",
+          "date": "To'lдирилgan sana 20___ yil \"___\" _______"
+        },
+        "registrationInfo": "Ehtimoliy manfaatlar to'qnashuvi aniqlangan holatlar Manfaatlar to'qnashuvini hisobga olish reestriga ro'yxatga olingan sanasi va raqami: 20___ yil \"___\" \"___________\"; reestr raqami № ______.",
+        "table": {
+          "header": {
+            "pinfl": "Jismoniy shaxsning shaxsiy identifikatsiya raqami (JSHSHIR) (mavjud bo'lgan taqdirda)",
+            "legalEntityName": "Yuridik shaxsning nomi",
+            "tin": "STIR",
+            "position": "Lavozimi",
+            "passportInfo": "Passport ma'lumotlari",
+            "relativeInfo": "Xodimning yaqin qarindoshiga oid ma'lumotlar",
+            "relativeInfoNote": "Xodimning yaqin qarindoshiga oid ma'lumotlar",
+            "legalEntityInfo": "Yuridik shaxsning soliq to'lovchi raqami (STIR)",
+            "legalEntityInfoNote": "Yuridik shaxsning ustav fondi (ustav kapitali) aktsiyalariga ega ulushlarga malik qilsa yoki boshqaruv organlari rahbari yoki a'zosi bo'lsa, o'sha yuridik shaxsga oid ma'lumotlar"
+          }
+        }
+      }
     }
   }
 }

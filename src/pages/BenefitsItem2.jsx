@@ -5,6 +5,8 @@ import ReactDOM from 'react-dom';
 import { useTranslation } from 'react-i18next';
 
 const Step1Form = ({ formData, handleInputChange }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="space-y-6">
       {/* Xodimga Oid Ma'lumotlar */}
@@ -13,15 +15,15 @@ const Step1Form = ({ formData, handleInputChange }) => {
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            F.I.O <span className="text-red-500">*</span>
+            {t("pages.benefits2.form1.supervisorInfo")}
           </label>
           <input
             type="text"
-            name="managerFIO"
-            value={formData.managerFIO}
+            name="supervisorFullName"
+            value={formData.supervisorFullName}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder="Familiya, ism, otasining ismi"
+            placeholder={t("pages.benefits2.form1.supervisorFullName")}
           />
         </div>
 
@@ -206,16 +208,18 @@ const Step1Form = ({ formData, handleInputChange }) => {
 
 // Step2Form.jsx
 const Step2Form = ({ formData, handleInputChange }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="space-y-6">
       <div className="bg-white p-6 rounded-lg shadow-sm space-y-4">
         <h2 className="text-xl font-medium mb-6">
-          Manfaatlar To'qnashuvi To'g'risidagi Axborot
+          {t("pages.benefits2.form2.title")}
         </h2>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            Sana <span className="text-red-500">*</span>
+            {t("pages.benefits2.form2.date")}
           </label>
           <input
             type="date"
@@ -236,7 +240,7 @@ const Step2Form = ({ formData, handleInputChange }) => {
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
             rows={6}
-            placeholder="Manfaatlar to'qnashuvi tafsifi"
+            placeholder={t("pages.benefits2.form2.descriptionPlaceholder")}
           />
           <div className="text-right text-sm text-gray-500">
             <span>{formData.description?.length || 0}</span>/460
@@ -245,7 +249,7 @@ const Step2Form = ({ formData, handleInputChange }) => {
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            Qo'shimcha ma'lumot <span className="text-red-500">*</span>
+            {t("pages.benefits2.form2.additionalInfo")}
           </label>
           <textarea
             name="additionalInfo"
@@ -253,7 +257,7 @@ const Step2Form = ({ formData, handleInputChange }) => {
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
             rows={6}
-            placeholder="Qo'shimcha ma'lumot"
+            placeholder={t("pages.benefits2.form2.additionalInfoNote")}
           />
           <div className="text-right text-sm text-gray-500">
             <span>{formData.additionalInfo?.length || 0}</span>/460
@@ -263,6 +267,276 @@ const Step2Form = ({ formData, handleInputChange }) => {
     </div>
   );
 };
+
+const FirstDocument = React.forwardRef(({ formData }, ref) => {
+  const { t } = useTranslation();
+  return (
+    <div ref={ref} className="bg-white p-6 overflow-x-hidden min-w-[320px]">
+      <div className="mx-auto max-w-4xl">
+        <h1 className="text-center font-bold text-xl mb-8">
+          {t("pages.benefits2.documents.first.mainTitle")}
+        </h1>
+
+        <div className="mb-8 text-justify">
+          <p>
+            Мен, {formData.managerFIO || '_______________________'}
+          </p>
+          <p className="text-sm text-gray-600 text-center">{t("pages.benefits2.documents.first.fullNameNote")}</p>
+
+          <p className="mt-4">
+            {formData.position || '_______________________'}
+          </p>
+          <p className="text-sm text-gray-600 text-center">{t("pages.benefits2.documents.first.positionNote")}</p>
+
+          <p>
+            {t("pages.benefits2.documents.first.declarationText")}
+          </p>
+        </div>
+
+        {/* 1. Xodimga oid ma'lumotlar */}
+        <div className="mb-8">
+          <h2 className="font-bold mb-4">{t("pages.benefits2.documents.first.employeeInfoTitle")}</h2>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse border border-gray-300">
+              <tbody>
+                <tr>
+                  <td className="border border-gray-300 p-2 w-8">1.</td>
+                  <td className="border border-gray-300 p-2">
+                    {t("pages.benefits2.documents.first.table.header.fullName")}
+                  </td>
+                  <td className="border border-gray-300 p-2 min-w-[200px]">
+                    {formData.passportSeries} {formData.passportIssueDate}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 p-2">2.</td>
+                  <td className="border border-gray-300 p-2">
+                    {t("pages.benefits2.documents.first.table.header.passportInfo")}
+                  </td>
+                  <td className="border border-gray-300 p-2">
+                    {formData.jshshir}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* 2. Aloqador shaxsga oid ma'lumotlar */}
+        <div className="mb-8">
+          <h2 className="font-bold mb-4">{t("pages.benefits2.documents.first.table.header.relatedPersonInfo")}</h2>
+
+          {/* First subtable */}
+          <div className="mb-6">
+            <p className="font-medium mb-2 border-b border-gray-300 pb-2">
+              {t("pages.benefits2.documents.first.table.header.relatedPersonInfo")}
+            </p>
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse border border-gray-300">
+                <tbody>
+                  <tr>
+                    <td className="border border-gray-300 p-2 w-8">1.</td>
+                    <td className="border border-gray-300 p-2">
+                      {t("pages.benefits2.documents.first.table.header.fullName")}
+                    </td>
+                    <td className="border border-gray-300 p-2">{formData.relativeFIO}</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 p-2">2.</td>
+                    <td className="border border-gray-300 p-2">
+                      {t("pages.benefits2.documents.first.table.header.passportInfo")}
+                    </td>
+                    <td className="border border-gray-300 p-2">{formData.relativePassport}</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 p-2">3.</td>
+                    <td className="border border-gray-300 p-2">
+                      {t("pages.benefits2.documents.first.table.header.pinfl")}
+                    </td>
+                    <td className="border border-gray-300 p-2">{formData.relativeJSHSHIR}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Second subtable */}
+          <div className="mb-6">
+            <p className="font-medium mb-2 border-b border-gray-300 pb-2 text-sm">
+              {t("pages.benefits2.documents.first.table.header.legalEntityInfo1")}
+            </p>
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse border border-gray-300">
+                <tbody>
+                  <tr>
+                    <td className="border border-gray-300 p-2 w-8">1.</td>
+                    <td className="border border-gray-300 p-2">
+                      {t("pages.benefits2.documents.first.table.header.legalEntityName")}
+                    </td>
+                    <td className="border border-gray-300 p-2">{formData.legalEntityName}</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 p-2">2.</td>
+                    <td className="border border-gray-300 p-2">
+                      {t("pages.benefits2.documents.first.table.header.tin")}
+                    </td>
+                    <td className="border border-gray-300 p-2">{formData.stir}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Third subtable */}
+          <div>
+            <p className="font-medium mb-2 border-b border-gray-300 pb-2 text-sm">
+              {t("pages.benefits2.documents.first.table.header.legalEntityInfo2")}
+            </p>
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse border border-gray-300">
+                <tbody>
+                  <tr>
+                    <td className="border border-gray-300 p-2 w-8">1.</td>
+                    <td className="border border-gray-300 p-2">
+                      {t("pages.benefits2.documents.first.table.header.legalEntityName")}
+                    </td>
+                    <td className="border border-gray-300 p-2">{formData.relativeLegalEntityName}</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 p-2">2.</td>
+                    <td className="border border-gray-300 p-2">
+                      {t("pages.benefits2.documents.first.table.header.tin")}
+                    </td>
+                    <td className="border border-gray-300 p-2">{formData.relativeSTIR}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        {/* Footnote */}
+        <p className="text-sm text-gray-600 text-justify">
+          {t("pages.benefits2.documents.first.footnote")}
+        </p>
+      </div>
+    </div>
+  );
+});
+
+const SecondDocument = React.forwardRef(({ formData }, ref) => {
+  const { t } = useTranslation();
+  return (
+    <div ref={ref} className="bg-white p-6 overflow-x-hidden min-w-[320px]">
+      <div className="mx-auto max-w-4xl">
+        <div className="text-right mb-8">
+          <span>5</span>
+        </div>
+
+        <div className="mb-12">
+          <h2 className="font-bold text-xl mb-4">
+            {t("pages.benefits2.documents.second.section3Title")}
+          </h2>
+          <div className="border-b border-gray-300">
+            {formData.description || '________________________________________'}
+          </div>
+        </div>
+
+        <div className="mb-12">
+          <h2 className="font-bold text-xl mb-4">
+            {t("pages.benefits2.documents.second.section4Title")}
+          </h2>
+          <div className="border-b border-gray-300">
+            {formData.additionalInfo || '________________________________________'}
+          </div>
+          <p className="text-sm text-gray-600 mt-2">
+            {t("pages.benefits2.documents.second.additionalInfoNote")}
+          </p>
+        </div>
+
+        <div className="mb-12">
+          <div className="grid grid-cols-3 gap-4 items-center">
+            <div>
+              <span>{t("pages.benefits2.documents.second.employeePosition")}</span>
+            </div>
+            <div className="text-center italic text-gray-500">
+              {t("pages.benefits2.documents.second.personalSignature")}
+            </div>
+            <div className="text-right">
+              ({formData.managerFIO || '_______________'})
+            </div>
+          </div>
+          <div className="text-right mt-4">
+            <p>{t("pages.benefits2.documents.second.fillingDate")}</p>
+          </div>
+        </div>
+
+        <div className="text-sm">
+          <p>
+            {t("pages.benefits2.documents.second.registrationInfo")}
+          </p>
+        </div>
+
+        <p>
+          {t("pages.benefits2.documents.second.registrationInfo")}
+        </p>
+
+        <div className="text-right mt-4">
+          {t("pages.benefits2.documents.second.fillingDate")}
+        </div>
+
+        <div>
+          <span>{t("pages.benefits2.documents.second.employeePosition")}</span>
+          {t("pages.benefits2.documents.second.personalSignature")}
+        </div>
+
+        <td className="border border-gray-300 p-2">
+          {t("pages.benefits2.documents.second.idCardInfo")}
+        </td>
+
+        <td className="border border-gray-300 p-2">
+          {t("pages.benefits2.documents.second.pinflInfo")}
+        </td>
+
+        <h2 className="font-bold mb-4">
+          {t("pages.benefits2.documents.second.relatedPersonTitle")}
+        </h2>
+
+        <p className="font-medium mb-2 border-b border-gray-300 pb-2">
+          {t("pages.benefits2.documents.second.relativeInfo")}
+        </p>
+
+        <td className="border border-gray-300 p-2">
+          {t("pages.benefits2.documents.second.fullName")}
+        </td>
+
+        <td className="border border-gray-300 p-2">
+          {t("pages.benefits2.documents.second.idCardPassportInfo")}
+        </td>
+
+        <p className="font-medium mb-2 border-b border-gray-300 pb-2 text-sm">
+          {t("pages.benefits2.documents.second.legalEntityInfo1")}
+        </p>
+
+        <p className="font-medium mb-2 border-b border-gray-300 pb-2 text-sm">
+          {t("pages.benefits2.documents.second.legalEntityInfo2")}
+        </p>
+
+        <td className="border border-gray-300 p-2">
+          {t("pages.benefits2.documents.second.legalEntityName")}
+        </td>
+
+        <td className="border border-gray-300 p-2">
+          {t("pages.benefits2.documents.second.tin")}
+        </td>
+
+        <p className="text-sm text-gray-600 text-justify">
+          {t("pages.benefits2.documents.second.infoNote")}
+        </p>
+      </div>
+    </div>
+  );
+});
 
 const BenefitsItem2 = () => {
   const { t } = useTranslation();
@@ -309,220 +583,6 @@ const BenefitsItem2 = () => {
   };
 
   const handleNext = () => setCurrentStep(2);
-
-  const FirstDocument = React.forwardRef(({ formData }, ref) => (
-    <div ref={ref} className="bg-white p-6 overflow-x-hidden min-w-[320px]">
-      <div className="mx-auto max-w-4xl">
-        <h1 className="text-center font-bold text-xl mb-8">
-          ХОДИМНИНГ ЭҲТИМОЛИЙ МАНФААТЛАР ТЎҚНАШУВИ ТЎҒРИСИДАГИ ДЕКЛАРАЦИЯСИ
-        </h1>
-
-        <div className="mb-8 text-justify">
-          <p>
-            Мен, {formData.managerFIO || '_______________________'} ушбу
-          </p>
-          <p className="text-sm text-gray-600 text-center">(фамилияси, исми, отасининг исми ва унинг лавозими)</p>
-
-          <p className="mt-4">
-            {formData.position || '_______________________'}
-          </p>
-          <p className="text-sm text-gray-600 text-center">(филиалнинг ҳабул қилиниётганда бошқа ишга ўтказилаётганда)</p>
-
-          <p className="mt-4">
-            тўлдираётган декларацияда ўзим ва менга алоқадор шахсларнинг эҳтимолий
-            манфаатлар тўқнашувига оид қуйидаги маълумотларни ошкор қиламан:
-          </p>
-        </div>
-
-        {/* 1. Xodimga oid ma'lumotlar */}
-        <div className="mb-8">
-          <h2 className="font-bold mb-4">1. Ходимга оид маълумотлар</h2>
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse border border-gray-300">
-              <tbody>
-                <tr>
-                  <td className="border border-gray-300 p-2 w-8">1.</td>
-                  <td className="border border-gray-300 p-2">
-                    Идентификация ID-картаси ёки биометрик паспорт маълумотлари (серияси, рақами, берилган санаси)
-                  </td>
-                  <td className="border border-gray-300 p-2 min-w-[200px]">
-                    {formData.passportSeries} {formData.passportIssueDate}
-                  </td>
-                </tr>
-                <tr>
-                  <td className="border border-gray-300 p-2">2.</td>
-                  <td className="border border-gray-300 p-2">
-                    Жисмоний шахснинг шахсий идентификация рақами (ЖШШИР) (мавжуд бўлган тақдирда)
-                  </td>
-                  <td className="border border-gray-300 p-2">
-                    {formData.jshshir}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* 2. Aloqador shaxsga oid ma'lumotlar */}
-        <div className="mb-8">
-          <h2 className="font-bold mb-4">2. Алоқадор шахсга оид маълумотлар*</h2>
-
-          {/* First subtable */}
-          <div className="mb-6">
-            <p className="font-medium mb-2 border-b border-gray-300 pb-2">
-              Ходимнинг яқин қариндошига оид маълумотлар
-            </p>
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse border border-gray-300">
-                <tbody>
-                  <tr>
-                    <td className="border border-gray-300 p-2 w-8">1.</td>
-                    <td className="border border-gray-300 p-2">
-                      Фамилия, исми, отасининг исми
-                    </td>
-                    <td className="border border-gray-300 p-2">{formData.relativeFIO}</td>
-                  </tr>
-                  <tr>
-                    <td className="border border-gray-300 p-2">2.</td>
-                    <td className="border border-gray-300 p-2">
-                      Идентификация ID-картаси ёки биометрик паспорт маълумотлари
-                    </td>
-                    <td className="border border-gray-300 p-2">{formData.relativePassport}</td>
-                  </tr>
-                  <tr>
-                    <td className="border border-gray-300 p-2">3.</td>
-                    <td className="border border-gray-300 p-2">
-                      ЖШШИР
-                    </td>
-                    <td className="border border-gray-300 p-2">{formData.relativeJSHSHIR}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Second subtable */}
-          <div className="mb-6">
-            <p className="font-medium mb-2 border-b border-gray-300 pb-2 text-sm">
-              Ходим қайси юридик шахснинг устав фонди (устав капитали) акцияларига эга улушларига малик қилса ёки бошқарув органлари раҳбари ёки аъзоси бўлса, ўша юридик шахсга оид маълумотлар
-            </p>
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse border border-gray-300">
-                <tbody>
-                  <tr>
-                    <td className="border border-gray-300 p-2 w-8">1.</td>
-                    <td className="border border-gray-300 p-2">
-                      Юридик шахснинг номи
-                    </td>
-                    <td className="border border-gray-300 p-2">{formData.legalEntityName}</td>
-                  </tr>
-                  <tr>
-                    <td className="border border-gray-300 p-2">2.</td>
-                    <td className="border border-gray-300 p-2">
-                      СТИР
-                    </td>
-                    <td className="border border-gray-300 p-2">{formData.stir}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Third subtable */}
-          <div>
-            <p className="font-medium mb-2 border-b border-gray-300 pb-2 text-sm">
-              Ходимнинг яқин қариндоши қайси юридик шахснинг устав фонди (устав капитали) акцияларига эга улушларига малик қилса ёки бошқарув органлари раҳбари ёки аъзоси бўлса, ўша юридик шахсга оид маълумотлар
-            </p>
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse border border-gray-300">
-                <tbody>
-                  <tr>
-                    <td className="border border-gray-300 p-2 w-8">1.</td>
-                    <td className="border border-gray-300 p-2">
-                      Юридик шахснинг номи
-                    </td>
-                    <td className="border border-gray-300 p-2">{formData.relativeLegalEntityName}</td>
-                  </tr>
-                  <tr>
-                    <td className="border border-gray-300 p-2">2.</td>
-                    <td className="border border-gray-300 p-2">
-                      СТИР
-                    </td>
-                    <td className="border border-gray-300 p-2">{formData.relativeSTIR}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        {/* Footnote */}
-        <p className="text-sm text-gray-600 text-justify">
-          *Ходим унга алоқадор шахсларнинг идентификация ID-картаси (биометрик паспорти), ЖШШИР, СТИР бўйича маълумотларни олиш имкониятига эга бўлмаса, у томонидан тегишли позицияларда "маълумотга эга эмасман" деб изоҳ кўрсатилиши мумкин
-        </p>
-      </div>
-    </div>
-  ));
-
-  // SecondDocument.jsx
-  const SecondDocument = React.forwardRef(({ formData }, ref) => (
-    <div ref={ref} className="bg-white p-6 overflow-x-hidden min-w-[320px]">
-      <div className="mx-auto max-w-4xl">
-        {/* Page number */}
-        <div className="text-right mb-8">
-          <span>5</span>
-        </div>
-
-        {/* Section 3 */}
-        <div className="mb-12">
-          <h2 className="font-bold text-xl mb-4">
-            3. Эҳтимолий манфаатлар тўқнашуви тўғрисидаги маълумот
-          </h2>
-          <div className="border-b border-gray-300">
-            {formData.description || '________________________________________'}
-          </div>
-        </div>
-
-        {/* Section 4 */}
-        <div className="mb-12">
-          <h2 className="font-bold text-xl mb-4">
-            4. Эҳтимолий манфаатлар тўқнашуви тўғрисидаги декларацияда кўрсатилиши керак бўлган маълумотлардан ташқари қўшимча маълумотлар (агар мавжуд бўлса)
-          </h2>
-          <div className="border-b border-gray-300">
-            {formData.additionalInfo || '________________________________________'}
-          </div>
-          <p className="text-sm text-gray-600 mt-2">
-            (ходим томонидан манфаатлар тўқнашуви вазияти сифатида баҳоланадиган бошқа ҳолатлар кўрсатилади)
-          </p>
-        </div>
-
-        {/* Signature section */}
-        <div className="mb-12">
-          <div className="grid grid-cols-3 gap-4 items-center">
-            <div>
-              <span>Ходимнинг лавозими</span>
-            </div>
-            <div className="text-center italic text-gray-500">
-              Шахсий имзо ёки электрон рақамли имзоси
-            </div>
-            <div className="text-right">
-              ({formData.managerFIO || '_______________'})
-            </div>
-          </div>
-          <div className="text-right mt-4">
-            <p>Тўлдирилган сана 20___ йил "___" ___________</p>
-          </div>
-        </div>
-
-        {/* Registry note */}
-        <div className="text-sm">
-          <p>
-            Эҳтимолий манфаатлар тўқнашуви аниқланган ҳолатлар Манфаатлар тўқнашувини ҳисобга олиш реестрида рўйхатга олинган санаси ва рақами: 20___ йил "___" "___________" -сон.
-          </p>
-        </div>
-      </div>
-    </div>
-  ));
 
   const generatePDF = () => {
     // Create a temporary div to hold both documents

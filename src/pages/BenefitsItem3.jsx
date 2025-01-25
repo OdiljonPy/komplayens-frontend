@@ -6,15 +6,19 @@ import { useTranslation } from 'react-i18next';
 
 
 const Step1Form = ({ formData, handleInputChange }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="space-y-6">
       {/* Xodimga Oid Ma'lumotlar */}
       <div className="bg-white p-6 rounded-lg shadow-sm space-y-4">
-        <h2 className="text-lg font-medium mb-4">Xodimga Oid Ma'lumotlar</h2>
+        <h2 className="text-lg font-medium mb-4">
+          {t("pages.benefits3.Step1Form.employeeInfo")}
+        </h2>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            F.I.O <span className="text-red-500">*</span>
+            {t("pages.benefits3.documents.first.fullName")} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -22,13 +26,13 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.managerFIO}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder="Familiya, ism, otasining ismi"
+            placeholder={t("pages.benefits3.documents.first.fullNameNote")}
           />
         </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            JSHSHIR
+            {t("pages.benefits3.documents.first.table.header.pinfl")}
           </label>
           <input
             type="text"
@@ -43,7 +47,7 @@ const Step1Form = ({ formData, handleInputChange }) => {
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            Yuridik shaxsni nomi
+            {t("pages.benefits3.documents.first.table.header.legalEntityName")}
           </label>
           <input
             type="text"
@@ -51,13 +55,13 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.legalEntityName}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder="Yuridik shaxsni nomi"
+            placeholder={t("pages.benefits3.documents.first.table.header.legalEntityName")}
           />
         </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            STIR
+            {t("pages.benefits3.documents.first.table.header.tin")}
           </label>
           <input
             type="text"
@@ -65,13 +69,13 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.stir}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder="STIR"
+            placeholder={t("pages.benefits3.documents.first.table.header.tin")}
           />
         </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            Lavozim
+            {t("pages.benefits3.documents.first.table.header.position")}
           </label>
           <input
             type="text"
@@ -79,13 +83,13 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.position}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder="123 456 789 012"
+            placeholder={t("pages.benefits3.documents.first.table.header.position")}
           />
         </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            Qarindoshlar to'g'risidagi ma'lumotlar
+            {t("pages.benefits3.documents.first.relativeInfo")}
           </label>
           <textarea
             name="relativeInfo"
@@ -102,7 +106,7 @@ const Step1Form = ({ formData, handleInputChange }) => {
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            Xodimlar to'g'risidagi ma'lumotlar
+            {t("pages.benefits3.documents.first.table.header.relatedPersonInfo")}
           </label>
           <textarea
             name="employeeInfo"
@@ -121,12 +125,12 @@ const Step1Form = ({ formData, handleInputChange }) => {
       {/* Manfaatlar To'qnashuvi Yuzaga Kelayotgan Shaxs Haqida Ma'lumot */}
       <div className="bg-white p-6 rounded-lg shadow-sm space-y-4">
         <h2 className="text-lg font-medium mb-4">
-          Manfaatlar To'qnashuvi Yuzaga Kelayotgan Shaxs Haqida Ma'lumot
+          {t("pages.benefits3.documents.first.relatedPersonTitle")}
         </h2>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            F.I.O <span className="text-red-500">*</span>
+            {t("pages.benefits3.documents.first.fullName")} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -134,7 +138,7 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.conflictPersonFIO}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder="Familiya, ism, otasining ismi"
+            placeholder={t("pages.benefits3.documents.first.fullNameNote")}
           />
         </div>
       </div>
@@ -143,16 +147,18 @@ const Step1Form = ({ formData, handleInputChange }) => {
 };
 
 const Step2Form = ({ formData, handleInputChange }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="space-y-6">
       <div className="bg-white p-6 rounded-lg shadow-sm space-y-4">
         <h2 className="text-lg font-medium mb-4">
-          Manfaatlar To'qnashuvi To'g'risidagi Axborot
+          {t("pages.benefits3.documents.second.section3Title")}
         </h2>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            To'ldirilgan sana <span className="text-red-500">*</span>
+            {t("pages.benefits3.documents.second.fillingDate")} <span className="text-red-500">*</span>
           </label>
           <input
             type="date"
@@ -219,26 +225,22 @@ const BenefitsItem3 = () => {
       {/* Header section */}
       <div className="text-center mb-6 max-w-3xl mx-auto">
         <h1 className="font-bold text-base md:text-lg mb-1 whitespace-normal">
-          Алоқадор шахсларнинг эҳтимолий манфаатлар тўқнашуви
-        </h1>
-        <h1 className="font-bold text-base md:text-lg mb-1 whitespace-normal">
-          тўғрисидаги
+          {t('pages.benefits3.documents2.mainTitle')}
         </h1>
         <h1 className="font-bold text-lg md:text-xl whitespace-normal">
-          ДЕКЛАРАЦИЯ
+          {t('pages.benefits3.documents2.declarationText')}
         </h1>
       </div>
 
       {/* Introduction text */}
       <div className="mb-6 text-sm md:text-base">
         <p className="whitespace-normal">
-          Мен {formData.managerFIO ? (
+          {t('pages.benefits3.documents2.introText')} {formData.managerFIO ? (
             <span className="inline">
               <span className="bg-[#FFFF00] px-1">{formData.managerFIO}</span>
             </span>
           ) : '________________'},
-          ушбу декларацияда алоқадор шахс сифатида ўзим ва ходим (ишга кирaётган номзоднинг)
-          эҳтимолий манфаатлар тўқнашувига оид қуйидаги маълумотларни маълум қиламан:
+          {t('pages.benefits3.documents2.purposeText')}
         </p>
       </div>
 
@@ -250,7 +252,7 @@ const BenefitsItem3 = () => {
               <td className="border border-gray-300 p-2 align-top w-12">1.</td>
               <td className="border border-gray-300 p-2 whitespace-normal">
                 <div className="break-words">
-                  Ходимга алоқадор жисмоний шахснинг шахсий идентификация рақами (ЖШШИР)
+                  {t('pages.benefits3.documents2.table.header.pinfl')}
                 </div>
               </td>
               <td className="border border-gray-300 p-2 min-w-[200px]">
@@ -263,7 +265,7 @@ const BenefitsItem3 = () => {
               <td className="border border-gray-300 p-2 align-top">3.</td>
               <td className="border border-gray-300 p-2 whitespace-normal">
                 <div className="break-words">
-                  Ходимга алоқадор юридик шахснинг номи
+                  {t('pages.benefits3.documents2.table.header.legalEntityName')}
                 </div>
               </td>
               <td className="border border-gray-300 p-2">
@@ -276,7 +278,7 @@ const BenefitsItem3 = () => {
               <td className="border border-gray-300 p-2 align-top">4.</td>
               <td className="border border-gray-300 p-2 whitespace-normal">
                 <div className="break-words">
-                  Ходимга алоқадор солиқ тўловчининг идентификация рақами (СТИР)
+                  {t('pages.benefits3.documents2.table.header.tin')}
                 </div>
               </td>
               <td className="border border-gray-300 p-2">
@@ -289,7 +291,7 @@ const BenefitsItem3 = () => {
               <td className="border border-gray-300 p-2 align-top">5.</td>
               <td className="border border-gray-300 p-2 whitespace-normal">
                 <div className="break-words">
-                  Ходимнинг Ф.И.О. ва лавозими
+                  {t('pages.benefits3.documents2.table.header.position')}
                 </div>
               </td>
               <td className="border border-gray-300 p-2">
@@ -302,11 +304,10 @@ const BenefitsItem3 = () => {
               <td className="border border-gray-300 p-2 align-top">6.</td>
               <td className="border border-gray-300 p-2">
                 <div className="whitespace-normal break-words">
-                  Жисмоний шахснинг ходим билан қариндошлиги тўғрисидаги маълумотлар
+                  {t('pages.benefits3.documents2.table.header.relativeInfo')}
                 </div>
                 <div className="italic text-sm mt-1 whitespace-normal break-words">
-                  (ота-оналар, ака-укалар, опа-сингиллар, ўғиллар, қизлар, эр-хотинлар,
-                  шунингдек эр-хотинларнинг ота-оналари, ака-укалари, опа-сингиллари ва фарзандлари)
+                  {t('pages.benefits3.documents2.table.header.relativeInfoNote')}
                 </div>
               </td>
               <td className="border border-gray-300 p-2">
@@ -319,12 +320,10 @@ const BenefitsItem3 = () => {
               <td className="border border-gray-300 p-2 align-top">7.</td>
               <td className="border border-gray-300 p-2">
                 <div className="whitespace-normal break-words">
-                  Юридик шахснинг ходим билан алоқадорлиги тўғрисидаги маълумотлар
+                  {t('pages.benefits3.documents2.table.header.legalEntityInfo')}
                 </div>
                 <div className="italic text-sm mt-1 whitespace-normal break-words">
-                  (ходим ва унинг яқин қариндошлари қайси юридик шахснинг устав фонди (устав капитали)
-                  акцияларига ёки улушларига эгалик қилса ёхуд бошқарув органининг раҳбари ёки аъзоси бўлса,
-                  ўша юридик шахс)
+                  {t('pages.benefits3.documents2.table.header.legalEntityInfoNote')}
                 </div>
               </td>
               <td className="border border-gray-300 p-2">
@@ -339,11 +338,11 @@ const BenefitsItem3 = () => {
 
       {/* Signature section */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mt-8">
-        <div className="whitespace-nowrap">Алоқадор шахс</div>
+        <div className="whitespace-nowrap">{t('pages.benefits3.documents2.relatedPerson')}</div>
         <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
           <div className="text-center">
-            <div className="whitespace-nowrap">Шахсий имзо ёки электрон</div>
-            <div className="whitespace-nowrap">рақамли имзоси</div>
+            <div className="whitespace-nowrap">{t('pages.benefits3.documents2.signature.title')}</div>
+            <div className="whitespace-nowrap">{t('pages.benefits3.documents2.signature.subtitle')}</div>
           </div>
           {(formData.signature || formData.signDate) ? (
             <div className="bg-[#FFFF00] px-1 break-words max-w-full">
@@ -356,9 +355,7 @@ const BenefitsItem3 = () => {
 
       {/* Footer text */}
       <div className="mt-8 text-sm whitespace-normal break-words">
-        Эҳтимолий манфаатлар тўқнашуви аниқланган ҳолатлар Манфаатлар тўқнашувини
-        ҳисобга олиш реестрида рўйхатга олинган санаси ва рақами: 20___ йил "___"
-        "___________"; реестр рақами № ______.
+        {t('pages.benefits3.documents2.registrationInfo')}
       </div>
     </div>
   ));
@@ -367,24 +364,19 @@ const BenefitsItem3 = () => {
     <div ref={ref} className="bg-white p-6 rounded-lg shadow-sm">
       <div className="text-center mb-6">
         <h1 className="font-bold text-lg mb-1">
-          Алоқадор шахсларнинг эҳтимолий манфаатлар тўқнашуви
+          {t('pages.benefits3.documents2.mainTitle')}
         </h1>
         <h1 className="font-bold text-lg mb-1">
-          тўғрисидаги
-        </h1>
-        <h1 className="font-bold text-xl">
-          ДЕКЛАРАЦИЯ
+          {t('pages.benefits3.documents2.declarationText')}
         </h1>
       </div>
 
       <div className="mb-6">
         <p className="text-base">
-          Мен _________________________, ушбу декларацияда алоқадор шахс
-          <span className="text-sm">(фамилияси, исми ва шарифи)</span>
-        </p>
-        <p className="text-base">
-          сифатида ўзим ва ходим (ишга кирaётган номзоднинг) эҳтимолий
-          манфаатлар тўқнашувига оид қуйидаги маълумотларни маълум қиламан:
+          {t('pages.benefits3.documents2.introText')} {formData.managerFIO ? (
+            <span className="text-sm">(фамилияси, исми ва шарифи)</span>
+          ) : '________________'},
+          {t('pages.benefits3.documents2.purposeText')}
         </p>
       </div>
 
@@ -394,11 +386,11 @@ const BenefitsItem3 = () => {
       </table>
 
       <div className="flex justify-between items-start mt-8">
-        <div>Алоқадор шахс</div>
+        <div>{t('pages.benefits3.documents2.relatedPerson')}</div>
         <div className="flex items-center gap-4">
           <div>
-            <div>Шахсий имзо ёки электрон</div>
-            <div>рақамли имзоси</div>
+            <div>{t('pages.benefits3.documents2.signature.title')}</div>
+            <div>{t('pages.benefits3.documents2.signature.subtitle')}</div>
           </div>
           <div className="text-right">
             <div>(Ф.И.О.)</div>
@@ -408,9 +400,7 @@ const BenefitsItem3 = () => {
       </div>
 
       <div className="mt-8 text-sm">
-        Эҳтимолий манфаатлар тўқнашуви аниқланган ҳолатлар Манфаатлар тўқнашувини
-        ҳисобга олиш реестрида рўйхатга олинган санаси ва рақами: 20___ йил "___"
-        "___________"; реестр рақами № ______.
+        {t('pages.benefits3.documents2.registrationInfo')}
       </div>
     </div>
   ));

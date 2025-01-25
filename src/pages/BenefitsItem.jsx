@@ -5,15 +5,17 @@ import ReactDOM from 'react-dom';
 import { useTranslation } from 'react-i18next';
 
 const Step1Form = ({ formData, handleInputChange }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="space-y-6">
-      {/* Rahbar ma'lumotlari */}
+      {/* Supervisor Information */}
       <div className="bg-white p-6 rounded-[12px] shadow-sm space-y-4">
-        <h2 className="text-xl font-medium mb-6">Rahbar ma'lumotlari</h2>
+        <h2 className="text-xl font-medium mb-6">{t('pages.benefits.form1.supervisorInfo')}</h2>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            Rahbar F.I.O <span className="text-red-500">*</span>
+            {t('pages.benefits.form1.supervisorFullName')} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -21,13 +23,13 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.supervisorFIO}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder="Familiya, ism, otasining ismi"
+            placeholder={t('pages.benefits.form1.fullName')}
           />
         </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            Rahbar lavozimi <span className="text-red-500">*</span>
+            {t('pages.benefits.form1.supervisorPosition')} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -35,18 +37,18 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.supervisorPosition}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder="Lavozimi"
+            placeholder={t('pages.benefits.form1.position')}
           />
         </div>
       </div>
 
-      {/* Xodim ma'lumotlari */}
+      {/* Employee Information */}
       <div className="bg-white p-6 rounded-[12px] shadow-sm space-y-4">
-        <h2 className="text-xl font-medium mb-6">Xodim ma'lumotlari</h2>
+        <h2 className="text-xl font-medium mb-6">{t('pages.benefits.employeeInfo')}</h2>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            F.I.O <span className="text-red-500">*</span>
+            {t('pages.benefits.form1.fullName')} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -54,13 +56,13 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.managerFIO}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder="Familiya, ism, otasining ismi"
+            placeholder={t('pages.benefits.form1.fullName')}
           />
         </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            Lavozim <span className="text-red-500">*</span>
+            {t('pages.benefits.form1.position')} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -68,13 +70,13 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.position}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder="Lavozimingizni kiriting"
+            placeholder={t('pages.benefits.form1.position')}
           />
         </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            Passport seriyasi va raqami <span className="text-red-500">*</span>
+            {t('pages.benefits.form1.passportInfo')} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -88,7 +90,7 @@ const Step1Form = ({ formData, handleInputChange }) => {
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            Passport berilgan sanasi <span className="text-red-500">*</span>
+            {t('pages.benefits.form1.passportDate')} <span className="text-red-500">*</span>
           </label>
           <input
             type="date"
@@ -101,7 +103,7 @@ const Step1Form = ({ formData, handleInputChange }) => {
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            JSHSHIR <span className="text-red-500">*</span>
+            {t('pages.benefits.form1.pinfl')} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -118,12 +120,12 @@ const Step1Form = ({ formData, handleInputChange }) => {
       {/* Yaqin qarindosh ma'lumotlari */}
       <div className="bg-white p-6 rounded-lg shadow-sm space-y-4">
         <h2 className="text-xl font-medium mb-6">
-          Yaqin qarindosh ma'lumotlari
+          {t('pages.benefits.relativeInfo')}
         </h2>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            F.I.O <span className="text-red-500">*</span>
+            {t('pages.benefits.form1.fullName')} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -131,13 +133,13 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.relativeFIO}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder="Familiya, ism, otasining ismi"
+            placeholder={t('pages.benefits.form1.fullName')}
           />
         </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            Passport ma'lumotlari <span className="text-red-500">*</span>
+            {t('pages.benefits.form1.relativePassportInfo')} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -145,13 +147,13 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.relativePassport}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder="Passport ma'lumotlari"
+            placeholder={t('pages.benefits.form1.passportInfo')}
           />
         </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            JSHSHIR <span className="text-red-500">*</span>
+            {t('pages.benefits.form1.relativePinfl')} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -163,34 +165,6 @@ const Step1Form = ({ formData, handleInputChange }) => {
             maxLength="14"
           />
         </div>
-
-        <div className="form-group">
-          <label className="block text-gray-500 text-sm mb-1">
-            Yuridik shaxs nomi <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="text"
-            name="legalEntityName2"
-            value={formData.legalEntityName2}
-            onChange={handleInputChange}
-            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder="Yuridik shaxs nomi"
-          />
-        </div>
-
-        <div className="form-group">
-          <label className="block text-gray-500 text-sm mb-1">
-            STIR <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="text"
-            name="stir2"
-            value={formData.stir2}
-            onChange={handleInputChange}
-            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder="STIR"
-          />
-        </div>
       </div>
     </div>
   );
@@ -198,47 +172,47 @@ const Step1Form = ({ formData, handleInputChange }) => {
 
 // Step2Form.jsx
 const Step2Form = ({ formData, handleInputChange, handleGeneratePDF }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="space-y-6">
       <div className="bg-white p-6 rounded-lg shadow-sm space-y-4">
         <h2 className="text-xl font-medium mb-6">
-          Manfaatlar To'qnashuvi To'g'risidagi Axborot
+          {t('pages.benefits.form2.conflictInfo')}
         </h2>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            Qisqacha tavsif <span className="text-red-500">*</span>
+            {t('pages.benefits.form2.description')} <span className="text-red-500">*</span>
           </label>
           <textarea
             name="description"
             value={formData.description}
             onChange={handleInputChange}
-            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            rows={4}
-            placeholder="Qisqacha tavsifni kiriting"
+            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg min-h-[100px]"
+            placeholder={t('pages.benefits.form2.descriptionPlaceholder')}
           />
         </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            Ko'rilgan chora <span className="text-red-500">*</span>
+            {t('pages.benefits.form2.measures')} <span className="text-red-500">*</span>
           </label>
           <textarea
             name="measures"
             value={formData.measures}
             onChange={handleInputChange}
-            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            rows={4}
-            placeholder="Ko'rilgan choralarni kiriting"
+            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg min-h-[100px]"
+            placeholder={t('pages.benefits.form2.descriptionPlaceholder')}
           />
         </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            Sana <span className="text-red-500">*</span>
+            {t('pages.benefits.form2.registrationInfo')}
           </label>
           <input
-            type="date"
+            type="text"
             name="date"
             value={formData.date}
             onChange={handleInputChange}
@@ -247,7 +221,14 @@ const Step2Form = ({ formData, handleInputChange, handleGeneratePDF }) => {
         </div>
       </div>
 
-
+      <div className="flex justify-end space-x-4">
+        <button
+          onClick={handleGeneratePDF}
+          className="px-6 py-2.5 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
+        >
+          {t('pages.benefits.generateNotification')}
+        </button>
+      </div>
     </div>
   );
 };
@@ -299,156 +280,164 @@ const BenefitsItem = () => {
   const handleNext = () => setCurrentStep(2);
 
 
-  const FirstDocument = React.forwardRef(({ formData }, ref) => (
-    <div ref={ref} className="bg-white p-4 md:p-6 overflow-x-hidden min-w-[320px]">
-      {/* Header section */}
-      <div className="text-right mb-8 text-sm">
-        <p>{t('pages.benefits.form1.to')}</p>
-        <div className="break-words max-w-[300px] ml-auto">
-          <p>{formData.supervisorPosition || ''}</p>
-          <p>{formData.supervisorFIO || ''}</p>
-        </div>
-        <p className="mt-4">{t('pages.benefits.form1.from')}</p>
-        <div className="break-words max-w-[300px] ml-auto">
-          <p>{formData.position || ''}</p>
-          <p>{formData.managerFIO || ''}</p>
-        </div>
-      </div>
+  const FirstDocument = React.forwardRef(({ formData }, ref) => {
+    const { t } = useTranslation();
 
-      <h1 className="text-center font-bold text-base md:text-xl mb-6 whitespace-normal">
-        {t('pages.benefits.form1.notification')}
-      </h1>
-
-      <p className="mb-6 text-sm whitespace-normal">
-        {t('pages.benefits.form1.introText')}
-      </p>
-
-      <div className="space-y-6">
-        {/* Employee Information Section */}
-        <div>
-          <h2 className="font-bold mb-4">{t('pages.benefits.form1.employeeInfoTitle')}</h2>
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse border border-gray-300 min-w-[500px]">
-              <tbody>
-                <tr>
-                  <td className="border border-gray-300 p-2 w-8">1.</td>
-                  <td className="border border-gray-300 p-2 whitespace-normal">
-                    {t('pages.benefits.form1.idCardInfo')}
-                  </td>
-                  <td className="border border-gray-300 p-2 whitespace-normal">
-                    {`${formData.passportSeries} ${formData.passportIssueDate}`}
-                  </td>
-                </tr>
-                <tr>
-                  <td className="border border-gray-300 p-2">2.</td>
-                  <td className="border border-gray-300 p-2 whitespace-normal">
-                    {t('pages.benefits.form1.pinfl')}
-                  </td>
-                  <td className="border border-gray-300 p-2">{formData.jshshir}</td>
-                </tr>
-              </tbody>
-            </table>
+    return (
+      <div ref={ref} className="bg-white p-4 md:p-6 overflow-x-hidden min-w-[320px]">
+        {/* Header section */}
+        <div className="text-right mb-8 text-sm">
+          <p>{t('pages.benefits.form1.to')}</p>
+          <div className="break-words max-w-[300px] ml-auto">
+            <p>{formData.supervisorPosition || ''}</p>
+            <p>{formData.supervisorFIO || ''}</p>
+          </div>
+          <p className="mt-4">{t('pages.benefits.form1.from')}</p>
+          <div className="break-words max-w-[300px] ml-auto">
+            <p>{formData.position || ''}</p>
+            <p>{formData.managerFIO || ''}</p>
           </div>
         </div>
 
-        {/* 2-Qism */}
-        <div>
-          <h2 className="font-bold mb-4">2. Алоқадор шахсларга оид маълумотлар*</h2>
+        <h1 className="text-center font-bold text-base md:text-xl mb-6 whitespace-normal">
+          {t('pages.benefits.form1.notification')}
+        </h1>
+
+        <p className="mb-6 text-sm whitespace-normal">
+          {t('pages.benefits.form1.introText')}
+        </p>
+
+        <div className="space-y-6">
+          {/* Employee Information Section */}
+          <div>
+            <h2 className="font-bold mb-4">{t('pages.benefits.employeeInfo')}</h2>
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse border border-gray-300 min-w-[500px]">
+                <tbody>
+                  <tr>
+                    <td className="border border-gray-300 p-2 w-8">1.</td>
+                    <td className="border border-gray-300 p-2 whitespace-normal">
+                      {t('pages.benefits.form1.tables.employeeTable.idCardInfo')}
+                    </td>
+                    <td className="border border-gray-300 p-2 whitespace-normal">
+                      {`${formData.passportSeries} ${formData.passportIssueDate}`}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 p-2">2.</td>
+                    <td className="border border-gray-300 p-2 whitespace-normal">
+                      {t('pages.benefits.form1.tables.employeeTable.pinfl')}
+                    </td>
+                    <td className="border border-gray-300 p-2">{formData.jshshir}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Relative Information Section */}
+          <div>
+            <p className="font-bold mb-2 border-b border-gray-300 py-2">
+              {t('pages.benefits.relativeInfo')}
+            </p>
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse border border-gray-300 mb-4 min-w-[500px]">
+                <tbody>
+                  <tr>
+                    <td className="border border-gray-300 p-2 w-8">1.</td>
+                    <td className="border border-gray-300 p-2">
+                      {t('pages.benefits.form1.tables.relativeTable.fullName')}
+                    </td>
+                    <td className="border border-gray-300 p-2">{formData.relativeFIO}</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 p-2">2.</td>
+                    <td className="border border-gray-300 p-2 whitespace-normal">
+                      {t('pages.benefits.form1.tables.relativeTable.idCardInfo')}
+                    </td>
+                    <td className="border border-gray-300 p-2">{formData.relativePassport}</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 p-2">3.</td>
+                    <td className="border border-gray-300 p-2 whitespace-normal">
+                      {t('pages.benefits.form1.tables.relativeTable.pinfl')}
+                    </td>
+                    <td className="border border-gray-300 p-2">{formData.relativeJSHSHIR}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Legal Entity Tables */}
           <div className="space-y-6">
+            {/* First Legal Entity Table */}
             <div>
-              <p className="font-bold mb-2 border-b border-gray-300 py-2">
-                Ходимнинг якин қариндошига оид маълумотлар
+              <p className="font-bold text-sm mb-2 border-b border-gray-300 py-2 whitespace-normal">
+                {t('pages.benefits.form1.tables.legalEntity1.title')}
               </p>
               <div className="overflow-x-auto">
                 <table className="w-full border-collapse border border-gray-300 mb-4 min-w-[500px]">
-                  {/* Table content */}
                   <tbody>
                     <tr>
                       <td className="border border-gray-300 p-2 w-8">1.</td>
-                      <td className="border border-gray-300 p-2">Фамилия, исми, отасининг исми</td>
-                      <td className="border border-gray-300 p-2">{formData.relativeFIO}</td>
+                      <td className="border border-gray-300 p-2">
+                        {t('pages.benefits.form1.tables.legalEntity1.name')}
+                      </td>
+                      <td className="border border-gray-300 p-2">{formData.legalEntityName1}</td>
                     </tr>
                     <tr>
                       <td className="border border-gray-300 p-2">2.</td>
-                      <td className="border border-gray-300 p-2 whitespace-normal">
-                        Идентификация ID-картаси ёки биометрик паспорт маълумотлари
+                      <td className="border border-gray-300 p-2">
+                        {t('pages.benefits.form1.tables.legalEntity1.tin')}
                       </td>
-                      <td className="border border-gray-300 p-2">{formData.relativePassport}</td>
-                    </tr>
-                    <tr>
-                      <td className="border border-gray-300 p-2">3.</td>
-                      <td className="border border-gray-300 p-2 whitespace-normal">
-                        Жисмоний шахснинг шахсий идентификация рақами (ЖШШИР)
-                      </td>
-                      <td className="border border-gray-300 p-2">{formData.relativeJSHSHIR}</td>
+                      <td className="border border-gray-300 p-2">{formData.stir1}</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </div>
 
-            {/* Yuridik shaxslar tables */}
-            <div className="space-y-6">
-              {/* First legal entity table */}
-              <div>
-                <p className="font-bold text-sm mb-2 border-b border-gray-300 py-2 whitespace-normal">
-                  Ходим қайси юридик шахснинг устав фонди акцияларига ёки улушларига эгалик қилса
-                </p>
-                <div className="overflow-x-auto">
-                  <table className="w-full border-collapse border border-gray-300 mb-4 min-w-[500px]">
-                    <tbody>
-                      <tr>
-                        <td className="border border-gray-300 p-2 w-8">1.</td>
-                        <td className="border border-gray-300 p-2">Юридик шахснинг номи</td>
-                        <td className="border border-gray-300 p-2">{formData.legalEntityName1}</td>
-                      </tr>
-                      <tr>
-                        <td className="border border-gray-300 p-2">2.</td>
-                        <td className="border border-gray-300 p-2">СТИР</td>
-                        <td className="border border-gray-300 p-2">{formData.stir1}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              {/* Second legal entity table */}
-              <div>
-                <p className="font-bold text-sm mb-2 border-b border-gray-300 py-2 whitespace-normal">
-                  Ходимнинг якин қариндоши қайси юридик шахснинг устав фонди акцияларига эгалик қилса
-                </p>
-                <div className="overflow-x-auto">
-                  <table className="w-full border-collapse border border-gray-300 min-w-[500px]">
-                    <tbody>
-                      <tr>
-                        <td className="border border-gray-300 p-2 w-8">1.</td>
-                        <td className="border border-gray-300 p-2">Юридик шахснинг номи</td>
-                        <td className="border border-gray-300 p-2">{formData.legalEntityName2}</td>
-                      </tr>
-                      <tr>
-                        <td className="border border-gray-300 p-2">2.</td>
-                        <td className="border border-gray-300 p-2">СТИР</td>
-                        <td className="border border-gray-300 p-2">{formData.stir2}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+            {/* Second Legal Entity Table */}
+            <div>
+              <p className="font-bold text-sm mb-2 border-b border-gray-300 py-2 whitespace-normal">
+                {t('pages.benefits.form1.tables.legalEntity2.title')}
+              </p>
+              <div className="overflow-x-auto">
+                <table className="w-full border-collapse border border-gray-300 min-w-[500px]">
+                  <tbody>
+                    <tr>
+                      <td className="border border-gray-300 p-2 w-8">1.</td>
+                      <td className="border border-gray-300 p-2">
+                        {t('pages.benefits.form1.tables.legalEntity2.name')}
+                      </td>
+                      <td className="border border-gray-300 p-2">{formData.legalEntityName2}</td>
+                    </tr>
+                    <tr>
+                      <td className="border border-gray-300 p-2">2.</td>
+                      <td className="border border-gray-300 p-2">
+                        {t('pages.benefits.form1.tables.legalEntity2.tin')}
+                      </td>
+                      <td className="border border-gray-300 p-2">{formData.stir2}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  ));
+    );
+  });
 
   const SecondDocument = React.forwardRef(({ formData }, ref) => (
     <div ref={ref} className="bg-white p-4 md:p-6 overflow-x-hidden min-w-[320px]">
       <p className="text-sm mb-8 text-justify whitespace-normal">
-        *Ходим унга алоқадор шахсларнинг идентификация ID-картаси (биометрик паспорти), ЖШШИР, СТИР бўйича маълумотларни олиш имкониятига эга бўлмаса, у томонидан тегишли позицияларда "маълумотга эга эмасман" деб изоҳ кўрсатилиши мумкин.
+        {t('pages.benefits.form2.infoNote')}
       </p>
 
       <h1 className="text-center font-bold text-base md:text-xl mb-6 whitespace-normal">
-        3. Мавжуд манфаатлар тўқнашуви бўйича маълумот
+        {t('pages.benefits.form2.conflictInfo')}
       </h1>
 
       <div className="overflow-x-auto mb-8">
@@ -457,7 +446,7 @@ const BenefitsItem = () => {
             <tr>
               <td className="border border-gray-300 p-2 w-8">1.</td>
               <td className="border border-gray-300 p-2 whitespace-normal">
-                Мавжуд манфаатлар тўқнашуви тўғрисида маълумот
+                {t('pages.benefits.form2.existingConflict')}
               </td>
               <td className="border border-gray-300 p-2 min-w-[200px] whitespace-normal">
                 {formData.description || ''}
@@ -471,11 +460,11 @@ const BenefitsItem = () => {
       <div className="space-y-6">
         <div className="flex flex-col md:flex-row md:items-start gap-4">
           <div className="min-w-[180px] whitespace-normal">
-            <p>Ходимнинг лавозими</p>
+            <p>{t('pages.benefits.form2.employeePosition')}</p>
           </div>
           <div className="flex-1 flex items-end flex-wrap gap-2">
             <div className="italic text-gray-500 text-sm whitespace-nowrap">
-              Шахсий имзо
+              {t('pages.benefits.personalSignature')}
             </div>
             <div className="border-b border-gray-400 flex-1 mx-2 min-w-[100px]"></div>
             <div className="whitespace-nowrap">
@@ -483,54 +472,21 @@ const BenefitsItem = () => {
             </div>
           </div>
         </div>
-
-        <div className="flex flex-col md:flex-row md:items-start gap-4">
-          <div className="min-w-[180px] whitespace-normal">
-            <p>Ходимнинг бевосита раҳбари</p>
-          </div>
-          <div className="flex-1 flex items-end flex-wrap gap-2">
-            <div className="italic text-gray-500 text-sm whitespace-nowrap">
-              Шахсий имзо
-            </div>
-            <div className="border-b border-gray-400 flex-1 mx-2 min-w-[100px]"></div>
-            <div className="whitespace-nowrap">
-              {formData.supervisorFIO && `(${formData.supervisorFIO})`}
-            </div>
-          </div>
-        </div>
       </div>
 
-      {/* Ko'rilgan choralar */}
+      {/* Measures taken */}
       <div className="my-8">
         <p className="mb-2 whitespace-normal">
-          Мавжуд манфаатлар тўқнашувини тартибга солиш бўйича кўрилган чора:
+          {t('pages.benefits.measures')}:
         </p>
         <div className="border-b border-gray-400 min-h-[40px] whitespace-normal">
           {formData.measures || ''}
         </div>
       </div>
 
-      {/* Bottom signature */}
-      <div className="flex flex-col md:flex-row md:items-start gap-4 mb-8">
-        <div className="min-w-[180px] whitespace-normal">
-          <p>Ходимнинг бевосита раҳбарининг лавозими</p>
-        </div>
-        <div className="flex-1 flex items-end flex-wrap gap-2">
-          <div className="italic text-gray-500 text-sm whitespace-nowrap">
-            Шахсий имзо
-          </div>
-          <div className="border-b border-gray-400 flex-1 mx-2 min-w-[100px]"></div>
-          <div className="whitespace-nowrap">
-            {formData.supervisorPosition && `(${formData.supervisorPosition})`}
-          </div>
-        </div>
-      </div>
-
       {/* Footer text */}
       <div className="text-sm whitespace-normal">
-        <p>
-          Мавжуд манфаатлар тўқнашуви аниқланган ҳолатлар Манфаатлар тўқнашувини ҳисобга олиш реестрида рўйхатга олинган санаси ва тартиб рақами: 20___ йил "___" "___________" -сон.
-        </p>
+        <p>{t('pages.benefits.form2.registrationInfo')}</p>
       </div>
     </div>
   ));
@@ -690,6 +646,7 @@ const BenefitsItem = () => {
             <Step2Form
               formData={formData}
               handleInputChange={handleInputChange}
+              handleGeneratePDF={generatePDF}
             />
           )}
         </div>

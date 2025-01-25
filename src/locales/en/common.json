@@ -452,6 +452,9 @@
     },
     "benefits": {
       "title": "Conflict of Interest",
+      "button1": "Form 1",
+      "button2": "Form 2",
+      "button3": "Form 3",
       "form1": {
         "name": "Conflict of Interest Declaration",
         "employeeInfo": "Employee Information",
@@ -459,7 +462,48 @@
         "legalEntityInfo": "Legal Entity Information",
         "personalSignature": "Personal Signature",
         "date": "Date",
-        "buttonText": "Form 1"
+        "buttonText": "Form 1",
+        "to": "To",
+        "from": "From",
+        "notification": "NOTIFICATION",
+        "introText": "I hereby notify about the following circumstances that may lead to a conflict of interest:",
+        "idCardInfo": "ID Card or Biometric Passport Information",
+        "pinfl": "Personal Identification Number (PINFL)",
+        "relatedPersons": "Information about Related Persons",
+        "fullName": "Full Name",
+        "position": "Position",
+        "passportInfo": "Passport Information",
+        "passportDate": "Passport Issue Date",
+        "supervisorInfo": "Supervisor Information",
+        "supervisorPosition": "Supervisor Position",
+        "supervisorFullName": "Supervisor Full Name",
+        "employeePosition": "Employee Position",
+        "employeeFullName": "Employee Full Name",
+        "relativePassportInfo": "Relative's ID Card or Biometric Passport Information",
+        "relativePinfl": "Relative's PINFL",
+        "legalEntityName": "Legal Entity Name",
+        "stir": "TIN (Taxpayer Identification Number)",
+        "tables": {
+          "employeeTable": {
+            "idCardInfo": "ID Card or Biometric Passport Information",
+            "pinfl": "Personal Identification Number (PINFL)"
+          },
+          "relativeTable": {
+            "fullName": "Full Name",
+            "idCardInfo": "ID Card or Biometric Passport Information",
+            "pinfl": "Personal Identification Number (PINFL)"
+          },
+          "legalEntity1": {
+            "title": "Legal entity where the employee owns shares or stakes in the authorized fund",
+            "name": "Legal Entity Name",
+            "tin": "TIN"
+          },
+          "legalEntity2": {
+            "title": "Legal entity where the employee's close relative owns shares in the authorized fund",
+            "name": "Legal Entity Name",
+            "tin": "TIN"
+          }
+        }
       },
       "form2": {
         "title": "Conflict of Interest Declaration",
@@ -468,20 +512,22 @@
         "legalEntityInfo": "Legal Entity Information",
         "personalSignature": "Personal Signature",
         "date": "Date",
-        "buttonText": "Form 2"
-      },
-      "form3": {
-        "title": "Declaration of Potential Conflict of Interest of Related Persons",
-        "declaration": "DECLARATION",
-        "employeeInfo": "Employee Information",
-        "relativeInfo": "Relationship Information",
-        "legalEntityInfo": "Legal Entity Information",
-        "personalSignature": "Personal Signature or Digital Signature",
-        "date": "Date",
-        "buttonText": "Form 3"
+        "buttonText": "Form 2",
+        "infoNote": "* If an employee does not have access to ID card (biometric passport), PINFL, or TIN information of related persons, they may indicate \"information not available\" in the respective positions.",
+        "conflictInfo": "3. Information about Existing Conflict of Interest",
+        "existingConflict": "Information about existing conflict of interest",
+        "employeePosition": "Employee Position",
+        "registrationInfo": "Date and registration number of identified conflict of interest cases recorded in the Conflict of Interest Registry: 20___ year \"___\" \"___________\" -number.",
+        "measures": "Measures taken to regulate the existing conflict of interest",
+        "description": "Brief Description",
+        "descriptionPlaceholder": "Enter a brief description"
       },
       "next": "Next",
-      "generateNotification": "Generate Notification"
+      "generateNotification": "Generate Notification",
+      "employeeInfo": "Employee Information",
+      "relativeInfo": "Close Relative Information",
+      "personalSignature": "Personal Signature",
+      "measures": "Measures taken to regulate the existing conflict of interest"
     },
     "courseItem": {
       "breadcrumb": {
@@ -493,6 +539,192 @@
       "videoMaterials": "Video materials",
       "watch": "Watch",
       "loading": "Loading..."
+    },
+    "benefits2": {
+      "form1": {
+        "supervisorInfo": "Supervisor Information",
+        "supervisorFullName": "Supervisor's Full Name",
+        "supervisorPosition": "Supervisor Position",
+        "employeeInfo": "Employee Information",
+        "employeeFullName": "Employee's Full Name",
+        "employeePosition": "Employee Position",
+        "passportInfo": "Passport Information",
+        "passportSeries": "Passport Series",
+        "passportIssueDate": "Issue Date",
+        "pinfl": "PINFL",
+        "legalEntityName": "Legal Entity Name",
+        "tin": "TIN"
+      },
+      "form2": {
+        "title": "Conflict of Interest Information",
+        "date": "Date",
+        "description": "Brief Description",
+        "descriptionPlaceholder": "Enter description",
+        "additionalInfo": "Additional Information",
+        "additionalInfoNote": "(other situations that the employee evaluates as conflict of interest situations are indicated)"
+      },
+      "documents": {
+        "first": {
+          "mainTitle": "EMPLOYEE'S DECLARATION OF POTENTIAL CONFLICT OF INTEREST",
+          "declarationText": "I, the undersigned, honestly and conscientiously disclose all cases of conflict of interest known to me at the time of filling out this declaration.",
+          "employeeInfoTitle": "1. EMPLOYEE INFORMATION",
+          "fullNameNote": "(surname, first name, patronymic)",
+          "positionNote": "(position)",
+          "footnote": "* If an employee does not have access to information about the ID card (biometric passport), PINFL, TIN of related persons, they may indicate \"information not available\" in the respective positions",
+          "table": {
+            "header": {
+              "fullName": "Full Name",
+              "position": "Position",
+              "passportInfo": "Passport Info",
+              "pinfl": "PINFL",
+              "legalEntityName": "Legal Entity Name",
+              "footnote": "* If an employee does not have access to information about the ID card (biometric passport), PINFL, TIN of related persons, they may indicate \"information not available\" in the respective positions",
+              "tin": "TIN",
+              "legalEntityInfo2": "Information about the legal entity in whose authorized fund (charter capital) the employee's close relative owns shares or stakes, or is a head or member of management bodies",
+              "legalEntityInfo1": "Information about the legal entity in whose authorized fund (charter capital) the employee owns shares or stakes, or is a head or member of management bodies",
+              "relatedPersonInfo": "Information about related person",
+              "relativeInfo": "Information about employee's close relative"
+            }
+          }
+        },
+        "second": {
+          "title": "Conflict of Interest Statement",
+          "pageNumber": "Page {{page}}",
+          "table": {
+            "header": {
+              "date": "Date",
+              "description": "Description",
+              "additionalInfo": "Additional Information"
+            }
+          },
+          "section3Title": "3. INFORMATION ABOUT EXISTING CONFLICT OF INTEREST",
+          "section4Title": "4. ADDITIONAL INFORMATION",
+          "additionalInfoNote": "(other situations that the employee evaluates as conflict of interest situations are indicated)",
+          "registrationInfo": "Date and registration number of identified potential conflict of interest cases recorded in the Conflict of Interest Registry: 20___ year \"___\" \"___________\" -number.",
+          "fillingDate": "Filling date 20___ year \"___\" ___________",
+          "employeePosition": "Employee position",
+          "personalSignature": "Personal signature or digital signature",
+          "idCardInfo": "ID card or biometric passport information (series, number, date of issue)",
+          "pinflInfo": "Personal identification number (PINFL) (if available)",
+          "relatedPersonTitle": "2. Related Person Information*",
+          "relativeInfo": "Information about employee's close relative",
+          "fullName": "Full name (surname, first name, patronymic)",
+          "idCardPassportInfo": "ID card or biometric passport information",
+          "legalEntityInfo1": "Information about the legal entity in whose authorized fund (charter capital) the employee owns shares or stakes, or is a head or member of management bodies",
+          "legalEntityInfo2": "Information about the legal entity in whose authorized fund (charter capital) the employee's close relative owns shares or stakes, or is a head or member of management bodies",
+          "legalEntityName": "Legal entity name",
+          "tin": "TIN",
+          "infoNote": "*If an employee does not have access to information about the ID card (biometric passport), PINFL, TIN of related persons, they may indicate \"information not available\" in the respective positions"
+        }
+      }
+    },
+    "benefits3": {
+      "Step1Form": {
+        "supervisorInfo": "Supervisor Information",
+        "supervisorFullName": "Supervisor's Full Name",
+        "supervisorPosition": "Supervisor Position",
+        "employeeInfo": "Employee Information",
+        "employeeFullName": "Employee's Full Name",
+        "employeePosition": "Employee Position",
+        "passportInfo": "Passport Information",
+        "passportSeries": "Passport Series",
+        "passportIssueDate": "Issue Date",
+        "pinfl": "PINFL",
+        "legalEntityName": "Legal Entity Name",
+        "tin": "TIN"
+      },
+      "Step2Form": {
+        "description": "Description",
+        "descriptionPlaceholder": "Enter description",
+        "additionalInfo": "Additional Information",
+        "additionalInfoNote": "(other situations that the employee evaluates as conflict of interest situations are indicated)"
+      },
+      "documents": {
+        "first": {
+          "mainTitle": "EMPLOYEE'S DECLARATION OF POTENTIAL CONFLICT OF INTEREST",
+          "declarationText": "I, the undersigned, honestly and conscientiously disclose all cases of conflict of interest known to me at the time of filling out this declaration.",
+          "employeeInfoTitle": "1. EMPLOYEE INFORMATION",
+          "fullNameNote": "(surname, first name, patronymic)",
+          "positionNote": "(position)",
+          "relativeInfo": "Information about employee's close relative",
+          "passportInfo": "Passport Info",
+          "relatedPersonTitle": "2. Related Person Information*",
+          "pinfl": "PINFL",
+          "legalEntityName": "Legal Entity Name",
+          "tin": "TIN",
+          "table": {
+            "header": {
+              "fullName": "Full Name",
+              "position": "Position",
+              "passportInfo": "Passport Info",
+              "pinfl": "PINFL",
+              "legalEntityName": "Legal Entity Name",
+              "tin": "TIN",
+              "legalEntityInfo1": "Information about the legal entity in whose authorized fund (charter capital) the employee owns shares or stakes, or is a head or member of management bodies",
+              "legalEntityInfo2": "Information about the legal entity in whose authorized fund (charter capital) the employee's close relative owns shares or stakes, or is a head or member of management bodies",
+              "relatedPersonInfo": "Information about related person",
+              "relativeInfo": "Information about employee's close relative"
+            }
+          },
+          "footnote": "* If an employee does not have access to information about the ID card (biometric passport), PINFL, TIN of related persons, they may indicate \"information not available\" in the respective positions"
+        },
+        "second": {
+          "title": "Conflict of Interest Statement",
+          "pageNumber": "Page {{page}}",
+          "table": {
+            "header": {
+              "date": "Date",
+              "description": "Description",
+              "additionalInfo": "Additional Information"
+            }
+          },
+          "section3Title": "3. INFORMATION ABOUT EXISTING CONFLICT OF INTEREST",
+          "section4Title": "4. ADDITIONAL INFORMATION",
+          "additionalInfoNote": "(other situations that the employee evaluates as conflict of interest situations are indicated)",
+          "registrationInfo": "Date and registration number of identified potential conflict of interest cases recorded in the Conflict of Interest Registry: 20___ year \"___\" \"___________\" -number.",
+          "fillingDate": "Filling date 20___ year \"___\" ___________",
+          "employeePosition": "Employee position",
+          "personalSignature": "Personal signature or digital signature",
+          "idCardInfo": "ID card or biometric passport information (series, number, date of issue)",
+          "pinflInfo": "Personal identification number (PINFL) (if available)",
+          "relatedPersonTitle": "2. Related Person Information*",
+          "relativeInfo": "Information about employee's close relative",
+          "fullName": "Full name (surname, first name, patronymic)",
+          "idCardPassportInfo": "ID card or biometric passport information",
+          "legalEntityInfo1": "Information about the legal entity in whose authorized fund (charter capital) the employee owns shares or stakes, or is a head or member of management bodies",
+          "legalEntityInfo2": "Information about the legal entity in whose authorized fund (charter capital) the employee's close relative owns shares or stakes, or is a head or member of management bodies",
+          "legalEntityName": "Legal entity name",
+          "tin": "TIN",
+          "infoNote": "*If an employee does not have access to information about the ID card (biometric passport), PINFL, TIN of related persons, they may indicate \"information not available\" in the respective positions"
+        }
+      },
+      "documents2": {
+        "mainTitle": "Declaration on Potential Conflict of Interest of Related Persons",
+        "declarationText": "DECLARATION",
+        "introText": "I _________________________, as a related person in this declaration",
+        "nameNote": "(surname, first name, patronymic)",
+        "purposeText": "hereby declare the following information about potential conflicts of interest regarding myself and the employee (job candidate):",
+        "relatedPerson": "Related Person",
+        "signature": {
+          "title": "Personal signature or electronic",
+          "subtitle": "digital signature",
+          "name": "(Full Name)",
+          "date": "Filling date 20___ year \"___\" _______"
+        },
+        "registrationInfo": "Date and registration number of identified potential conflict of interest cases recorded in the Conflict of Interest Registry: 20___ year \"___\" \"___________\"; registry number № ______.",
+        "table": {
+          "header": {
+            "pinfl": "Personal identification number (PINFL) of the individual associated with the employee",
+            "legalEntityName": "Name of the legal entity associated with the employee",
+            "legalEntityInfo": "Taxpayer identification number (TIN) of the legal entity associated with the employee",
+            "legalEntityInfoNote": "Information about the size of shares in the authorized fund (charter capital) or whether they are a head or member of management bodies of the legal entity associated with the employee",
+            "relativeInfo": "Information about the employee's close relative",
+            "relativeInfoNote": "Information about the employee's close relative",
+            "legalEntityInfo2": "Information about the legal entity in whose authorized fund (charter capital) the employee's close relative owns shares or stakes, or is a head or member of management bodies",
+            "legalEntityInfo2Note": "Information about the legal entity in whose authorized fund (charter capital) the employee's close relative owns shares or stakes, or is a head or member of management bodies"
+          }
+        }
+      }
     }
   }
 }
