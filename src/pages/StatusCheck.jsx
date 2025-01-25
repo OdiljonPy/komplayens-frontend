@@ -6,11 +6,48 @@ import { sendRequest } from '../utils/apiFunctions';
 import bank_logo from "../assets/icons/bank.png";
 import file_icon from "../assets/icons/file-check.png";
 
+const TestSelectionSkeleton = () => (
+  <div className="animate-pulse">
+    {/* Search Input Skeleton */}
+    <div className="flex justify-center mb-8">
+      <div className="relative w-full max-w-[400px]">
+        <div className="w-full h-[52px] bg-gray-200 rounded-lg"></div>
+      </div>
+    </div>
+
+    {/* Tests Grid Skeleton */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
+        <div
+          key={item}
+          className="p-6 rounded-lg shadow-sm h-[150px] flex flex-col justify-between"
+          style={{
+            boxShadow: '0px 4px 29px 0px #0000001A',
+          }}
+        >
+          <div className="flex items-start space-x-4">
+            <div className="w-12 h-12 bg-[#E6F4FF] rounded-full flex items-center justify-center">
+              <div className="w-8 h-8 bg-gray-200 rounded-full"></div>
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+              <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+            </div>
+          </div>
+          <div className="mt-2 flex justify-start pl-16">
+            <div className="h-4 w-20 bg-gray-200 rounded"></div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
 const TestSelection = ({ onNext, onSelect, selectedTestId }) => {
   const { t } = useTranslation();
   const [tests, setTests] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [selectedTest, setSelectedTest] = useState(null);
 
   const fetchTests = async (query = '') => {
@@ -66,61 +103,58 @@ const TestSelection = ({ onNext, onSelect, selectedTestId }) => {
         </div>
       </div>
 
-      {loading && (
-        <div className="flex justify-center items-center py-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#024072]"></div>
-          <span className="ml-2">{t('pages.statusCheck.testSelection.loading')}</span>
-        </div>
-      )}
+      {loading ? (
+        <TestSelectionSkeleton />
+      ) : (
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {tests.map((test) => (
+              <div
+                key={test.id}
+                onClick={() => handleSelectTest(test)}
+                className={`p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow h-[150px] flex flex-col justify-between cursor-pointer 
+                  ${selectedTest?.id === test.id ? 'border-2 bg-[#024072] text-white' : ''}`}
+                style={{
+                  boxShadow: '0px 4px 29px 0px #0000001A',
+                }}
+              >
+                <div className="flex items-start space-x-4">
+                  <div className={`w-12 h-12 flex-shrink-0 ${selectedTest?.id === test.id ? 'bg-blue-100' : 'bg-[#E6F4FF]'} 
+                    rounded-[50%] flex items-center justify-center`}>
+                    <img src={test.image} alt={t('pages.statusCheck.testSelection.organizationIcon')} className="w-8 h-8" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className={`font-medium text-gray-900 text-sm line-clamp-3 
+                      ${selectedTest?.id === test.id ? 'text-white' : ''}`}>
+                      {test.name}
+                    </h3>
+                  </div>
+                </div>
+                <div className="mt-2 flex justify-start pl-16">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSelectTest(test);
+                    }}
+                    className={`text-sm hover:underline ${selectedTest?.id === test.id ? 'text-white' : 'text-[#024073]'}`}
+                    style={{
+                      textDecoration: 'underline',
+                      transition: 'all 0.3s ease-in-out'
+                    }}
+                  >
+                    {t('pages.statusCheck.testSelection.select')}
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
 
-      {!loading && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {tests.map((test) => (
-            <div
-              key={test.id}
-              onClick={() => handleSelectTest(test)}
-              className={`p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow h-[150px] flex flex-col justify-between cursor-pointer 
-                ${selectedTest?.id === test.id ? 'border-2 bg-[#024072] text-white' : ''}`}
-              style={{
-                boxShadow: '0px 4px 29px 0px #0000001A',
-              }}
-            >
-              <div className="flex items-start space-x-4">
-                <div className={`w-12 h-12 flex-shrink-0 ${selectedTest?.id === test.id ? 'bg-blue-100' : 'bg-[#E6F4FF]'} 
-                  rounded-[50%] flex items-center justify-center`}>
-                  <img src={test.image} alt={t('pages.statusCheck.testSelection.organizationIcon')} className="w-8 h-8" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className={`font-medium text-gray-900 text-sm line-clamp-3 
-                    ${selectedTest?.id === test.id ? 'text-white' : ''}`}>
-                    {test.name}
-                  </h3>
-                </div>
-              </div>
-              <div className="mt-2 flex justify-start pl-16">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleSelectTest(test);
-                  }}
-                  className={`text-sm hover:underline ${selectedTest?.id === test.id ? 'text-white' : 'text-[#024073]'}`}
-                  style={{
-                    textDecoration: 'underline',
-                    transition: 'all 0.3s ease-in-out'
-                  }}
-                >
-                  {t('pages.statusCheck.testSelection.select')}
-                </button>
-              </div>
+          {tests.length === 0 && (
+            <div className="text-center py-8 text-gray-500">
+              {t('pages.statusCheck.testSelection.noTests')}
             </div>
-          ))}
-        </div>
-      )}
-
-      {!loading && tests.length === 0 && (
-        <div className="text-center py-8 text-gray-500">
-          {t('pages.statusCheck.testSelection.noTests')}
-        </div>
+          )}
+        </>
       )}
     </>
   );
@@ -177,11 +211,48 @@ const SelectionModal = ({ isOpen, onClose, onSelect }) => {
   );
 };
 
+const OrganizationListSkeleton = () => (
+  <div className="animate-pulse">
+    {/* Search Input Skeleton */}
+    <div className="flex justify-center mb-8">
+      <div className="relative w-full max-w-[400px]">
+        <div className="w-full h-[52px] bg-gray-200 rounded-lg"></div>
+      </div>
+    </div>
+
+    {/* Organizations Grid Skeleton */}
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
+        <div
+          key={item}
+          className="p-6 rounded-lg shadow-sm h-[150px] flex flex-col justify-between"
+          style={{
+            boxShadow: '0px 4px 29px 0px #0000001A',
+          }}
+        >
+          <div className="flex items-start space-x-4">
+            <div className="w-12 h-12 bg-[#E6F4FF] rounded-full flex items-center justify-center">
+              <div className="w-8 h-8 bg-gray-200 rounded-full"></div>
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+              <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+            </div>
+          </div>
+          <div className="mt-2 flex justify-start pl-16">
+            <div className="h-4 w-20 bg-gray-200 rounded"></div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
 const OrganizationList = ({ onSelect, selectedOrgId }) => {
   const { t } = useTranslation();
   const [organizations, setOrganizations] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [selectedOrg, setSelectedOrg] = useState(null);
 
   const fetchOrganizations = async (query = '') => {
@@ -237,70 +308,133 @@ const OrganizationList = ({ onSelect, selectedOrgId }) => {
         </div>
       </div>
 
-      {loading && (
-        <div className="flex justify-center items-center py-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#024072]"></div>
-        </div>
-      )}
+      {loading ? (
+        <OrganizationListSkeleton />
+      ) : (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {organizations.map((org) => (
+              <div
+                key={org.id}
+                onClick={() => handleSelectOrg(org)}
+                className={`p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow h-[150px] flex flex-col justify-between cursor-pointer ${selectedOrg?.id === org.id ? 'border-2 bg-[#024072] text-white' : ''
+                  }`}
+                style={{
+                  boxShadow: '0px 4px 29px 0px #0000001A',
+                  transition: 'all 0.3s ease-in-out'
+                }}
+              >
+                <div className="flex items-start space-x-4">
+                  <div className={`w-12 h-12 flex-shrink-0 ${selectedOrg?.id === org.id ? 'bg-blue-100' : 'bg-[#E6F4FF]'
+                    } rounded-[50%] flex items-center justify-center`}>
+                    <img
+                      src={bank_logo}
+                      alt={t('pages.statusCheck.organizationList.orgIcon')}
+                      className="w-8 h-8"
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className={`font-medium text-gray-900 text-sm line-clamp-3 ${selectedOrg?.id === org.id ? 'text-white' : ''
+                      }`}>
+                      {org.name}
+                    </h3>
+                  </div>
+                </div>
+                <div className="mt-2 flex justify-start pl-16">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSelectOrg(org);
+                    }}
+                    className={`text-sm hover:underline ${selectedOrg?.id === org.id ? 'text-white' : 'text-[#024073]'
+                      }`}
+                    style={{
+                      textDecoration: 'underline',
+                      transition: 'all 0.3s ease-in-out'
+                    }}
+                  >
+                    {t('pages.statusCheck.organizationList.select')}
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
 
-      {!loading && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {organizations.map((org) => (
-            <div
-              key={org.id}
-              onClick={() => handleSelectOrg(org)}
-              className={`p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow h-[150px] flex flex-col justify-between cursor-pointer ${selectedOrg?.id === org.id ? 'border-2 bg-[#024072] text-white' : ''
-                }`}
-              style={{
-                boxShadow: '0px 4px 29px 0px #0000001A',
-                transition: 'all 0.3s ease-in-out'
-              }}
-            >
-              <div className="flex items-start space-x-4">
-                <div className={`w-12 h-12 flex-shrink-0 ${selectedOrg?.id === org.id ? 'bg-blue-100' : 'bg-[#E6F4FF]'
-                  } rounded-[50%] flex items-center justify-center`}>
-                  <img
-                    src={bank_logo}
-                    alt={t('pages.statusCheck.organizationList.orgIcon')}
-                    className="w-8 h-8"
-                  />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className={`font-medium text-gray-900 text-sm line-clamp-3 ${selectedOrg?.id === org.id ? 'text-white' : ''
-                    }`}>
-                    {org.name}
-                  </h3>
-                </div>
-              </div>
-              <div className="mt-2 flex justify-start pl-16">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleSelectOrg(org);
-                  }}
-                  className={`text-sm hover:underline ${selectedOrg?.id === org.id ? 'text-white' : 'text-[#024073]'
-                    }`}
-                  style={{
-                    textDecoration: 'underline',
-                    transition: 'all 0.3s ease-in-out'
-                  }}
-                >
-                  {t('pages.statusCheck.organizationList.select')}
-                </button>
-              </div>
+          {organizations.length === 0 && (
+            <div className="text-center py-8 text-gray-500">
+              {t('pages.statusCheck.organizationList.noOrganizations')}
             </div>
-          ))}
-        </div>
-      )}
-
-      {!loading && organizations.length === 0 && (
-        <div className="text-center py-8 text-gray-500">
-          {t('pages.statusCheck.organizationList.noOrganizations')}
-        </div>
+          )}
+        </>
       )}
     </>
   );
 };
+
+const TestQuestionsSkeleton = () => (
+  <div className="px-4 animate-pulse">
+    {/* Header skeleton */}
+    <div className="mb-8">
+      <div className="flex justify-between items-center mb-6">
+        <div className="h-7 w-64 bg-gray-200 rounded border-l-4 border-[#024072] pl-3"></div>
+        <div className="h-7 w-32 bg-gray-200 rounded"></div>
+      </div>
+    </div>
+
+    <div className="flex flex-col lg:flex-row gap-8">
+      {/* Question and Answers skeleton */}
+      <div className="flex-1">
+        {/* Question skeleton */}
+        <div className="mb-8">
+          <div className="h-8 bg-gray-200 rounded w-full mb-2"></div>
+          <div className="h-8 bg-gray-200 rounded w-3/4"></div>
+        </div>
+
+        {/* Answer options skeleton */}
+        <div className="space-y-4">
+          {[1, 2, 3, 4].map((item) => (
+            <div
+              key={item}
+              className="flex items-center gap-3 p-4 rounded-lg border-2 border-transparent"
+            >
+              <div className="w-4 h-4 rounded-full bg-gray-200"></div>
+              <div className="flex-1">
+                <div className="h-5 bg-gray-200 rounded w-full"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Progress sidebar skeleton */}
+      <div className="w-full lg:w-64">
+        <div className="bg-white p-6 rounded-lg shadow-sm">
+          {/* Progress counter skeleton */}
+          <div className="text-right mb-4">
+            <div className="h-4 w-32 bg-gray-200 rounded ml-auto mb-2"></div>
+            <div className="h-8 w-16 bg-gray-200 rounded ml-auto"></div>
+          </div>
+
+          {/* Question numbers grid skeleton */}
+          <div className="grid grid-cols-7 gap-1">
+            {[...Array(21)].map((_, idx) => (
+              <div
+                key={idx}
+                className="w-6 h-6 bg-gray-200 rounded flex items-center justify-center"
+              ></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Navigation buttons skeleton */}
+    <div className="flex justify-between mt-8">
+      <div className="h-10 w-28 bg-gray-200 rounded"></div>
+      <div className="h-10 w-28 bg-gray-200 rounded"></div>
+    </div>
+  </div>
+);
 
 const TestQuestions = ({ onFinish, selectedTestId, selectedOrgId }) => {
   const { t } = useTranslation();
@@ -378,11 +512,7 @@ const TestQuestions = ({ onFinish, selectedTestId, selectedOrgId }) => {
   };
 
   if (loading && questions.length === 0) {
-    return (
-      <div className="flex justify-center items-center py-8">
-        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#024072]"></div>
-      </div>
-    );
+    return <TestQuestionsSkeleton />;
   }
 
   if (!loading && questions.length === 0) {
@@ -495,8 +625,87 @@ const TestQuestions = ({ onFinish, selectedTestId, selectedOrgId }) => {
   );
 };
 
+const TestResultsSkeleton = () => (
+  <div className="px-4 animate-pulse">
+    {/* Header skeleton */}
+    <div className="mb-8">
+      <div className="h-7 w-64 bg-gray-200 rounded border-l-4 border-[#024072] pl-3"></div>
+    </div>
+
+    <div className="flex flex-col lg:flex-row gap-8">
+      {/* Questions and Answers skeleton */}
+      <div className="flex-1 space-y-8">
+        {[1, 2, 3].map((item) => (
+          <div key={item} className="space-y-3">
+            {/* Question skeleton */}
+            <div className="h-6 bg-gray-200 rounded w-3/4"></div>
+
+            {/* Answer options skeleton */}
+            <div className="space-y-2">
+              {[1, 2, 3, 4].map((answer) => (
+                <div key={answer} className="flex items-center gap-3">
+                  <div className="relative flex items-center">
+                    <div className="w-4 h-4 bg-gray-200 rounded-full"></div>
+                  </div>
+                  <div className="flex-1">
+                    <div className="h-5 bg-gray-200 rounded w-full"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Correct answer box skeleton */}
+            <div className="bg-[#F3FFF3] p-4 rounded-md">
+              <div className="h-5 bg-gray-200 rounded w-3/4 mb-2"></div>
+              <div className="space-y-2">
+                <div className="h-4 bg-gray-200 rounded w-full"></div>
+                <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Results sidebar skeleton */}
+      <div className="w-full lg:w-64">
+        <div className="sticky top-8">
+          <div className="bg-white p-6 rounded-lg shadow-sm mb-6">
+            {/* Percentage skeleton */}
+            <div className="text-right mb-4">
+              <div className="h-4 w-32 bg-gray-200 rounded ml-auto mb-2"></div>
+              <div className="h-8 w-16 bg-gray-200 rounded ml-auto"></div>
+            </div>
+
+            {/* Question numbers grid skeleton */}
+            <div className="grid grid-cols-7 gap-1">
+              {[...Array(21)].map((_, idx) => (
+                <div
+                  key={idx}
+                  className="w-6 h-6 bg-gray-200 rounded flex items-center justify-center"
+                ></div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 const TestResults = ({ testData }) => {
   const { t } = useTranslation();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (testData) {
+      setLoading(false);
+    }
+  }, [testData]);
+
+  if (loading) {
+    return <TestResultsSkeleton />;
+  }
+
   const percentage = testData.percent;
   const questions = testData.result;
 
@@ -651,7 +860,7 @@ const StatusCheck = () => {
           </div>
 
           <div className="flex flex-col gap-8">
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
               <div className="flex items-center space-x-2 min-w-[280px] sm:w-[400px]">
                 {[1, 2, 3].map((step, index) => (
                   <React.Fragment key={step}>
@@ -705,11 +914,11 @@ const StatusCheck = () => {
       {currentStep === 2 && membershipType === "member" && (
         <>
           <div className="mb-6">
-            <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-4">Halollik Test</h1>
+            <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-4">{t('pages.statusCheck.breadcrumb.test')}</h1>
           </div>
 
           <div className="flex flex-col gap-8">
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
               <div className="flex items-center space-x-2 min-w-[280px] sm:w-[400px]">
                 {[1, 2, 3, 4].map((step, index) => (
                   <React.Fragment key={step}>
@@ -741,7 +950,7 @@ const StatusCheck = () => {
                   : 'text-[#024073] border-[#024072] hover:bg-[#024072] hover:text-white'
                   }`}
               >
-                <p className="text-sm">Keyingisi</p>
+                <p className="text-sm">{t('pages.statusCheck.steps.next')}</p>
                 <ChevronRight size={16} className="text-gray-400" />
               </button>
             </div>

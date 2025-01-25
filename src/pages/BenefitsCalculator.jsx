@@ -42,12 +42,50 @@ const BenefitsCalculator = () => {
     fetchAboutData();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#024072]"></div>
+  const BenefitsCalculatorSkeleton = () => (
+    <div className="px-4 py-8">
+      {/* Breadcrumb skeleton */}
+      <div className="flex gap-2 mb-6 animate-pulse">
+        {[1, 2, 3].map((item) => (
+          <div key={item} className="flex items-center gap-2">
+            <div className="h-4 w-16 bg-gray-200 rounded"></div>
+            {item < 3 && <div className="h-4 w-2 bg-gray-200 rounded">/</div>}
+          </div>
+        ))}
       </div>
-    );
+
+      {/* Title skeleton */}
+      <div className="h-7 w-64 bg-gray-200 rounded mb-10 animate-pulse"></div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Image Section skeleton */}
+        <div className="h-[400px] bg-gray-200 rounded-[24px] max-h-[320px] animate-pulse"></div>
+
+        {/* Content Section skeleton */}
+        <div className="space-y-4 animate-pulse">
+          {/* Title skeleton */}
+          <div className="h-6 bg-gray-200 rounded w-3/4"></div>
+
+          {/* Description skeleton - multiple lines */}
+          <div className="space-y-2">
+            <div className="h-4 bg-gray-200 rounded w-full"></div>
+            <div className="h-4 bg-gray-200 rounded w-full"></div>
+            <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+          </div>
+
+          {/* Buttons skeleton */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6">
+            {[1, 2, 3].map((item) => (
+              <div key={item} className="h-10 bg-gray-200 rounded-[12px]"></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  if (loading) {
+    return <BenefitsCalculatorSkeleton />;
   }
 
   if (error) {
@@ -59,14 +97,14 @@ const BenefitsCalculator = () => {
   }
 
   return (
-    <div className="px-4 py-8">
+    <div className="px-4 py-8 pt-14 md:pt-0">
       <h1 className="text-lg md:text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-6 md:mb-10">
         {t('pages.benefits.title')}
       </h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Image Section */}
-        <div className="overflow-hidden rounded-[24px]">
+        <div className="overflow-hidden rounded-[24px] max-h-[320px]">
           <img src={aboutData.image} alt={aboutData.title} className="w-full h-full object-cover" />
         </div>
 

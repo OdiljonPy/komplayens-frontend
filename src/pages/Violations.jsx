@@ -4,6 +4,79 @@ import { Link } from 'react-router-dom'
 import { sendRequest } from '../utils/apiFunctions';
 import { useTranslation } from 'react-i18next';
 
+// Add skeleton component
+const ViolationsSkeleton = () => (
+  <div className="p-4 animate-pulse">
+    {/* Header and Filter skeleton */}
+    <div className="mb-6">
+      {/* Title skeleton */}
+      <div className="h-7 w-64 bg-gray-200 rounded border-l-4 border-[#024072] pl-3 mb-6"></div>
+
+      {/* Filter section skeleton */}
+      <div className="flex flex-col md:flex-row gap-4 mb-6">
+        {/* Category filter skeleton */}
+        <div className="w-full md:w-64">
+          <div className="h-10 w-full bg-gray-200 rounded-lg"></div>
+        </div>
+        {/* Date filter skeleton */}
+        <div className="w-full md:w-64">
+          <div className="h-10 w-full bg-gray-200 rounded-lg"></div>
+        </div>
+      </div>
+    </div>
+
+    {/* News items grid skeleton */}
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => (
+        <div key={item} className="bg-white rounded-lg p-4 shadow-sm">
+          {/* Image skeleton */}
+          <div className="w-full aspect-[16/9] bg-gray-200 rounded-lg mb-4"></div>
+
+          {/* Meta info skeleton */}
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <div className="h-4 w-4 bg-gray-200 rounded-full"></div>
+              <div className="h-4 w-20 bg-gray-200 rounded"></div>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="h-4 w-4 bg-gray-200 rounded-full"></div>
+              <div className="h-4 w-16 bg-gray-200 rounded"></div>
+            </div>
+          </div>
+
+          {/* Title skeleton */}
+          <div className="h-6 w-3/4 bg-gray-200 rounded mb-3"></div>
+
+          {/* Description skeleton */}
+          <div className="space-y-2 mb-4">
+            <div className="h-4 w-full bg-gray-200 rounded"></div>
+            <div className="h-4 w-2/3 bg-gray-200 rounded"></div>
+          </div>
+
+          {/* Button skeleton */}
+          <div className="h-9 w-28 bg-gray-200 rounded-md"></div>
+        </div>
+      ))}
+    </div>
+
+    {/* Pagination skeleton */}
+    <div className="flex justify-between items-center mt-8">
+      {/* Previous button skeleton */}
+      <div className="h-10 w-28 bg-gray-200 rounded-md"></div>
+
+      {/* Page numbers skeleton */}
+      <div className="flex gap-2">
+        {[1, 2, 3, 4, 5].map((item) => (
+          <div key={item} className="h-8 w-8 bg-gray-200 rounded"></div>
+        ))}
+      </div>
+
+      {/* Next button skeleton */}
+      <div className="h-10 w-28 bg-gray-200 rounded-md"></div>
+    </div>
+  </div>
+);
+
 function Violations() {
   const { t, i18n } = useTranslation();
   const getLocalizedPath = (path) => {
@@ -18,6 +91,7 @@ function Violations() {
     pageSize: 10
   });
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  const [loading, setLoading] = useState(true);
 
   // Fetch categories
   useEffect(() => {
@@ -42,6 +116,7 @@ function Violations() {
   // Fetch news with filters
   useEffect(() => {
     const fetchNews = async () => {
+      setLoading(true);
       try {
         const params = {
           page: pagination.currentPage,
@@ -68,6 +143,8 @@ function Violations() {
         }
       } catch (error) {
         console.error('Error fetching news:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -109,8 +186,12 @@ function Violations() {
     return range;
   };
 
+  if (loading) {
+    return <ViolationsSkeleton />;
+  }
+
   return (
-    <div className="p-4 pt-0">
+    <div className="p-4 pt-14 md:pt-0">
       {/* Header with Breadcrumb */}
       <div className="py-3 md:py-4 pt-0">
         <div className="text-sm text-gray-600 flex items-center gap-1">

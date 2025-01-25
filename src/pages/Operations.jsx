@@ -4,6 +4,81 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { sendRequest } from '../utils/apiFunctions';
 
+// Add skeleton component
+const OperationsSkeleton = () => (
+  <div className="min-h-screen bg-gray-50 p-4 pt-16 md:p-6 md:pt-6 animate-pulse">
+    {/* Header skeleton */}
+    <div className="mb-6">
+      <div className="h-7 w-64 bg-gray-200 rounded border-l-4 border-[#024072] pl-3"></div>
+    </div>
+
+    {/* Navigation Bar skeleton */}
+    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+      {/* Category dropdown skeleton */}
+      <div className="relative">
+        <div className="h-10 w-48 bg-gray-200 rounded-lg"></div>
+      </div>
+
+      {/* Search input skeleton */}
+      <div className="relative w-full md:w-64">
+        <div className="h-10 w-full bg-gray-200 rounded-lg"></div>
+      </div>
+    </div>
+
+    {/* Cards Grid skeleton */}
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      {[1, 2, 3, 4, 5, 6].map((item) => (
+        <div key={item} className="bg-white rounded-lg shadow-sm border-gray-200 overflow-hidden p-6">
+          {/* Category badge skeleton */}
+          <div className="flex w-full justify-end mb-3">
+            <div className="h-6 w-24 bg-gray-200 rounded-md"></div>
+          </div>
+
+          {/* Title skeleton */}
+          <div className="h-6 w-3/4 bg-gray-200 rounded mb-3"></div>
+
+          {/* Description skeleton */}
+          <div className="space-y-2 mb-4">
+            <div className="h-4 w-full bg-gray-200 rounded"></div>
+            <div className="h-4 w-5/6 bg-gray-200 rounded"></div>
+            <div className="h-4 w-4/6 bg-gray-200 rounded"></div>
+          </div>
+
+          {/* Link skeleton */}
+          <div className="h-4 w-20 bg-gray-200 rounded"></div>
+        </div>
+      ))}
+    </div>
+
+    {/* Pagination skeleton */}
+    <div className="hidden md:flex justify-between items-center">
+      {/* Previous button skeleton */}
+      <div className="h-10 w-32 bg-gray-200 rounded-md"></div>
+
+      {/* Page numbers skeleton */}
+      <div className="flex items-center gap-2">
+        {[1, 2, 3, 4, 5].map((item) => (
+          <div key={item} className="h-8 w-8 bg-gray-200 rounded"></div>
+        ))}
+      </div>
+
+      {/* Next button skeleton */}
+      <div className="h-10 w-32 bg-gray-200 rounded-md"></div>
+    </div>
+
+    {/* Mobile pagination skeleton */}
+    <div className="flex md:hidden justify-between items-center">
+      <div className="h-10 w-28 bg-gray-200 rounded-md"></div>
+      <div className="flex items-center gap-1">
+        {[1, 2, 3].map((item) => (
+          <div key={item} className="h-8 w-8 bg-gray-200 rounded"></div>
+        ))}
+      </div>
+      <div className="h-10 w-28 bg-gray-200 rounded-md"></div>
+    </div>
+  </div>
+);
+
 const Operations = () => {
   const { t, i18n } = useTranslation();
   const getLocalizedPath = (path) => {
@@ -20,15 +95,21 @@ const Operations = () => {
     totalPages: 1,
     pageSize: 10
   });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProfessions = async () => {
-      const response = await sendRequest({
-        method: 'GET',
-        url: '/services/profession/'
-      });
-      if (response.success) {
-        setProfessions(response.data.result);
+      setLoading(true);
+      try {
+        const response = await sendRequest({
+          method: 'GET',
+          url: '/services/profession/'
+        });
+        if (response.success) {
+          setProfessions(response.data.result);
+        }
+      } catch (error) {
+        console.error('Error fetching professions:', error);
       }
     };
     fetchProfessions();
@@ -44,31 +125,38 @@ const Operations = () => {
 
   useEffect(() => {
     const fetchCards = async () => {
-      const params = {
-        page: pagination.currentPage,
-        page_size: pagination.pageSize
-      };
+      setLoading(true);
+      try {
+        const params = {
+          page: pagination.currentPage,
+          page_size: pagination.pageSize
+        };
 
-      if (selectedProfession) {
-        params.profession_id = selectedProfession;
-      }
+        if (selectedProfession) {
+          params.profession_id = selectedProfession;
+        }
 
-      if (debouncedSearchQuery) {
-        params.q = debouncedSearchQuery;
-      }
+        if (debouncedSearchQuery) {
+          params.q = debouncedSearchQuery;
+        }
 
-      const response = await sendRequest({
-        method: 'GET',
-        url: '/services/professional/ethics/',
-        params
-      });
+        const response = await sendRequest({
+          method: 'GET',
+          url: '/services/professional/ethics/',
+          params
+        });
 
-      if (response.success) {
-        setCards(response.data.result.content);
-        setPagination(prev => ({
-          ...prev,
-          totalPages: response.data.result.totalPages
-        }));
+        if (response.success) {
+          setCards(response.data.result.content);
+          setPagination(prev => ({
+            ...prev,
+            totalPages: response.data.result.totalPages
+          }));
+        }
+      } catch (error) {
+        console.error('Error fetching cards:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -131,6 +219,11 @@ const Operations = () => {
       currentPage: Math.min(prev.totalPages, prev.currentPage + 1)
     }));
   };
+
+  if (loading) {
+    return <OperationsSkeleton />;
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 p-4 pt-16 md:p-6 md:pt-6">
       {/* Header */}

@@ -126,14 +126,10 @@ const OrganizationSelection = ({ onNext, onSelect, selectedOrgId }) => {
       </div>
 
       {/* Loading State */}
-      {loading && (
-        <div className="flex justify-center items-center py-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#024072]"></div>
-        </div>
-      )}
-
-      {/* Organizations Grid */}
-      {!loading && (
+      {loading ? (
+        <OrganizationSelectionSkeleton />
+      ) : (
+        /* Organizations Grid */
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {organizations.map((org) => (
             <div
@@ -187,6 +183,42 @@ const OrganizationSelection = ({ onNext, onSelect, selectedOrgId }) => {
     </>
   );
 };
+
+// Add this skeleton component at the top of the file
+const OrganizationSelectionSkeleton = () => (
+  <div className="animate-pulse">
+    {/* Search Input Skeleton */}
+    <div className="flex justify-center mb-8">
+      <div className="relative w-[400px]">
+        <div className="w-full h-[52px] bg-gray-200 rounded-lg"></div>
+      </div>
+    </div>
+
+    {/* Organizations Grid Skeleton */}
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
+        <div
+          key={item}
+          className="p-6 rounded-lg shadow-sm h-[150px]"
+          style={{
+            boxShadow: '0px 4px 29px 0px #0000001A',
+          }}
+        >
+          <div className="flex items-start space-x-4">
+            <div className="w-12 h-12 bg-gray-200 rounded-full"></div>
+            <div className="flex-1">
+              <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+              <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+            </div>
+          </div>
+          <div className="mt-4 pl-16">
+            <div className="h-4 bg-gray-200 rounded w-20"></div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+);
 
 // Step 2: Report Details Component
 const ReportDetails = ({ onFormDataChange, onFileChange, formData: initialFormData }) => {
@@ -978,7 +1010,7 @@ const NewsReporting = () => {
   };
 
   return (
-    <div className="px-4 py-8 pt-0">
+    <div className="px-4 py-8 pt-14 md:pt-0">
       <div className="py-3 md:py-4 pt-0">
         <div className="text-sm text-gray-600 flex items-center gap-1">
           <span>{t('pages.newsReporting.breadcrumbs.home')}</span>

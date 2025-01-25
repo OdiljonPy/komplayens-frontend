@@ -4,6 +4,83 @@ import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { sendRequest } from '../utils/apiFunctions';
 
+const NewsItemSkeleton = () => (
+  <div className="px-4 pt-16 md:pt-0 bg-gray-50 animate-pulse">
+    {/* Navigation skeleton */}
+    <div className="py-3 md:py-4 pt-0 overflow-x-auto">
+      <div className="flex items-center gap-2">
+        {[1, 2, 3].map((item) => (
+          <div key={item} className="flex items-center gap-1">
+            <div className="h-4 w-16 bg-gray-200 rounded"></div>
+            {item < 3 && <div className="h-4 w-4 bg-gray-200 rounded"></div>}
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* Title skeleton */}
+    <div className="py-4 pb-0">
+      <div className="h-7 w-3/4 bg-gray-200 rounded mb-6 md:mb-10"></div>
+    </div>
+
+    {/* Hero Image skeleton */}
+    <div className="relative h-64 md:h-96">
+      <div className="absolute inset-0 rounded-lg bg-gray-200"></div>
+    </div>
+
+    {/* Main Content skeleton */}
+    <main className="px-4 py-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Article Content skeleton */}
+        <div className="lg:col-span-2">
+          {/* Short description skeleton */}
+          <div className="mb-6">
+            {[1, 2].map((line) => (
+              <div key={line} className="h-4 bg-gray-200 rounded w-full mb-2"></div>
+            ))}
+          </div>
+
+          {/* Main description skeleton */}
+          <div className="space-y-4">
+            {[1, 2, 3, 4, 5].map((paragraph) => (
+              <div key={paragraph}>
+                {[1, 2, 3].map((line) => (
+                  <div key={line} className="h-4 bg-gray-200 rounded w-full mb-2"></div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Sidebar skeleton */}
+        <div className="lg:col-span-1">
+          <div className="h-6 w-32 bg-gray-200 rounded mb-4"></div>
+          <div className="space-y-4">
+            {[1, 2, 3].map((item) => (
+              <div key={item} className="flex space-x-4 bg-white shadow p-3 rounded-lg">
+                <div className="w-24 h-24 bg-gray-200 rounded"></div>
+                <div className="flex-1">
+                  <div className="h-5 bg-gray-200 rounded w-3/4 mb-2"></div>
+                  <div className="flex items-center space-x-4">
+                    <div className="flex items-center">
+                      <div className="w-4 h-4 bg-gray-200 rounded-full mr-1"></div>
+                      <div className="h-4 w-12 bg-gray-200 rounded"></div>
+                    </div>
+                    <div className="flex items-center">
+                      <div className="w-4 h-4 bg-gray-200 rounded-full mr-1"></div>
+                      <div className="h-4 w-20 bg-gray-200 rounded"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+);
+
 const NewsItem = () => {
   const { t, i18n } = useTranslation();
   const getLocalizedPath = (path) => {
@@ -11,9 +88,11 @@ const NewsItem = () => {
   };
   const { newsId } = useParams();
   const [newsData, setNewsData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchNewsData = async () => {
+      setLoading(true);
       try {
         const response = await sendRequest({
           method: 'GET',
@@ -25,6 +104,8 @@ const NewsItem = () => {
         }
       } catch (error) {
         console.error('Error fetching news data:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -33,6 +114,7 @@ const NewsItem = () => {
     }
   }, [newsId]);
 
+  if (loading) return <NewsItemSkeleton />;
   if (!newsData) return null;
 
   return (

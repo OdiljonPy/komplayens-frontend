@@ -4,6 +4,74 @@ import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { sendRequest } from '../utils/apiFunctions';
 
+// Add skeleton component
+const OperationsItemSkeleton = () => (
+  <div className="px-4 sm:px-6 py-6 space-y-6 animate-pulse">
+    {/* Header skeleton */}
+    <header>
+      <div className="pt-10 md:pt-0 flex justify-between items-center">
+        <div className="h-6 w-2/3 bg-gray-200 rounded border-l-4 border-[#024072] pl-3"></div>
+        <div className="h-6 w-32 bg-blue-50 rounded"></div>
+      </div>
+    </header>
+
+    {/* Dilemma Section skeleton */}
+    <div>
+      <div className="bg-white rounded-lg shadow-sm">
+        <div className="flex">
+          <div className="w-1 bg-[#3982f771] rounded-l-lg"></div>
+          <div className="flex-1 px-6 py-5">
+            {/* Title skeleton */}
+            <div className="h-7 w-48 bg-gray-200 rounded mb-4"></div>
+
+            {/* Content skeleton */}
+            <div className="space-y-3 mb-6">
+              <div className="h-4 w-full bg-gray-200 rounded"></div>
+              <div className="h-4 w-5/6 bg-gray-200 rounded"></div>
+              <div className="h-4 w-4/6 bg-gray-200 rounded"></div>
+            </div>
+
+            {/* Button skeleton */}
+            <div className="flex items-center gap-6">
+              <div className="h-10 w-32 bg-gray-200 rounded-md"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Comments Section skeleton */}
+    <div className="space-y-4">
+      {[1, 2, 3].map((item) => (
+        <div key={item} className="bg-white p-4 rounded-lg shadow-sm">
+          {/* Comment content skeleton */}
+          <div className="space-y-2 mb-3">
+            <div className="h-4 w-full bg-gray-200 rounded"></div>
+            <div className="h-4 w-5/6 bg-gray-200 rounded"></div>
+          </div>
+
+          {/* Comment metadata skeleton */}
+          <div className="flex items-center gap-2">
+            <div className="h-4 w-24 bg-gray-200 rounded"></div>
+            <div className="h-4 w-4 bg-gray-200 rounded-full"></div>
+            <div className="h-4 w-32 bg-gray-200 rounded"></div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    {/* Comment input skeleton */}
+    {true && (
+      <div className="bg-white p-4 rounded-lg shadow-sm">
+        <div className="h-24 w-full bg-gray-200 rounded-lg mb-4"></div>
+        <div className="flex justify-end">
+          <div className="h-10 w-32 bg-gray-200 rounded-md"></div>
+        </div>
+      </div>
+    )}
+  </div>
+);
+
 const OperationsItem = () => {
   const { t } = useTranslation();
   const { operationId } = useParams();
@@ -17,14 +85,18 @@ const OperationsItem = () => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // Check authentication on mount
   useEffect(() => {
     const user = localStorage.getItem('user');
     setIsAuthenticated(!!user);
   }, []);
+
+  // Update useEffect to handle loading state
   useEffect(() => {
     const fetchItemData = async () => {
+      setLoading(true);
       try {
         const response = await sendRequest({
           method: 'GET',
@@ -36,6 +108,8 @@ const OperationsItem = () => {
         }
       } catch (error) {
         console.error('Error fetching item data:', error);
+      } finally {
+        setLoading(false);
       }
     };
     console.log("operationId", operationId);
@@ -43,7 +117,7 @@ const OperationsItem = () => {
     if (operationId) {
       fetchItemData();
     }
-  }, []);
+  }, [operationId]);
 
   // Check for mobile device
   useEffect(() => {
@@ -143,6 +217,10 @@ const OperationsItem = () => {
       setIsSubmitting(false);
     }
   };
+
+  if (loading) {
+    return <OperationsItemSkeleton />;
+  }
 
   return (
     <div className="px-4 sm:px-6 py-6 space-y-6">

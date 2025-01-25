@@ -5,6 +5,74 @@ import { useTranslation } from 'react-i18next';
 import { sendRequest } from '../utils/apiFunctions';
 import pdf from "../assets/icons/pdf.png";
 
+const CourseItemSkeleton = () => (
+  <div className="max-w-7xl mx-auto px-4 md:px-0 animate-pulse">
+    {/* Breadcrumb skeleton */}
+    <div className="py-2 flex items-center gap-2">
+      {[1, 2, 3].map((item) => (
+        <div key={item} className="flex items-center gap-2">
+          <div className="h-4 w-16 bg-gray-200 rounded"></div>
+          {item < 3 && <div className="h-4 w-2 bg-gray-200 rounded">›</div>}
+        </div>
+      ))}
+    </div>
+
+    <div className="py-6">
+      {/* Video player skeleton */}
+      <div className="relative w-full bg-gray-200 rounded-lg overflow-hidden h-96 mb-8"></div>
+
+      {/* Title skeleton */}
+      <div className="h-7 w-3/4 bg-gray-200 rounded mb-6 md:mb-10"></div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Description skeleton */}
+        <div className="lg:col-span-2 space-y-4">
+          {[1, 2, 3, 4].map((line) => (
+            <div key={line} className="h-4 bg-gray-200 rounded w-full"></div>
+          ))}
+        </div>
+
+        {/* Materials skeleton */}
+        <div className="space-y-8">
+          {/* PDF Materials */}
+          <div className="bg-white p-6 rounded-lg shadow">
+            <div className="h-6 w-48 bg-gray-200 rounded mb-4"></div>
+            <div className="space-y-4">
+              {[1, 2, 3].map((item) => (
+                <div key={item} className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-6 h-6 bg-gray-200 rounded"></div>
+                    <div className="h-5 w-32 bg-gray-200 rounded"></div>
+                  </div>
+                  <div className="w-5 h-5 bg-gray-200 rounded"></div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Video Materials */}
+          <div>
+            <div className="h-6 w-40 bg-gray-200 rounded mb-4"></div>
+            <div className="bg-white p-4 rounded-lg shadow">
+              <div className="space-y-4">
+                {[1, 2].map((video) => (
+                  <div key={video} className="flex items-start space-x-3">
+                    <div className="w-24 h-16 bg-gray-200 rounded"></div>
+                    <div className="flex-1 space-y-2">
+                      <div className="h-4 bg-gray-200 rounded w-full"></div>
+                      <div className="h-4 bg-gray-200 rounded w-24"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 const CourseItem = () => {
   const { t, i18n } = useTranslation();
   const getLocalizedPath = (path) => {
@@ -12,6 +80,7 @@ const CourseItem = () => {
   };
   const [courseData, setCourseData] = useState(null);
   const { courseId } = useParams();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCourseData = async () => {
@@ -23,12 +92,14 @@ const CourseItem = () => {
       if (response.success) {
         setCourseData(response.data.result);
       }
+      setLoading(false);
     };
 
     fetchCourseData();
     window.scrollTo(0, 0);
   }, [courseId]);
 
+  if (loading) return <CourseItemSkeleton />;
   if (!courseData) return <div>{t('pages.courseItem.loading')}</div>;
 
   // Extract video ID from YouTube URL
@@ -38,15 +109,17 @@ const CourseItem = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 md:px-0">
-      <div className="py-2 text-sm text-gray-600">
-        <span>{t('pages.courseItem.breadcrumb.home')}</span>
-        <span className="mx-2">›</span>
-        <Link to={getLocalizedPath("/training-courses")} className="text-[#024072]">
-          {t('pages.courseItem.breadcrumb.materials')}
-        </Link>
-        <span className="mx-2">›</span>
-        <span className="text-[#024072]">{t('pages.courseItem.breadcrumb.course')}</span>
+    <div className=" px-4 pt-14 md:pt-0">
+      <div className="py-2 text-sm text-gray-600 overflow-x-auto">
+        <div className="flex items-center min-w-max">
+          <span>{t('pages.courseItem.breadcrumb.home')}</span>
+          <span className="mx-2">›</span>
+          <Link to={getLocalizedPath("/training-courses")} className="text-[#024072]">
+            {t('pages.courseItem.breadcrumb.materials')}
+          </Link>
+          <span className="mx-2">›</span>
+          <span className="text-[#024072]">{t('pages.courseItem.breadcrumb.course')}</span>
+        </div>
       </div>
 
       <div className="py-6">
