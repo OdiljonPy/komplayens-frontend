@@ -3,6 +3,8 @@ import { ChevronRight, Search } from 'lucide-react';
 import bank_logo from "../assets/icons/bank.png";
 import { useNavigate } from 'react-router-dom';
 import { sendRequest } from '../utils/apiFunctions';
+import { useTranslation } from 'react-i18next';
+
 
 const PhoneInput = ({ value, onChange }) => {
   const handlePhoneChange = (e) => {
@@ -36,6 +38,8 @@ const PhoneInput = ({ value, onChange }) => {
 };
 
 const ToggleButtons = ({ activeTab, onChange }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="inline-flex p-1 bg-gray-100 rounded-lg">
       <button
@@ -45,7 +49,7 @@ const ToggleButtons = ({ activeTab, onChange }) => {
           }`}
         onClick={() => onChange('system')}
       >
-        Tizim Orqali
+        {t('pages.newsReporting.toggleButtons.system')}
       </button>
       <button
         className={`px-4 py-2 rounded-md ${activeTab === 'direct'
@@ -54,13 +58,14 @@ const ToggleButtons = ({ activeTab, onChange }) => {
           }`}
         onClick={() => onChange('direct')}
       >
-        To'g'ridan-To'g'ri Aloqa
+        {t('pages.newsReporting.toggleButtons.direct')}
       </button>
     </div>
   );
 };
 // Step 1: Organization Selection Component
 const OrganizationSelection = ({ onNext, onSelect, selectedOrgId }) => {
+  const { t } = useTranslation();
   const [organizations, setOrganizations] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
@@ -113,7 +118,7 @@ const OrganizationSelection = ({ onNext, onSelect, selectedOrgId }) => {
             type="text"
             value={searchQuery}
             onChange={(e) => handleSearch(e.target.value)}
-            placeholder="Tashkilotni qidirish"
+            placeholder={t('pages.newsReporting.organization.searchPlaceholder')}
             className="w-full p-4 pr-12 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
@@ -134,25 +139,22 @@ const OrganizationSelection = ({ onNext, onSelect, selectedOrgId }) => {
             <div
               key={org.id}
               onClick={() => handleSelectOrg(org)}
-              className={`p-6  rounded-lg shadow-sm hover:shadow-md transition-shadow h-[150px] flex flex-col justify-between cursor-pointer ${selectedOrg?.id === org.id ? 'bg-[#024072]' : ''
-                }`}
+              className={`p-6  rounded-lg shadow-sm hover:shadow-md transition-shadow h-[150px] flex flex-col justify-between cursor-pointer ${selectedOrg?.id === org.id ? 'bg-[#024072]' : ''}`}
               style={{
                 boxShadow: '0px 4px 29px 0px #0000001A',
                 transition: 'all 0.3s ease-in-out',
               }}
             >
               <div className="flex items-start space-x-4">
-                <div className={`w-12 h-12 flex-shrink-0 ${selectedOrg?.id === org.id ? 'bg-white' : 'bg-[#E6F4FF]'
-                  } rounded-[50%] flex items-center justify-center`}>
+                <div className={`w-12 h-12 flex-shrink-0 ${selectedOrg?.id === org.id ? 'bg-white' : 'bg-[#E6F4FF]'} rounded-[50%] flex items-center justify-center`}>
                   <img
                     src={bank_logo}
-                    alt="Bank icon"
+                    alt={t('pages.newsReporting.organization.title')}
                     className="w-8 h-8"
                   />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className={`font-medium text-sm line-clamp-3 ${selectedOrg?.id === org.id ? 'text-white' : 'text-gray-900'
-                    }`}>
+                  <h3 className={`font-medium text-sm line-clamp-3 ${selectedOrg?.id === org.id ? 'text-white' : 'text-gray-900'}`}>
                     {org.name}
                   </h3>
                 </div>
@@ -163,13 +165,12 @@ const OrganizationSelection = ({ onNext, onSelect, selectedOrgId }) => {
                     e.stopPropagation();
                     handleSelectOrg(org);
                   }}
-                  className={`text-sm hover:underline ${selectedOrg?.id === org.id ? 'text-white font-semibold' : 'text-[#024073]'
-                    }`}
+                  className={`text-sm hover:underline ${selectedOrg?.id === org.id ? 'text-white font-semibold' : 'text-[#024073]'}`}
                   style={{
                     textDecoration: 'underline'
                   }}
                 >
-                  Tanlash
+                  {t('common.details')}
                 </button>
               </div>
             </div>
@@ -180,7 +181,7 @@ const OrganizationSelection = ({ onNext, onSelect, selectedOrgId }) => {
       {/* No Results Message */}
       {!loading && organizations.length === 0 && (
         <div className="text-center py-8 text-gray-500">
-          Tashkilotlar topilmadi
+          {t('common.noData')}
         </div>
       )}
     </>
@@ -189,6 +190,7 @@ const OrganizationSelection = ({ onNext, onSelect, selectedOrgId }) => {
 
 // Step 2: Report Details Component
 const ReportDetails = ({ onFormDataChange, onFileChange, formData: initialFormData }) => {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('system');
   const [violationTypes, setViolationTypes] = useState([]);
   const [regions, setRegions] = useState([]);
@@ -211,101 +213,87 @@ const ReportDetails = ({ onFormDataChange, onFileChange, formData: initialFormDa
   const [files, setFiles] = useState(initialFormData?.files || []);
   const fileInputRef = useRef(null);
 
-  // Fetch violation types
   useEffect(() => {
     const fetchViolationTypes = async () => {
-      setLoading(prev => ({ ...prev, types: true }));
-      try {
-        const response = await sendRequest({
-          method: 'GET',
-          url: '/services/violation/report/types/'
-        });
-        if (response.success && response.data.ok) {
-          setViolationTypes(response.data.result);
-          if (response.data.result.length > 0 && !formData.type) {
-            handleFormChange('type', response.data.result[0].id);
-          }
+      if (!loading.types) {
+        setLoading(prev => ({ ...prev, types: true }));
+        try {
+          const response = await sendRequest({
+            method: 'GET',
+            url: '/services/violation/report/types/'
+          });
+          setViolationTypes(Array.isArray(response.data.result) ? response.data.result : []);
+        } catch (error) {
+          console.error('Error fetching violation types:', error);
+          setViolationTypes([]);
+        } finally {
+          setLoading(prev => ({ ...prev, types: false }));
         }
-      } catch (error) {
-        console.error('Error fetching violation types:', error);
-      } finally {
-        setLoading(prev => ({ ...prev, types: false }));
       }
     };
+
     fetchViolationTypes();
   }, []);
 
-  // Fetch regions
   useEffect(() => {
     const fetchRegions = async () => {
-      setLoading(prev => ({ ...prev, regions: true }));
-      try {
-        const response = await sendRequest({
-          method: 'GET',
-          url: '/regions/'
-        });
-        if (response.success && response.data.ok) {
-          setRegions(response.data.result);
+      if (!loading.regions) {
+        setLoading(prev => ({ ...prev, regions: true }));
+        try {
+          const response = await sendRequest({
+            method: 'GET',
+            url: '/regions/'
+          });
+          setRegions(Array.isArray(response.data.result) ? response.data.result : []);
+        } catch (error) {
+          console.error('Error fetching regions:', error);
+          setRegions([]);
+        } finally {
+          setLoading(prev => ({ ...prev, regions: false }));
         }
-      } catch (error) {
-        console.error('Error fetching regions:', error);
-      } finally {
-        setLoading(prev => ({ ...prev, regions: false }));
       }
     };
+
     fetchRegions();
   }, []);
 
-  // Fetch districts when region changes
   useEffect(() => {
     const fetchDistricts = async () => {
-      if (!formData.region) {
-        setDistricts([]);
-        return;
-      }
-
-      setLoading(prev => ({ ...prev, districts: true }));
-      try {
-        const response = await sendRequest({
-          method: 'GET',
-          url: `/region/${formData.region}/`
-        });
-        if (response.success && response.data.ok) {
-          setDistricts(response.data.result);
+      if (formData.region && !loading.districts) {
+        setLoading(prev => ({ ...prev, districts: true }));
+        try {
+          const response = await sendRequest({
+            method: 'GET',
+            url: `/region/${formData.region}/`
+          });
+          setDistricts(Array.isArray(response.data.result) ? response.data.result : []);
+        } catch (error) {
+          console.error('Error fetching districts:', error);
+          setDistricts([]);
+        } finally {
+          setLoading(prev => ({ ...prev, districts: false }));
         }
-      } catch (error) {
-        console.error('Error fetching districts:', error);
-      } finally {
-        setLoading(prev => ({ ...prev, districts: false }));
       }
     };
 
     fetchDistricts();
   }, [formData.region]);
 
-  // Update parent component when form data changes
-  useEffect(() => {
-    if (onFormDataChange) {
-      onFormDataChange(formData);
+  const handleFormChange = (field, value) => {
+    const newFormData = { ...formData, [field]: value };
+    if (field === 'region') {
+      newFormData.district = '';
+      setDistricts([]);
     }
-  }, [formData, onFormDataChange]);
+    setFormData(newFormData);
+    onFormDataChange?.(newFormData);
+  };
 
-  // Update parent component when files change
   useEffect(() => {
     if (onFileChange) {
       onFileChange(files);
     }
   }, [files, onFileChange]);
-
-  const handleFormChange = (field, value) => {
-    setFormData(prev => {
-      const newData = { ...prev, [field]: value };
-      if (field === 'region') {
-        newData.district = '';
-      }
-      return newData;
-    });
-  };
 
   const handleFileChange = (event) => {
     const selectedFiles = Array.from(event.target.files);
@@ -323,7 +311,6 @@ const ReportDetails = ({ onFormDataChange, onFileChange, formData: initialFormDa
       return updatedFiles;
     });
 
-    // Simulate upload progress for each file
     newFiles.forEach(fileObj => {
       const interval = setInterval(() => {
         setFiles(prev => {
@@ -358,47 +345,42 @@ const ReportDetails = ({ onFormDataChange, onFileChange, formData: initialFormDa
     }
   };
 
-  // Add new function to validate form
-  const isFormValid = () => {
-    return (
-      formData.type &&
+  const isFormValid =
+    formData.type &&
+    formData.region &&
+    formData.district &&
+    formData.date &&
+    formData.time;
+
+  useEffect(() => {
+    const isValid = formData.type &&
       formData.region &&
       formData.district &&
       formData.date &&
-      formData.time
-      // Note: details and files are not required fields
-    );
-  };
+      formData.time;
 
-  // Add formValid state to parent component
-  useEffect(() => {
     if (onFormDataChange) {
       onFormDataChange({
         ...formData,
-        isValid: isFormValid()
+        isValid
       });
     }
-  }, [formData]);
+  }, [formData.type, formData.region, formData.district, formData.date, formData.time]);
 
   return (
     <div>
-      <h2 className="text-xl font-medium text-gray-800 mb-6">Hodisa Tafsilotlari</h2>
+      <h2 className="text-xl font-medium text-gray-800 mb-6">{t('pages.newsReporting.reportDetails.title')}</h2>
 
-      {/* Toggle Buttons */}
       <div className="mb-6">
         <ToggleButtons activeTab={activeTab} onChange={setActiveTab} />
       </div>
 
-      {/* Form Fields */}
       <div className="space-y-4">
-        {/* Type Selection and Region/District with Date/Time */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {/* Left Column */}
           <div className="space-y-4">
-            {/* Violation Type Select */}
             <div className="relative">
               <div className="text-sm text-gray-600 mb-1">
-                Xabar turini tanlash <span className="text-red-500">*</span>
+                {t('pages.newsReporting.reportDetails.type')} <span className="text-red-500">*</span>
               </div>
               <select
                 className="w-full px-4 py-3 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
@@ -406,10 +388,11 @@ const ReportDetails = ({ onFormDataChange, onFileChange, formData: initialFormDa
                 onChange={(e) => handleFormChange('type', e.target.value)}
                 disabled={loading.types}
               >
+                <option value="">{t('pages.newsReporting.reportDetails.selectType')}</option>
                 {loading.types ? (
-                  <option>Yuklanmoqda...</option>
+                  <option>{t('pages.newsReporting.loading')}</option>
                 ) : (
-                  violationTypes.map(type => (
+                  Array.isArray(violationTypes) && violationTypes.map(type => (
                     <option key={type.id} value={type.id}>{type.name}</option>
                   ))
                 )}
@@ -421,7 +404,6 @@ const ReportDetails = ({ onFormDataChange, onFileChange, formData: initialFormDa
               </div>
             </div>
 
-            {/* Date and Time */}
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <div className="text-sm text-gray-600 mb-1">
@@ -448,12 +430,10 @@ const ReportDetails = ({ onFormDataChange, onFileChange, formData: initialFormDa
             </div>
           </div>
 
-          {/* Right Column - Region/District */}
           <div className="space-y-4">
-            {/* Region Select */}
             <div className="relative">
               <div className="text-sm text-gray-600 mb-1">
-                Viloyat <span className="text-red-500">*</span>
+                {t('pages.newsReporting.location.selectRegion')} <span className="text-red-500">*</span>
               </div>
               <select
                 className="w-full px-4 py-3 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
@@ -461,10 +441,14 @@ const ReportDetails = ({ onFormDataChange, onFileChange, formData: initialFormDa
                 onChange={(e) => handleFormChange('region', e.target.value)}
                 disabled={loading.regions}
               >
-                <option value="">Viloyatni tanlang</option>
-                {regions.map(region => (
-                  <option key={region.id} value={region.id}>{region.name}</option>
-                ))}
+                <option value="">{t('pages.newsReporting.location.selectRegion')}</option>
+                {loading.regions ? (
+                  <option>{t('pages.newsReporting.loading')}</option>
+                ) : (
+                  Array.isArray(regions) && regions.map(region => (
+                    <option key={region.id} value={region.id}>{region.name}</option>
+                  ))
+                )}
               </select>
               <div className="absolute right-4 top-[38px] pointer-events-none">
                 <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -473,10 +457,9 @@ const ReportDetails = ({ onFormDataChange, onFileChange, formData: initialFormDa
               </div>
             </div>
 
-            {/* District Select */}
             <div className="relative">
               <div className="text-sm text-gray-600 mb-1">
-                Tuman <span className="text-red-500">*</span>
+                {t('pages.newsReporting.location.selectDistrict')} <span className="text-red-500">*</span>
               </div>
               <select
                 className="w-full px-4 py-3 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
@@ -484,10 +467,14 @@ const ReportDetails = ({ onFormDataChange, onFileChange, formData: initialFormDa
                 onChange={(e) => handleFormChange('district', e.target.value)}
                 disabled={!formData.region || loading.districts}
               >
-                <option value="">Tumanni tanlang</option>
-                {districts.map(district => (
-                  <option key={district.id} value={district.id}>{district.name}</option>
-                ))}
+                <option value="">{t('pages.newsReporting.location.selectDistrict')}</option>
+                {loading.districts ? (
+                  <option>{t('pages.newsReporting.loading')}</option>
+                ) : (
+                  Array.isArray(districts) && districts.map(district => (
+                    <option key={district.id} value={district.id}>{district.name}</option>
+                  ))
+                )}
               </select>
               <div className="absolute right-4 top-[38px] pointer-events-none">
                 <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -498,16 +485,14 @@ const ReportDetails = ({ onFormDataChange, onFileChange, formData: initialFormDa
           </div>
         </div>
 
-        {/* Details and File Upload */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {/* Details Textarea */}
           <div>
             <div className="text-sm text-gray-600 mb-1">
-              Hodisa tafsilotlari
+              {t('pages.newsReporting.reportDetails.description')}
             </div>
             <textarea
               rows={4}
-              placeholder="Hodisa tafsilotlari"
+              placeholder={t('pages.newsReporting.reportDetails.description')}
               className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
               value={formData.details}
               onChange={(e) => handleFormChange('details', e.target.value)}
@@ -518,18 +503,17 @@ const ReportDetails = ({ onFormDataChange, onFileChange, formData: initialFormDa
             </div>
           </div>
 
-          {/* File Upload */}
           <div>
             <div className="text-sm text-gray-600 mb-1">
-              Fayl yuklash
+              {t('pages.newsReporting.fileUpload.title')}
             </div>
             <div className="border-2 border-dashed rounded-lg p-6">
               <div className="text-center mb-4">
                 <p className="text-gray-600 mb-2">
-                  Faylni tanlang yoki shu yerga joylshtiring
+                  {t('pages.newsReporting.fileUpload.dragDropText')}
                 </p>
                 <p className="text-sm text-gray-500 mb-4">
-                  JPEG, PNG, PDF va MP4 formatlari, 50 MB gacha
+                  {t('pages.newsReporting.fileUpload.formatInfo')}
                 </p>
                 <input
                   ref={fileInputRef}
@@ -543,11 +527,10 @@ const ReportDetails = ({ onFormDataChange, onFileChange, formData: initialFormDa
                   onClick={() => fileInputRef.current?.click()}
                   className="px-4 py-2 bg-white border rounded-lg text-gray-700 hover:bg-gray-50"
                 >
-                  Faylni yuklash
+                  {t('pages.newsReporting.fileUpload.uploadButton')}
                 </button>
               </div>
 
-              {/* Uploaded Files List */}
               {files.length > 0 && (
                 <div className="space-y-3 mt-4">
                   {files.map((fileObj) => (
@@ -601,15 +584,15 @@ const ReportDetails = ({ onFormDataChange, onFileChange, formData: initialFormDa
 
 // Contact Form Component
 const ContactForm = ({ formData, onFormDataChange }) => {
+  const { t } = useTranslation();
   const [showDeleteButtons, setShowDeleteButtons] = useState(false);
 
-  // Check if the last person's data is complete
   const isLastPersonComplete = () => {
     const lastPerson = formData[formData.length - 1];
     return (
       lastPerson.name.trim() !== '' &&
       lastPerson.position.trim() !== '' &&
-      lastPerson.phone.length === 13 // Full phone number length including +998
+      lastPerson.phone.length === 13
     );
   };
 
@@ -636,12 +619,11 @@ const ContactForm = ({ formData, onFormDataChange }) => {
 
   return (
     <div className="">
-      {/* Updated header section for better responsiveness */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6 mb-6">
         <h2 className="text-xl font-medium text-gray-800">
-          Aloqador Shaxsning Ma'lumotlari
+          {t('pages.newsReporting.contactForm.title')}
         </h2>
-        <div className="flex  flex-col md:flex-row xs:flex-row gap-2 xs:gap-4 w-full sm:w-auto">
+        <div className="flex flex-col md:flex-row xs:flex-row gap-2 xs:gap-4 w-full sm:w-auto">
           <button
             onClick={handleAddPerson}
             disabled={!isLastPersonComplete()}
@@ -653,7 +635,7 @@ const ContactForm = ({ formData, onFormDataChange }) => {
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
             </svg>
-            <span>Shaxsni qo'shish</span>
+            <span>{t('pages.newsReporting.contactForm.addPerson')}</span>
           </button>
           {formData.length > 1 && (
             <button
@@ -663,7 +645,7 @@ const ContactForm = ({ formData, onFormDataChange }) => {
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
               </svg>
-              <span>Shaxsni olib tashlash</span>
+              <span>{t('pages.newsReporting.contactForm.removePerson')}</span>
             </button>
           )}
         </div>
@@ -673,39 +655,36 @@ const ContactForm = ({ formData, onFormDataChange }) => {
         {formData.map((person, index) => (
           <div key={index} className="relative">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {/* Name Input */}
               <div>
                 <div className="text-sm text-gray-600 mb-1">
-                  F.I.Sh <span className="text-red-500">*</span>
+                  {t('pages.newsReporting.contactForm.fullName')} <span className="text-red-500">*</span>
                 </div>
                 <input
                   type="text"
                   value={person.name}
                   onChange={(e) => handleInputChange(index, 'name', e.target.value)}
-                  placeholder="Murodov Islom"
+                  placeholder={t('pages.newsReporting.contactForm.fullNamePlaceholder')}
                   className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
-              {/* Position Input */}
               <div>
                 <div className="text-sm text-gray-600 mb-1">
-                  Lavozimi <span className="text-red-500">*</span>
+                  {t('pages.newsReporting.contactForm.position')} <span className="text-red-500">*</span>
                 </div>
                 <input
                   type="text"
                   value={person.position}
                   onChange={(e) => handleInputChange(index, 'position', e.target.value)}
-                  placeholder="Lavozimi"
+                  placeholder={t('pages.newsReporting.contactForm.positionPlaceholder')}
                   className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
-              {/* Phone Input with Delete Button */}
               <div className="flex gap-2 items-end">
                 <div className="flex-1">
                   <div className="text-sm text-gray-600 mb-1">
-                    Telefon raqami <span className="text-red-500">*</span>
+                    {t('pages.newsReporting.contactForm.phoneNumber')} <span className="text-red-500">*</span>
                   </div>
                   <PhoneInput
                     value={person.phone}
@@ -733,49 +712,49 @@ const ContactForm = ({ formData, onFormDataChange }) => {
 
 // First, add new component for Reporter Information
 const ReporterInfo = ({ formData, onFormDataChange, isAnonymous, onAnonymousChange }) => {
+  const { t } = useTranslation();
+
   return (
     <div>
-      <h2 className="text-xl font-medium text-gray-800 mb-6">Xabar Yuborish</h2>
+      <h2 className="text-xl font-medium text-gray-800 mb-6">
+        {t('pages.newsReporting.reporterInfo.title')}
+      </h2>
 
-      {/* Toggle Buttons */}
       <div className="mb-6">
         <div className="inline-flex bg-gray-100 rounded-lg p-1">
           <button
             className={`px-4 py-2 rounded-md ${!isAnonymous ? 'bg-white shadow-sm text-[#024073]' : 'text-gray-500'}`}
             onClick={() => onAnonymousChange(false)}
           >
-            Xabar Beruvchi Haqida Ma'lumot
+            {t('pages.newsReporting.reporterInfo.aboutReporter')}
           </button>
           <button
             className={`px-4 py-2 rounded-md ${isAnonymous ? 'bg-white shadow-sm text-[#024073]' : 'text-gray-500'}`}
             onClick={() => onAnonymousChange(true)}
           >
-            Anonomim Xabar Qoldirish
+            {t('pages.newsReporting.reporterInfo.anonymous')}
           </button>
         </div>
       </div>
 
-      {/* Form Fields */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {/* Name Input */}
         <div>
           <div className="text-sm text-gray-600 mb-1">
-            F.I.Sh <span className="text-red-500">*</span>
+            {t('pages.newsReporting.reporterInfo.fullName')} <span className="text-red-500">*</span>
           </div>
           <input
             type="text"
             value={formData.name}
             onChange={(e) => onFormDataChange({ ...formData, name: e.target.value })}
-            placeholder="Islomov Murod"
+            placeholder={t('pages.newsReporting.contactForm.fullNamePlaceholder')}
             className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             disabled={isAnonymous}
           />
         </div>
 
-        {/* Phone Input */}
         <div>
           <div className="text-sm text-gray-600 mb-1">
-            Telefon raqami <span className="text-red-500">*</span>
+            {t('pages.newsReporting.reporterInfo.phoneNumber')} <span className="text-red-500">*</span>
           </div>
           <PhoneInput
             value={formData.phone}
@@ -783,16 +762,15 @@ const ReporterInfo = ({ formData, onFormDataChange, isAnonymous, onAnonymousChan
           />
         </div>
 
-        {/* Email Input */}
         <div>
           <div className="text-sm text-gray-600 mb-1">
-            Elektron pochta <span className="text-red-500">*</span>
+            {t('pages.newsReporting.reporterInfo.email')} <span className="text-red-500">*</span>
           </div>
           <input
             type="email"
             value={formData.email}
             onChange={(e) => onFormDataChange({ ...formData, email: e.target.value })}
-            placeholder="Elektron pochta"
+            placeholder={t('pages.newsReporting.reporterInfo.email')}
             className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             disabled={isAnonymous}
           />
@@ -805,30 +783,29 @@ const ReporterInfo = ({ formData, onFormDataChange, isAnonymous, onAnonymousChan
 // Step 4: Report Confirmation Component
 
 const SuccessModal = ({ isOpen, onClose }) => {
+  const { t } = useTranslation();
+
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg p-8 max-w-sm w-full mx-4">
         <div className="flex flex-col items-center">
-          {/* Success Icon */}
           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
             <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
             </svg>
           </div>
 
-          {/* Message */}
           <h3 className="text-xl font-medium text-gray-900 mb-6">
-            Xabar yuborildi!
+            {t('pages.newsReporting.successModal.message')}
           </h3>
 
-          {/* OK Button */}
           <button
             onClick={onClose}
             className="w-full py-2 px-4 bg-[#024073] text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            OK
+            {t('pages.newsReporting.successModal.ok')}
           </button>
         </div>
       </div>
@@ -836,12 +813,12 @@ const SuccessModal = ({ isOpen, onClose }) => {
   );
 };
 const NewsReporting = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const [selectedOrgId, setSelectedOrgId] = useState(null);
 
-  // Update reportFormData to include files
   const [reportFormData, setReportFormData] = useState({
     type: '',
     region: '',
@@ -849,7 +826,7 @@ const NewsReporting = () => {
     date: '',
     time: '',
     details: '',
-    files: [], // Add files array to store uploaded files
+    files: [],
   });
 
   const [contactFormData, setContactFormData] = useState([{
@@ -858,7 +835,6 @@ const NewsReporting = () => {
     phone: '+998'
   }]);
 
-  // Add new states for reporter information
   const [reporterFormData, setReporterFormData] = useState({
     name: '',
     phone: '+998',
@@ -873,19 +849,22 @@ const NewsReporting = () => {
     }));
   };
 
-  // Add new handler for file updates
   const handleFileChange = (files) => {
-    setReportFormData(prev => ({
-      ...prev,
-      files: files
-    }));
+    setReportFormData(prev => {
+      if (JSON.stringify(prev.files) === JSON.stringify(files)) {
+        return prev;
+      }
+      return {
+        ...prev,
+        files: files
+      };
+    });
   };
 
   const handleSubmit = async () => {
     try {
       const formData = new FormData();
 
-      // Single value fields
       formData.append('organization', selectedOrgId);
       formData.append('event_time', `${reportFormData.date}T${reportFormData.time}`);
       formData.append('region', reportFormData.region);
@@ -893,18 +872,15 @@ const NewsReporting = () => {
       formData.append('report_type', reportFormData.type);
       formData.append('comment', reportFormData.details);
 
-      // Reporter info
       formData.append('informant_full_name', reporterFormData.name);
       formData.append('informant_phone_number', reporterFormData.phone);
       formData.append('informant_email', reporterFormData.email);
       formData.append('is_anonim', isAnonymous.toString());
 
-      // Multiple files
       reportFormData.files.forEach(fileObj => {
         formData.append('file', fileObj.file);
       });
 
-      // Multiple contact persons
       contactFormData.forEach((contact, index) => {
         formData.append('full_name', contact.name);
         formData.append('position', contact.position);
@@ -920,17 +896,15 @@ const NewsReporting = () => {
         throw new Error('Network response was not ok');
       }
 
-      // If successful, show modal
       setShowModal(true);
     } catch (error) {
       console.error('Error submitting form:', error);
-      // Here you might want to show an error message to the user
     }
   };
 
   const handleNext = () => {
     if (currentStep === 4) {
-      handleSubmit(); // Call submit instead of directly showing modal
+      handleSubmit();
     } else {
       setCurrentStep(prev => prev + 1);
     }
@@ -941,7 +915,6 @@ const NewsReporting = () => {
     navigate('/');
   };
 
-  // Update the steps rendering to include the new component
   const renderCurrentStep = () => {
     switch (currentStep) {
       case 1:
@@ -976,7 +949,6 @@ const NewsReporting = () => {
   };
 
   const isNextButtonDisabled = () => {
-    // Add email validation function
     const isValidEmail = (email) => {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(email);
@@ -988,13 +960,10 @@ const NewsReporting = () => {
       case 2:
         return !reportFormData.isValid;
       case 3:
-        // Validate contact form data
         return !contactFormData.every(contact =>
           contact.name && contact.position && contact.phone.length === 13
         );
       case 4:
-        // If anonymous, only require phone number
-        // If not anonymous, require all fields including valid email
         if (isAnonymous) {
           return !reporterFormData.phone || reporterFormData.phone.length !== 13;
         }
@@ -1009,24 +978,20 @@ const NewsReporting = () => {
   };
 
   return (
-    <div className=" px-4 py-8 pt-0">
-      {/* Title */}
+    <div className="px-4 py-8 pt-0">
       <div className="py-3 md:py-4 pt-0">
         <div className="text-sm text-gray-600 flex items-center gap-1">
-          <span>Bosh sahifa</span>
+          <span>{t('pages.newsReporting.breadcrumbs.home')}</span>
           <ChevronRight size={16} className="text-gray-400" />
-          <span className='text-[#024072]'>Xabar yuborish</span>
+          <span className='text-[#024072]'>{t('pages.newsReporting.breadcrumbs.report')}</span>
         </div>
       </div>
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-gray-800">Xabar Yuborish</h1>
+        <h1 className="text-2xl font-semibold text-gray-800">{t('pages.newsReporting.title')}</h1>
       </div>
 
-      {/* Steps and Button Row */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0 mb-8">
-        {/* Steps */}
         <div className="flex items-center space-x-2 min-w-[280px] sm:w-[400px]">
-          {/* Step 1 */}
           <div className="flex-shrink-0">
             <div className="w-8 h-8 bg-[#024073] rounded-full flex items-center justify-center">
               <svg className="w-4 h-4 text-white" viewBox="0 0 20 20" fill="currentColor">
@@ -1036,7 +1001,6 @@ const NewsReporting = () => {
           </div>
           <div className={`flex-grow h-1 ${currentStep >= 2 ? 'bg-[#024073]' : 'bg-gray-300'}`}></div>
 
-          {/* Step 2 */}
           <div className="flex-shrink-0">
             <div className={`w-8 h-8 ${currentStep >= 2 ? 'bg-[#024073]' : 'bg-gray-300'} rounded-full flex items-center justify-center`}>
               {currentStep >= 2 ? (
@@ -1050,7 +1014,6 @@ const NewsReporting = () => {
           </div>
           <div className={`flex-grow h-1 ${currentStep >= 3 ? 'bg-[#024073]' : 'bg-gray-300'}`}></div>
 
-          {/* Step 3 */}
           <div className="flex-shrink-0">
             <div className={`w-8 h-8 ${currentStep >= 3 ? 'bg-[#024073]' : 'bg-gray-300'} rounded-full flex items-center justify-center`}>
               {currentStep >= 3 ? (
@@ -1064,7 +1027,6 @@ const NewsReporting = () => {
           </div>
           <div className={`flex-grow h-1 ${currentStep >= 4 ? 'bg-[#024073]' : 'bg-gray-300'}`}></div>
 
-          {/* Step 4 */}
           <div className="flex-shrink-0">
             <div className={`w-8 h-8 ${currentStep >= 4 ? 'bg-[#024073]' : 'bg-gray-300'} rounded-full flex items-center justify-center`}>
               {currentStep >= 4 ? (
@@ -1078,24 +1040,23 @@ const NewsReporting = () => {
           </div>
         </div>
 
-        {/* Next Button */}
         <button
           onClick={handleNext}
           disabled={isNextButtonDisabled()}
-          className={`px-6 py-2 text-[#024073] border border-[#024072] rounded-[13px] w-[186px] hover:bg-blue-50 sm:w-auto flex items-center justify-center gap-2 ${isNextButtonDisabled()
-            ? 'opacity-50 cursor-not-allowed hover:bg-transparent'
-            : ''
+          className={`px-6 py-2 text-[#024073] border border-[#024072] rounded-[13px] w-[186px] hover:bg-blue-50 sm:w-auto flex items-center justify-center gap-2 ${isNextButtonDisabled() ? 'opacity-50 cursor-not-allowed hover:bg-transparent' : ''
             }`}
         >
-          <p className="text-sm">{currentStep === 4 ? 'Yuborish' : 'Keyingisi'}</p>
+          <p className="text-sm">
+            {currentStep === 4
+              ? t('pages.newsReporting.submitButton')
+              : t('pages.newsReporting.nextButton')}
+          </p>
           {currentStep !== 4 && <ChevronRight size={16} className="text-gray-400" />}
         </button>
       </div>
 
-      {/* Current Step Content */}
       {renderCurrentStep()}
 
-      {/* Success Modal */}
       <SuccessModal
         isOpen={showModal}
         onClose={handleModalClose}

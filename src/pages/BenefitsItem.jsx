@@ -2,6 +2,7 @@
 import React, { useState, useRef } from 'react';
 import { Download } from 'lucide-react';
 import ReactDOM from 'react-dom';
+import { useTranslation } from 'react-i18next';
 
 const Step1Form = ({ formData, handleInputChange }) => {
   return (
@@ -252,6 +253,7 @@ const Step2Form = ({ formData, handleInputChange, handleGeneratePDF }) => {
 };
 
 const BenefitsItem = () => {
+  const { t } = useTranslation();
   const [currentStep, setCurrentStep] = useState(1);
   const firstPageRef = useRef(null);
   const secondPageRef = useRef(null);
@@ -301,12 +303,12 @@ const BenefitsItem = () => {
     <div ref={ref} className="bg-white p-4 md:p-6 overflow-x-hidden min-w-[320px]">
       {/* Header section */}
       <div className="text-right mb-8 text-sm">
-        <p>га</p>
+        <p>{t('pages.benefits.form1.to')}</p>
         <div className="break-words max-w-[300px] ml-auto">
           <p>{formData.supervisorPosition || ''}</p>
           <p>{formData.supervisorFIO || ''}</p>
         </div>
-        <p className="mt-4">дан</p>
+        <p className="mt-4">{t('pages.benefits.form1.from')}</p>
         <div className="break-words max-w-[300px] ml-auto">
           <p>{formData.position || ''}</p>
           <p>{formData.managerFIO || ''}</p>
@@ -314,26 +316,24 @@ const BenefitsItem = () => {
       </div>
 
       <h1 className="text-center font-bold text-base md:text-xl mb-6 whitespace-normal">
-        Мавжуд манфаатлар тўқнашуви тўғрисидаги
-        ХАБАРНОМА
+        {t('pages.benefits.form1.notification')}
       </h1>
 
       <p className="mb-6 text-sm whitespace-normal">
-        Мен ушбу хабарномада ўзим ва менга алоқадор шахсларнинг мавжуд
-        манфаатлар тўқнашувига оид қуйидаги маълумотлар тўғрисида хабар бераман:
+        {t('pages.benefits.form1.introText')}
       </p>
 
       <div className="space-y-6">
-        {/* 1-Qism */}
+        {/* Employee Information Section */}
         <div>
-          <h2 className="font-bold mb-4">1. Ходимга оид маълумотлар</h2>
+          <h2 className="font-bold mb-4">{t('pages.benefits.form1.employeeInfoTitle')}</h2>
           <div className="overflow-x-auto">
             <table className="w-full border-collapse border border-gray-300 min-w-[500px]">
               <tbody>
                 <tr>
                   <td className="border border-gray-300 p-2 w-8">1.</td>
                   <td className="border border-gray-300 p-2 whitespace-normal">
-                    Идентификация ID-картаси ёки биометрик паспорт маълумотлари (серияси, рақами, берилган санаси)
+                    {t('pages.benefits.form1.idCardInfo')}
                   </td>
                   <td className="border border-gray-300 p-2 whitespace-normal">
                     {`${formData.passportSeries} ${formData.passportIssueDate}`}
@@ -342,7 +342,7 @@ const BenefitsItem = () => {
                 <tr>
                   <td className="border border-gray-300 p-2">2.</td>
                   <td className="border border-gray-300 p-2 whitespace-normal">
-                    Жисмоний шахснинг шахсий идентификация рақами (ЖШШИР)
+                    {t('pages.benefits.form1.pinfl')}
                   </td>
                   <td className="border border-gray-300 p-2">{formData.jshshir}</td>
                 </tr>
@@ -634,7 +634,7 @@ const BenefitsItem = () => {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
           {/* Title */}
           <h1 className="text-xl md:text-2xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] whitespace-normal flex-shrink-0">
-            Manfaatlar to'qnashuvi
+            {t('pages.benefits.title')}
           </h1>
 
           {/* Buttons */}
@@ -643,7 +643,7 @@ const BenefitsItem = () => {
               onClick={handleNext}
               className="w-full sm:w-auto px-4 md:px-6 py-2.5 bg-[#024073] text-white rounded hover:bg-blue-700 transition-colors duration-200 text-sm md:text-base flex items-center justify-center"
             >
-              <span>Keyingisi</span>
+              <span>{t('pages.benefits.next')}</span>
               <span className="ml-1">›</span>
             </button>
           ) : (
@@ -652,7 +652,7 @@ const BenefitsItem = () => {
               className="w-full sm:w-auto px-4 md:px-6 py-2.5 bg-[#024073] text-white rounded hover:bg-blue-700 transition-colors duration-200 text-sm md:text-base flex items-center justify-center gap-2"
             >
               <Download className="w-4 h-4 md:w-5 md:h-5" />
-              <span className="whitespace-nowrap">Xabarnomani shakllantirish</span>
+              <span className="whitespace-nowrap">{t('pages.benefits.generateNotification')}</span>
             </button>
           )}
         </div>

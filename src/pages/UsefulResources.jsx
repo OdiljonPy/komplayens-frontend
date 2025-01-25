@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next';
 
 import DocumentsCarousel from '../components/DocumentsCarousel';
 import LinksCarousel from '../components/LinksCarousel';
@@ -7,7 +8,9 @@ import { sendRequest } from '../utils/apiFunctions';
 
 import { ChevronRight } from 'lucide-react'
 import VideoCourseDashboard from '../sections/VideoCourseDashboard'
+
 function UsefulResources() {
+  const { t } = useTranslation();
   const [mainData, setMainData] = useState(null);
 
   useEffect(() => {
@@ -46,17 +49,16 @@ function UsefulResources() {
     { id: 6, name: "O'zbekiston Respublikasi Oliy Majlisining Qonunchilik palatasi" },
   ];
   return (
-
     <div className="p-4">
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-sm text-gray-600 mb-6">
-        <span>Bosh sahifa</span>
+        <span>{t('pages.handouts.breadcrumb.home')}</span>
         <ChevronRight className="h-4 w-4" />
-        <span className="text-blue-900">Targʻibot va foydali axborotlar</span>
+        <span className="text-blue-900">{t('pages.handouts.breadcrumb.resources')}</span>
       </div>
 
       <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-6">
-        Targʻibot va foydali axborotlar
+        {t('pages.handouts.breadcrumb.resources')}
       </h1>
 
       {/* Main Card */}
@@ -82,7 +84,6 @@ function UsefulResources() {
       <VideoCourseDashboard />
       <LinksCarousel tests={tests} />
     </div>
-
   )
 }
 

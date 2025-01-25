@@ -1,9 +1,11 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { MessageSquare, Plus } from 'lucide-react';
 import { useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { sendRequest } from '../utils/apiFunctions';
 
 const OperationsItem = () => {
+  const { t } = useTranslation();
   const { operationId } = useParams();
   const commentRef = useRef(null);
   const dilemmaRef = useRef(null);
@@ -143,8 +145,6 @@ const OperationsItem = () => {
   };
 
   return (
-
-
     <div className="px-4 sm:px-6 py-6 space-y-6">
       {/* Dilemma Section */}
       <header>
@@ -153,7 +153,7 @@ const OperationsItem = () => {
             {itemData?.title}
           </h1>
           <span className="text-blue-600 text-sm bg-blue-50 px-3 rounded">
-            Davlat xizmati
+            {t('pages.operations.publicService')}
           </span>
         </div>
       </header>
@@ -168,7 +168,7 @@ const OperationsItem = () => {
                 <div className="w-1 bg-[#3982f771] rounded-l-lg"></div>
                 <div className={`flex-1 ${isMobile ? 'px-4 py-4' : 'px-6 py-5'}`}>
                   <h2 className={`font-medium text-gray-900 mb-4 ${isMobile ? 'text-lg' : 'text-xl'}`}>
-                    Dilemma
+                    {t('pages.operations.dilemma')}
                   </h2>
                   <p className={`text-gray-600 mb-6 ${isMobile ? 'text-sm' : 'text-base'}`}>
                     {itemData?.case}
@@ -183,7 +183,7 @@ const OperationsItem = () => {
                       >
                         <Plus size={isMobile ? 16 : 20} />
                         <span className={`${isMobile ? 'text-xs' : 'text-sm'}`}>
-                          Kommentariya qo'shish
+                          {t('pages.operations.addComment')}
                         </span>
                       </button>
                       <div className="flex items-center gap-2 text-gray-500">
@@ -206,7 +206,9 @@ const OperationsItem = () => {
       <div className="bg-white rounded-lg shadow-sm">
         <div className="flex">
           <div className="p-6 flex-1">
-            <h2 className="text-xl font-medium text-gray-900 mb-6">Ekspert xulosasi</h2>
+            <h2 className="text-xl font-medium text-gray-900 mb-6">
+              {t('pages.operations.expertOpinion')}
+            </h2>
             <div
               className="text-gray-600 text-base mb-6"
               dangerouslySetInnerHTML={{ __html: itemData?.description }}
@@ -246,7 +248,7 @@ const OperationsItem = () => {
                 <textarea
                   rows={4}
                   className="w-full p-3 border border-gray-200 rounded-lg resize-none focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Kommentariya qo'shish"
+                  placeholder={t('pages.operations.commentPlaceholder')}
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
                   maxLength={460}
@@ -262,7 +264,7 @@ const OperationsItem = () => {
                   >
                     <Plus size={isMobile ? 16 : 20} />
                     <span>
-                      {isSubmitting ? 'Yuborilmoqda...' : 'Kommentariya qoldirish'}
+                      {isSubmitting ? t('pages.operations.sending') : t('pages.operations.leaveComment')}
                     </span>
                   </button>
                   <span className="text-gray-400 text-sm">

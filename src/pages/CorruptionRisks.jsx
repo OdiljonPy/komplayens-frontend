@@ -1,14 +1,13 @@
-
-
 import React, { useState, useEffect, useRef } from 'react';
 import { ChevronRight, ChevronDown, Calendar, ArrowUpDown, Download } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import pdfImg from "../assets/icons/pdf.png"
 import { sendRequest } from '../utils/apiFunctions';
+import { useTranslation } from 'react-i18next';
+
 
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-
 
 import { DateRange } from 'react-date-range';
 import 'react-date-range/dist/styles.css';
@@ -24,6 +23,7 @@ const Filters = ({ onFilterChange }) => {
   const [selectedSort, setSelectedSort] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('');
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const { t } = useTranslation();
   const [dateRange, setDateRange] = useState([
     {
       startDate: null,
@@ -75,7 +75,7 @@ const Filters = ({ onFilterChange }) => {
       {/* Sort Select */}
       <div className="w-full md:w-[280px]">
         <label className="block text-sm text-gray-600 mb-1.5">
-          Saralash
+          {t('pages.corruptionRisks.sorting')}
         </label>
         <div className="relative">
           <select
@@ -91,9 +91,9 @@ const Filters = ({ onFilterChange }) => {
             }}
             className="w-full h-[48px] appearance-none bg-white border border-gray-200 rounded-lg px-4 text-gray-900 focus:outline-none focus:ring-1 focus:ring-blue-500"
           >
-            <option value="">Eng yangisi</option>
-            <option value="new">Yangi</option>
-            <option value="old">Eski</option>
+            <option value="">{t('pages.corruptionRisks.newest')}</option>
+            <option value="new">{t('pages.corruptionRisks.new')}</option>
+            <option value="old">{t('pages.corruptionRisks.old')}</option>
           </select>
           <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
         </div>
@@ -102,7 +102,7 @@ const Filters = ({ onFilterChange }) => {
       {/* Status Select */}
       <div className="w-full md:w-[280px]">
         <label className="block text-sm text-gray-600 mb-1.5">
-          Status
+          {t('pages.corruptionRisks.status')}
         </label>
         <div className="relative">
           <select
@@ -118,9 +118,9 @@ const Filters = ({ onFilterChange }) => {
             }}
             className="w-full h-[48px] appearance-none bg-white border border-gray-200 rounded-lg px-4 text-gray-900 focus:outline-none focus:ring-1 focus:ring-blue-500"
           >
-            <option value="">Hammasi</option>
-            <option value="1">Jarayonda</option>
-            <option value="2">Yopilgan</option>
+            <option value="">{t('pages.corruptionRisks.all')}</option>
+            <option value="1">{t('pages.corruptionRisks.inProgress')}</option>
+            <option value="2">{t('pages.corruptionRisks.closed')}</option>
           </select>
           <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
         </div>
@@ -129,14 +129,14 @@ const Filters = ({ onFilterChange }) => {
       {/* Date Range Picker */}
       <div className="w-full md:w-[280px]">
         <label className="block text-sm text-gray-600 mb-1.5">
-          Sana
+          {t('common.date')}
         </label>
         <div className="relative" ref={datePickerRef}>
           <div
             onClick={() => setIsDatePickerOpen(!isDatePickerOpen)}
             className="w-full h-[48px] bg-white border border-gray-200 rounded-lg px-4 flex items-center cursor-pointer text-gray-900"
           >
-            {formatDateDisplay() || 'Sanani tanlang'}
+            {formatDateDisplay() || t('common.selectDate')}
             <Calendar className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
           </div>
 
@@ -165,9 +165,8 @@ const Filters = ({ onFilterChange }) => {
   );
 };
 
-
-
 export default function CorruptionRisks() {
+  const { t } = useTranslation();
   const [selectedSort, setSelectedSort] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('');
   const [startDate, setStartDate] = useState('');
@@ -276,14 +275,14 @@ export default function CorruptionRisks() {
       <div className="p-4">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-sm text-gray-600 mb-6 px-4">
-          <span>Bosh sahifa</span>
+          <span>{t('educational_materials.home')}</span>
           <ChevronRight className="h-4 w-4" />
-          <span className="text-blue-900">Korrupsiyaviy xavf-xatarlar</span>
+          <span className="text-blue-900">{t('menu.corruption_risks_1')} {t('menu.corruption_risks_2')}</span>
         </div>
 
         <div className="p-4">
           <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959]">
-            Korrupsiyaviy xavf-xatarlar
+            {t('menu.corruption_risks_1')} {t('menu.corruption_risks_2')}
           </h1>
         </div>
         {/* About Section */}
@@ -415,24 +414,24 @@ export default function CorruptionRisks() {
                   <div className="grid grid-cols-6 bg-[#F8FAFC] divide-x divide-gray-200 border-b text-sm">
                     <div className="px-4 py-3">
                       <button className="flex items-center gap-2 text-gray-500 font-medium">
-                        So'rovnoma nomi
+                        {t('pages.corruptionRisks.surveyName')}
                         <ArrowUpDown className="h-4 w-4" />
                       </button>
                     </div>
                     <div className="px-4 py-3">
-                      <span className="text-gray-500 font-medium">Boshlangan sana</span>
+                      <span className="text-gray-500 font-medium">{t('pages.corruptionRisks.startDate')}</span>
                     </div>
                     <div className="px-4 py-3">
-                      <span className="text-gray-500 font-medium">Tugash sanasi</span>
+                      <span className="text-gray-500 font-medium">{t('pages.corruptionRisks.endDate')}</span>
                     </div>
                     <div className="px-4 py-3">
-                      <span className="text-gray-500 font-medium">Holati</span>
+                      <span className="text-gray-500 font-medium">{t('pages.corruptionRisks.status')}</span>
                     </div>
                     <div className="px-4 py-3">
-                      <span className="text-gray-500 font-medium">Natijalar</span>
+                      <span className="text-gray-500 font-medium">{t('pages.corruptionRisks.results')}</span>
                     </div>
                     <div className="px-4 py-3">
-                      <span className="text-gray-500 font-medium">So'rovnomada qatnashish</span>
+                      <span className="text-gray-500 font-medium">{t('pages.corruptionRisks.participate')}</span>
                     </div>
                   </div>
 
@@ -503,7 +502,7 @@ export default function CorruptionRisks() {
                     <path d="M16.3332 10.6986H4.6665M4.6665 10.6986L10.4998 16.5319M4.6665 10.6986L10.4998 4.86523"
                       stroke="#414651" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
-                  <span>Oldingisi</span>
+                  <span>{t('educational_materials.prev')}</span>
                 </button>
 
                 <div className="flex items-center gap-1">
@@ -526,7 +525,7 @@ export default function CorruptionRisks() {
                   disabled={pagination.currentPage === pagination.totalPages}
                   className="flex items-center gap-2 px-4 py-2 text-gray-600 border border-gray-200 bg-white rounded-md disabled:opacity-50"
                 >
-                  <span>Keyingisi</span>
+                  <span>{t('educational_materials.next')}</span>
                   <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M4.6665 10.6986H16.3332M16.3332 10.6986L10.4998 4.86523M16.3332 10.6986L10.4998 16.5319" stroke="#414651"
                       strokeWidth="1.67"
@@ -539,7 +538,7 @@ export default function CorruptionRisks() {
             </>
           ) : (
             <div className="flex justify-center items-center">
-              <h1 className="text-2xl font-bold">No data found</h1>
+              <h1 className="text-2xl font-bold">{t('pages.corruptionRisks.noData')}</h1>
             </div>
           )
         }

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Globe, Facebook, Instagram, ChevronLeft, ChevronRight, Youtube, Send } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import { sendRequest } from '../utils/apiFunctions';
 
 const ComplianceOfficers = () => {
+  const { t } = useTranslation();
   const [organizations, setOrganizations] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [pagination, setPagination] = useState({
@@ -63,9 +65,9 @@ const ComplianceOfficers = () => {
       <div className="mb-6">
         <div className="py-3 md:py-4 pt-0">
           <div className="text-sm text-gray-600 flex items-center gap-1">
-            <span>Bosh sahifa</span>
+            <span>{t('educational_materials.home')}</span>
             <ChevronRight size={16} className="text-gray-400" />
-            <span className='text-[#024072]'>Komplayens ofitserlar</span>
+            <span className='text-[#024072]'>{t('menu.compliance_1')} {t('menu.compliance_2')}</span>
           </div>
         </div>
 
@@ -75,14 +77,14 @@ const ComplianceOfficers = () => {
       <div className="mb-4">
         <div className="flex flex-col md:flex-row justify-between gap-4">
           <h1 className="text-lg md:text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] flex items-center gap-2">
-            Komplayens ofitserlar
+            {t('menu.compliance_1')} {t('menu.compliance_2')}
           </h1>
           <div className="relative w-full md:w-64">
             <input
               type="text"
               value={searchQuery}
               onChange={handleSearch}
-              placeholder="Tashkilotni qidirish"
+              placeholder={t('report.search_input')}
               className="w-full px-4 py-2 pr-10 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <Search className="absolute right-3 top-2.5 text-gray-400 w-5 h-5" />
@@ -94,7 +96,7 @@ const ComplianceOfficers = () => {
       {
         organizations.length === 0 ? (
           <div className="flex justify-center items-center py-10">
-            <h1 className="text-2xl font-bold">No organizations found</h1>
+            <h1 className="text-2xl font-bold">{t('common.noData')}</h1>
           </div>
         ) : (
           <>
@@ -157,7 +159,7 @@ const ComplianceOfficers = () => {
                 </div>
               ))}
             </div>
-            {/* Modified Pagination */}
+            {/* Pagination */}
             <div className="hidden md:flex justify-between items-center">
               <button
                 onClick={() => handlePageChange(pagination.currentPage - 1)}
@@ -165,7 +167,7 @@ const ComplianceOfficers = () => {
                 className="flex items-center gap-2 px-4 py-2 text-gray-600 border border-gray-200 bg-white rounded-md disabled:opacity-50"
               >
                 <ChevronLeft className="w-5 h-5" />
-                <span>Oldingisi</span>
+                <span>{t('educational_materials.prev')}</span>
               </button>
 
               <div className="flex items-center gap-2">
@@ -174,7 +176,7 @@ const ComplianceOfficers = () => {
                     key={page}
                     onClick={() => handlePageChange(page)}
                     className={`w-8 h-8 flex items-center justify-center rounded-md
-                ${page === pagination.currentPage ? 'bg-[#F9F5FF] text-[#7F56D9]' : 'text-gray-600 hover:bg-gray-100'}`}
+                    ${page === pagination.currentPage ? 'bg-[#F9F5FF] text-[#7F56D9]' : 'text-gray-600 hover:bg-gray-100'}`}
                   >
                     {page}
                   </button>
@@ -186,12 +188,11 @@ const ComplianceOfficers = () => {
                 disabled={pagination.currentPage === pagination.totalPages}
                 className="flex items-center gap-2 px-4 py-2 text-gray-600 border border-gray-200 bg-white rounded-md disabled:opacity-50"
               >
-                <span>Keyingisi</span>
+                <span>{t('educational_materials.next')}</span>
                 <ChevronRight className="w-5 h-5" />
               </button>
             </div>
           </>
-
         )
       }
     </div>

@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { Eye, Calendar } from 'lucide-react'
 import banner from "../assets/banners/05.png"
 import { sendRequest } from '../utils/apiFunctions';
+import { useTranslation } from 'react-i18next';
 
 function Announcements() {
+  const { t } = useTranslation();
   const [categories, setCategories] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
   const [pagination, setPagination] = useState({});
@@ -40,9 +42,9 @@ function Announcements() {
 
   return (
     <div className="px-4 pt-12 md:pt-0">
-      <div className="py-4 pb-0 ">
+      <div className="py-4 pb-0">
         <h1 className="text-lg md:text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-6 md:mb-10">
-          E'lonlar
+          {t('pages.announcements.title')}
         </h1>
       </div>
       <div className="flex overflow-x-auto whitespace-nowrap md:flex-wrap gap-2 mb-8 pb-2 hide-scrollbar">
@@ -100,7 +102,7 @@ function Announcements() {
           <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M16.3332 10.6986H4.6665M4.6665 10.6986L10.4998 16.5319M4.6665 10.6986L10.4998 4.86523" stroke="#414651" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          <span>Oldingisi</span>
+          <span>{t('pages.announcements.previous')}</span>
         </button>
 
         <div className="flex items-center gap-1 overflow-x-auto px-2">
@@ -121,7 +123,7 @@ function Announcements() {
           disabled={pagination.currentPage === pagination.totalPages}
           className="flex items-center gap-2 px-4 py-2 text-gray-600 border border-gray-200 bg-white rounded-md"
         >
-          <span>Keyingisi</span>
+          <span>{t('pages.announcements.next')}</span>
           <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M4.6665 10.6986H16.3332M16.3332 10.6986L10.4998 4.86523M16.3332 10.6986L10.4998 16.5319" stroke="#414651" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
@@ -138,7 +140,7 @@ function Announcements() {
           <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M16.3332 10.6986H4.6665M4.6665 10.6986L10.4998 16.5319M4.6665 10.6986L10.4998 4.86523" stroke="#414651" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          <span>Oldingisi</span>
+          <span>{t('pages.announcements.previous')}</span>
         </button>
 
         <div className="flex items-center gap-2">
@@ -159,7 +161,7 @@ function Announcements() {
           disabled={pagination.currentPage === pagination.totalPages}
           className="flex items-center gap-2 px-4 py-2 text-gray-600 border border-gray-200 bg-white rounded-md"
         >
-          <span>Keyingisi</span>
+          <span>{t('pages.announcements.next')}</span>
           <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M4.6665 10.6986H16.3332M16.3332 10.6986L10.4998 4.86523M16.3332 10.6986L10.4998 16.5319" stroke="#414651" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round" />
           </svg>

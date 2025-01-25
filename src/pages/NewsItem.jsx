@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Clock, Eye, ChevronRight } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { sendRequest } from '../utils/apiFunctions';
 
 const NewsItem = () => {
+  const { t } = useTranslation();
   const { newsId } = useParams();
   const [newsData, setNewsData] = useState(null);
 
@@ -35,9 +37,9 @@ const NewsItem = () => {
       {/* Navigation */}
       <div className="py-3 md:py-4 pt-0 overflow-x-auto">
         <div className="text-sm text-gray-600 flex items-center gap-1 whitespace-nowrap min-w-max">
-          <span>Bosh sahifa</span>
+          <span>{t('pages.newsItem.breadcrumb.home')}</span>
           <ChevronRight size={16} className="text-gray-400" />
-          <Link to="/violations" className='text-gray-400'>Yangiliklar</Link>
+          <Link to="/news" className='text-gray-400'>{t('pages.newsItem.breadcrumb.news')}</Link>
           <ChevronRight size={16} className="text-gray-400" />
           <span className='text-[#024072]'>{newsData.title}</span>
         </div>
@@ -81,7 +83,7 @@ const NewsItem = () => {
 
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            <h2 className="text-lg font-semibold mb-4">Boshqa Yangiliklar</h2>
+            <h2 className="text-lg font-semibold mb-4">{t('pages.newsItem.relatedNews')}</h2>
             <div className="space-y-4">
               {newsData.additional.map((item) => (
                 <Link

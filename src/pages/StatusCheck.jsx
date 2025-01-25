@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronRight, Search, X, ChevronLeft } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import { sendRequest } from '../utils/apiFunctions';
 import bank_logo from "../assets/icons/bank.png";
 import file_icon from "../assets/icons/file-check.png";
 
 const TestSelection = ({ onNext, onSelect, selectedTestId }) => {
+  const { t } = useTranslation();
   const [tests, setTests] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
@@ -57,7 +59,7 @@ const TestSelection = ({ onNext, onSelect, selectedTestId }) => {
             type="text"
             value={searchQuery}
             onChange={(e) => handleSearch(e.target.value)}
-            placeholder="Tashkilotni qidirish"
+            placeholder={t('pages.statusCheck.testSelection.searchPlaceholder')}
             className="w-full p-4 pr-12 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
@@ -67,6 +69,7 @@ const TestSelection = ({ onNext, onSelect, selectedTestId }) => {
       {loading && (
         <div className="flex justify-center items-center py-8">
           <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#024072]"></div>
+          <span className="ml-2">{t('pages.statusCheck.testSelection.loading')}</span>
         </div>
       )}
 
@@ -76,19 +79,20 @@ const TestSelection = ({ onNext, onSelect, selectedTestId }) => {
             <div
               key={test.id}
               onClick={() => handleSelectTest(test)}
-              className={`p-6  rounded-lg shadow-sm hover:shadow-md transition-shadow h-[150px] flex flex-col justify-between cursor-pointer ${selectedTest?.id === test.id ? ' border-2 bg-[#024072] text-white' : ''
-                }`}
+              className={`p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow h-[150px] flex flex-col justify-between cursor-pointer 
+                ${selectedTest?.id === test.id ? 'border-2 bg-[#024072] text-white' : ''}`}
               style={{
                 boxShadow: '0px 4px 29px 0px #0000001A',
               }}
             >
               <div className="flex items-start space-x-4">
-                <div className={`w-12 h-12 flex-shrink-0 ${selectedTest?.id === test.id ? 'bg-blue-100' : 'bg-[#E6F4FF]'
-                  } rounded-[50%] flex items-center justify-center`}>
-                  <img src={test.image} alt="Bank icon" className="w-8 h-8" />
+                <div className={`w-12 h-12 flex-shrink-0 ${selectedTest?.id === test.id ? 'bg-blue-100' : 'bg-[#E6F4FF]'} 
+                  rounded-[50%] flex items-center justify-center`}>
+                  <img src={test.image} alt={t('pages.statusCheck.testSelection.organizationIcon')} className="w-8 h-8" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className={`font-medium text-gray-900 text-sm line-clamp-3 ${selectedTest?.id === test.id ? 'text-white' : ''}`}>
+                  <h3 className={`font-medium text-gray-900 text-sm line-clamp-3 
+                    ${selectedTest?.id === test.id ? 'text-white' : ''}`}>
                     {test.name}
                   </h3>
                 </div>
@@ -99,14 +103,13 @@ const TestSelection = ({ onNext, onSelect, selectedTestId }) => {
                     e.stopPropagation();
                     handleSelectTest(test);
                   }}
-                  className={` text-sm hover:underline ${selectedTest?.id === test.id ? 'text-white' : 'text-[#024073]'
-                    }`}
+                  className={`text-sm hover:underline ${selectedTest?.id === test.id ? 'text-white' : 'text-[#024073]'}`}
                   style={{
                     textDecoration: 'underline',
                     transition: 'all 0.3s ease-in-out'
                   }}
                 >
-                  Tanlash
+                  {t('pages.statusCheck.testSelection.select')}
                 </button>
               </div>
             </div>
@@ -116,7 +119,7 @@ const TestSelection = ({ onNext, onSelect, selectedTestId }) => {
 
       {!loading && tests.length === 0 && (
         <div className="text-center py-8 text-gray-500">
-          Testlar topilmadi
+          {t('pages.statusCheck.testSelection.noTests')}
         </div>
       )}
     </>
@@ -124,6 +127,8 @@ const TestSelection = ({ onNext, onSelect, selectedTestId }) => {
 };
 
 const SelectionModal = ({ isOpen, onClose, onSelect }) => {
+  const { t } = useTranslation();
+
   if (!isOpen) return null;
 
   return (
@@ -133,7 +138,9 @@ const SelectionModal = ({ isOpen, onClose, onSelect }) => {
           <X className="w-6 h-6 text-gray-400" />
         </button>
 
-        <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-6 border-l-4 border-[#024073] pl-3">Tanlang</h3>
+        <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-6 border-l-4 border-[#024073] pl-3">
+          {t('pages.statusCheck.selectionModal.title')}
+        </h3>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div
@@ -141,20 +148,28 @@ const SelectionModal = ({ isOpen, onClose, onSelect }) => {
             onClick={() => onSelect("member")}
           >
             <div className="bg-blue-50 rounded-full p-4 mb-4">
-              <img src={file_icon} alt="Bank icon" className="w-8 h-8" />
+              <img src={file_icon} alt={t('pages.statusCheck.selectionModal.memberIcon')} className="w-8 h-8" />
             </div>
-            <h4 className="font-medium mb-2 text-sm sm:text-base">Men davlat tashkilotiga a'zoman</h4>
-            <span className="text-blue-600 text-sm underline">Tanlash</span>
+            <h4 className="font-medium mb-2 text-sm sm:text-base">
+              {t('pages.statusCheck.selectionModal.memberText')}
+            </h4>
+            <span className="text-blue-600 text-sm underline">
+              {t('pages.statusCheck.selectionModal.select')}
+            </span>
           </div>
           <div
             className="bg-white rounded-xl p-4 sm:p-8 flex flex-col items-center text-center cursor-pointer hover:shadow-lg transition-shadow border"
             onClick={() => onSelect("non-member")}
           >
             <div className="bg-blue-50 rounded-full p-4 mb-4">
-              <img src={file_icon} alt="Bank icon" className="w-8 h-8" />
+              <img src={file_icon} alt={t('pages.statusCheck.selectionModal.nonMemberIcon')} className="w-8 h-8" />
             </div>
-            <h4 className="font-medium mb-2 text-sm sm:text-base">Men davlat tashkilotiga a'zo emasman</h4>
-            <span className="text-blue-600 text-sm underline">Tanlash</span>
+            <h4 className="font-medium mb-2 text-sm sm:text-base">
+              {t('pages.statusCheck.selectionModal.nonMemberText')}
+            </h4>
+            <span className="text-blue-600 text-sm underline">
+              {t('pages.statusCheck.selectionModal.select')}
+            </span>
           </div>
         </div>
       </div>
@@ -163,6 +178,7 @@ const SelectionModal = ({ isOpen, onClose, onSelect }) => {
 };
 
 const OrganizationList = ({ onSelect, selectedOrgId }) => {
+  const { t } = useTranslation();
   const [organizations, setOrganizations] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
@@ -214,7 +230,7 @@ const OrganizationList = ({ onSelect, selectedOrgId }) => {
             type="text"
             value={searchQuery}
             onChange={(e) => handleSearch(e.target.value)}
-            placeholder="Tashkilotni qidirish"
+            placeholder={t('pages.statusCheck.organizationList.searchPlaceholder')}
             className="w-full p-4 pr-12 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
@@ -233,7 +249,7 @@ const OrganizationList = ({ onSelect, selectedOrgId }) => {
             <div
               key={org.id}
               onClick={() => handleSelectOrg(org)}
-              className={`p-6  rounded-lg shadow-sm hover:shadow-md transition-shadow h-[150px] flex flex-col justify-between cursor-pointer ${selectedOrg?.id === org.id ? ' border-2 bg-[#024072] text-white' : ''
+              className={`p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow h-[150px] flex flex-col justify-between cursor-pointer ${selectedOrg?.id === org.id ? 'border-2 bg-[#024072] text-white' : ''
                 }`}
               style={{
                 boxShadow: '0px 4px 29px 0px #0000001A',
@@ -243,10 +259,15 @@ const OrganizationList = ({ onSelect, selectedOrgId }) => {
               <div className="flex items-start space-x-4">
                 <div className={`w-12 h-12 flex-shrink-0 ${selectedOrg?.id === org.id ? 'bg-blue-100' : 'bg-[#E6F4FF]'
                   } rounded-[50%] flex items-center justify-center`}>
-                  <img src={bank_logo} alt="Organization icon" className="w-8 h-8" />
+                  <img
+                    src={bank_logo}
+                    alt={t('pages.statusCheck.organizationList.orgIcon')}
+                    className="w-8 h-8"
+                  />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className={`font-medium text-gray-900 text-sm line-clamp-3 ${selectedOrg?.id === org.id ? 'text-white' : ''}`}>
+                  <h3 className={`font-medium text-gray-900 text-sm line-clamp-3 ${selectedOrg?.id === org.id ? 'text-white' : ''
+                    }`}>
                     {org.name}
                   </h3>
                 </div>
@@ -257,14 +278,14 @@ const OrganizationList = ({ onSelect, selectedOrgId }) => {
                     e.stopPropagation();
                     handleSelectOrg(org);
                   }}
-                  className={` text-sm hover:underline ${selectedOrg?.id === org.id ? 'text-white' : 'text-[#024073]'
+                  className={`text-sm hover:underline ${selectedOrg?.id === org.id ? 'text-white' : 'text-[#024073]'
                     }`}
                   style={{
                     textDecoration: 'underline',
                     transition: 'all 0.3s ease-in-out'
                   }}
                 >
-                  Tanlash
+                  {t('pages.statusCheck.organizationList.select')}
                 </button>
               </div>
             </div>
@@ -274,7 +295,7 @@ const OrganizationList = ({ onSelect, selectedOrgId }) => {
 
       {!loading && organizations.length === 0 && (
         <div className="text-center py-8 text-gray-500">
-          Tashkilotlar topilmadi
+          {t('pages.statusCheck.organizationList.noOrganizations')}
         </div>
       )}
     </>
@@ -282,6 +303,7 @@ const OrganizationList = ({ onSelect, selectedOrgId }) => {
 };
 
 const TestQuestions = ({ onFinish, selectedTestId, selectedOrgId }) => {
+  const { t } = useTranslation();
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState({});
@@ -379,9 +401,11 @@ const TestQuestions = ({ onFinish, selectedTestId, selectedOrgId }) => {
     <div className="px-4">
       <div className="mb-8">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959]">Halollik Testi</h1>
+          <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959]">
+            {t('menu.integrity_test')}
+          </h1>
           <div className="text-gray-600">
-            Qolgan vaqt: {formatTime(timeLeft)}
+            {t('pages.statusCheck.testQuestions.timeLeft')}: {formatTime(timeLeft)}
           </div>
         </div>
       </div>
@@ -420,7 +444,7 @@ const TestQuestions = ({ onFinish, selectedTestId, selectedOrgId }) => {
         <div className="w-full lg:w-64">
           <div className="bg-white p-6 rounded-lg shadow-sm">
             <div className="text-right mb-4">
-              <div className="text-sm text-gray-500">To'g'ri javoblar</div>
+              <div className="text-sm text-gray-500">{t('pages.statusCheck.testQuestions.correctAnswers')}</div>
               <div className="text-2xl font-bold">
                 {Object.keys(answers).length}/{questions.length}
               </div>
@@ -449,21 +473,21 @@ const TestQuestions = ({ onFinish, selectedTestId, selectedOrgId }) => {
           className="px-6 py-2 border rounded text-[#024073]"
           disabled={currentQuestionIndex === 0}
         >
-          ‹ Oldingisi
+          ‹ {t('pages.statusCheck.testQuestions.previous')}
         </button>
         {currentQuestionIndex === questions.length - 1 ? (
           <button
             onClick={handleSubmitTest}
             className="px-6 py-2 rounded bg-orange-500 text-white"
           >
-            Tugatish
+            {t('pages.statusCheck.testQuestions.finish')}
           </button>
         ) : (
           <button
             onClick={() => setCurrentQuestionIndex(prev => prev + 1)}
             className="px-6 py-2 border rounded bg-[#024073] text-white"
           >
-            Keyingisi ›
+            {t('pages.statusCheck.testQuestions.next')} ›
           </button>
         )}
       </div>
@@ -472,13 +496,16 @@ const TestQuestions = ({ onFinish, selectedTestId, selectedOrgId }) => {
 };
 
 const TestResults = ({ testData }) => {
+  const { t } = useTranslation();
   const percentage = testData.percent;
   const questions = testData.result;
 
   return (
     <div className="px-4">
       <div className="mb-8">
-        <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959]">Halollik Testi</h1>
+        <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959]">
+          {t('menu.integrity_test')}
+        </h1>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-8">
@@ -518,7 +545,7 @@ const TestResults = ({ testData }) => {
                         />
                         {isSelected && (
                           <span className="ml-2 italic">
-                            {isCorrect ? "To'g'ri" : "Noto'g'ri"}
+                            {isCorrect ? t('pages.statusCheck.testResults.correct') : t('pages.statusCheck.testResults.incorrect')}
                           </span>
                         )}
                       </div>
@@ -529,7 +556,7 @@ const TestResults = ({ testData }) => {
                 {userResult && !userResult.result && (
                   <div className="bg-[#F3FFF3] p-4 rounded-md">
                     <div className="text-green-600 font-medium mb-2">
-                      To'g'ri javob: <span dangerouslySetInnerHTML={{ __html: correctAnswer?.answer }} />
+                      {t('pages.statusCheck.testResults.correctAnswerLabel')}: <span dangerouslySetInnerHTML={{ __html: correctAnswer?.answer }} />
                     </div>
                     <div className="text-gray-600 text-sm" dangerouslySetInnerHTML={{ __html: question.advice }} />
                   </div>
@@ -543,7 +570,7 @@ const TestResults = ({ testData }) => {
           <div className="sticky top-8">
             <div className="bg-white p-6 rounded-lg shadow-sm mb-6">
               <div className="text-right mb-4">
-                <div className="text-sm text-gray-500">To'g'ri javob</div>
+                <div className="text-sm text-gray-500">{t('pages.statusCheck.testResults.correctAnswer')}</div>
                 <div className="text-2xl font-bold">{percentage}%</div>
               </div>
               <div className="grid grid-cols-7 gap-1">
@@ -566,6 +593,7 @@ const TestResults = ({ testData }) => {
 };
 
 const StatusCheck = () => {
+  const { t } = useTranslation();
   const [currentStep, setCurrentStep] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const [selectedTestId, setSelectedTestId] = useState(null);
@@ -609,19 +637,20 @@ const StatusCheck = () => {
   return (
     <div className="w-full px-4 py-8 pt-16 md:pt-0">
       <div className="flex items-center gap-2 text-sm text-gray-600 mb-6 overflow-x-auto whitespace-nowrap">
-        <span>Bosh sahifa</span>
+        <span>{t('pages.statusCheck.breadcrumb.home')}</span>
         <ChevronRight className="h-4 w-4 flex-shrink-0" />
-        <span className="text-[#024073]">Halollik testi</span>
+        <span className="text-[#024073]">{t('pages.statusCheck.breadcrumb.test')}</span>
       </div>
 
       {currentStep === 1 && (
         <>
           <div className="mb-6">
-            <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-4">Halollik Test</h1>
+            <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-4">
+              {t('menu.integrity_test')}
+            </h1>
           </div>
 
           <div className="flex flex-col gap-8">
-            {/* Progress Steps and Next Button Row */}
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-2 min-w-[280px] sm:w-[400px]">
                 {[1, 2, 3].map((step, index) => (
@@ -654,19 +683,17 @@ const StatusCheck = () => {
                   : 'text-[#024073] border-[#024072] hover:bg-[#024072] hover:text-white'
                   }`}
               >
-                <p className="text-sm">Keyingisi</p>
+                <p className="text-sm">{t('pages.statusCheck.steps.next')}</p>
                 <ChevronRight size={16} className="text-gray-400" />
               </button>
             </div>
 
-            {/* Test Selection Component */}
             <TestSelection
               onSelect={handleTestSelect}
               selectedTestId={selectedTestId}
             />
           </div>
 
-          {/* Selection Modal */}
           <SelectionModal
             isOpen={showModal}
             onClose={() => setShowModal(false)}

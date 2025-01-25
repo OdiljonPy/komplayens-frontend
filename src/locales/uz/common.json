@@ -71,7 +71,8 @@
     "noData": "Ma'lumot topilmadi",
     "loading": "Yuklanmoqda...",
     "sending": "Yuborilmoqda...",
-    "go_back": "Orqaga qaytish"
+    "go_back": "Orqaga qaytish",
+    "selectDate": "Sana tanlash"
   },
   "sort": {
     "newest": "Eng yangi",
@@ -135,5 +136,360 @@
     "select_organization": "Tashkilotni tanlang",
     "first_name": "Ism",
     "last_name": "Familiya"
+  },
+  "pages": {
+    "announcements": {
+      "title": "E'lonlar",
+      "viewCount": "Ko'rishlar soni",
+      "readMore": "Batafsil",
+      "noAnnouncements": "E'lonlar topilmadi",
+      "previous": "Oldingisi",
+      "next": "Keyingisi"
+    },
+    "benefitsCalculator": {
+      "title": "Manfaatlar kalkulyatori",
+      "description": "Potensial manfaatlarni hisoblash",
+      "calculate": "Hisoblash",
+      "results": "Natijalar"
+    },
+    "corruptionRisks": {
+      "title": "Korrupsion xavflar",
+      "reportRisk": "Xavf haqida xabar berish",
+      "riskLevel": "Xavf darajasi",
+      "details": "Tafsilotlar",
+      "surveyName": "So'rovnoma nomi",
+      "startDate": "Boshlangan sana",
+      "endDate": "Tugash sanasi",
+      "status": "Holati",
+      "results": "Natijalar",
+      "participate": "Qatnashish",
+      "viewResults": "Natijalarni ko'rish",
+      "noResults": "Natijalar hali yo'q",
+      "completed": "Yakunlangan",
+      "active": "Faol",
+      "noData": "Ma'lumot topilmadi",
+      "all": "Hammasi",
+      "newest": "Eng yangisi",
+      "new": "Yangi",
+      "old": "Eski",
+      "sorting": "Saralash",
+      "inProgress": "Jarayonda",
+      "closed": "Yopilgan",
+      "breadcrumb": {
+        "home": "Bosh sahifa",
+        "risks": "Korrupsiyaviy xavf-xatarlar",
+        "results": "Natijalar"
+      },
+      "survey": {
+        "participants": "So'rovda: {{count}} kishi ishtirok etdi",
+        "questions": {
+          "1": "Davlat xaridlari jarayonida qabul qilingan ichki tartib-qoidalar va siyosatlar mavjudmi?",
+          "answers": {
+            "yes": "Ha, aniq belgilangan va hujjatlashtirilgan {{percent}}% ({{count}} kishi)",
+            "partial": "Qisman mavjud, lekin ba'zi qoidalar noaniq {{percent}}% ({{count}} kishi)",
+            "no": "Yo'q, bunday tartib-qoidalar ishlab chiqilmagan {{percent}}% ({{count}} kishi)"
+          }
+        }
+      }
+    },
+    "educationalMaterials": {
+      "title": "O'quv materiallari",
+      "courses": "Kurslar",
+      "materials": "Materiallar",
+      "search": "Materiallarni qidirish"
+    },
+    "electronicLibrary": {
+      "breadcrumb": {
+        "home": "Bosh sahifa",
+        "education": "Ta'lim"
+      },
+      "title": "Ta'lim",
+      "tabs": {
+        "trainingCourses": "O'quv Kurslari",
+        "electronicLibrary": "Elektron Kutubxona"
+      },
+      "search": {
+        "placeholder": "Qidirish"
+      },
+      "department": {
+        "label": "Bo'limi",
+        "select": "Bo'limi tanlang"
+      },
+      "bookCount": "{{count}} kitob",
+      "table": {
+        "bookName": "Kitob nomi",
+        "authorName": "Yozuvchining ismi",
+        "publishType": "Nashriyot turi",
+        "publishYear": "Nashriyot yili",
+        "description": "Tavsif",
+        "details": "Batafsil"
+      },
+      "pagination": {
+        "previous": "Oldingisi",
+        "next": "Keyingisi"
+      },
+      "noData": "Ma'lumot topilmadi"
+    },
+    "handouts": {
+      "breadcrumb": {
+        "home": "Bosh sahifa",
+        "resources": "Targ'ibot va foydali axborotlar"
+      },
+      "title": "Tarqatma materiallar",
+      "allCategories": "Barcha kategoriyalar",
+      "search": "Qidirish...",
+      "fileIcon": "Fayl ikonkasi",
+      "download": "Yuklab olish",
+      "noData": "Ma'lumot topilmadi",
+      "pagination": {
+        "previous": "Oldingisi",
+        "next": "Keyingisi",
+        "page": "Sahifa {{current}} / {{total}}"
+      }
+    },
+    "landingPage": {
+      "welcome": "Xush kelibsiz",
+      "latestNews": "So'nggi yangiliklar",
+      "popularCourses": "Ommabop kurslar",
+      "statistics": "Statistika"
+    },
+    "newsItem": {
+      "breadcrumb": {
+        "home": "Bosh sahifa",
+        "news": "Yangiliklar"
+      },
+      "publishDate": "Nashr sanasi",
+      "author": "Muallif",
+      "category": "Kategoriya",
+      "relatedNews": "O'xshash yangiliklar"
+    },
+    "newsReporting": {
+      "title": "Xabar Yuborish",
+      "breadcrumbs": {
+        "home": "Bosh sahifa",
+        "report": "Xabar yuborish"
+      },
+      "reporterInfo": {
+        "title": "Xabar Yuborish",
+        "aboutReporter": "Xabar Beruvchi Haqida Ma'lumot",
+        "anonymous": "Anonomim Xabar Qoldirish",
+        "fullName": "F.I.Sh",
+        "phoneNumber": "Telefon raqami",
+        "email": "Elektron pochta"
+      },
+      "success": {
+        "title": "Xabar yuborildi!",
+        "okButton": "OK"
+      },
+      "contactPerson": {
+        "title": "Aloqador Shaxsning Ma'lumotlari",
+        "addPerson": "Shaxsni qo'shish",
+        "removePerson": "Shaxsni olib tashlash",
+        "fullName": "F.I.Sh",
+        "position": "Lavozimi",
+        "namePlaceholder": "Name",
+        "positionPlaceholder": "Lavozimi",
+        "phoneNumber": "Telefon raqami"
+      },
+      "fileUpload": {
+        "title": "Fayl yuklash",
+        "dragDropText": "Faylni tanlang yoki shu yerga joylshtiring",
+        "formatInfo": "JPEG, PNG, PDF va MP4 formatlari, 50 MB gacha",
+        "uploadButton": "Faylni yuklash"
+      },
+      "loading": "Yuklanmoqda...",
+      "nextButton": "Keyingisi",
+      "submitButton": "Yuborish",
+      "organization": {
+        "title": "Tashkilot",
+        "searchPlaceholder": "Tashkilotni qidirish"
+      },
+      "reportDetails": {
+        "title": "Xabar tafsilotlari",
+        "type": "Xabar turi",
+        "selectType": "Xabar turini tanlang",
+        "date": "Sana",
+        "time": "Vaqt",
+        "details": "Tafsilotlar",
+        "description": "Xabar mazmuni",
+        "files": {
+          "title": "Fayllar",
+          "dragDropText": "Fayllarni shu yerga tashlang",
+          "uploadButton": "Fayl yuklash",
+          "maxSize": "Maksimal hajm: 50MB",
+          "allowedFormats": "Ruxsat etilgan formatlar: JPEG, PNG, PDF, MP4"
+        }
+      },
+      "location": {
+        "selectRegion": "Viloyatni tanlang",
+        "selectDistrict": "Tumanni tanlang"
+      },
+      "successModal": {
+        "message": "Xabar yuborildi!",
+        "ok": "OK"
+      },
+      "toggleButtons": {
+        "system": "Tizim Orqali",
+        "direct": "To'g'ridan-To'g'ri Aloqa"
+      }
+    },
+    "operations": {
+      "title": "Operatsiyalar",
+      "status": "Holat",
+      "date": "Sana",
+      "details": "Batafsil",
+      "search": {
+        "placeholder": "Qidirish..."
+      },
+      "all": "Barchasi",
+      "category": "Kategoriya",
+      "publicService": "Davlat xizmati",
+      "dilemma": "Dilemma",
+      "addComment": "Kommentariya qo'shish",
+      "expertOpinion": "Ekspert xulosasi",
+      "commentPlaceholder": "Kommentariya qo'shish",
+      "sending": "Yuborilmoqda...",
+      "leaveComment": "Kommentariya qoldirish"
+    },
+    "statusCheck": {
+      "title": "Halollik testi",
+      "breadcrumb": {
+        "home": "Bosh sahifa",
+        "test": "Halollik testi"
+      },
+      "testSelection": {
+        "searchPlaceholder": "Tashkilotni qidirish",
+        "loading": "Yuklanmoqda...",
+        "select": "Tanlash",
+        "noTests": "Testlar topilmadi",
+        "organizationIcon": "Tashkilot logotipi"
+      },
+      "testQuestions": {
+        "timeLeft": "Qolgan vaqt",
+        "correctAnswers": "To'g'ri javoblar",
+        "previous": "Oldingisi",
+        "next": "Keyingisi",
+        "finish": "Tugatish",
+        "loading": "Yuklanmoqda..."
+      },
+      "testResults": {
+        "correctAnswer": "To'g'ri javob",
+        "correct": "To'g'ri",
+        "incorrect": "Noto'g'ri",
+        "correctAnswerLabel": "To'g'ri javob",
+        "percentage": "Foiz"
+      },
+      "steps": {
+        "next": "Keyingisi"
+      },
+      "selectionModal": {
+        "title": "Tanlang",
+        "memberText": "Men davlat tashkilotiga a'zoman",
+        "nonMemberText": "Men davlat tashkilotiga a'zo emasman",
+        "select": "Tanlash",
+        "memberIcon": "A'zo ikonkasi",
+        "nonMemberIcon": "A'zo emas ikonkasi"
+      },
+      "organizationList": {
+        "searchPlaceholder": "Tashkilotni qidirish",
+        "select": "Tanlash",
+        "noOrganizations": "Tashkilotlar topilmadi",
+        "orgIcon": "Tashkilot logotipi"
+      }
+    },
+    "trainingCourses": {
+      "title": "O'quv kurslari",
+      "allCourses": "Barcha kurslar",
+      "myCourses": "Mening kurslarim",
+      "progress": "Progress",
+      "certificate": "Sertifikat"
+    },
+    "usefulResources": {
+      "title": "Foydali manbalar",
+      "categories": "Kategoriyalar",
+      "links": "Foydali havolalar",
+      "documents": "Hujjatlar"
+    },
+    "violations": {
+      "title": "Qoidabuzarliklar",
+      "report": "Qoidabuzarlik haqida xabar berish",
+      "status": "Holat",
+      "date": "Sana"
+    },
+    "auth": {
+      "login": {
+        "title": "Kirish",
+        "email": "Email",
+        "password": "Parol",
+        "submit": "Kirish",
+        "forgotPassword": "Parolni unutdingizmi?",
+        "register": "Ro'yxatdan o'tish"
+      },
+      "register": {
+        "title": "Ro'yxatdan o'tish",
+        "name": "Ism",
+        "email": "Email",
+        "password": "Parol",
+        "confirmPassword": "Parolni tasdiqlang",
+        "submit": "Ro'yxatdan o'tish",
+        "login": "Akkauntingiz bormi? Kirish"
+      },
+      "forgotPassword": {
+        "title": "Parolni tiklash",
+        "email": "Email",
+        "submit": "Yuborish",
+        "back": "Kirishga qaytish"
+      }
+    },
+    "benefits": {
+      "title": "Manfaatlar to'qnashuvi",
+      "form1": {
+        "name": "Manfaatlar to'qnashuvi deklaratsiyasi",
+        "employeeInfo": "Xodim ma'lumotlari",
+        "relativeInfo": "Yaqin qarindosh ma'lumotlari",
+        "legalEntityInfo": "Yuridik shaxs ma'lumotlari",
+        "personalSignature": "Shaxsiy imzo",
+        "date": "Sana",
+        "buttonText": "Form 1"
+      },
+      "form2": {
+        "title": "Manfaatlar to'qnashuvi deklaratsiyasi",
+        "employeeInfo": "Xodim ma'lumotlari",
+        "relativeInfo": "Yaqin qarindosh ma'lumotlari",
+        "legalEntityInfo": "Yuridik shaxs ma'lumotlari",
+        "personalSignature": "Shaxsiy imzo",
+        "date": "Sana",
+        "buttonText": "Form 2"
+      },
+      "form3": {
+        "title": "Aloqador shaxslarning ehtimoliy manfaatlar to'qnashuvi to'g'risidagi deklaratsiya",
+        "declaration": "DEKLARATSIYA",
+        "employeeInfo": "Xodim ma'lumotlari",
+        "relativeInfo": "Qarindoshlik ma'lumotlari",
+        "legalEntityInfo": "Yuridik shaxs ma'lumotlari",
+        "personalSignature": "Shaxsiy imzo yoki elektron raqamli imzo",
+        "date": "Sana",
+        "buttonText": "Form 3"
+      },
+      "next": "Keyingisi",
+      "generateNotification": "Xabarnomani shakllantirish",
+      "employeeInfo": "Xodim ma'lumotlari",
+      "supervisorInfo": "Rahbar ma'lumotlari",
+      "relativeInfo": "Yaqin qarindosh ma'lumotlari",
+      "personalSignature": "Shaxsiy imzo",
+      "measures": "Ko'rilgan choralar",
+      "description": "Tavsif"
+    },
+    "courseItem": {
+      "breadcrumb": {
+        "home": "Bosh sahifa",
+        "materials": "O'quv-uslubiy materiallar",
+        "course": "Korrupsiyaga qarshi kurash asoslari"
+      },
+      "additionalMaterials": "Qo'shimcha materiallar",
+      "videoMaterials": "Video materiallar",
+      "watch": "Ko'rish",
+      "loading": "Yuklanmoqda..."
+    }
   }
 }

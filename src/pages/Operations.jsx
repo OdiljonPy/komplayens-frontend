@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Search, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { sendRequest } from '../utils/apiFunctions';
 
 const Operations = () => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [professions, setProfessions] = useState([]);
   const [cards, setCards] = useState([]);
@@ -131,7 +133,7 @@ const Operations = () => {
       {/* Header */}
       <div className="mb-6">
         <h1 className="text-lg md:text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-6 md:mb-10">
-          Amaliyot: Kasbiy Odob-Axloq Qoidalari Bilan Ishlash
+          {t('pages.handouts.title')}
         </h1>
       </div>
 
@@ -142,9 +144,9 @@ const Operations = () => {
             onClick={toggleDropdown}
             className="flex items-center gap-2 px-4 py-2"
           >
-            <span className="text-gray-600">Kategoriya:
+            <span className="text-gray-600">{t('pages.operations.category')}:
               <span className="text-[#3981F7] ml-2">
-                {professions.find(p => p.id === selectedProfession)?.name || 'Hammasi'}
+                {professions.find(p => p.id === selectedProfession)?.name || t('pages.operations.all')}
               </span>
             </span>
             <ChevronDown size={20} className="text-gray-400" />
@@ -157,7 +159,7 @@ const Operations = () => {
                   className="block w-full px-4 py-3 text-left hover:bg-gray-50 text-[#3981F7]"
                   onClick={() => handleProfessionSelect(null)}
                 >
-                  Hammasi
+                  {t('pages.operations.all')}
                 </button>
                 {professions.map((profession) => (
                   <button
@@ -178,7 +180,7 @@ const Operations = () => {
             type="text"
             value={searchQuery}
             onChange={handleSearch}
-            placeholder="Amaliyotni qidirish"
+            placeholder={t('pages.operations.search.placeholder')}
             className="w-full px-4 py-2 pr-10 bg-white rounded-md shadow-sm border border-gray-200"
           />
           <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
@@ -203,7 +205,7 @@ const Operations = () => {
                 className="text-[#024072] underline"
                 to={`/operations/${card.id}`}
               >
-                Batafsil
+                {t('pages.operations.details')}
               </Link>
             </div>
           </div>
@@ -216,9 +218,9 @@ const Operations = () => {
           disabled={pagination.currentPage === 1}
           className="flex items-center gap-2 px-4 py-2 text-gray-600 border border-gray-200 bg-white rounded-md disabled:opacity-50">
           <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M16.3332 10.6986H4.6665M4.6665 10.6986L10.4998 16.5319M4.6665 10.6986L10.4998 4.86523" stroke="#414651" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M16.3332 10.6986H4.6665M4.6665 10.6986L10.4998 4.86523M4.6665 10.6986L10.4998 16.5319" stroke="#414651" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          <span>Oldingisi</span>
+          <span>{t('pages.handouts.pagination.previous')}</span>
         </button>
 
         <div className="flex items-center gap-1 overflow-x-auto px-2">
@@ -240,7 +242,7 @@ const Operations = () => {
           onClick={handleNextPage}
           disabled={pagination.currentPage === pagination.totalPages}
           className="flex items-center gap-2 px-4 py-2 text-gray-600 border border-gray-200 bg-white rounded-md disabled:opacity-50">
-          <span>Keyingisi</span>
+          <span>{t('pages.handouts.pagination.next')}</span>
           <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M4.6665 10.6986H16.3332M16.3332 10.6986L10.4998 4.86523M16.3332 10.6986L10.4998 16.5319" stroke="#414651" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
@@ -254,9 +256,9 @@ const Operations = () => {
           disabled={pagination.currentPage === 1}
           className="flex items-center gap-2 px-4 py-2 text-gray-600 border border-gray-200 bg-white rounded-md disabled:opacity-50">
           <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M16.3332 10.6986H4.6665M4.6665 10.6986L10.4998 16.5319M4.6665 10.6986L10.4998 4.86523" stroke="#414651" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M16.3332 10.6986H4.6665M4.6665 10.6986L10.4998 4.86523M4.6665 10.6986L10.4998 16.5319" stroke="#414651" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          <span>Oldingisi</span>
+          <span>{t('pages.handouts.pagination.previous')}</span>
         </button>
 
         <div className="flex items-center gap-2">
@@ -278,7 +280,7 @@ const Operations = () => {
           onClick={handleNextPage}
           disabled={pagination.currentPage === pagination.totalPages}
           className="flex items-center gap-2 px-4 py-2 text-gray-600 border border-gray-200 bg-white rounded-md disabled:opacity-50">
-          <span>Keyingisi</span>
+          <span>{t('pages.handouts.pagination.next')}</span>
           <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M4.6665 10.6986H16.3332M16.3332 10.6986L10.4998 4.86523M16.3332 10.6986L10.4998 16.5319" stroke="#414651" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round" />
           </svg>

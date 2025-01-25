@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next';
 
 import { sendRequest } from '../utils/apiFunctions';
 import { ChevronRight } from 'lucide-react'
@@ -9,6 +10,7 @@ import xls from "../assets/icons/xls.png"
 import zip from "../assets/icons/zip.png"
 
 function Handouts() {
+  const { t } = useTranslation();
   const [mainData, setMainData] = useState(null);
   const [categories, setCategories] = useState([]);
   const [handouts, setHandouts] = useState([]);
@@ -87,13 +89,13 @@ function Handouts() {
     <div className="p-4">
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-sm text-gray-600 mb-6">
-        <span>Bosh sahifa</span>
+        <span>{t('pages.handouts.breadcrumb.home')}</span>
         <ChevronRight className="h-4 w-4" />
-        <span className="text-blue-900">Targʻibot va foydali axborotlar</span>
+        <span className="text-blue-900">{t('pages.handouts.breadcrumb.resources')}</span>
       </div>
 
       <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-6">
-        Targʻibot va foydali axborotlar
+        {t('pages.handouts.breadcrumb.resources')}
       </h1>
 
       {/* Main Card */}
@@ -116,7 +118,7 @@ function Handouts() {
       </div>
 
       <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-6">
-        Tarqatma materiallar
+        {t('pages.handouts.title')}
       </h1>
 
       {/* Header with Select and Search */}
@@ -131,7 +133,7 @@ function Handouts() {
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
           >
-            <option value="">Barcha kategoriyalar</option>
+            <option value="">{t('pages.handouts.allCategories')}</option>
             {categories.map((category) => (
               <option key={category.id} value={category.id}>
                 {category.name}
@@ -157,7 +159,7 @@ function Handouts() {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Qidirish..."
+            placeholder={t('pages.handouts.search')}
             className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
 
@@ -175,7 +177,7 @@ function Handouts() {
                     <div className="w-8 h-8">
                       <img
                         src={handout.type === "ZIP" ? zip : handout.type === "PPT" ? ppt : handout.type === "XLS" ? xls : pdf}
-                        alt="File icon"
+                        alt={t('pages.handouts.fileIcon')}
                         className="w-full h-full object-contain"
                       />
                     </div>
@@ -188,6 +190,7 @@ function Handouts() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-gray-500 hover:text-gray-700"
+                    title={t('pages.handouts.download')}
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -199,7 +202,7 @@ function Handouts() {
           </div>
         ) : (
           <div className="flex justify-center items-center w-full">
-            <h1 className="text-2xl font-bold">No data found</h1>
+            <h1 className="text-2xl font-bold">{t('pages.handouts.noData')}</h1>
           </div>
         )
       }
@@ -211,16 +214,16 @@ function Handouts() {
             disabled={pagination.currentPage === 1}
             className="px-4 py-2 border rounded-md text-sm disabled:opacity-50"
           >
-            Previous
+            {t('pages.handouts.pagination.previous')}
           </button>
           <span className="text-sm text-gray-600">
-            Page {pagination.currentPage} of {pagination.totalPages}
+            {t('pages.handouts.pagination.page', { current: pagination.currentPage, total: pagination.totalPages })}
           </span>
           <button
             disabled={pagination.currentPage === pagination.totalPages}
             className="px-4 py-2 border rounded-md text-sm disabled:opacity-50"
           >
-            Next
+            {t('pages.handouts.pagination.next')}
           </button>
         </div>
       )}

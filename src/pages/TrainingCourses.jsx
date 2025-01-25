@@ -3,9 +3,10 @@ import { Search, ChevronRight, Clock, Eye, ChevronLeft } from 'lucide-react';
 import banner from "../assets/banners/07.png";
 import { Link } from 'react-router-dom';
 import { sendRequest } from '../utils/apiFunctions';
-
+import { useTranslation } from 'react-i18next';
 
 export default function TrainingCourses() {
+  const { t } = useTranslation();
   const [categories, setCategories] = useState([]);
   const [courses, setCourses] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -42,8 +43,6 @@ export default function TrainingCourses() {
       }
     };
 
-
-
     const debounceTimer = setTimeout(() => {
       fetchCourses(pagination.currentPage || 1);
     }, searchTerm ? 500 : 0);
@@ -62,15 +61,15 @@ export default function TrainingCourses() {
       {/* Header with Breadcrumb */}
       <div className="py-3 md:py-4 pt-0">
         <div className="text-sm text-gray-600 flex items-center gap-1">
-          <span>Bosh sahifa</span>
+          <span>{t('pages.courseItem.breadcrumb.home')}</span>
           <ChevronRight size={16} className="text-gray-400" />
-          <span className='text-[#024072]'>O'quv-uslubiy materiallar</span>
+          <span className='text-[#024072]'>{t('pages.courseItem.breadcrumb.materials')}</span>
         </div>
       </div>
 
       <div className="py-4 md:py-6">
         <h1 className="text-lg md:text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-6 md:mb-10">
-          Oʻquv-uslubiy materiallar
+          {t('pages.courseItem.breadcrumb.materials')}
         </h1>
 
         {/* Navigation and Search Container */}
@@ -78,17 +77,13 @@ export default function TrainingCourses() {
           {/* Tabs */}
           <div className="p-1 rounded-lg inline-flex w-full md:w-auto overflow-x-auto bg-white">
             <Link to="/training-courses">
-              <button
-                className={`flex-1 md:flex-none px-4 py-2 rounded-md transition-colors whitespace-nowrap bg-[#F5F5F5] text-[#595959] `}
-              >
-                O'quv Kurslari
+              <button className={`flex-1 md:flex-none px-4 py-2 rounded-md transition-colors whitespace-nowrap bg-[#F5F5F5] text-[#595959]`}>
+                {t('educational_materials.education_course')}
               </button>
             </Link>
             <Link to="/electronic-library">
-              <button
-                className={`flex-1 md:flex-none px-4 py-2 rounded-md transition-colors whitespace-nowrap bg-white `}
-              >
-                Elektron Kutubxona
+              <button className={`flex-1 md:flex-none px-4 py-2 rounded-md transition-colors whitespace-nowrap bg-white`}>
+                {t('educational_materials.electronic_library')}
               </button>
             </Link>
           </div>
@@ -97,7 +92,7 @@ export default function TrainingCourses() {
           <div className="relative w-full md:w-64">
             <input
               type="text"
-              placeholder="Tashkilotni qidirish"
+              placeholder={t('report.search_input')}
               value={searchTerm}
               onChange={handleSearch}
               className="w-full pr-10 pl-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
@@ -124,7 +119,7 @@ export default function TrainingCourses() {
         {
           courses.length === 0 ? (
             <div className="flex justify-center items-center h-40">
-              <span className="text-gray-500">Kurslar topilmadi</span>
+              <span className="text-gray-500">{t('pages.statusCheck.testSelection.noTests')}</span>
             </div>
           ) : (
 
@@ -134,18 +129,18 @@ export default function TrainingCourses() {
                   <div key={course.id} className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                     <img
                       src={course.image || banner}
-                      alt="Course illustration"
+                      alt={t('pages.statusCheck.testSelection.organizationIcon')}
                       className="w-full aspect-[16/9] object-cover"
                     />
                     <div className="p-4">
                       <div className="flex items-center gap-2 mb-2">
                         <div className="flex items-center gap-1 text-[#667085]">
                           <Clock size={16} className="text-[#667085]" />
-                          <span className="text-sm">{course.video_length} daqiqa</span>
+                          <span className="text-sm">{course.video_length} {t('pages.courseItem.watch')}</span>
                         </div>
                         <div className="flex items-center gap-1 text-[#667085]">
                           <Eye size={16} className="text-[#667085]" />
-                          <span className="text-sm">228</span>
+                          <span className="text-sm">{t('pages.announcements.viewCount')}</span>
                         </div>
                       </div>
                       <h3 className="font-medium text-[#024072] text-lg mb-2">{course.name}</h3>
@@ -158,7 +153,7 @@ export default function TrainingCourses() {
                         className="block"
                       >
                         <button className="w-full bg-[#024072] text-white py-2 rounded-md hover:bg-[#02386A] transition-colors">
-                          Boshlash
+                          {t('educational_materials.start')}
                         </button>
                       </Link>
                     </div>
@@ -173,7 +168,7 @@ export default function TrainingCourses() {
                   className="flex items-center gap-2 px-4 py-2 text-gray-600 border border-gray-200 bg-white rounded-md"
                 >
                   <ChevronLeft size={16} className="text-[#024072]" />
-                  <span>Oldingisi</span>
+                  <span>{t('educational_materials.prev')}</span>
                 </button>
 
                 <div className="flex items-center gap-1">
@@ -194,7 +189,7 @@ export default function TrainingCourses() {
                   disabled={pagination.currentPage === pagination.totalPages}
                   className="flex items-center gap-2 px-4 py-2 text-gray-600 border border-gray-200 bg-white rounded-md"
                 >
-                  <span>Keyingisi</span>
+                  <span>{t('educational_materials.next')}</span>
                   <ChevronRight size={16} className="text-[#024072]" />
                 </button>
               </div></>

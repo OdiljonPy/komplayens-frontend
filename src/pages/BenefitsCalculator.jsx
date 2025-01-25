@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { sendRequest } from '../utils/apiFunctions'; // Adjust path as needed
+import { useTranslation } from 'react-i18next';
 
 const BenefitsCalculator = () => {
+  const { t } = useTranslation();
   const [aboutData, setAboutData] = useState({
     title: '',
     short_description: '',
@@ -55,7 +57,7 @@ const BenefitsCalculator = () => {
   return (
     <div className="px-4 py-8">
       <h1 className="text-lg md:text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-6 md:mb-10">
-        Manfaatlar To'qnashuvi
+        {t('pages.benefits.title')}
       </h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -73,21 +75,20 @@ const BenefitsCalculator = () => {
             {aboutData.short_description}
           </p>
 
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6">
             <Link to="/benefits/shablon1">
               <button className="bg-[#024072] w-full text-white px-4 py-2 rounded-[12px] hover:bg-blue-900 transition-colors">
-                Forma 1 yaratish
+                {t('pages.benefits.form1.buttonText')}
               </button>
             </Link>
             <Link to="/benefits/shablon2">
               <button className="bg-[#024072] w-full text-white px-4 py-2 rounded-[12px] hover:bg-blue-900 transition-colors">
-                Forma 2 yaratish
+                {t('pages.benefits.form2.buttonText')}
               </button>
             </Link>
             <Link to="/benefits/shablon3">
               <button className="bg-[#024072] w-full text-white px-4 py-2 rounded-[12px] hover:bg-blue-900 transition-colors">
-                Forma 3 yaratish
+                {t('pages.benefits.form3.buttonText')}
               </button>
             </Link>
           </div>

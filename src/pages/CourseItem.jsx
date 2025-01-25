@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Download } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { sendRequest } from '../utils/apiFunctions';
 import pdf from "../assets/icons/pdf.png";
 
 const CourseItem = () => {
+  const { t } = useTranslation();
   const [courseData, setCourseData] = useState(null);
   const { courseId } = useParams();
 
@@ -24,7 +26,7 @@ const CourseItem = () => {
     window.scrollTo(0, 0);
   }, [courseId]);
 
-  if (!courseData) return <div>Loading...</div>;
+  if (!courseData) return <div>{t('pages.courseItem.loading')}</div>;
 
   // Extract video ID from YouTube URL
   const getYoutubeEmbedUrl = (url) => {
@@ -35,11 +37,13 @@ const CourseItem = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 md:px-0">
       <div className="py-2 text-sm text-gray-600">
-        <span>Bosh sahifa</span>
+        <span>{t('pages.courseItem.breadcrumb.home')}</span>
         <span className="mx-2">›</span>
-        <Link to="/training-courses" className="text-[#024072]">O'quv-uslubiy materiallar</Link>
+        <Link to="/training-courses" className="text-[#024072]">
+          {t('pages.courseItem.breadcrumb.materials')}
+        </Link>
         <span className="mx-2">›</span>
-        <span className="text-[#024072]">Korrupsiyaga qarshi kurash asoslari</span>
+        <span className="text-[#024072]">{t('pages.courseItem.breadcrumb.course')}</span>
       </div>
 
       <div className="py-6">
@@ -66,7 +70,7 @@ const CourseItem = () => {
           <div className="space-y-8">
             {courseData.materials.filter(material => material.type === "PDF").length > 0 && (
               <div className="bg-white p-6 rounded-lg shadow">
-                <h3 className="font-semibold mb-4">Qo'shimcha Materiallar</h3>
+                <h3 className="font-semibold mb-4">{t('pages.courseItem.additionalMaterials')}</h3>
                 <div className="space-y-4">
                   {courseData.materials.filter(material => material.type === "PDF").map((material) => (
                     <div key={material.id} className="flex items-center justify-between">
@@ -87,7 +91,7 @@ const CourseItem = () => {
 
             {courseData.materials.filter(material => material.type === "MP4").length > 0 && (
               <div>
-                <h3 className="font-semibold">Video Materiallar</h3>
+                <h3 className="font-semibold">{t('pages.courseItem.videoMaterials')}</h3>
                 <div className="bg-white p-4 rounded-lg shadow mt-4">
                   <div className="space-y-4">
                     {courseData.materials.filter(material => material.type === "MP4").map((video) => (
@@ -102,7 +106,7 @@ const CourseItem = () => {
                         <div className="flex-1">
                           <p className="text-sm text-gray-900 line-clamp-2 mb-1">{video.video_title}</p>
                           <a href={video.video} target="_blank" rel="noopener noreferrer" className="text-blue-600 text-xs hover:underline">
-                            Ko'rish
+                            {t('pages.courseItem.watch')}
                           </a>
                         </div>
                       </div>

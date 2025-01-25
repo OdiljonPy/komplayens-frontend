@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { ChevronRight, Eye, Calendar } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { sendRequest } from '../utils/apiFunctions';
+import { useTranslation } from 'react-i18next';
 
 function Violations() {
+  const { t } = useTranslation();
   const [categories, setCategories] = useState([]);
   const [news, setNews] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -109,15 +111,15 @@ function Violations() {
       {/* Header with Breadcrumb */}
       <div className="py-3 md:py-4 pt-0">
         <div className="text-sm text-gray-600 flex items-center gap-1">
-          <span>Bosh sahifa</span>
+          <span>{t('pages.newsItem.breadcrumb.home')}</span>
           <ChevronRight size={16} className="text-gray-400" />
-          <span className='text-[#024072]'>Yangiliklar</span>
+          <span className='text-[#024072]'>{t('menu.news')}</span>
         </div>
       </div>
 
       <div className="py-4 pb-0">
         <h1 className="text-lg md:text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-6 md:mb-10">
-          Yangiliklar
+          {t('menu.news')}
         </h1>
       </div>
 
@@ -130,7 +132,7 @@ function Violations() {
               className={`absolute left-3 transition-all pointer-events-none
                 ${selectedDate ? 'text-xs -top-2 bg-white px-1' : 'text-gray-500 top-2'}`}
             >
-              Sort by
+              {t('pages.corruptionRisks.sorting')}
             </label>
             <input
               type="date"
@@ -149,7 +151,7 @@ function Violations() {
               className={`px-4 py-1.5 rounded-[20px] transition-colors whitespace-nowrap
                 ${!selectedCategory ? 'bg-blue-500 text-white' : 'bg-white hover:bg-gray-50'}`}
             >
-              Hammasi
+              {t('pages.corruptionRisks.all')}
             </button>
             {categories.map((category) => (
               <button
@@ -213,7 +215,7 @@ function Violations() {
                 <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M16.3332 10.6986H4.6665M4.6665 10.6986L10.4998 16.5319M4.6665 10.6986L10.4998 4.86523" stroke="#414651" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-                <span>Oldingisi</span>
+                <span>{t('educational_materials.prev')}</span>
               </button>
 
               <div className="flex items-center gap-1 overflow-x-auto px-2">
@@ -236,7 +238,7 @@ function Violations() {
                 disabled={pagination.currentPage === pagination.totalPages}
                 className="flex items-center gap-2 px-4 py-2 text-gray-600 border border-gray-200 bg-white rounded-md disabled:opacity-50"
               >
-                <span>Keyingisi</span>
+                <span>{t('educational_materials.next')}</span>
                 <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M4.6665 10.6986H16.3332M16.3332 10.6986L10.4998 4.86523M16.3332 10.6986L10.4998 16.5319" stroke="#414651" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
@@ -253,7 +255,7 @@ function Violations() {
                 <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M16.3332 10.6986H4.6665M4.6665 10.6986L10.4998 16.5319M4.6665 10.6986L10.4998 4.86523" stroke="#414651" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-                <span>Oldingisi</span>
+                <span>{t('pages.announcements.previous')}</span>
               </button>
 
               <div className="flex items-center gap-2">
@@ -276,7 +278,7 @@ function Violations() {
                 disabled={pagination.currentPage === pagination.totalPages}
                 className="flex items-center gap-2 px-4 py-2 text-gray-600 border border-gray-200 bg-white rounded-md disabled:opacity-50"
               >
-                <span>Keyingisi</span>
+                <span>{t('pages.announcements.next')}</span>
                 <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M4.6665 10.6986H16.3332M16.3332 10.6986L10.4998 4.86523M16.3332 10.6986L10.4998 16.5319" stroke="#414651" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
@@ -285,7 +287,7 @@ function Violations() {
           </>
         ) : (
           <div className="flex justify-center items-center py-10">
-            <h1 className="text-2xl font-bold">Yangiliklar topilmadi</h1>
+            <h1 className="text-2xl font-bold">{t('pages.announcements.noAnnouncements')}</h1>
           </div>
         )
       }

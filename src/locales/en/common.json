@@ -69,9 +69,10 @@
     "sort": "Sort",
     "date": "Date",
     "noData": "No data found",
-    "loading": "Yuklanmoqda...",
-    "sending": "Yuborilmoqda...",
-    "go_back": "Orqaga Qaytish"
+    "loading": "Loading...",
+    "sending": "Sending...",
+    "go_back": "Go back",
+    "selectDate": "Select date"
   },
   "sort": {
     "newest": "Newest",
@@ -135,5 +136,363 @@
     "select_organization": "Select Organization",
     "first_name": "First Name",
     "last_name": "Last Name"
+  },
+  "pages": {
+    "announcements": {
+      "title": "Announcements",
+      "viewCount": "Views",
+      "readMore": "Read More",
+      "noAnnouncements": "No announcements found",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "benefitsCalculator": {
+      "title": "Benefits Calculator",
+      "description": "Calculate potential benefits",
+      "calculate": "Calculate",
+      "results": "Results"
+    },
+    "corruptionRisks": {
+      "title": "Corruption Risks",
+      "reportRisk": "Report Risk",
+      "riskLevel": "Risk Level",
+      "details": "Details",
+      "surveyName": "Survey Name",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "status": "Status",
+      "results": "Results",
+      "participate": "Participate",
+      "viewResults": "View Results",
+      "noResults": "No results yet",
+      "completed": "Completed",
+      "active": "Active",
+      "noData": "No data found",
+      "sorting": "Sort by",
+      "newest": "Newest",
+      "new": "New",
+      "old": "Old",
+      "all": "All",
+      "inProgress": "In Progress",
+      "closed": "Closed",
+      "breadcrumb": {
+        "home": "Home",
+        "risks": "Corruption Risks",
+        "results": "Results"
+      },
+      "survey": {
+        "participants": "Survey participants: {{count}} people",
+        "questions": {
+          "1": "Are there internal rules and policies in place for public procurement processes?",
+          "answers": {
+            "yes": "Yes, clearly defined and documented {{percent}}% ({{count}} people)",
+            "partial": "Partially exist, but some rules are unclear {{percent}}% ({{count}} people)",
+            "no": "No, such rules have not been developed {{percent}}% ({{count}} people)"
+          }
+        }
+      }
+    },
+    "educationalMaterials": {
+      "title": "Educational Materials",
+      "courses": "Courses",
+      "materials": "Materials",
+      "search": "Search materials"
+    },
+    "electronicLibrary": {
+      "breadcrumb": {
+        "home": "Home",
+        "education": "Education"
+      },
+      "title": "Education",
+      "tabs": {
+        "trainingCourses": "Training Courses",
+        "electronicLibrary": "Electronic Library"
+      },
+      "search": {
+        "placeholder": "Search"
+      },
+      "department": {
+        "label": "Department",
+        "select": "Select department"
+      },
+      "bookCount": "{{count}} books",
+      "table": {
+        "bookName": "Book name",
+        "authorName": "Author name",
+        "publishType": "Publication type",
+        "publishYear": "Publication year",
+        "description": "Description",
+        "details": "Details"
+      },
+      "pagination": {
+        "previous": "Previous",
+        "next": "Next"
+      },
+      "noData": "No data found"
+    },
+    "handouts": {
+      "breadcrumb": {
+        "home": "Home",
+        "resources": "Promotion and Useful Information"
+      },
+      "title": "Handout Materials",
+      "allCategories": "All categories",
+      "search": "Search...",
+      "fileIcon": "File icon",
+      "download": "Download",
+      "noData": "No data found",
+      "pagination": {
+        "previous": "Previous",
+        "next": "Next",
+        "page": "Page {{current}} of {{total}}"
+      }
+    },
+    "landingPage": {
+      "welcome": "Welcome",
+      "latestNews": "Latest News",
+      "popularCourses": "Popular Courses",
+      "statistics": "Statistics"
+    },
+    "newsItem": {
+      "breadcrumb": {
+        "home": "Home",
+        "news": "News"
+      },
+      "publishDate": "Publication Date",
+      "author": "Author",
+      "category": "Category",
+      "relatedNews": "Related News"
+    },
+    "newsReporting": {
+      "title": "Submit Report",
+      "breadcrumbs": {
+        "home": "Home",
+        "report": "Submit Report"
+      },
+      "reporterInfo": {
+        "title": "Submit Report",
+        "aboutReporter": "Reporter Information",
+        "anonymous": "Submit Anonymously",
+        "fullName": "Full Name",
+        "phoneNumber": "Phone Number",
+        "email": "Email Address"
+      },
+      "success": {
+        "title": "Report Submitted!",
+        "okButton": "OK"
+      },
+      "contactPerson": {
+        "title": "Contact Person Information",
+        "addPerson": "Add Person",
+        "removePerson": "Remove Person",
+        "fullName": "Full Name",
+        "position": "Position",
+        "namePlaceholder": "Name",
+        "positionPlaceholder": "Position"
+      },
+      "fileUpload": {
+        "title": "File Upload",
+        "dragDropText": "Choose a file or drag it here",
+        "formatInfo": "JPEG, PNG, PDF and MP4 formats, up to 50 MB",
+        "uploadButton": "Upload File"
+      },
+      "organization": {
+        "title": "Organization",
+        "searchPlaceholder": "Search for organization"
+      },
+      "reportDetails": {
+        "title": "Report Details",
+        "type": "Report Type",
+        "selectType": "Select report type",
+        "date": "Date",
+        "time": "Time",
+        "details": "Details",
+        "description": "Report content",
+        "files": {
+          "title": "Files",
+          "dragDropText": "Drop files here",
+          "uploadButton": "Upload File",
+          "maxSize": "Maximum size: 50MB",
+          "allowedFormats": "Allowed formats: JPEG, PNG, PDF, MP4"
+        }
+      },
+      "location": {
+        "selectRegion": "Select region",
+        "selectDistrict": "Select district"
+      },
+      "loading": "Loading...",
+      "nextButton": "Next",
+      "submitButton": "Submit",
+      "contactForm": {
+        "title": "Contact Person Information",
+        "addPerson": "Add Person",
+        "removePerson": "Remove Person",
+        "fullName": "Full Name",
+        "fullNamePlaceholder": "Murodov Islom",
+        "position": "Position",
+        "positionPlaceholder": "Position",
+        "phoneNumber": "Phone Number"
+      },
+      "successModal": {
+        "message": "Message sent successfully!",
+        "ok": "OK"
+      },
+      "toggleButtons": {
+        "system": "Through System",
+        "direct": "Direct Contact"
+      }
+    },
+    "operations": {
+      "title": "Operations",
+      "status": "Status",
+      "date": "Date",
+      "details": "Details",
+      "search": {
+        "placeholder": "Search..."
+      },
+      "all": "All",
+      "category": "Category",
+      "publicService": "Public Service",
+      "dilemma": "Dilemma",
+      "addComment": "Add Comment",
+      "expertOpinion": "Expert Opinion",
+      "commentPlaceholder": "Add a comment",
+      "sending": "Sending...",
+      "leaveComment": "Leave a Comment"
+    },
+    "statusCheck": {
+      "title": "Integrity Test",
+      "breadcrumb": {
+        "home": "Home",
+        "test": "Integrity Test"
+      },
+      "testSelection": {
+        "searchPlaceholder": "Search organization",
+        "loading": "Loading...",
+        "select": "Select",
+        "noTests": "No tests found",
+        "organizationIcon": "Organization logo"
+      },
+      "testQuestions": {
+        "timeLeft": "Time left",
+        "correctAnswers": "Correct answers",
+        "previous": "Previous",
+        "next": "Next",
+        "finish": "Finish",
+        "loading": "Loading..."
+      },
+      "testResults": {
+        "correctAnswer": "Correct Answer",
+        "correct": "Correct",
+        "incorrect": "Incorrect",
+        "correctAnswerLabel": "Correct Answer",
+        "percentage": "Percentage"
+      },
+      "steps": {
+        "next": "Next"
+      },
+      "selectionModal": {
+        "title": "Select",
+        "memberText": "I am a member of a state organization",
+        "nonMemberText": "I am not a member of a state organization",
+        "select": "Select",
+        "memberIcon": "Member icon",
+        "nonMemberIcon": "Non-member icon"
+      },
+      "organizationList": {
+        "searchPlaceholder": "Search organization",
+        "select": "Select",
+        "noOrganizations": "No organizations found",
+        "orgIcon": "Organization logo"
+      }
+    },
+    "trainingCourses": {
+      "title": "Training Courses",
+      "allCourses": "All Courses",
+      "myCourses": "My Courses",
+      "progress": "Progress",
+      "certificate": "Certificate"
+    },
+    "usefulResources": {
+      "title": "Useful Resources",
+      "categories": "Categories",
+      "links": "Useful Links",
+      "documents": "Documents"
+    },
+    "violations": {
+      "title": "Violations",
+      "report": "Report Violation",
+      "status": "Status",
+      "date": "Date"
+    },
+    "auth": {
+      "login": {
+        "title": "Login",
+        "email": "Email",
+        "password": "Password",
+        "submit": "Login",
+        "forgotPassword": "Forgot Password?",
+        "register": "Register"
+      },
+      "register": {
+        "title": "Register",
+        "name": "Name",
+        "email": "Email",
+        "password": "Password",
+        "confirmPassword": "Confirm Password",
+        "submit": "Register",
+        "login": "Already have an account? Login"
+      },
+      "forgotPassword": {
+        "title": "Password Recovery",
+        "email": "Email",
+        "submit": "Submit",
+        "back": "Back to Login"
+      }
+    },
+    "benefits": {
+      "title": "Conflict of Interest",
+      "form1": {
+        "name": "Conflict of Interest Declaration",
+        "employeeInfo": "Employee Information",
+        "relativeInfo": "Close Relative Information",
+        "legalEntityInfo": "Legal Entity Information",
+        "personalSignature": "Personal Signature",
+        "date": "Date",
+        "buttonText": "Form 1"
+      },
+      "form2": {
+        "title": "Conflict of Interest Declaration",
+        "employeeInfo": "Employee Information",
+        "relativeInfo": "Close Relative Information",
+        "legalEntityInfo": "Legal Entity Information",
+        "personalSignature": "Personal Signature",
+        "date": "Date",
+        "buttonText": "Form 2"
+      },
+      "form3": {
+        "title": "Declaration of Potential Conflict of Interest of Related Persons",
+        "declaration": "DECLARATION",
+        "employeeInfo": "Employee Information",
+        "relativeInfo": "Relationship Information",
+        "legalEntityInfo": "Legal Entity Information",
+        "personalSignature": "Personal Signature or Digital Signature",
+        "date": "Date",
+        "buttonText": "Form 3"
+      },
+      "next": "Next",
+      "generateNotification": "Generate Notification"
+    },
+    "courseItem": {
+      "breadcrumb": {
+        "home": "Home",
+        "materials": "Educational materials",
+        "course": "Anti-corruption basics"
+      },
+      "additionalMaterials": "Additional materials",
+      "videoMaterials": "Video materials",
+      "watch": "Watch",
+      "loading": "Loading..."
+    }
   }
 }

@@ -71,7 +71,8 @@
     "noData": "Данные не найдены",
     "loading": "Загрузка...",
     "sending": "Отправка...",
-    "go_back": "Вернуться назад"
+    "go_back": "Вернуться назад",
+    "selectDate": "Выберите дату"
   },
   "sort": {
     "newest": "Самые новые",
@@ -135,5 +136,366 @@
     "select_organization": "Выберите организацию",
     "first_name": "Имя",
     "last_name": "Фамилия"
+  },
+  "pages": {
+    "announcements": {
+      "title": "Объявления",
+      "viewCount": "Просмотры",
+      "readMore": "Подробнее",
+      "noAnnouncements": "Объявлений не найдено",
+      "previous": "Предыдущий",
+      "next": "Следующий"
+    },
+    "benefitsCalculator": {
+      "title": "Калькулятор выгод",
+      "description": "Рассчитайте потенциальные выгоды",
+      "calculate": "Рассчитать",
+      "results": "Результаты"
+    },
+    "corruptionRisks": {
+      "title": "Риски коррупции",
+      "reportRisk": "Сообщить о риске",
+      "riskLevel": "Уровень риска",
+      "details": "Подробности",
+      "surveyName": "Название опроса",
+      "startDate": "Дата начала",
+      "endDate": "Дата окончания",
+      "status": "Статус",
+      "results": "Результаты",
+      "participate": "Участвовать",
+      "viewResults": "Посмотреть результаты",
+      "noResults": "Результатов пока нет",
+      "completed": "Завершено",
+      "active": "Активный",
+      "noData": "Данные не найдены",
+      "sorting": "Сортировка",
+      "newest": "Самые новые",
+      "new": "Новые",
+      "old": "Старые",
+      "all": "Все",
+      "inProgress": "В процессе",
+      "closed": "Закрыто",
+      "breadcrumb": {
+        "home": "Главная",
+        "risks": "Коррупционные риски",
+        "results": "Результаты"
+      },
+      "survey": {
+        "participants": "В опросе участвовало: {{count}} человек",
+        "questions": {
+          "1": "Существуют ли внутренние правила и политики в процессе государственных закупок?",
+          "answers": {
+            "yes": "Да, четко определены и задокументированы {{percent}}% ({{count}} человек)",
+            "partial": "Частично существуют, но некоторые правила неясны {{percent}}% ({{count}} человек)",
+            "no": "Нет, такие правила не разработаны {{percent}}% ({{count}} человек)"
+          }
+        }
+      }
+    },
+    "educationalMaterials": {
+      "title": "Учебные материалы",
+      "courses": "Курсы",
+      "materials": "Материалы",
+      "search": "Поиск материалов"
+    },
+    "electronicLibrary": {
+      "breadcrumb": {
+        "home": "Главная",
+        "education": "Образование"
+      },
+      "title": "Образование",
+      "tabs": {
+        "trainingCourses": "Учебные курсы",
+        "electronicLibrary": "Электронная библиотека"
+      },
+      "search": {
+        "placeholder": "Поиск"
+      },
+      "department": {
+        "label": "Отдел",
+        "select": "Выберите отдел"
+      },
+      "bookCount": "{{count}} книг",
+      "table": {
+        "bookName": "Название книги",
+        "authorName": "Имя автора",
+        "publishType": "Тип издания",
+        "publishYear": "Год издания",
+        "description": "Описание",
+        "details": "Подробнее"
+      },
+      "pagination": {
+        "previous": "Предыдущая",
+        "next": "Следующая"
+      },
+      "noData": "Данные не найдены"
+    },
+    "handouts": {
+      "breadcrumb": {
+        "home": "Главная",
+        "resources": "Пропаганда и полезная информация"
+      },
+      "title": "Раздаточные материалы",
+      "allCategories": "Все категории",
+      "search": "Поиск...",
+      "fileIcon": "Значок файла",
+      "download": "Скачать",
+      "noData": "Данные не найдены",
+      "pagination": {
+        "previous": "Предыдущая",
+        "next": "Следующая",
+        "page": "Страница {{current}} из {{total}}"
+      }
+    },
+    "landingPage": {
+      "welcome": "Добро пожаловать",
+      "latestNews": "Последние новости",
+      "popularCourses": "Популярные курсы",
+      "statistics": "Статистика"
+    },
+    "newsItem": {
+      "breadcrumb": {
+        "home": "Главная",
+        "news": "Новости"
+      },
+      "publishDate": "Дата публикации",
+      "author": "Автор",
+      "category": "Категория",
+      "relatedNews": "Похожие новости"
+    },
+    "newsReporting": {
+      "title": "Отправка сообщения",
+      "breadcrumbs": {
+        "home": "Главная",
+        "report": "Отправка сообщения"
+      },
+      "reporterInfo": {
+        "title": "Отправка сообщения",
+        "aboutReporter": "Информация об отправителе",
+        "anonymous": "Отправить анонимно",
+        "fullName": "Ф.И.О",
+        "phoneNumber": "Номер телефона",
+        "email": "Электронная почта"
+      },
+      "success": {
+        "title": "Сообщение отправлено!",
+        "okButton": "OK"
+      },
+      "contactPerson": {
+        "title": "Информация о контактном лице",
+        "addPerson": "Добавить человека",
+        "removePerson": "Удалить человека",
+        "fullName": "Ф.И.О",
+        "position": "Должность",
+        "namePlaceholder": "Имя",
+        "positionPlaceholder": "Должность"
+      },
+      "fileUpload": {
+        "title": "Загрузка файла",
+        "dragDropText": "Выберите файл или перетащите его сюда",
+        "formatInfo": "Форматы JPEG, PNG, PDF и MP4, до 50 МБ",
+        "uploadButton": "Загрузить файл"
+      },
+      "organization": {
+        "title": "Организация",
+        "searchPlaceholder": "Поиск организации"
+      },
+      "reportDetails": {
+        "title": "Детали сообщения",
+        "type": "Тип сообщения",
+        "selectType": "Выберите тип сообщения",
+        "date": "Дата",
+        "time": "Время",
+        "details": "Подробности",
+        "description": "Содержание сообщения",
+        "files": {
+          "title": "Файлы",
+          "dragDropText": "Перетащите файлы сюда",
+          "uploadButton": "Загрузить файл",
+          "maxSize": "Максимальный размер: 50МБ",
+          "allowedFormats": "Разрешенные форматы: JPEG, PNG, PDF, MP4"
+        }
+      },
+      "location": {
+        "selectRegion": "Выберите область",
+        "selectDistrict": "Выберите район"
+      },
+      "loading": "Загрузка...",
+      "nextButton": "Далее",
+      "submitButton": "Отправить",
+      "contactForm": {
+        "title": "Информация о контактном лице",
+        "addPerson": "Добавить лицо",
+        "removePerson": "Удалить лицо",
+        "fullName": "Ф.И.О",
+        "fullNamePlaceholder": "Муродов Ислом",
+        "position": "Должность",
+        "positionPlaceholder": "Должность",
+        "phoneNumber": "Номер телефона"
+      },
+      "successModal": {
+        "message": "Сообщение отправлено!",
+        "ok": "OK"
+      },
+      "toggleButtons": {
+        "system": "Через Систему",
+        "direct": "Прямая Связь"
+      }
+    },
+    "operations": {
+      "title": "Операции",
+      "status": "Статус",
+      "date": "Дата",
+      "details": "Подробности",
+      "search": {
+        "placeholder": "Поиск..."
+      },
+      "all": "Все",
+      "category": "Категория",
+      "publicService": "Государственная служба",
+      "dilemma": "Дилемма",
+      "addComment": "Добавить комментарий",
+      "expertOpinion": "Экспертное заключение",
+      "commentPlaceholder": "Добавить комментарий",
+      "sending": "Отправка...",
+      "leaveComment": "Оставить комментарий"
+    },
+    "statusCheck": {
+      "title": "Тест на честность",
+      "breadcrumb": {
+        "home": "Главная",
+        "test": "Тест на честность"
+      },
+      "testSelection": {
+        "searchPlaceholder": "Поиск организации",
+        "loading": "Загрузка...",
+        "select": "Выбрать",
+        "noTests": "Тесты не найдены",
+        "organizationIcon": "Логотип организации"
+      },
+      "testQuestions": {
+        "timeLeft": "Оставшееся время",
+        "correctAnswers": "Правильные ответы",
+        "previous": "Предыдущий",
+        "next": "Следующий",
+        "finish": "Завершить",
+        "loading": "Загрузка..."
+      },
+      "testResults": {
+        "correctAnswer": "Правильный ответ",
+        "correct": "Правильно",
+        "incorrect": "Неправильно",
+        "correctAnswerLabel": "Правильный ответ",
+        "percentage": "Процент"
+      },
+      "steps": {
+        "next": "Следующий"
+      },
+      "selectionModal": {
+        "title": "Выберите",
+        "memberText": "Я являюсь членом государственной организации",
+        "nonMemberText": "Я не являюсь членом государственной организации",
+        "select": "Выбрать",
+        "memberIcon": "Иконка члена",
+        "nonMemberIcon": "Иконка не члена"
+      },
+      "organizationList": {
+        "searchPlaceholder": "Поиск организации",
+        "select": "Выбрать",
+        "noOrganizations": "Организации не найдены",
+        "orgIcon": "Логотип организации"
+      }
+    },
+    "trainingCourses": {
+      "title": "Учебные курсы",
+      "allCourses": "Все курсы",
+      "myCourses": "Мои курсы",
+      "progress": "Прогресс",
+      "certificate": "Сертификат"
+    },
+    "usefulResources": {
+      "title": "Полезные ресурсы",
+      "categories": "Категории",
+      "links": "Полезные ссылки",
+      "documents": "Документы"
+    },
+    "violations": {
+      "title": "Нарушения",
+      "report": "Сообщить о нарушении",
+      "status": "Статус",
+      "date": "Дата"
+    },
+    "auth": {
+      "login": {
+        "title": "Вход",
+        "email": "Email",
+        "password": "Пароль",
+        "submit": "Войти",
+        "forgotPassword": "Забыли пароль?",
+        "register": "Регистрация"
+      },
+      "register": {
+        "title": "Регистрация",
+        "name": "Имя",
+        "email": "Email",
+        "password": "Пароль",
+        "confirmPassword": "Подтвердите пароль",
+        "submit": "Зарегистрироваться",
+        "login": "Уже есть аккаунт? Войти"
+      },
+      "forgotPassword": {
+        "title": "Восстановление пароля",
+        "email": "Email",
+        "submit": "Отправить",
+        "back": "Вернуться к входу"
+      }
+    },
+    "benefits": {
+      "title": "Конфликт интересов",
+      "form1": {
+        "name": "Декларация о конфликте интересов",
+        "employeeInfo": "Информация о сотруднике",
+        "relativeInfo": "Информация о близком родственнике",
+        "legalEntityInfo": "Информация о юридическом лице",
+        "personalSignature": "Личная подпись",
+        "date": "Дата",
+        "buttonText": "Форма 1"
+      },
+      "form2": {
+        "title": "Декларация о конфликте интересов",
+        "employeeInfo": "Информация о сотруднике",
+        "relativeInfo": "Информация о близком родственнике",
+        "legalEntityInfo": "Информация о юридическом лице",
+        "personalSignature": "Личная подпись",
+        "date": "Дата",
+        "buttonText": "Форма 2"
+      },
+      "form3": {
+        "title": "Декларация о потенциальном конфликте интересов связанных лиц",
+        "declaration": "ДЕКЛАРАЦИЯ",
+        "employeeInfo": "Информация о сотруднике",
+        "relativeInfo": "Информация о родственных связях",
+        "legalEntityInfo": "Информация о юридическом лице",
+        "personalSignature": "Личная подпись или электронная цифровая подпись",
+        "date": "Дата",
+        "buttonText": "Форма 3"
+      },
+      "next": "Следующий",
+      "generateNotification": "Сформировать уведомление",
+      "employeeInfo": "Информация о сотруднике",
+      "supervisorInfo": "Информация о руководителе",
+      "description": "Описание"
+    },
+    "courseItem": {
+      "breadcrumb": {
+        "home": "Главная",
+        "materials": "Учебно-методические материалы",
+        "course": "Основы противодействия коррупции"
+      },
+      "additionalMaterials": "Дополнительные материалы",
+      "videoMaterials": "Видео материалы",
+      "watch": "Смотреть",
+      "loading": "Загрузка..."
+    }
   }
 }

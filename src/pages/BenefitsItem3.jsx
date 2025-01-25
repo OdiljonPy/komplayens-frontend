@@ -2,6 +2,7 @@
 import React, { useState, useRef } from 'react';
 import { Download } from 'lucide-react';
 import ReactDOM from 'react-dom';
+import { useTranslation } from 'react-i18next';
 
 
 const Step1Form = ({ formData, handleInputChange }) => {
@@ -167,6 +168,7 @@ const Step2Form = ({ formData, handleInputChange }) => {
 };
 
 const BenefitsItem3 = () => {
+  const { t } = useTranslation();
   const [currentStep, setCurrentStep] = useState(1);
   const firstPageRef = useRef(null);
   const secondPageRef = useRef(null);
@@ -514,7 +516,7 @@ const BenefitsItem3 = () => {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
           {/* Title */}
           <h1 className="text-xl md:text-2xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] whitespace-normal flex-shrink-0">
-            Manfaatlar to'qnashuvi
+            {t('pages.benefits.title')}
           </h1>
 
           {/* Buttons */}
@@ -523,7 +525,7 @@ const BenefitsItem3 = () => {
               onClick={handleNext}
               className="w-full sm:w-auto px-4 md:px-6 py-2.5 bg-[#024073] text-white rounded hover:bg-blue-700 transition-colors duration-200 text-sm md:text-base flex items-center justify-center"
             >
-              <span>Keyingisi</span>
+              <span>{t('pages.benefits.next')}</span>
               <span className="ml-1">›</span>
             </button>
           ) : (
@@ -532,7 +534,7 @@ const BenefitsItem3 = () => {
               className="w-full sm:w-auto px-4 md:px-6 py-2.5 bg-[#024073] text-white rounded hover:bg-blue-700 transition-colors duration-200 text-sm md:text-base flex items-center justify-center gap-2"
             >
               <Download className="w-4 h-4 md:w-5 md:h-5" />
-              <span className="whitespace-nowrap">Xabarnomani shakllantirish</span>
+              <span className="whitespace-nowrap">{t('pages.benefits.generateNotification')}</span>
             </button>
           )}
         </div>
