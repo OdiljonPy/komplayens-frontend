@@ -499,7 +499,11 @@
         "employeePosition": "Xodimning lavozimi",
         "supervisorPosition": "Xodimning bevosita rahbari lavozimi",
         "measures": "Mavjud manfaatlar to'qnashuvini tartibga solish bo'yicha ko'rilgan chora",
-        "registrationInfo": "Mavjud manfaatlar to'qnashuvi aniqlangan holatlar Manfaatlar to'qnashuvini hisobga olish reestriga ro'yxatga olingan sanasi va tartib raqami: 20___ yil \"___\" \"___________\" -son."
+        "registrationInfo": "Mavjud manfaatlar to'qnashuvi aniqlangan holatlar Manfaatlar to'qnashuvini hisobga olish reestriga ro'yxatga olingan sanasi va tartib raqami: 20___ yil \"___\" \"___________\" -son.",
+        "descriptionPlaceholder": "Tavsifni kiriting",
+        "description": "Tavsif",
+        "additionalInfo": "Qo'shimcha ma'lumotlar",
+        "additionalInfoNote": "(xodim tomonidan manfaatlar to'qnashuvi vaziyati sifatida baholanadigan boshqa holatlar ko'rsatiladi)"
       },
       "employeeInfo": "Xodim ma'lumotlari",
       "relativeInfo": "Yaqin qarindosh ma'lumotlari",
