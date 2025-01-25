@@ -584,7 +584,20 @@ const BenefitsItem2 = () => {
 
   const handleNext = () => setCurrentStep(2);
 
+  // Add validation for Step2Form
+  const isStep2Valid = () => {
+    const requiredFields = [
+      'date',
+      'description'
+    ];
+
+    return requiredFields.every(field => formData[field] && formData[field].trim() !== '');
+  };
+
   const generatePDF = () => {
+    if (!isStep2Valid()) {
+      return;
+    }
     // Create a temporary div to hold both documents
     const tempDiv = document.createElement('div');
     const hiddenStyle = 'position: absolute; left: -9999px;';
@@ -678,6 +691,26 @@ const BenefitsItem2 = () => {
     }, 0);
   };
 
+  // Add this function to check if all required fields are filled
+  const isStep1Valid = () => {
+    const requiredFields = [
+      'position',
+      'passportSeries',
+      'passportIssueDate',
+      'jshshir',
+      'legalEntityName',
+      'stir',
+      'relativeFIO',
+      'relativePassport',
+      'relativePassportDate',
+      'relativeJSHSHIR',
+      'relativeLegalEntityName',
+      'relativeSTIR'
+    ];
+
+    return requiredFields.every(field => formData[field] && formData[field].trim() !== '');
+  };
+
   return (
     <div className="p-4 pt-12 md:pt-0">
       <div className="mb-4 md:mb-6">
@@ -691,7 +724,11 @@ const BenefitsItem2 = () => {
           {currentStep === 1 ? (
             <button
               onClick={handleNext}
-              className="w-full sm:w-auto px-4 md:px-6 py-2.5 bg-[#024073] text-white rounded hover:bg-blue-700 transition-colors duration-200 text-sm md:text-base flex items-center justify-center"
+              disabled={!isStep1Valid()}
+              className={`w-full sm:w-auto px-4 md:px-6 py-2.5 text-white rounded transition-colors duration-200 text-sm md:text-base flex items-center justify-center
+                ${isStep1Valid()
+                  ? 'bg-[#024073] hover:bg-blue-700'
+                  : 'bg-gray-400 cursor-not-allowed'}`}
             >
               <span>{t('pages.benefits.next')}</span>
               <span className="ml-1">›</span>
@@ -699,7 +736,11 @@ const BenefitsItem2 = () => {
           ) : (
             <button
               onClick={generatePDF}
-              className="w-full sm:w-auto px-4 md:px-6 py-2.5 bg-[#024073] text-white rounded hover:bg-blue-700 transition-colors duration-200 text-sm md:text-base flex items-center justify-center gap-2"
+              disabled={!isStep2Valid()}
+              className={`w-full sm:w-auto px-4 md:px-6 py-2.5 text-white rounded transition-colors duration-200 text-sm md:text-base flex items-center justify-center gap-2
+                ${isStep2Valid()
+                  ? 'bg-[#024073] hover:bg-blue-700'
+                  : 'bg-gray-400 cursor-not-allowed'}`}
             >
               <Download className="w-4 h-4 md:w-5 md:h-5" />
               <span className="whitespace-nowrap">{t('pages.benefits.generateNotification')}</span>

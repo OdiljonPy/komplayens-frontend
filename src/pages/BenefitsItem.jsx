@@ -174,6 +174,11 @@ const Step1Form = ({ formData, handleInputChange }) => {
 const Step2Form = ({ formData, handleInputChange, handleGeneratePDF }) => {
   const { t } = useTranslation();
 
+  const isStep2Valid = () => {
+    const requiredFields = ['description', 'measures'];
+    return requiredFields.every(field => formData[field]?.trim());
+  };
+
   return (
     <div className="space-y-6">
       <div className="bg-white p-6 rounded-lg shadow-sm space-y-4">
@@ -224,9 +229,12 @@ const Step2Form = ({ formData, handleInputChange, handleGeneratePDF }) => {
       <div className="flex justify-end space-x-4">
         <button
           onClick={handleGeneratePDF}
-          className="px-6 py-2.5 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
+          disabled={!isStep2Valid()}
+          className={`px-6 py-2.5 text-white rounded-lg transition-colors flex items-center gap-2 ${isStep2Valid() ? 'bg-primary hover:bg-primary-dark' : 'bg-gray-400 cursor-not-allowed'
+            }`}
         >
-          {t('pages.benefits.generateNotification')}
+          <Download className="w-4 h-4 md:w-5 md:h-5" />
+          <span>{t('pages.benefits.generateNotification')}</span>
         </button>
       </div>
     </div>
@@ -279,6 +287,27 @@ const BenefitsItem = () => {
 
   const handleNext = () => setCurrentStep(2);
 
+  const isStep1Valid = () => {
+    const requiredFields = [
+      'supervisorFIO',
+      'supervisorPosition',
+      'managerFIO',
+      'position',
+      'passportSeries',
+      'passportIssueDate',
+      'jshshir',
+      'relativeFIO',
+      'relativePassport',
+      'relativeJSHSHIR'
+    ];
+
+    return requiredFields.every(field => formData[field]?.trim());
+  };
+
+  const isStep2Valid = () => {
+    const requiredFields = ['description', 'measures'];
+    return requiredFields.every(field => formData[field]?.trim());
+  };
 
   const FirstDocument = React.forwardRef(({ formData }, ref) => {
     const { t } = useTranslation();
@@ -597,7 +626,9 @@ const BenefitsItem = () => {
           {currentStep === 1 ? (
             <button
               onClick={handleNext}
-              className="w-full sm:w-auto px-4 md:px-6 py-2.5 bg-[#024073] text-white rounded hover:bg-blue-700 transition-colors duration-200 text-sm md:text-base flex items-center justify-center"
+              disabled={!isStep1Valid()}
+              className={`w-full sm:w-auto px-4 md:px-6 py-2.5 text-white rounded transition-colors duration-200 text-sm md:text-base flex items-center justify-center ${isStep1Valid() ? 'bg-[#024073] hover:bg-blue-700' : 'bg-gray-400 cursor-not-allowed'
+                }`}
             >
               <span>{t('pages.benefits.next')}</span>
               <span className="ml-1">›</span>
@@ -605,7 +636,9 @@ const BenefitsItem = () => {
           ) : (
             <button
               onClick={generatePDF}
-              className="w-full sm:w-auto px-4 md:px-6 py-2.5 bg-[#024073] text-white rounded hover:bg-blue-700 transition-colors duration-200 text-sm md:text-base flex items-center justify-center gap-2"
+              disabled={!isStep2Valid()}
+              className={`w-full sm:w-auto px-4 md:px-6 py-2.5 text-white rounded transition-colors duration-200 text-sm md:text-base flex items-center justify-center gap-2 ${isStep2Valid() ? 'bg-[#024073] hover:bg-blue-700' : 'bg-gray-400 cursor-not-allowed'
+                }`}
             >
               <Download className="w-4 h-4 md:w-5 md:h-5" />
               <span className="whitespace-nowrap">{t('pages.benefits.generateNotification')}</span>

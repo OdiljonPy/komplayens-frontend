@@ -220,6 +220,16 @@ const BenefitsItem3 = () => {
 
   const handleNext = () => setCurrentStep(2);
 
+  // Add validation check for required fields
+  const isStep1Valid = () => {
+    return formData.managerFIO?.trim() && formData.conflictPersonFIO?.trim();
+  };
+
+  // Add validation check for Step 2
+  const isStep2Valid = () => {
+    return formData.date?.trim();
+  };
+
   const FirstDocument = React.forwardRef(({ formData }, ref) => (
     <div ref={ref} className="bg-white p-4 md:p-6 rounded-lg shadow-sm min-w-[320px] max-w-full overflow-x-auto">
       {/* Header section */}
@@ -513,7 +523,11 @@ const BenefitsItem3 = () => {
           {currentStep === 1 ? (
             <button
               onClick={handleNext}
-              className="w-full sm:w-auto px-4 md:px-6 py-2.5 bg-[#024073] text-white rounded hover:bg-blue-700 transition-colors duration-200 text-sm md:text-base flex items-center justify-center"
+              disabled={!isStep1Valid()}
+              className={`w-full sm:w-auto px-4 md:px-6 py-2.5 text-white rounded transition-colors duration-200 text-sm md:text-base flex items-center justify-center
+                ${isStep1Valid()
+                  ? 'bg-[#024073] hover:bg-blue-700'
+                  : 'bg-gray-400 cursor-not-allowed'}`}
             >
               <span>{t('pages.benefits.next')}</span>
               <span className="ml-1">›</span>
@@ -521,7 +535,11 @@ const BenefitsItem3 = () => {
           ) : (
             <button
               onClick={generatePDF}
-              className="w-full sm:w-auto px-4 md:px-6 py-2.5 bg-[#024073] text-white rounded hover:bg-blue-700 transition-colors duration-200 text-sm md:text-base flex items-center justify-center gap-2"
+              disabled={!isStep2Valid()}
+              className={`w-full sm:w-auto px-4 md:px-6 py-2.5 text-white rounded transition-colors duration-200 text-sm md:text-base flex items-center justify-center gap-2
+                ${isStep2Valid()
+                  ? 'bg-[#024073] hover:bg-blue-700'
+                  : 'bg-gray-400 cursor-not-allowed'}`}
             >
               <Download className="w-4 h-4 md:w-5 md:h-5" />
               <span className="whitespace-nowrap">{t('pages.benefits.generateNotification')}</span>
