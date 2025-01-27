@@ -919,7 +919,7 @@ const NewsReporting = () => {
         formData.append('phone_number', contact.phone);
       });
 
-      const response = await fetch('https://api.komplayens.uz/api/v1/services/violation/report/', {
+      const response = await fetch('https://api-dev.komplayens.uz/api/v1/services/violation/report/', {
         method: 'POST',
         body: formData,
       });
