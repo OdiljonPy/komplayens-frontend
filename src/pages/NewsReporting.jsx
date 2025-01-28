@@ -1,9 +1,13 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { ChevronRight, Search } from 'lucide-react';
+import { ChevronRight, Search, Calendar } from 'lucide-react';
 import bank_logo from "../assets/icons/bank.png";
 import { useNavigate } from 'react-router-dom';
 import { sendRequest } from '../utils/apiFunctions';
 import { useTranslation } from 'react-i18next';
+import { Globe, Facebook, Instagram, Youtube, Send } from 'lucide-react';
+
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 
 const PhoneInput = ({ value, onChange }) => {
@@ -105,7 +109,7 @@ const OrganizationSelection = ({ onNext, onSelect, selectedOrgId }) => {
   const handleSelectOrg = (org) => {
     setSelectedOrg(org);
     if (onSelect) {
-      onSelect(org.id);
+      onSelect(org);
     }
   };
 
@@ -221,8 +225,9 @@ const OrganizationSelectionSkeleton = () => (
 );
 
 // Step 2: Report Details Component
-const ReportDetails = ({ onFormDataChange, onFileChange, formData: initialFormData }) => {
+const ReportDetails = ({ onFormDataChange, onFileChange, formData: initialFormData, selectedOrganization }) => {
   const { t } = useTranslation();
+
   const [activeTab, setActiveTab] = useState('system');
   const [violationTypes, setViolationTypes] = useState([]);
   const [regions, setRegions] = useState([]);
@@ -399,216 +404,310 @@ const ReportDetails = ({ onFormDataChange, onFileChange, formData: initialFormDa
     }
   }, [formData.type, formData.region, formData.district, formData.date, formData.time]);
 
+  // Add new function to handle tab change
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    // Update form validity when switching tabs
+    if (onFormDataChange) {
+      onFormDataChange({
+        ...formData,
+        isValid: tab === 'direct' ? true : isFormValid
+      });
+    }
+  };
+
+  // Add organization info display component
+  const OrganizationInfo = ({ organization }) => (
+    <div className="bg-white rounded-lg p-6 border mb-6 flex flex-col md:flex-row gap-4 justify-between shadow-lg">
+      <h3 className="text-lg font-medium text-[#024072] mb-4 w-full md:max-w-[50%]">{organization.name}</h3>
+      <div className="space-y-2 mb-4 flex flex-col md:flex-row gap-2">
+        <a href={`tel:${organization.phone_number}`} className="flex items-center text-gray-600 hover:text-[#024073]">
+          <span className="mr-2">
+            <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7.81706 8.07799C8.39706 9.28601 9.18771 10.4182 10.189 11.4195C11.1903 12.4208 12.3225 13.2115 13.5306 13.7915C13.6345 13.8414 13.6864 13.8663 13.7522 13.8855C13.9858 13.9536 14.2727 13.9047 14.4705 13.763C14.5262 13.7231 14.5738 13.6755 14.6691 13.5802C14.9604 13.2889 15.1061 13.1432 15.2526 13.048C15.805 12.6888 16.5172 12.6888 17.0696 13.048C17.216 13.1432 17.3617 13.2889 17.6531 13.5802L17.8154 13.7426C18.2583 14.1855 18.4797 14.4069 18.6 14.6448C18.8393 15.1177 18.8393 15.6763 18.6 16.1492C18.4797 16.3871 18.2583 16.6085 17.8154 17.0514L17.6841 17.1827C17.2427 17.6241 17.022 17.8448 16.722 18.0133C16.3891 18.2003 15.872 18.3348 15.4902 18.3336C15.1461 18.3326 14.9109 18.2659 14.4405 18.1324C11.9127 17.4149 9.52736 16.0612 7.53738 14.0712C5.5474 12.0812 4.19367 9.69589 3.47619 7.16806C3.34269 6.69769 3.27593 6.4625 3.27491 6.11838C3.27377 5.73653 3.40824 5.21945 3.59526 4.88653C3.7638 4.5865 3.98447 4.36583 4.42583 3.92447L4.55719 3.79311C5.00006 3.35024 5.22149 3.12881 5.45931 3.00852C5.93228 2.7693 6.49083 2.7693 6.9638 3.00852C7.20162 3.12881 7.42305 3.35024 7.86592 3.79311L8.02831 3.9555C8.31965 4.24684 8.46532 4.39251 8.56056 4.53899C8.91972 5.0914 8.91972 5.80355 8.56056 6.35596C8.46532 6.50244 8.31965 6.64811 8.02831 6.93945C7.93305 7.03471 7.88542 7.08234 7.84555 7.13802C7.70388 7.33587 7.65496 7.62276 7.72306 7.85638C7.74223 7.92213 7.76717 7.97408 7.81706 8.07799Z" stroke="#3981F7" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </span>
+          {organization.phone_number}
+        </a>
+        {organization.phone_number2 && (
+          <a href={`tel:${organization.phone_number2}`} className="flex items-center text-gray-600 hover:text-[#024073] mt-0" style={{
+            marginTop: '0px'
+          }}>
+            <span className="mr-2">
+              <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7.81706 8.07799C8.39706 9.28601 9.18771 10.4182 10.189 11.4195C11.1903 12.4208 12.3225 13.2115 13.5306 13.7915C13.6345 13.8414 13.6864 13.8663 13.7522 13.8855C13.9858 13.9536 14.2727 13.9047 14.4705 13.763C14.5262 13.7231 14.5738 13.6755 14.6691 13.5802C14.9604 13.2889 15.1061 13.1432 15.2526 13.048C15.805 12.6888 16.5172 12.6888 17.0696 13.048C17.216 13.1432 17.3617 13.2889 17.6531 13.5802L17.8154 13.7426C18.2583 14.1855 18.4797 14.4069 18.6 14.6448C18.8393 15.1177 18.8393 15.6763 18.6 16.1492C18.4797 16.3871 18.2583 16.6085 17.8154 17.0514L17.6841 17.1827C17.2427 17.6241 17.022 17.8448 16.722 18.0133C16.3891 18.2003 15.872 18.3348 15.4902 18.3336C15.1461 18.3326 14.9109 18.2659 14.4405 18.1324C11.9127 17.4149 9.52736 16.0612 7.53738 14.0712C5.5474 12.0812 4.19367 9.69589 3.47619 7.16806C3.34269 6.69769 3.27593 6.4625 3.27491 6.11838C3.27377 5.73653 3.40824 5.21945 3.59526 4.88653C3.7638 4.5865 3.98447 4.36583 4.42583 3.92447L4.55719 3.79311C5.00006 3.35024 5.22149 3.12881 5.45931 3.00852C5.93228 2.7693 6.49083 2.7693 6.9638 3.00852C7.20162 3.12881 7.42305 3.35024 7.86592 3.79311L8.02831 3.9555C8.31965 4.24684 8.46532 4.39251 8.56056 4.53899C8.91972 5.0914 8.91972 5.80355 8.56056 6.35596C8.46532 6.50244 8.31965 6.64811 8.02831 6.93945C7.93305 7.03471 7.88542 7.08234 7.84555 7.13802C7.70388 7.33587 7.65496 7.62276 7.72306 7.85638C7.74223 7.92213 7.76717 7.97408 7.81706 8.07799Z" stroke="#3981F7" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
+            {organization.phone_number2}
+          </a>
+        )}
+      </div>
+      <div className="flex space-x-3">
+        {organization.weblink && (
+          <a href={organization.weblink} target="_blank" rel="noopener noreferrer" className="p-2 bg-[#3981F7] text-white rounded-full hover:bg-[#02315a] w-10 h-10 flex items-center justify-center">
+            <Globe className="w-5 h-5" />
+          </a>
+        )}
+        {organization.facebook && (
+          <a href={organization.facebook} target="_blank" rel="noopener noreferrer" className="p-2 bg-[#3981F7] text-white rounded-full hover:bg-[#02315a] w-10 h-10 flex items-center justify-center">
+            <Facebook className="w-5 h-5" />
+          </a>
+        )}
+        {organization.instagram && (
+          <a href={organization.instagram} target="_blank" rel="noopener noreferrer" className="p-2 bg-[#3981F7] text-white rounded-full hover:bg-[#02315a] w-10 h-10 flex items-center justify-center">
+            <Instagram className="w-5 h-5" />
+          </a>
+        )}
+        {organization.telegram && (
+          <a href={organization.telegram} target="_blank" rel="noopener noreferrer" className="p-2 bg-[#3981F7] text-white rounded-full hover:bg-[#02315a] w-10 h-10 flex items-center justify-center">
+            <Send className="w-5 h-5" />
+          </a>
+        )}
+        {organization.youtube && (
+          <a href={organization.youtube} target="_blank" rel="noopener noreferrer" className="p-2 bg-[#3981F7] text-white rounded-full hover:bg-[#02315a] w-10 h-10 flex items-center justify-center">
+            <Youtube className="w-5 h-5" />
+          </a>
+        )}
+        {organization.twitter && (
+          <a href={organization.twitter} target="_blank" rel="noopener noreferrer" className="p-2 bg-[#3981F7] text-white rounded-full hover:bg-[#02315a] w-10 h-10 flex items-center justify-center">
+            <Twitter className="w-5 h-5" />
+          </a>
+        )}
+      </div>
+    </div>
+  );
+
+  useEffect(() => {
+    // Update form validity whenever activeTab changes
+    if (onFormDataChange) {
+      onFormDataChange({
+        ...formData,
+        isValid: activeTab === 'direct' ? true : isFormValid
+      });
+    }
+  }, [activeTab]);
+
   return (
     <div>
       <h2 className="text-xl font-medium text-gray-800 mb-6">{t('pages.newsReporting.reportDetails.title')}</h2>
 
       <div className="mb-6">
-        <ToggleButtons activeTab={activeTab} onChange={setActiveTab} />
+        <ToggleButtons activeTab={activeTab} onChange={handleTabChange} />
       </div>
 
-      <div className="space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="space-y-4">
-            <div className="relative">
-              <div className="text-sm text-gray-600 mb-1">
-                {t('pages.newsReporting.reportDetails.type')} <span className="text-red-500">*</span>
-              </div>
-              <select
-                className="w-full px-4 py-3 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
-                value={formData.type}
-                onChange={(e) => handleFormChange('type', e.target.value)}
-                disabled={loading.types}
-              >
-                <option value="">{t('pages.newsReporting.reportDetails.selectType')}</option>
-                {loading.types ? (
-                  <option>{t('pages.newsReporting.loading')}</option>
-                ) : (
-                  Array.isArray(violationTypes) && violationTypes.map(type => (
-                    <option key={type.id} value={type.id}>{type.name}</option>
-                  ))
-                )}
-              </select>
-              <div className="absolute right-4 top-[38px] pointer-events-none">
-                <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                </svg>
-              </div>
-            </div>
+      {activeTab === 'direct' && selectedOrganization && (
+        <OrganizationInfo organization={selectedOrganization} />
+      )}
 
-            <div className="grid grid-cols-2 gap-4">
-              <div>
+      {activeTab === 'system' && (
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-4">
+              <div className="relative">
                 <div className="text-sm text-gray-600 mb-1">
-                  Sana <span className="text-red-500">*</span>
+                  {t('pages.newsReporting.reportDetails.type')} <span className="text-red-500">*</span>
                 </div>
-                <input
-                  type="date"
-                  className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  value={formData.date}
-                  onChange={(e) => handleFormChange('date', e.target.value)}
-                />
-              </div>
-              <div>
-                <div className="text-sm text-gray-600 mb-1">
-                  Vaqt <span className="text-red-500">*</span>
-                </div>
-                <input
-                  type="time"
-                  className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  value={formData.time}
-                  onChange={(e) => handleFormChange('time', e.target.value)}
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <div className="relative">
-              <div className="text-sm text-gray-600 mb-1">
-                {t('pages.newsReporting.location.selectRegion')} <span className="text-red-500">*</span>
-              </div>
-              <select
-                className="w-full px-4 py-3 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
-                value={formData.region}
-                onChange={(e) => handleFormChange('region', e.target.value)}
-                disabled={loading.regions}
-              >
-                <option value="">{t('pages.newsReporting.location.selectRegion')}</option>
-                {loading.regions ? (
-                  <option>{t('pages.newsReporting.loading')}</option>
-                ) : (
-                  Array.isArray(regions) && regions.map(region => (
-                    <option key={region.id} value={region.id}>{region.name}</option>
-                  ))
-                )}
-              </select>
-              <div className="absolute right-4 top-[38px] pointer-events-none">
-                <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                </svg>
-              </div>
-            </div>
-
-            <div className="relative">
-              <div className="text-sm text-gray-600 mb-1">
-                {t('pages.newsReporting.location.selectDistrict')} <span className="text-red-500">*</span>
-              </div>
-              <select
-                className="w-full px-4 py-3 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
-                value={formData.district}
-                onChange={(e) => handleFormChange('district', e.target.value)}
-                disabled={!formData.region || loading.districts}
-              >
-                <option value="">{t('pages.newsReporting.location.selectDistrict')}</option>
-                {loading.districts ? (
-                  <option>{t('pages.newsReporting.loading')}</option>
-                ) : (
-                  Array.isArray(districts) && districts.map(district => (
-                    <option key={district.id} value={district.id}>{district.name}</option>
-                  ))
-                )}
-              </select>
-              <div className="absolute right-4 top-[38px] pointer-events-none">
-                <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <div className="text-sm text-gray-600 mb-1">
-              {t('pages.newsReporting.reportDetails.description')}
-            </div>
-            <textarea
-              rows={4}
-              placeholder={t('pages.newsReporting.reportDetails.description')}
-              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-              value={formData.details}
-              onChange={(e) => handleFormChange('details', e.target.value)}
-              maxLength={460}
-            />
-            <div className="text-right text-sm text-gray-500">
-              {formData.details.length}/460
-            </div>
-          </div>
-
-          <div>
-            <div className="text-sm text-gray-600 mb-1">
-              {t('pages.newsReporting.fileUpload.title')}
-            </div>
-            <div className="border-2 border-dashed rounded-lg p-6">
-              <div className="text-center mb-4">
-                <p className="text-gray-600 mb-2">
-                  {t('pages.newsReporting.fileUpload.dragDropText')}
-                </p>
-                <p className="text-sm text-gray-500 mb-4">
-                  {t('pages.newsReporting.fileUpload.formatInfo')}
-                </p>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  className="hidden"
-                  accept=".jpg,.jpeg,.png,.pdf,.mp4"
-                  onChange={handleFileChange}
-                  multiple
-                />
-                <button
-                  onClick={() => fileInputRef.current?.click()}
-                  className="px-4 py-2 bg-white border rounded-lg text-gray-700 hover:bg-gray-50"
+                <select
+                  className="w-full px-4 py-3 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+                  value={formData.type}
+                  onChange={(e) => handleFormChange('type', e.target.value)}
+                  disabled={loading.types}
                 >
-                  {t('pages.newsReporting.fileUpload.uploadButton')}
-                </button>
+                  <option value="">{t('pages.newsReporting.reportDetails.selectType')}</option>
+                  {loading.types ? (
+                    <option>{t('pages.newsReporting.loading')}</option>
+                  ) : (
+                    Array.isArray(violationTypes) && violationTypes.map(type => (
+                      <option key={type.id} value={type.id}>{type.name}</option>
+                    ))
+                  )}
+                </select>
+                <div className="absolute right-4 top-[38px] pointer-events-none">
+                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
               </div>
 
-              {files.length > 0 && (
-                <div className="space-y-3 mt-4">
-                  {files.map((fileObj) => (
-                    <div key={fileObj.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0">
-                      <div className="flex items-center space-x-3">
-                        <div className="p-2 bg-red-50 rounded">
-                          <svg className="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0h8v12H6V4z" clipRule="evenodd" />
-                          </svg>
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium">{fileObj.file.name}</p>
-                          <p className="text-xs text-gray-500">
-                            {Math.round(fileObj.file.size / 1024)} KB
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-4 w-full sm:w-auto">
-                        <div className="flex items-center flex-1 sm:flex-none">
-                          <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
-                            <div
-                              className="h-full bg-[#024073] transition-all duration-300"
-                              style={{ width: `${fileObj.progress}%` }}
-                            />
-                          </div>
-                          <span className="ml-2 text-sm text-gray-500">
-                            {fileObj.progress}%
-                          </span>
-                        </div>
-                        <button
-                          onClick={() => removeFile(fileObj.id)}
-                          className="p-1 text-gray-400 hover:text-red-600"
-                        >
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                          </svg>
-                        </button>
-                      </div>
-                    </div>
-                  ))}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <div className="text-sm text-gray-600 mb-1">
+                    Sana <span className="text-red-500">*</span>
+                  </div>
+                  <div className="relative">
+                    <DatePicker
+                      selected={formData.date}
+                      onChange={(date) => handleFormChange('date', date)}
+                      className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pl-10"
+                      calendarClassName="custom-calendar"
+                      showPopperArrow={false}
+                    />
+                    <Calendar className="w-5 h-5 text-blue-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  </div>
+
                 </div>
-              )}
+                <div>
+                  <div className="text-sm text-gray-600 mb-1">
+                    Vaqt <span className="text-red-500">*</span>
+                  </div>
+                  <input
+                    type="time"
+                    className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value={formData.time}
+                    onChange={(e) => handleFormChange('time', e.target.value)}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div className="relative">
+                <div className="text-sm text-gray-600 mb-1">
+                  {t('pages.newsReporting.location.selectRegion')} <span className="text-red-500">*</span>
+                </div>
+                <select
+                  className="w-full px-4 py-3 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+                  value={formData.region}
+                  onChange={(e) => handleFormChange('region', e.target.value)}
+                  disabled={loading.regions}
+                >
+                  <option value="">{t('pages.newsReporting.location.selectRegion')}</option>
+                  {loading.regions ? (
+                    <option>{t('pages.newsReporting.loading')}</option>
+                  ) : (
+                    Array.isArray(regions) && regions.map(region => (
+                      <option key={region.id} value={region.id}>{region.name}</option>
+                    ))
+                  )}
+                </select>
+                <div className="absolute right-4 top-[38px] pointer-events-none">
+                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
+
+              <div className="relative">
+                <div className="text-sm text-gray-600 mb-1">
+                  {t('pages.newsReporting.location.selectDistrict')} <span className="text-red-500">*</span>
+                </div>
+                <select
+                  className="w-full px-4 py-3 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+                  value={formData.district}
+                  onChange={(e) => handleFormChange('district', e.target.value)}
+                  disabled={!formData.region || loading.districts}
+                >
+                  <option value="">{t('pages.newsReporting.location.selectDistrict')}</option>
+                  {loading.districts ? (
+                    <option>{t('pages.newsReporting.loading')}</option>
+                  ) : (
+                    Array.isArray(districts) && districts.map(district => (
+                      <option key={district.id} value={district.id}>{district.name}</option>
+                    ))
+                  )}
+                </select>
+                <div className="absolute right-4 top-[38px] pointer-events-none">
+                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <div className="text-sm text-gray-600 mb-1">
+                {t('pages.newsReporting.reportDetails.description')}
+              </div>
+              <textarea
+                rows={4}
+                placeholder={t('pages.newsReporting.reportDetails.description')}
+                className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                value={formData.details}
+                onChange={(e) => handleFormChange('details', e.target.value)}
+                maxLength={460}
+              />
+              <div className="text-right text-sm text-gray-500">
+                {formData.details.length}/460
+              </div>
+            </div>
+
+            <div>
+              <div className="text-sm text-gray-600 mb-1">
+                {t('pages.newsReporting.fileUpload.title')}
+              </div>
+              <div className="border-2 border-dashed rounded-lg p-6">
+                <div className="text-center mb-4">
+                  <p className="text-gray-600 mb-2">
+                    {t('pages.newsReporting.fileUpload.dragDropText')}
+                  </p>
+                  <p className="text-sm text-gray-500 mb-4">
+                    {t('pages.newsReporting.fileUpload.formatInfo')}
+                  </p>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    className="hidden"
+                    accept=".jpg,.jpeg,.png,.pdf,.mp4"
+                    onChange={handleFileChange}
+                    multiple
+                  />
+                  <button
+                    onClick={() => fileInputRef.current?.click()}
+                    className="px-4 py-2 bg-white border rounded-lg text-gray-700 hover:bg-gray-50"
+                  >
+                    {t('pages.newsReporting.fileUpload.uploadButton')}
+                  </button>
+                </div>
+
+                {files.length > 0 && (
+                  <div className="space-y-3 mt-4">
+                    {files.map((fileObj) => (
+                      <div key={fileObj.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0">
+                        <div className="flex items-center space-x-3">
+                          <div className="p-2 bg-red-50 rounded">
+                            <svg className="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0h8v12H6V4z" clipRule="evenodd" />
+                            </svg>
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium">{fileObj.file.name}</p>
+                            <p className="text-xs text-gray-500">
+                              {Math.round(fileObj.file.size / 1024)} KB
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-4 w-full sm:w-auto">
+                          <div className="flex items-center flex-1 sm:flex-none">
+                            <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
+                              <div
+                                className="h-full bg-[#024073] transition-all duration-300"
+                                style={{ width: `${fileObj.progress}%` }}
+                              />
+                            </div>
+                            <span className="ml-2 text-sm text-gray-500">
+                              {fileObj.progress}%
+                            </span>
+                          </div>
+                          <button
+                            onClick={() => removeFile(fileObj.id)}
+                            className="p-1 text-gray-400 hover:text-red-600"
+                          >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
@@ -746,6 +845,13 @@ const ContactForm = ({ formData, onFormDataChange }) => {
 const ReporterInfo = ({ formData, onFormDataChange, isAnonymous, onAnonymousChange }) => {
   const { t } = useTranslation();
 
+  useEffect(() => {
+    // Anonim tanlanganda formani tozalaymiz va valid qilamiz
+    if (isAnonymous) {
+      onFormDataChange({}); // Barcha maydonlarni tozalash
+    }
+  }, [isAnonymous]);
+
   return (
     <div>
       <h2 className="text-xl font-medium text-gray-800 mb-6">
@@ -769,45 +875,46 @@ const ReporterInfo = ({ formData, onFormDataChange, isAnonymous, onAnonymousChan
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div>
-          <div className="text-sm text-gray-600 mb-1">
-            {t('pages.newsReporting.reporterInfo.fullName')} <span className="text-red-500">*</span>
+      {/* Faqat anonim bo'lmaganda inputlarni ko'rsatamiz */}
+      {!isAnonymous && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <div className="text-sm text-gray-600 mb-1">
+              {t('pages.newsReporting.reporterInfo.fullName')} <span className="text-red-500">*</span>
+            </div>
+            <input
+              type="text"
+              value={formData.name || ''}
+              onChange={(e) => onFormDataChange({ ...formData, name: e.target.value })}
+              placeholder={t('pages.newsReporting.contactForm.fullNamePlaceholder')}
+              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
           </div>
-          <input
-            type="text"
-            value={formData.name}
-            onChange={(e) => onFormDataChange({ ...formData, name: e.target.value })}
-            placeholder={t('pages.newsReporting.contactForm.fullNamePlaceholder')}
-            className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            disabled={isAnonymous}
-          />
-        </div>
 
-        <div>
-          <div className="text-sm text-gray-600 mb-1">
-            {t('pages.newsReporting.reporterInfo.phoneNumber')} <span className="text-red-500">*</span>
+          <div>
+            <div className="text-sm text-gray-600 mb-1">
+              {t('pages.newsReporting.reporterInfo.phoneNumber')} <span className="text-red-500">*</span>
+            </div>
+            <PhoneInput
+              value={formData.phone || '+998'}
+              onChange={(value) => onFormDataChange({ ...formData, phone: value })}
+            />
           </div>
-          <PhoneInput
-            value={formData.phone}
-            onChange={(value) => onFormDataChange({ ...formData, phone: value })}
-          />
-        </div>
 
-        <div>
-          <div className="text-sm text-gray-600 mb-1">
-            {t('pages.newsReporting.reporterInfo.email')} <span className="text-red-500">*</span>
+          <div>
+            <div className="text-sm text-gray-600 mb-1">
+              {t('pages.newsReporting.reporterInfo.email')} <span className="text-red-500">*</span>
+            </div>
+            <input
+              type="email"
+              value={formData.email || ''}
+              onChange={(e) => onFormDataChange({ ...formData, email: e.target.value })}
+              placeholder={t('pages.newsReporting.reporterInfo.email')}
+              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
           </div>
-          <input
-            type="email"
-            value={formData.email}
-            onChange={(e) => onFormDataChange({ ...formData, email: e.target.value })}
-            placeholder={t('pages.newsReporting.reporterInfo.email')}
-            className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            disabled={isAnonymous}
-          />
         </div>
-      </div>
+      )}
     </div>
   );
 };
@@ -850,6 +957,7 @@ const NewsReporting = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const [selectedOrgId, setSelectedOrgId] = useState(null);
+  const [selectedOrganization, setSelectedOrganization] = useState(null);
 
   const [reportFormData, setReportFormData] = useState({
     type: '',
@@ -897,27 +1005,73 @@ const NewsReporting = () => {
     try {
       const formData = new FormData();
 
+      // Organization ID always required
       formData.append('organization', selectedOrgId);
-      formData.append('event_time', `${reportFormData.date}T${reportFormData.time}`);
-      formData.append('region', reportFormData.region);
-      formData.append('district', reportFormData.district);
-      formData.append('report_type', reportFormData.type);
-      formData.append('comment', reportFormData.details);
-
-      formData.append('informant_full_name', reporterFormData.name);
-      formData.append('informant_phone_number', reporterFormData.phone);
-      formData.append('informant_email', reporterFormData.email);
       formData.append('is_anonim', isAnonymous.toString());
 
-      reportFormData.files.forEach(fileObj => {
-        formData.append('file', fileObj.file);
-      });
+      // Only append if direct contact is not selected (system form is filled)
+      if (reportFormData.date && reportFormData.time) {
+        // Convert date to YYYY-MM-DD format
+        const dateObj = new Date(reportFormData.date);
+        const year = dateObj.getFullYear();
+        const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+        const day = String(dateObj.getDate()).padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day}`;
 
-      contactFormData.forEach((contact, index) => {
-        formData.append('full_name', contact.name);
-        formData.append('position', contact.position);
-        formData.append('phone_number', contact.phone);
-      });
+        // Add timezone offset
+        const timezoneOffset = new Date().getTimezoneOffset();
+        const offsetHours = Math.abs(Math.floor(timezoneOffset / 60)).toString().padStart(2, '0');
+        const offsetMinutes = Math.abs(timezoneOffset % 60).toString().padStart(2, '0');
+        const offsetSign = timezoneOffset > 0 ? '-' : '+';
+
+        // Combine date, time and timezone offset
+        const formattedDateTime = `${formattedDate}T${reportFormData.time}:00${offsetSign}${offsetHours}:${offsetMinutes}`;
+
+        formData.append('event_time', formattedDateTime);
+      }
+      if (reportFormData.region) {
+        formData.append('region', reportFormData.region);
+      }
+      if (reportFormData.district) {
+        formData.append('district', reportFormData.district);
+      }
+      if (reportFormData.type) {
+        formData.append('report_type', reportFormData.type);
+      }
+      if (reportFormData.details) {
+        formData.append('comment', reportFormData.details);
+      }
+      if (reportFormData.files && reportFormData.files.length > 0) {
+        reportFormData.files.forEach(fileObj => {
+          formData.append('file', fileObj.file);
+        });
+      }
+
+      // Reporter info - only append non-empty values
+      if (reporterFormData.name) {
+        formData.append('informant_full_name', reporterFormData.name);
+      }
+      if (reporterFormData.phone) {
+        formData.append('informant_phone_number', reporterFormData.phone);
+      }
+      if (reporterFormData.email) {
+        formData.append('informant_email', reporterFormData.email);
+      }
+
+      // Contact form data - only append if there are contacts and they have data
+      if (contactFormData && contactFormData.length > 0) {
+        contactFormData.forEach(contact => {
+          if (contact.name) {
+            formData.append('full_name', contact.name);
+          }
+          if (contact.position) {
+            formData.append('position', contact.position);
+          }
+          if (contact.phone) {
+            formData.append('phone_number', contact.phone);
+          }
+        });
+      }
 
       const response = await fetch('https://api-dev.komplayens.uz/api/v1/services/violation/report/', {
         method: 'POST',
@@ -947,16 +1101,47 @@ const NewsReporting = () => {
     navigate('/');
   };
 
+  const handleOrganizationSelect = (org) => {
+    setSelectedOrgId(org.id);
+    setSelectedOrganization(org);
+  };
+
+  const handleAnonymousChange = (value) => {
+    setIsAnonymous(value);
+    if (value) {
+      setReporterFormData({}); // Formani tozalash
+      // Keyingi buttonni enable qilish
+      setCurrentStep(prevStep => {
+        const isValid = true; // Anonim tanlanganda har doim valid
+        setIsAnonymous(true);
+        return prevStep;
+      });
+    }
+  };
+
+  const isReporterInfoValid = () => {
+    if (isAnonymous) {
+      return true; // Anonim tanlangan bo'lsa har doim valid
+    }
+    // Anonim bo'lmaganda hamma maydonlar to'ldirilishi shart
+    return (
+      reporterFormData.name?.trim() &&
+      reporterFormData.phone?.length === 13 &&
+      reporterFormData.email?.trim()
+    );
+  };
+
   const renderCurrentStep = () => {
     switch (currentStep) {
       case 1:
-        return <OrganizationSelection onNext={handleNext} onSelect={setSelectedOrgId} selectedOrgId={selectedOrgId} />;
+        return <OrganizationSelection onNext={handleNext} onSelect={handleOrganizationSelect} selectedOrgId={selectedOrgId} />;
       case 2:
         return (
           <ReportDetails
             onFormDataChange={handleReportFormChange}
             onFileChange={handleFileChange}
             formData={reportFormData}
+            selectedOrganization={selectedOrganization}
           />
         );
       case 3:
@@ -972,7 +1157,7 @@ const NewsReporting = () => {
             formData={reporterFormData}
             onFormDataChange={setReporterFormData}
             isAnonymous={isAnonymous}
-            onAnonymousChange={setIsAnonymous}
+            onAnonymousChange={handleAnonymousChange}
           />
         );
       default:
@@ -997,7 +1182,7 @@ const NewsReporting = () => {
         );
       case 4:
         if (isAnonymous) {
-          return !reporterFormData.phone || reporterFormData.phone.length !== 13;
+          return false;
         }
         return !reporterFormData.name ||
           !reporterFormData.phone ||
