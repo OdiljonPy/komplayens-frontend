@@ -266,6 +266,15 @@ const ElectronicLibrary = () => {
                         </button>
                         {isDropdownOpen && (
                           <div className="absolute top-full left-0 mt-1 w-48 bg-white shadow-md rounded-md z-10">
+                            <div className="flex flex-col gap-2">
+                              <button
+                                onClick={() => handleCategorySelect(null)}
+                                className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                              >
+                                {t('pages.electronicLibrary.department.all')}
+                              </button>
+                            </div>
+
                             {categories.map((category) => (
                               <button
                                 key={category.id}

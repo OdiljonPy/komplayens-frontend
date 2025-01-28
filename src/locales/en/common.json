@@ -144,7 +144,8 @@
       "readMore": "Read More",
       "noAnnouncements": "No announcements found",
       "previous": "Previous",
-      "next": "Next"
+      "next": "Next",
+      "all": "All"
     },
     "benefitsCalculator": {
       "title": "Benefits Calculator",
@@ -213,7 +214,8 @@
       },
       "department": {
         "label": "Department",
-        "select": "Select department"
+        "select": "Select department",
+        "all": "All"
       },
       "bookCount": "{{count}} books",
       "table": {

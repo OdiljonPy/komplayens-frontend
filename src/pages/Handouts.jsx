@@ -8,6 +8,8 @@ import pdf from "../assets/icons/pdf.png"
 import ppt from "../assets/icons/ppt.png"
 import xls from "../assets/icons/xls.png"
 import zip from "../assets/icons/zip.png"
+import png from "../assets/icons/png.png"
+
 
 const HandoutsSkeleton = () => (
   <div className="w-full p-4 animate-pulse">
@@ -242,7 +244,7 @@ function Handouts() {
                         <div className="flex items-center gap-3">
                           <div className="w-8 h-8">
                             <img
-                              src={handout.type === "ZIP" ? zip : handout.type === "PPT" ? ppt : handout.type === "XLS" ? xls : pdf}
+                              src={handout.type === "zip" ? zip : handout.type === "ppt" ? ppt : handout.type === "xls" ? xls : handout.type === "png" ? png : pdf}
                               alt={t('pages.handouts.fileIcon')}
                               className="w-full h-full object-contain"
                             />

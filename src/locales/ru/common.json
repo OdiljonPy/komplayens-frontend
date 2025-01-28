@@ -144,7 +144,8 @@
       "readMore": "Подробнее",
       "noAnnouncements": "Объявлений не найдено",
       "previous": "Предыдущий",
-      "next": "Следующий"
+      "next": "Следующий",
+      "all": "Все"
     },
     "benefitsCalculator": {
       "title": "Калькулятор выгод",
@@ -213,7 +214,8 @@
       },
       "department": {
         "label": "Отдел",
-        "select": "Выберите отдел"
+        "select": "Выберите отдел",
+        "all": "Все"
       },
       "bookCount": "{{count}} книг",
       "table": {

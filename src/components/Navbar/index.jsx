@@ -35,6 +35,7 @@ const Navbar = () => {
     {
       title: t('navbar.education_resources'),
       dropdown: true,
+      to: '/training-courses',
       items: [
         {
           label: t('navbar.training_courses'),

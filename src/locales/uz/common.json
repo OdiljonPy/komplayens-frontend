@@ -144,7 +144,8 @@
       "readMore": "Batafsil",
       "noAnnouncements": "E'lonlar topilmadi",
       "previous": "Oldingisi",
-      "next": "Keyingisi"
+      "next": "Keyingisi",
+      "all": "Barchasi"
     },
     "benefitsCalculator": {
       "title": "Manfaatlar kalkulyatori",
@@ -213,7 +214,8 @@
       },
       "department": {
         "label": "Bo'limi",
-        "select": "Bo'limi tanlang"
+        "select": "Bo'limi tanlang",
+        "all": "Barchasi"
       },
       "bookCount": "{{count}} kitob",
       "table": {

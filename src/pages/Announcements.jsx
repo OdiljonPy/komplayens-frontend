@@ -9,24 +9,23 @@ function Announcements() {
   const [categories, setCategories] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
   const [pagination, setPagination] = useState({});
-
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const fetchAnnouncements = async (page = 1, categoryId = null) => {
+    const response = await sendRequest({ method: 'GET', url: `/services/announcement/?page=${page}&page_size=10&${categoryId ? `category_id=${categoryId}` : ''}` });
+    if (response.success && response.data.ok) {
+      setAnnouncements(response.data.result.content);
+      setPagination({
+        totalElements: response.data.result.totalElements,
+        totalPages: response.data.result.totalPages,
+        currentPage: response.data.result.number,
+      });
+    }
+  };
   useEffect(() => {
     const fetchCategories = async () => {
       const response = await sendRequest({ method: 'GET', url: '/services/announcement/categories/' });
       if (response.success && response.data.ok) {
         setCategories(response.data.result);
-      }
-    };
-
-    const fetchAnnouncements = async (page = 1) => {
-      const response = await sendRequest({ method: 'GET', url: `/services/announcement/?page=${page}&page_size=10&category_id=1` });
-      if (response.success && response.data.ok) {
-        setAnnouncements(response.data.result.content);
-        setPagination({
-          totalElements: response.data.result.totalElements,
-          totalPages: response.data.result.totalPages,
-          currentPage: response.data.result.number,
-        });
       }
     };
 
@@ -38,6 +37,11 @@ function Announcements() {
     if (newPage > 0 && newPage <= pagination.totalPages) {
       fetchAnnouncements(newPage); // Fetch announcements for the new page
     }
+  };
+
+  const handleCategorySelect = (categoryId) => {
+    setSelectedCategory(categoryId);
+    fetchAnnouncements(1, categoryId);
   };
 
   const CategoriesSkeleton = () => (
@@ -122,11 +126,21 @@ function Announcements() {
         ) : (
           <>
             <div className="flex overflow-x-auto whitespace-nowrap md:flex-wrap gap-2 mb-8 pb-2 hide-scrollbar">
+              <button
+                onClick={() => handleCategorySelect(null)}
+                className={`px-4 py-1.5 rounded-[8px] transition-colors flex-shrink-0 ${selectedCategory === null
+                  ? 'bg-[#3981F7] text-white'
+                  : 'bg-white hover:bg-gray-50'
+                  }`}
+              >
+                {t('pages.announcements.all')}
+              </button>
               {categories.map((category, index) => (
                 <button
+                  onClick={() => handleCategorySelect(category.id)}
                   key={index}
-                  className={`px-4 py-1.5 rounded-[8px] transition-colors flex-shrink-0 ${index === 0
-                    ? 'bg-blue-500 text-white'
+                  className={`px-4 py-1.5 rounded-[8px] transition-colors flex-shrink-0 ${selectedCategory === category.id
+                    ? 'bg-[#3981F7] text-white'
                     : 'bg-white hover:bg-gray-50'
                     }`}
                 >
