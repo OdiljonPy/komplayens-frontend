@@ -323,7 +323,7 @@ const ElectronicLibrary = () => {
                             <td className="py-4 px-4 text-sm text-center">{book.edition_type}</td>
                             <td className="py-4 px-4 text-sm text-center">{formatDate(book.edition_year)}</td>
                             <td className="py-4 px-4">
-                              <p className="text-sm text-gray-500 line-clamp-2">{book.description || '-'}</p>
+                              <p className="text-sm text-gray-500 line-clamp-2">{book.short_description || '-'}</p>
                             </td>
                             <td className="py-4 px-4 text-center">
                               <a

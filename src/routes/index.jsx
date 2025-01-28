@@ -27,7 +27,8 @@ import {
   ForgotPassword,
   TrainingCourses,
   ElectronicLibrary,
-  Handouts
+  Handouts,
+  AnnouncementsItem,
 } from "../pages";
 
 // Add language redirect for root path
@@ -122,6 +123,10 @@ export const router = createBrowserRouter([
       {
         path: "announcements",
         element: <Announcements />
+      },
+      {
+        path: "announcements/:announcementId",
+        element: <AnnouncementsItem />
       },
       {
         path: "handouts",

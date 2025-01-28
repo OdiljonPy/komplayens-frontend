@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import { Eye, Calendar } from 'lucide-react'
+import { Eye, Calendar, } from 'lucide-react'
 import banner from "../assets/banners/05.png"
 import { sendRequest } from '../utils/apiFunctions';
 import { useTranslation } from 'react-i18next';
 import DatePicker from "react-datepicker";
+import { Link } from 'react-router-dom';
 import "react-datepicker/dist/react-datepicker.css";
 
 function Announcements() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const getLocalizedPath = (path) => {
+    return `/${i18n.language}${path}`;
+  };
   const [categories, setCategories] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
   const [pagination, setPagination] = useState({});
@@ -194,7 +198,11 @@ function Announcements() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               {announcements.map((announcement, idx) => (
-                <div key={announcement.id} className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                <Link
+                  to={getLocalizedPath(`/announcements/${announcement.id}`)}
+                  key={announcement.id}
+                  className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-shadow"
+                >
                   <div className="p-3">
                     <img
                       src={announcement.image}
@@ -220,7 +228,7 @@ function Announcements() {
                       </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
 
