@@ -67,7 +67,7 @@ const Navbar = () => {
     },
     {
       title: t('navbar.surveys'),
-      to: '/',
+      to: '/operations',
       dropdown: true,
       items: [
         {

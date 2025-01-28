@@ -141,18 +141,23 @@ const Filters = ({ onFilterChange }) => {
           </div>
 
           {isDatePickerOpen && (
-            <div className="absolute z-50 mt-1">
+            <div className="absolute z-50 mt-1 transform -translate-x-1/2 left-1/2">
               <DateRange
                 ranges={dateRange}
                 onChange={handleDateSelect}
-                months={2}
-                direction="horizontal"
-                className="border border-gray-200 rounded-lg shadow-lg"
+                months={1}
+                direction="vertical"
+                className="border border-gray-200 rounded-lg shadow-lg !w-auto"
+                monthDisplayFormat="MMMM yyyy"
+                rangeColors={["#3b82f6"]}
+                showMonthAndYearPickers={true}
+                minDate={new Date()}
+                showDateDisplay={false}
               />
-              <div className="bg-white p-4 border-t flex justify-end">
+              <div className="bg-white p-3 border-t flex justify-end">
                 <button
                   onClick={handleApplyDateRange}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                  className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                 >
                   OK
                 </button>
@@ -259,6 +264,17 @@ export default function CorruptionRisks() {
   });
 
   const [loading, setLoading] = useState(true);
+
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const fetchInitialData = async () => {
