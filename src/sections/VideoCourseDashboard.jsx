@@ -185,34 +185,7 @@ const VideoCourseDashboard = () => {
               </Link>
             </div>
 
-            <div className="flex flex-col md:flex-row gap-4 mb-6">
-              <div className="flex-1">
-                <label className="block text-sm text-gray-600 mb-1">{t('common.sort')}:</label>
-                <select
-                  className="w-full p-2 border rounded-md"
-                  value={orderBy}
-                  onChange={(e) => setOrderBy(e.target.value)}
-                >
-                  <option value="new">{t('sort.newest')}</option>
-                  <option value="old">{t('sort.oldest')}</option>
-                </select>
-              </div>
-              <div className="flex-1 w-full">
-                <label className="block text-sm text-gray-600 mb-1">{t('common.date')}</label>
-                <div className="relative">
-                  <DatePicker
-                    selected={startDate}
-                    onChange={handleDateChange}
-                    dateFormat="dd/MM/yyyy"
-                    className="w-full p-2.5 pl-10 bg-white border border-gray-200 rounded-xl cursor-pointer"
-                    calendarClassName="custom-calendar"
-                    showPopperArrow={false}
 
-                  />
-                  <Calendar className="w-5 h-5 text-blue-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                </div>
-              </div>
-            </div>
 
             <div className="space-y-4">
               {courses.length === 0 ? (

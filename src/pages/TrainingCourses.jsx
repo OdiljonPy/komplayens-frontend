@@ -179,6 +179,36 @@ export default function TrainingCourses() {
               </Link>
             </div>
 
+
+            {/* <div className="flex flex-col md:flex-row gap-4 mb-6">
+              <div className="flex-1">
+                <label className="block text-sm text-gray-600 mb-1">{t('common.sort')}:</label>
+                <select
+                  className="w-full p-2 border rounded-md"
+                  value={orderBy}
+                  onChange={(e) => setOrderBy(e.target.value)}
+                >
+                  <option value="new">{t('sort.newest')}</option>
+                  <option value="old">{t('sort.oldest')}</option>
+                </select>
+              </div>
+              <div className="flex-1 w-full">
+                <label className="block text-sm text-gray-600 mb-1">{t('common.date')}</label>
+                <div className="relative">
+                  <DatePicker
+                    selected={startDate}
+                    onChange={handleDateChange}
+                    dateFormat="dd/MM/yyyy"
+                    className="w-full p-2.5 pl-10 bg-white border border-gray-200 rounded-xl cursor-pointer"
+                    calendarClassName="custom-calendar"
+                    showPopperArrow={false}
+
+                  />
+                  <Calendar className="w-5 h-5 text-blue-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                </div>
+              </div>
+            </div> */}
+
             {/* Search Input */}
             <div className="relative w-full md:w-64">
               <input
@@ -193,12 +223,12 @@ export default function TrainingCourses() {
           </div>
 
           {/* Category Selection */}
-          <div className="flex overflow-x-auto gap-2 mb-8 pb-2">
+          <div className="flex overflow-x-auto gap-2 mb-4 mt-4 pb-2">
             {categories.map((category) => (
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`px-4 py-1.5 rounded-full transition-colors whitespace-nowrap ${selectedCategory === category.id
+                className={`px-4 py-1.5 rounded-[8px] transition-colors whitespace-nowrap ${selectedCategory === category.id
                   ? 'bg-blue-500 text-white'
                   : 'bg-white hover:bg-gray-50'
                   }`}
@@ -224,14 +254,14 @@ export default function TrainingCourses() {
                         className="w-full aspect-[16/9] object-cover"
                       />
                       <div className="p-4">
-                        <div className="flex items-center gap-2 mb-2">
+                        <div className="flex items-center gap-4 mb-2">
                           <div className="flex items-center gap-1 text-[#667085]">
                             <Clock size={16} className="text-[#667085]" />
                             <span className="text-sm">{course.video_length} {t('pages.courseItem.watch')}</span>
                           </div>
                           <div className="flex items-center gap-1 text-[#667085]">
                             <Eye size={16} className="text-[#667085]" />
-                            <span className="text-sm">{t('pages.announcements.viewCount')}</span>
+                            <span className="text-sm">{course.views}</span>
                           </div>
                         </div>
                         <h3 className="font-medium text-[#024072] text-lg mb-2">{course.name}</h3>

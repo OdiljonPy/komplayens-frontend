@@ -155,7 +155,7 @@ function Announcements() {
                     <img
                       src={announcement.image}
                       alt={announcement.title}
-                      className="w-full h-full object-cover max-h-[200px]"
+                      className="w-full object-cover h-[200px] rounded-lg"
                     />
                   </div>
 
@@ -172,7 +172,7 @@ function Announcements() {
 
                       <div className="flex items-center gap-1">
                         <Calendar size={14} />
-                        <span>{announcement.date}</span>
+                        <span>{announcement.published_date}</span>
                       </div>
                     </div>
                   </div>
