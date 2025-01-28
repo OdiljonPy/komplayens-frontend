@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom'
 import { sendRequest } from '../utils/apiFunctions';
 import { useTranslation } from 'react-i18next';
 
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 // Add skeleton component
 const ViolationsSkeleton = () => (
   <div className="p-4 animate-pulse">
@@ -212,7 +215,7 @@ function Violations() {
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
           {/* Date Selection with MUI-like design */}
           <div className="w-full md:w-64 relative">
-            <div className="relative border rounded-md focus-within:border-blue-500 transition-colors">
+            {/* <div className="relative border rounded-md focus-within:border-blue-500 transition-colors">
               <label
                 className={`absolute left-3 transition-all pointer-events-none
                 ${selectedDate ? 'text-xs -top-2 bg-white px-1' : 'text-gray-500 top-2'}`}
@@ -225,6 +228,17 @@ function Violations() {
                 value={selectedDate}
                 onChange={(e) => setSelectedDate(e.target.value)}
               />
+
+            </div> */}
+            <div className="relative">
+              <DatePicker
+                selected={selectedDate}
+                onChange={(date) => setSelectedDate(date)}
+                className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pl-10"
+                calendarClassName="custom-calendar"
+                showPopperArrow={false}
+              />
+              <Calendar className="w-5 h-5 text-blue-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
             </div>
           </div>
 

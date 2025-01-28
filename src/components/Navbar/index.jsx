@@ -88,7 +88,7 @@ const Navbar = () => {
     },
     {
       title: t('navbar.useful_resources'),
-      to: '/resources',
+      to: '/violations',
       dropdown: true,
       items: [
         {

@@ -3,6 +3,8 @@ import { Eye, Calendar } from 'lucide-react'
 import banner from "../assets/banners/05.png"
 import { sendRequest } from '../utils/apiFunctions';
 import { useTranslation } from 'react-i18next';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 function Announcements() {
   const { t } = useTranslation();
@@ -10,8 +12,12 @@ function Announcements() {
   const [announcements, setAnnouncements] = useState([]);
   const [pagination, setPagination] = useState({});
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const fetchAnnouncements = async (page = 1, categoryId = null) => {
-    const response = await sendRequest({ method: 'GET', url: `/services/announcement/?page=${page}&page_size=10&${categoryId ? `category_id=${categoryId}` : ''}` });
+
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+
+
+  const fetchAnnouncements = async (page = 1, categoryId = null, date = null) => {
+    const response = await sendRequest({ method: 'GET', url: `/services/announcement/?page=${page}&page_size=10&${categoryId ? `category_id=${categoryId}` : ''}&${date ? `from_date=${date}` : ''}` });
     if (response.success && response.data.ok) {
       setAnnouncements(response.data.result.content);
       setPagination({
@@ -125,29 +131,67 @@ function Announcements() {
           <AnnouncementsSkeleton />
         ) : (
           <>
-            <div className="flex overflow-x-auto whitespace-nowrap md:flex-wrap gap-2 mb-8 pb-2 hide-scrollbar">
-              <button
-                onClick={() => handleCategorySelect(null)}
-                className={`px-4 py-1.5 rounded-[8px] transition-colors flex-shrink-0 ${selectedCategory === null
-                  ? 'bg-[#3981F7] text-white'
-                  : 'bg-white hover:bg-gray-50'
-                  }`}
+
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
+              {/* Date Selection with MUI-like design */}
+              <div className="w-full md:w-64 relative">
+                {/* <div className="relative border rounded-md focus-within:border-blue-500 transition-colors">
+              <label
+                className={`absolute left-3 transition-all pointer-events-none
+                ${selectedDate ? 'text-xs -top-2 bg-white px-1' : 'text-gray-500 top-2'}`}
               >
-                {t('pages.announcements.all')}
-              </button>
-              {categories.map((category, index) => (
+                {t('pages.corruptionRisks.sorting')}
+              </label>
+              <input
+                type="date"
+                className="w-full px-3 pt-3 pb-2 outline-none rounded-md bg-transparent"
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
+              />
+
+            </div> */}
+                <div className="relative">
+                  <DatePicker
+                    selected={selectedDate}
+                    onChange={(date) => {
+                      setSelectedDate(date);
+                      const formattedDate = date.toISOString().split('T')[0]; // Formats to "YYYY-MM-DD"
+                      fetchAnnouncements(1, null, formattedDate);
+                    }}
+                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pl-10"
+                    calendarClassName="custom-calendar"
+                    showPopperArrow={false}
+                  />
+                  <Calendar className="w-5 h-5 text-blue-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                </div>
+              </div>
+
+              <div className="w-full md:w-auto flex overflow-x-auto whitespace-nowrap gap-2 pb-2 md:flex-wrap scrollbar-hide">
                 <button
-                  onClick={() => handleCategorySelect(category.id)}
-                  key={index}
-                  className={`px-4 py-1.5 rounded-[8px] transition-colors flex-shrink-0 ${selectedCategory === category.id
+                  onClick={() => handleCategorySelect(null)}
+                  className={`px-4 py-1.5 rounded-[8px] transition-colors flex-shrink-0 ${selectedCategory === null
                     ? 'bg-[#3981F7] text-white'
                     : 'bg-white hover:bg-gray-50'
                     }`}
                 >
-                  {category.name}
+                  {t('pages.announcements.all')}
                 </button>
-              ))}
+                {categories.map((category, index) => (
+                  <button
+                    onClick={() => handleCategorySelect(category.id)}
+                    key={index}
+                    className={`px-4 py-1.5 rounded-[8px] transition-colors flex-shrink-0 ${selectedCategory === category.id
+                      ? 'bg-[#3981F7] text-white'
+                      : 'bg-white hover:bg-gray-50'
+                      }`}
+                  >
+                    {category.name}
+                  </button>
+                ))}
+              </div>
+
             </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               {announcements.map((announcement, idx) => (
                 <div key={announcement.id} className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
