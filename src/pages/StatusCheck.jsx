@@ -445,6 +445,20 @@ const TestQuestions = ({ onFinish, selectedTestId, selectedOrgId }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        window.location.reload();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
+
+  useEffect(() => {
     const fetchQuestions = async () => {
       try {
         const response = await sendRequest({

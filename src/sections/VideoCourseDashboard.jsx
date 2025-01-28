@@ -4,6 +4,8 @@ import { PieChart, Pie, Cell } from 'recharts';
 import { sendRequest } from '../utils/apiFunctions'; // Update this path
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const VideoCourseDashboard = () => {
   const { t, i18n } = useTranslation();
@@ -17,6 +19,7 @@ const VideoCourseDashboard = () => {
   const [selectedDate, setSelectedDate] = useState('2024-12-18');
   const [sortType, setSortType] = useState('high'); // 'high' or 'low'
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
+  const [startDate, setStartDate] = useState(new Date("2024-12-18"));
 
   // Fetch years on component mount
   useEffect(() => {
@@ -158,6 +161,12 @@ const VideoCourseDashboard = () => {
     </div>
   );
 
+  // Format date for API
+  const handleDateChange = (date) => {
+    setStartDate(date);
+    setSelectedDate(date.toISOString().split('T')[0]);
+  };
+
   return (
     <div className="bg-gray-50 py-8 mt-4">
       <div className="container mx-auto px-4 md:px-0">
@@ -188,14 +197,20 @@ const VideoCourseDashboard = () => {
                   <option value="old">{t('sort.oldest')}</option>
                 </select>
               </div>
-              <div className="flex-1">
+              <div className="flex-1 w-full">
                 <label className="block text-sm text-gray-600 mb-1">{t('common.date')}</label>
-                <input
-                  type="date"
-                  className="w-full p-2 border rounded-md"
-                  value={selectedDate}
-                  onChange={(e) => setSelectedDate(e.target.value)}
-                />
+                <div className="relative">
+                  <DatePicker
+                    selected={startDate}
+                    onChange={handleDateChange}
+                    dateFormat="dd/MM/yyyy"
+                    className="w-full p-2.5 pl-10 bg-white border border-gray-200 rounded-xl cursor-pointer"
+                    calendarClassName="custom-calendar"
+                    showPopperArrow={false}
+
+                  />
+                  <Calendar className="w-5 h-5 text-blue-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                </div>
               </div>
             </div>
 

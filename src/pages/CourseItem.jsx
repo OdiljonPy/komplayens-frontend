@@ -124,7 +124,7 @@ const CourseItem = () => {
         </div>
 
         <div className="py-6">
-          <div className="relative w-full bg-black rounded-lg overflow-hidden h-96 mb-8">
+          <div className="relative w-full bg-black rounded-lg overflow-hidden h-[300px] md:h-[560px] mb-8">
             <iframe
               className="absolute top-0 left-0 w-full h-full"
               src={getYoutubeEmbedUrl(courseData.video)}

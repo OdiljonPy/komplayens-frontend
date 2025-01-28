@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next';
 
 import { sendRequest } from '../utils/apiFunctions';
@@ -63,6 +63,7 @@ function Handouts() {
   const [handouts, setHandouts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const [pagination, setPagination] = useState({
     currentPage: 1,
@@ -70,68 +71,78 @@ function Handouts() {
     totalElements: 0
   });
 
+  // Debounced search effect
   useEffect(() => {
-    const fetchMainData = async () => {
-      try {
-        const response = await sendRequest({
-          method: 'GET',
-          url: '/about/',
-          params: { type: 3 }
-        });
+    const timer = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery);
+    }, 500);
 
-        if (response.success) {
-          setMainData(response.data.result);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  // Fetch handouts with debounced search
+  const fetchHandouts = async () => {
+    setLoading(true);
+    try {
+      const params = {};
+      if (selectedCategory) params.category_id = selectedCategory;
+      if (debouncedSearchQuery) params.q = debouncedSearchQuery;
+
+      const response = await sendRequest({
+        method: 'GET',
+        url: '/services/handout/',
+        params
+      });
+
+      if (response.success) {
+        setHandouts(response.data.result.content);
+        setPagination({
+          currentPage: response.data.result.number,
+          totalPages: response.data.result.totalPages,
+          totalElements: response.data.result.totalElements
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching handouts:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Initial data fetch
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      try {
+        const [mainResponse, categoriesResponse] = await Promise.all([
+          sendRequest({
+            method: 'GET',
+            url: '/about/',
+            params: { type: 3 }
+          }),
+          sendRequest({
+            method: 'GET',
+            url: '/services/handout/category/',
+          })
+        ]);
+
+        if (mainResponse.success) {
+          setMainData(mainResponse.data.result);
+        }
+        if (categoriesResponse.success) {
+          setCategories(categoriesResponse.data.result);
         }
       } catch (error) {
-        console.error('Error fetching main data:', error);
+        console.error('Error fetching initial data:', error);
       }
     };
 
-    const fetchCategories = async () => {
-      try {
-        const response = await sendRequest({
-          method: 'GET',
-          url: '/services/handout/category/',
-        });
+    fetchInitialData();
+  }, []);
 
-        if (response.success) {
-          setCategories(response.data.result);
-        }
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      }
-    };
-
-    const fetchHandouts = async () => {
-      setLoading(true);
-      try {
-        const params = {};
-        if (selectedCategory) params.category_id = selectedCategory;
-        if (searchQuery) params.q = searchQuery;
-
-        const response = await sendRequest({
-          method: 'GET',
-          url: '/services/handout/',
-          params
-        });
-
-        if (response.success) {
-          setHandouts(response.data.result.content);
-          setPagination({
-            currentPage: response.data.result.number,
-            totalPages: response.data.result.totalPages,
-            totalElements: response.data.result.totalElements
-          });
-        }
-      } catch (error) {
-        console.error('Error fetching handouts:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    Promise.all([fetchMainData(), fetchCategories(), fetchHandouts()]);
-  }, [selectedCategory, searchQuery]);
+  // Fetch handouts when category or search changes
+  useEffect(() => {
+    fetchHandouts();
+  }, [selectedCategory, debouncedSearchQuery]);
 
   return (
     <div className="container mx-auto">
@@ -215,9 +226,9 @@ function Handouts() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder={t('pages.handouts.search')}
-                  className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md 
+                    focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-
               </div>
             </div>
 

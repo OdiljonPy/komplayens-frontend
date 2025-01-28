@@ -331,6 +331,18 @@
       "toggleButtons": {
         "system": "Tizim Orqali",
         "direct": "To'g'ridan-To'g'ri Aloqa"
+      },
+      "contactForm": {
+        "addPerson": "Aloqador shaxs qo'shish",
+        "removePerson": "Aloqador shaxs olib tashlash",
+        "fullName": "F.I.Sh",
+        "position": "Lavozimi",
+        "namePlaceholder": "Name",
+        "positionPlaceholder": "Lavozimi",
+        "phoneNumber": "Telefon raqami",
+        "fullNamePlaceholder": "F.I.Sh",
+        "phoneNumberPlaceholder": "Telefon raqami",
+        "title": "Aloqador shaxsning ma'lumotlari"
       }
     },
     "operations": {

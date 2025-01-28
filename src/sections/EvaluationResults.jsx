@@ -271,8 +271,8 @@ const EvaluationResults = () => {
                           </div>
 
                           {/* This Year Score */}
-                          <div className={`text-sm font-medium w-[50px] text-center ${item.this_year > 80 ? 'text-green-500' :
-                            item.this_year >= 56 ? 'text-blue-500' : 'text-red-500'
+                          <div className={`text-sm font-medium w-[50px] text-center ${item.this_year > 80 ? 'text-[#27D157]' :
+                            item.this_year >= 56 ? 'text-[#FF9437]' : 'text-[#DC2E2E]'
                             }`}>
                             {item.this_year}
                           </div>
@@ -287,8 +287,8 @@ const EvaluationResults = () => {
                           </div>
 
                           {/* Updated Change Indicator */}
-                          <div className={`flex items-center gap-1 ml-2 ${item.change > 0 ? 'text-green-500' :
-                            item.change < 0 ? 'text-red-500' : 'text-gray-500'
+                          <div className={`flex items-center gap-1 ml-2 ${item.change > 0 ? 'text-[#27D157]' :
+                            item.change < 0 ? 'text-[#DC2E2E]' : 'text-[#FF9437]'
                             }`}>
                             {item.change > 0 ? (
                               <ArrowUp className="w-3 h-3" />
