@@ -154,6 +154,7 @@
       "results": "Результаты"
     },
     "corruptionRisks": {
+      "finished": "Завершено",
       "title": "Риски коррупции",
       "reportRisk": "Сообщить о риске",
       "riskLevel": "Уровень риска",
@@ -164,7 +165,7 @@
       "status": "Статус",
       "results": "Результаты",
       "participate": "Участвовать",
-      "viewResults": "Посмотреть результаты",
+      "viewResults": "Pезультаты",
       "noResults": "Результатов пока нет",
       "completed": "Завершено",
       "active": "Активный",

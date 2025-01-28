@@ -154,6 +154,7 @@
       "results": "Natijalar"
     },
     "corruptionRisks": {
+      "finished": "Yakunlangan",
       "title": "Korrupsion xavflar",
       "reportRisk": "Xavf haqida xabar berish",
       "riskLevel": "Xavf darajasi",

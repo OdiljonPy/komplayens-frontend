@@ -554,7 +554,7 @@ export default function CorruptionRisks() {
                                   ? 'bg-green-100 text-green-800'
                                   : 'bg-gray-100 text-gray-800'
                                   }`}>
-                                  {task.status === 1 ? 'Faol' : 'Yakunlangan'}
+                                  {task.status === 1 ? (t('pages.corruptionRisks.active')) : (t('pages.corruptionRisks.finished'))}
                                 </span>
                               </div>
                               <div className="px-4 py-3">
@@ -563,11 +563,11 @@ export default function CorruptionRisks() {
                                     to={getLocalizedPath(`/corruption-risks/${task.id}`)}
                                   >
                                     <button className="px-3 py-1.5 text-sm bg-[#024072] text-white rounded-md hover:bg-[#02386A]">
-                                      Natijalarni ko'rish
+                                      {t('pages.corruptionRisks.viewResults')}
                                     </button>
                                   </Link>
                                 ) : (
-                                  <span className="text-gray-600">Natijalar hali yo'q</span>
+                                  <span className="text-gray-600">{t('pages.corruptionRisks.noResults')}</span>
                                 )}
                               </div>
                               <div className="px-4 py-3">
@@ -578,11 +578,11 @@ export default function CorruptionRisks() {
                                     rel="noopener noreferrer"
                                     className="px-3 py-1.5 rounded-md text-sm bg-blue-600 text-white hover:bg-blue-700"
                                   >
-                                    Qatnashish
+                                    {t('pages.corruptionRisks.participate')}
                                   </a>
                                 ) : (
-                                  <button className="px-3 py-1.5 rounded-md text-sm bg-gray-100 text-gray-600">
-                                    Yakunlangan
+                                  <button className="px-3 py-1.5 rounded-md text-sm  text-gray-900">
+                                    {t('pages.corruptionRisks.finished')}
                                   </button>
                                 )}
                               </div>

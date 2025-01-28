@@ -154,6 +154,7 @@
       "results": "Results"
     },
     "corruptionRisks": {
+      "finished": "Finished",
       "title": "Corruption Risks",
       "reportRisk": "Report Risk",
       "riskLevel": "Risk Level",

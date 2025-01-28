@@ -9,12 +9,31 @@ const axiosInstance = axios.create({
     'Accept': 'application/json',
   },
 });
+
+const errorMessages = {
+  401: { result: "Unauthorized access", http_status: 401 },
+  400: { result: "Invalid input provided", http_status: 400 },
+  404: { result: "Resource not found", http_status: 404 },
+  400: { result: "Validate Error", http_status: 400 },
+  403: { result: "Permission denied", http_status: 403 },
+  400: { result: "User already exists", http_status: 400 },
+  400: { result: "User does not exist", http_status: 400 },
+  400: { result: "Incorrect password", http_status: 400 },
+  400: { result: "User blocked", http_status: 400 },
+};
+
 axiosInstance.interceptors.response.use(
   response => response,
   async error => {
+    if (error.response) {
+      const status = error.response.status;
+      const errorMessage = errorMessages[status] || { result: 'Server error', http_status: 500 };
+      return Promise.reject({ ...error, customError: errorMessage });
+    }
     return Promise.reject(error);
   }
 );
+
 export const sendRequest = async ({ method, url, data = {}, token = null, params = {} }) => {
   if (token) {
     axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token.replace(/^"|"$/g, '')}`;
@@ -34,7 +53,7 @@ export const sendRequest = async ({ method, url, data = {}, token = null, params
   } catch (error) {
     return {
       success: false,
-      error: error.response ? { status: error.response.status, data: error.response.data } : { status: 500, data: 'Server error' },
+      error: error.customError || { status: 500, data: 'Server error' },
     };
   }
 };
