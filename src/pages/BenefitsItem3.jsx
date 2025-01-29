@@ -716,7 +716,20 @@ const BenefitsItem3 = () => {
         <PDFDocument3 formData={formData} t={t} />
       ).toBlob();
 
+      // Save PDF file
       saveAs(blob, 'xabarnoma.pdf');
+
+      // Create object URL for the blob
+      const pdfUrl = URL.createObjectURL(blob);
+
+      // Open PDF in new tab
+      window.open(pdfUrl, '_blank');
+
+      // Clean up the object URL after the window is loaded
+      setTimeout(() => {
+        URL.revokeObjectURL(pdfUrl);
+      }, 100);
+
     } catch (error) {
       console.error('PDF generation error:', error);
     }

@@ -871,6 +871,16 @@ const BenefitsItem = () => {
     try {
       const blob = await pdf(<PDFDocument formData={formData} t={t} />).toBlob();
       saveAs(blob, 'xabarnoma.pdf');
+
+      const pdfUrl = URL.createObjectURL(blob);
+
+      // Open PDF in new tab
+      window.open(pdfUrl, '_blank');
+
+      // Clean up the object URL after the window is loaded
+      setTimeout(() => {
+        URL.revokeObjectURL(pdfUrl);
+      }, 100);
     } catch (error) {
       console.error('PDF generation error:', error);
     }
