@@ -3,6 +3,346 @@ import React, { useState, useRef } from 'react';
 import { Download } from 'lucide-react';
 import ReactDOM from 'react-dom';
 import { useTranslation } from 'react-i18next';
+import { Calendar } from 'lucide-react';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+import { saveAs } from 'file-saver';
+
+
+
+import { Page, Text, View, Document, StyleSheet, Font, pdf } from '@react-pdf/renderer';
+
+// Custom font registration for Uzbek characters
+Font.register({
+  family: 'Roboto',
+  src: 'https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-light-webfont.ttf',
+});
+
+// PDF styles
+
+
+// PDF Component
+const PDFDocument = ({ formData, t }) => {
+  // Custom styles for PDF
+  const styles = StyleSheet.create({
+    page: {
+      padding: 40,
+      fontSize: 11,
+      fontFamily: 'Roboto',
+      backgroundColor: '#fff'
+    },
+    header: {
+      textAlign: 'right',
+      marginBottom: 30
+    },
+    headerText: {
+      marginBottom: 5,
+      fontSize: 11
+    },
+    mainTitle: {
+      fontSize: 14,
+      fontWeight: 'bold',
+      textAlign: 'center',
+      marginBottom: 20,
+      textTransform: 'uppercase'
+    },
+    introText: {
+      fontSize: 11,
+      marginBottom: 20,
+      lineHeight: 1.4
+    },
+    sectionTitle: {
+      fontSize: 11,
+      fontWeight: 'bold',
+      marginBottom: 10,
+      borderBottom: 1,
+      borderBottomColor: '#999',
+      paddingBottom: 5
+    },
+    table: {
+      width: '100%',
+      marginBottom: 15,
+      border: 1,
+      borderColor: '#000'
+    },
+    tableRow: {
+      flexDirection: 'row',
+      borderBottom: 1,
+      borderBottomColor: '#000'
+    },
+    tableRowLast: {
+      flexDirection: 'row'
+    },
+    tableCell: {
+      padding: 5,
+      fontSize: 10
+    },
+    tableCellNumber: {
+      width: '5%',
+      borderRight: 1,
+      borderRightColor: '#000',
+      padding: 5,
+      fontSize: 10
+    },
+    tableCellLabel: {
+      width: '45%',
+      borderRight: 1,
+      borderRightColor: '#000',
+      padding: 5,
+      fontSize: 10
+    },
+    tableCellValue: {
+      width: '50%',
+      padding: 5,
+      fontSize: 10
+    },
+    signatureSection: {
+      marginTop: 30,
+      flexDirection: 'row',
+      justifyContent: 'space-between'
+    },
+    signatureLeft: {
+      width: '30%'
+    },
+    signatureMiddle: {
+      width: '40%',
+      borderBottom: 1,
+      borderBottomColor: '#000',
+      marginHorizontal: 10
+    },
+    signatureRight: {
+      width: '30%',
+      textAlign: 'right'
+    },
+    measures: {
+      marginTop: 20,
+      marginBottom: 20
+    },
+    measuresTitle: {
+      marginBottom: 10
+    },
+    measuresContent: {
+      borderBottom: 1,
+      borderBottomColor: '#000',
+      paddingBottom: 10,
+      minHeight: 40
+    }
+  });
+
+  return (
+    <Document>
+      {/* First Page */}
+      <Page size="A4" style={styles.page}>
+        {/* Header section */}
+        <View style={styles.header}>
+          <Text style={styles.headerText}>{t('pages.benefits.form1.to')}</Text>
+          <Text style={styles.headerText}>{formData.supervisorPosition}</Text>
+          <Text style={styles.headerText}>{formData.supervisorFIO}</Text>
+          <Text style={[styles.headerText, { marginTop: 15 }]}>{t('pages.benefits.form1.from')}</Text>
+          <Text style={styles.headerText}>{formData.position}</Text>
+          <Text style={styles.headerText}>{formData.managerFIO}</Text>
+        </View>
+
+        {/* Title */}
+        <Text style={styles.mainTitle}>XABARNOMA</Text>
+
+        {/* Introduction text */}
+        <Text style={styles.introText}>
+          {t('pages.benefits.form1.introText')}
+        </Text>
+
+        {/* Employee Information */}
+        <Text style={styles.sectionTitle}>
+          {t('pages.benefits.employeeInfo')}
+        </Text>
+
+        <View style={styles.table}>
+          <View style={styles.tableRow}>
+            <View style={styles.tableCellNumber}>
+              <Text>1.</Text>
+            </View>
+            <View style={styles.tableCellLabel}>
+              <Text>{t('pages.benefits.form1.tables.employeeTable.idCardInfo')}</Text>
+            </View>
+            <View style={styles.tableCellValue}>
+              <Text>{`${formData.passportSeries} ${formData.passportIssueDate}`}</Text>
+            </View>
+          </View>
+          <View style={styles.tableRowLast}>
+            <View style={styles.tableCellNumber}>
+              <Text>2.</Text>
+            </View>
+            <View style={styles.tableCellLabel}>
+              <Text>{t('pages.benefits.form1.tables.employeeTable.pinfl')}</Text>
+            </View>
+            <View style={styles.tableCellValue}>
+              <Text>{formData.jshshir}</Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Relative Information */}
+        <Text style={styles.sectionTitle}>
+          {t('pages.benefits.relativeInfo')}
+        </Text>
+
+        <View style={styles.table}>
+          <View style={styles.tableRow}>
+            <View style={styles.tableCellNumber}>
+              <Text>1.</Text>
+            </View>
+            <View style={styles.tableCellLabel}>
+              <Text>{t('pages.benefits.form1.tables.relativeTable.fullName')}</Text>
+            </View>
+            <View style={styles.tableCellValue}>
+              <Text>{formData.relativeFIO}</Text>
+            </View>
+          </View>
+          <View style={styles.tableRow}>
+            <View style={styles.tableCellNumber}>
+              <Text>2.</Text>
+            </View>
+            <View style={styles.tableCellLabel}>
+              <Text>{t('pages.benefits.form1.tables.relativeTable.idCardInfo')}</Text>
+            </View>
+            <View style={styles.tableCellValue}>
+              <Text>{formData.relativePassport}</Text>
+            </View>
+          </View>
+          <View style={styles.tableRowLast}>
+            <View style={styles.tableCellNumber}>
+              <Text>3.</Text>
+            </View>
+            <View style={styles.tableCellLabel}>
+              <Text>{t('pages.benefits.form1.tables.relativeTable.pinfl')}</Text>
+            </View>
+            <View style={styles.tableCellValue}>
+              <Text>{formData.relativeJSHSHIR}</Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Legal Entity 1 Information */}
+        <Text style={styles.sectionTitle}>
+          {t('pages.benefits.form1.tables.legalEntity1.title')}
+        </Text>
+
+        <View style={styles.table}>
+          <View style={styles.tableRow}>
+            <View style={styles.tableCellNumber}>
+              <Text>1.</Text>
+            </View>
+            <View style={styles.tableCellLabel}>
+              <Text>{t('pages.benefits.form1.tables.legalEntity1.name')}</Text>
+            </View>
+            <View style={styles.tableCellValue}>
+              <Text>{formData.legalEntityName1}</Text>
+            </View>
+          </View>
+          <View style={styles.tableRowLast}>
+            <View style={styles.tableCellNumber}>
+              <Text>2.</Text>
+            </View>
+            <View style={styles.tableCellLabel}>
+              <Text>{t('pages.benefits.form1.tables.legalEntity1.tin')}</Text>
+            </View>
+            <View style={styles.tableCellValue}>
+              <Text>{formData.stir1}</Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Legal Entity 2 Information */}
+        <Text style={styles.sectionTitle}>
+          {t('pages.benefits.form1.tables.legalEntity2.title')}
+        </Text>
+
+        <View style={styles.table}>
+          <View style={styles.tableRow}>
+            <View style={styles.tableCellNumber}>
+              <Text>1.</Text>
+            </View>
+            <View style={styles.tableCellLabel}>
+              <Text>{t('pages.benefits.form1.tables.legalEntity2.name')}</Text>
+            </View>
+            <View style={styles.tableCellValue}>
+              <Text>{formData.legalEntityName2}</Text>
+            </View>
+          </View>
+          <View style={styles.tableRowLast}>
+            <View style={styles.tableCellNumber}>
+              <Text>2.</Text>
+            </View>
+            <View style={styles.tableCellLabel}>
+              <Text>{t('pages.benefits.form1.tables.legalEntity2.tin')}</Text>
+            </View>
+            <View style={styles.tableCellValue}>
+              <Text>{formData.stir2}</Text>
+            </View>
+          </View>
+        </View>
+      </Page>
+
+      {/* Second Page */}
+      <Page size="A4" style={styles.page}>
+        {/* Info note */}
+        <Text style={styles.introText}>
+          {t('pages.benefits.form2.infoNote')}
+        </Text>
+
+        {/* Conflict Info Title */}
+        <Text style={styles.mainTitle}>
+          {t('pages.benefits.form2.conflictInfo')}
+        </Text>
+
+        {/* Conflict Description Table */}
+        <View style={styles.table}>
+          <View style={styles.tableRowLast}>
+            <View style={styles.tableCellNumber}>
+              <Text>1.</Text>
+            </View>
+            <View style={styles.tableCellLabel}>
+              <Text>{t('pages.benefits.form2.existingConflict')}</Text>
+            </View>
+            <View style={styles.tableCellValue}>
+              <Text>{formData.description || ''}</Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Signature Section */}
+        <View style={styles.signatureSection}>
+          <View style={styles.signatureLeft}>
+            <Text>{t('pages.benefits.form2.employeePosition')}</Text>
+          </View>
+          <View style={styles.signatureMiddle} />
+          <View style={styles.signatureRight}>
+            <Text>{formData.managerFIO ? `(${formData.managerFIO})` : ''}</Text>
+          </View>
+        </View>
+
+        {/* Measures Section */}
+        <View style={styles.measures}>
+          <Text style={styles.measuresTitle}>
+            {t('pages.benefits.measures')}:
+          </Text>
+          <Text style={styles.measuresContent}>
+            {formData.measures || ''}
+          </Text>
+        </View>
+
+        {/* Registration Info */}
+        <Text>
+          {t('pages.benefits.form2.registrationInfo')}
+        </Text>
+      </Page>
+    </Document>
+  );
+};
+
+
+
 
 const Step1Form = ({ formData, handleInputChange }) => {
   const { t } = useTranslation();
@@ -88,17 +428,21 @@ const Step1Form = ({ formData, handleInputChange }) => {
           />
         </div>
 
-        <div className="form-group">
-          <label className="block text-gray-500 text-sm mb-1">
+        <div className="relative">
+          <label className="block text-gray-500 text-sm mb-2">
             {t('pages.benefits.form1.passportDate')} <span className="text-red-500">*</span>
           </label>
-          <input
-            type="date"
-            name="passportIssueDate"
-            value={formData.passportIssueDate}
-            onChange={handleInputChange}
-            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
+          <DatePicker
+            selected={formData.passportIssueDate}
+            onChange={(date) => {
+              const formattedDate = date.toISOString().split('T')[0];
+              handleInputChange({ target: { name: 'passportIssueDate', value: formattedDate } });
+            }}
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pl-10"
+            calendarClassName="custom-calendar"
+            showPopperArrow={false}
           />
+          <Calendar className="w-5 h-5 text-blue-500 absolute left-3 top-[50px] -translate-y-1/2 pointer-events-none" />
         </div>
 
         <div className="form-group">
@@ -278,7 +622,11 @@ const BenefitsItem = () => {
   });
 
   const handleInputChange = (e) => {
+    console.log('====================================');
+    console.log(e);
+    console.log('====================================');
     const { name, value } = e.target;
+    console.log(name, value);
     setFormData(prev => ({
       ...prev,
       [name]: value
@@ -519,98 +867,117 @@ const BenefitsItem = () => {
       </div>
     </div>
   ));
-  const generatePDF = () => {
-    // Create a temporary div to hold both documents
-    const tempDiv = document.createElement('div');
-    const hiddenStyle = 'position: absolute; left: -9999px;';
+  const generatePDF = async () => {
+    try {
+      const blob = await pdf(<PDFDocument formData={formData} t={t} />).toBlob();
+      saveAs(blob, 'xabarnoma.pdf');
+    } catch (error) {
+      console.error('PDF generation error:', error);
+    }
 
-    // Render both documents
-    const root = ReactDOM.createRoot(tempDiv);
-    root.render(
-      <div style={{ display: 'none' }}>
-        <FirstDocument ref={firstPageRef} formData={formData} />
-        <SecondDocument ref={secondPageRef} formData={formData} />
-      </div>
-    );
+    // try {
+    //   // Create PDF blob
+    //   const blob = await pdf(
+    //     <PDFDocument formData={formData} t={t} />
+    //   ).toBlob();
 
-    // Wait for render to complete
-    setTimeout(() => {
-      const firstPage = firstPageRef.current;
-      const secondPage = secondPageRef.current;
+    //   // Save the PDF
+    //   saveAs(blob, 'xabarnoma.pdf');
+    // } catch (error) {
+    //   console.error('PDF generation error:', error);
+    //   throw error;
+    // }
+    // // Create a temporary div to hold both documents
+    // const tempDiv = document.createElement('div');
+    // const hiddenStyle = 'position: absolute; left: -9999px;';
 
-      if (!firstPage || !secondPage) {
-        console.error("Documents not rendered properly");
-        return;
-      }
+    // // Render both documents
+    // const root = ReactDOM.createRoot(tempDiv);
+    // root.render(
+    //   <div style={{ display: 'none' }}>
+    //     <FirstDocument ref={firstPageRef} formData={formData} />
+    //     <SecondDocument ref={secondPageRef} formData={formData} />
+    //   </div>
+    // );
 
-      const printWindow = window.open('', '_blank');
+    // // Wait for render to complete
+    // setTimeout(() => {
+    //   const firstPage = firstPageRef.current;
+    //   const secondPage = secondPageRef.current;
 
-      if (!printWindow) {
-        alert("Please allow popups for this website");
-        return;
-      }
+    //   if (!firstPage || !secondPage) {
+    //     console.error("Documents not rendered properly");
+    //     return;
+    //   }
 
-      printWindow.document.write(`
-        <html>
-          <head>
-            <title>Xabarnoma</title>
-            <style>
-              body { 
-                font-family: Arial, sans-serif;
-                padding: 20px;
-                max-width: 800px;
-                margin: 0 auto;
-              }
-              table {
-                width: 100%;
-                border-collapse: collapse;
-                margin: 20px 0;
-              }
-              td, th {
-                border: 1px solid #ddd;
-                padding: 8px;
-              }
-              .header-text {
-                text-align: right;
-                margin-bottom: 30px;
-              }
-              .title {
-                text-align: center;
-                font-weight: bold;
-                font-size: 18px;
-                margin: 20px 0;
-              }
-              .section-title {
-                font-weight: bold;
-                margin: 15px 0;
-              }
-              .page-break {
-                page-break-before: always;
-              }
-            </style>
-          </head>
-          <body>
-            ${firstPage.outerHTML}
-            <div class="page-break"></div>
-            ${secondPage.outerHTML}
-            <script>
-              window.onload = function() {
-                window.print();
-                window.onafterprint = function() {
-                  window.close();
-                }
-              }
-            </script>
-          </body>
-        </html>
-      `);
+    //   const printWindow = window.open('', '_blank');
 
-      printWindow.document.close();
+    //   if (!printWindow) {
+    //     alert("Please allow popups for this website");
+    //     return;
+    //   }
 
-      // Clean up
-      root.unmount();
-      tempDiv.remove();
-    }, 0);
+    //   printWindow.document.write(`
+    //     <html>
+    //       <head>
+    //         <title>Xabarnoma</title>
+    //         <style>
+    //           body { 
+    //             font-family: Arial, sans-serif;
+    //             padding: 20px;
+    //             max-width: 800px;
+    //             margin: 0 auto;
+    //           }
+    //           table {
+    //             width: 100%;
+    //             border-collapse: collapse;
+    //             margin: 20px 0;
+    //           }
+    //           td, th {
+    //             border: 1px solid #ddd;
+    //             padding: 8px;
+    //           }
+    //           .header-text {
+    //             text-align: right;
+    //             margin-bottom: 30px;
+    //           }
+    //           .title {
+    //             text-align: center;
+    //             font-weight: bold;
+    //             font-size: 18px;
+    //             margin: 20px 0;
+    //           }
+    //           .section-title {
+    //             font-weight: bold;
+    //             margin: 15px 0;
+    //           }
+    //           .page-break {
+    //             page-break-before: always;
+    //           }
+    //         </style>
+    //       </head>
+    //       <body>
+    //         ${firstPage.outerHTML}
+    //         <div class="page-break"></div>
+    //         ${secondPage.outerHTML}
+    //         <script>
+    //           window.onload = function() {
+    //             window.print();
+    //             window.onafterprint = function() {
+    //               window.close();
+    //             }
+    //           }
+    //         </script>
+    //       </body>
+    //     </html>
+    //   `);
+
+    //   printWindow.document.close();
+
+    //   // Clean up
+    //   root.unmount();
+    //   tempDiv.remove();
+    // }, 0);
   };
 
   return (
@@ -680,7 +1047,7 @@ const BenefitsItem = () => {
               <Step2Form
                 formData={formData}
                 handleInputChange={handleInputChange}
-                handleGeneratePDF={generatePDF}
+                handleGeneratePDF={() => generatePDF}  // Funksiya reference sifatida berish
               />
             )}
           </div>

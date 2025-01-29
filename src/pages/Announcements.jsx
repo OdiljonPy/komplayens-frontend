@@ -7,6 +7,7 @@ import DatePicker from "react-datepicker";
 import { Link } from 'react-router-dom';
 import "react-datepicker/dist/react-datepicker.css";
 
+
 function Announcements() {
   const { t, i18n } = useTranslation();
   const getLocalizedPath = (path) => {
