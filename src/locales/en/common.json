@@ -459,6 +459,9 @@
       "button2": "Form 2",
       "button3": "Form 3",
       "form1": {
+        "passportSeries": "Passport Series",
+        "jshshir": "JSHSHIR",
+        "tin": "TIN",
         "name": "Conflict of Interest Declaration",
         "employeeInfo": "Employee Information",
         "relativeInfo": "Close Relative Information",
@@ -564,7 +567,10 @@
         "description": "Brief Description",
         "descriptionPlaceholder": "Enter description",
         "additionalInfo": "Additional Information",
-        "additionalInfoNote": "(other situations that the employee evaluates as conflict of interest situations are indicated)"
+        "additionalInfoNote": "(other situations that the employee evaluates as conflict of interest situations are indicated)",
+        "passportSeries": "Passport Series",
+        "legalEntityName": "Legal Entity Name",
+        "relativeFIO": "Relative FIO"
       },
       "documents": {
         "first": {

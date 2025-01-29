@@ -464,6 +464,7 @@
       "button3": "Form 3",
       "next": "Keyingisi",
       "form1": {
+        "tin": "STIR",
         "to": "Kimga",
         "from": "Kimdan",
         "notification": "XABARNOMA",
@@ -485,6 +486,8 @@
         "personalSignature": "Shaxsiy imzo",
         "relativePassportInfo": "Qarindoshning ID-kartasi yoki biometrik pasport ma'lumotlari",
         "relativePinfl": "Qarindoshning JSHSHIR",
+        "passportSeries": "Pasport seriyasi",
+        "jshshir": "JSHSHIR",
         "tables": {
           "employeeTable": {
             "idCardInfo": "ID-karta yoki biometrik pasport ma'lumotlari",
@@ -518,7 +521,10 @@
         "descriptionPlaceholder": "Tavsifni kiriting",
         "description": "Tavsif",
         "additionalInfo": "Qo'shimcha ma'lumotlar",
-        "additionalInfoNote": "(xodim tomonidan manfaatlar to'qnashuvi vaziyati sifatida baholanadigan boshqa holatlar ko'rsatiladi)"
+        "additionalInfoNote": "(xodim tomonidan manfaatlar to'qnashuvi vaziyati sifatida baholanadigan boshqa holatlar ko'rsatiladi)",
+        "passportSeries": "Pasport seriyasi",
+        "legalEntityName": "Yuridik shaxsning nomi",
+        "relativeFIO": "Yaqin qarindosh F.I.O"
       },
       "employeeInfo": "Xodim ma'lumotlari",
       "relativeInfo": "Yaqin qarindosh ma'lumotlari",
@@ -549,7 +555,9 @@
         "passportIssueDate": "Berilgan sanasi",
         "pinfl": "JSHSHIR",
         "legalEntityName": "Yuridik shaxsning nomi",
-        "tin": "STIR"
+        "tin": "STIR",
+        "relativeFIO": "Yaqin qarindosh F.I.O",
+        "position": "Lavozim"
       },
       "form2": {
         "title": "Manfaatlar to'qnashuvi to'g'risidagi axborot",
@@ -557,7 +565,10 @@
         "description": "Qisqacha tavsif",
         "descriptionPlaceholder": "Tavsifni kiriting",
         "additionalInfo": "Qo'shimcha ma'lumotlar",
-        "additionalInfoNote": "(xodim tomonidan manfaatlar to'qnashuvi vaziyati sifatida baholanadigan boshqa holatlar ko'rsatiladi)"
+        "additionalInfoNote": "(xodim tomonidan manfaatlar to'qnashuvi vaziyati sifatida baholanadigan boshqa holatlar ko'rsatiladi)",
+        "passportSeries": "Pasport seriyasi",
+        "legalEntityName": "Yuridik shaxsning nomi",
+        "relativeFIO": "Yaqin qarindosh F.I.O"
       },
       "documents": {
         "first": {

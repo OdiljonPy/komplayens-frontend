@@ -1,8 +1,479 @@
 // BenefitsItem.jsx
 import React, { useState, useRef } from 'react';
-import { Download } from 'lucide-react';
+import { Download, Calendar } from 'lucide-react';
 import ReactDOM from 'react-dom';
 import { useTranslation } from 'react-i18next';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+import { Page, Text, View, Document, StyleSheet, Font, pdf } from '@react-pdf/renderer';
+import { saveAs } from 'file-saver';
+// Custom font registration
+Font.register({
+  family: 'Roboto',
+  src: 'https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-light-webfont.ttf',
+});
+
+// PDF styles
+const styles = StyleSheet.create({
+  page: {
+    padding: 40,
+    fontSize: 11,
+    fontFamily: 'Roboto',
+  },
+  mainTitle: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 24,
+    fontWeight: 'bold'
+  },
+  introText: {
+    marginBottom: 20,
+    lineHeight: 1.4,
+    textAlign: 'justify'
+  },
+  infoBlock: {
+    marginBottom: 15,
+  },
+  infoField: {
+    marginBottom: 8,
+  },
+  infoLabel: {
+    fontSize: 10,
+    color: '#666',
+    textAlign: 'center'
+  },
+  infoValue: {
+    borderBottom: 1,
+    borderColor: '#000',
+    paddingBottom: 2,
+    marginBottom: 4
+  },
+  section: {
+    marginBottom: 20,
+  },
+  sectionTitle: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  table: {
+    width: '100%',
+    marginBottom: 15,
+    border: 1,
+    borderColor: '#000'
+  },
+  tableRow: {
+    flexDirection: 'row',
+    borderBottom: 1,
+    borderBottomColor: '#000'
+  },
+  tableRowLast: {
+    flexDirection: 'row'
+  },
+  tableCellNumber: {
+    width: '5%',
+    borderRight: 1,
+    borderRightColor: '#000',
+    padding: 4,
+    fontSize: 10
+  },
+  tableCellLabel: {
+    width: '45%',
+    borderRight: 1,
+    borderRightColor: '#000',
+    padding: 4,
+    fontSize: 10
+  },
+  tableCellValue: {
+    width: '50%',
+    padding: 4,
+    fontSize: 10
+  },
+  signature: {
+    marginTop: 30,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end'
+  },
+  signatureLeft: {
+    width: '30%'
+  },
+  signatureMiddle: {
+    width: '40%',
+    borderBottom: 1,
+    borderBottomColor: '#000',
+    marginHorizontal: 10
+  },
+  signatureRight: {
+    width: '30%',
+    textAlign: 'right'
+  },
+  pageNumber: {
+    position: 'absolute',
+    top: 20,
+    right: 30,
+    fontSize: 10
+  },
+  secondPageSection: {
+    marginBottom: 20,
+  },
+  secondPageTitle: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  borderBottom: {
+    borderBottom: 1,
+    borderColor: '#000',
+    paddingBottom: 8,
+    marginBottom: 15,
+    minHeight: 30
+  },
+  infoNote: {
+    fontSize: 10,
+    color: '#666',
+    marginTop: 4,
+  },
+  registrationInfo: {
+    fontSize: 11,
+    marginTop: 20,
+  },
+  signatureBlock: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 30,
+  },
+  signatureItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  dateBlock: {
+    marginTop: 15,
+    textAlign: 'right',
+  }
+
+});
+
+const PDFDocument2 = ({ formData, t }) => (
+  <Document>
+    {/* First Page */}
+    <Page size="A4" style={styles.page}>
+      <Text style={styles.mainTitle}>
+        {t('pages.benefits2.documents.first.mainTitle')}
+      </Text>
+
+      <View style={styles.introText}>
+        <Text>
+          Men, {formData.managerFIO || '_________________'}
+          {'\n'}
+        </Text>
+        <Text style={styles.infoLabel}>
+          {t('pages.benefits2.documents.first.fullNameNote')}
+        </Text>
+
+        <Text style={{ marginTop: 10 }}>
+          {formData.position || '_________________'}
+          {'\n'}
+        </Text>
+        <Text style={styles.infoLabel}>
+          {t('pages.benefits2.documents.first.positionNote')}
+        </Text>
+
+        <Text style={{ marginTop: 10 }}>
+          {t('pages.benefits2.documents.first.declarationText')}
+        </Text>
+      </View>
+
+      {/* Employee Information */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>
+          {t('pages.benefits2.documents.first.employeeInfoTitle')}
+        </Text>
+
+        <View style={styles.table}>
+          <View style={styles.tableRow}>
+            <View style={styles.tableCellNumber}>
+              <Text>1.</Text>
+            </View>
+            <View style={styles.tableCellLabel}>
+              <Text>{t('pages.benefits2.documents.first.table.header.fullName')}</Text>
+            </View>
+            <View style={styles.tableCellValue}>
+              <Text>{`${formData.passportSeries} ${formData.passportIssueDate}`}</Text>
+            </View>
+          </View>
+          <View style={styles.tableRowLast}>
+            <View style={styles.tableCellNumber}>
+              <Text>2.</Text>
+            </View>
+            <View style={styles.tableCellLabel}>
+              <Text>{t('pages.benefits2.documents.first.table.header.passportInfo')}</Text>
+            </View>
+            <View style={styles.tableCellValue}>
+              <Text>{formData.jshshir}</Text>
+            </View>
+          </View>
+        </View>
+      </View>
+
+      {/* Related Person Information */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>
+          {t('pages.benefits2.documents.first.table.header.relatedPersonInfo')}
+        </Text>
+
+        <View style={styles.table}>
+          <View style={styles.tableRow}>
+            <View style={styles.tableCellNumber}>
+              <Text>1.</Text>
+            </View>
+            <View style={styles.tableCellLabel}>
+              <Text>{t('pages.benefits2.documents.first.table.header.fullName')}</Text>
+            </View>
+            <View style={styles.tableCellValue}>
+              <Text>{formData.relativeFIO}</Text>
+            </View>
+          </View>
+          <View style={styles.tableRow}>
+            <View style={styles.tableCellNumber}>
+              <Text>2.</Text>
+            </View>
+            <View style={styles.tableCellLabel}>
+              <Text>{t('pages.benefits2.documents.first.table.header.passportInfo')}</Text>
+            </View>
+            <View style={styles.tableCellValue}>
+              <Text>{formData.relativePassport}</Text>
+            </View>
+          </View>
+          <View style={styles.tableRowLast}>
+            <View style={styles.tableCellNumber}>
+              <Text>3.</Text>
+            </View>
+            <View style={styles.tableCellLabel}>
+              <Text>{t('pages.benefits2.documents.first.table.header.pinfl')}</Text>
+            </View>
+            <View style={styles.tableCellValue}>
+              <Text>{formData.relativeJSHSHIR}</Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Legal Entity Information */}
+        <Text style={[styles.sectionTitle, { marginTop: 15 }]}>
+          {t('pages.benefits2.documents.first.table.header.legalEntityInfo1')}
+        </Text>
+
+        <View style={styles.table}>
+          <View style={styles.tableRow}>
+            <View style={styles.tableCellNumber}>
+              <Text>1.</Text>
+            </View>
+            <View style={styles.tableCellLabel}>
+              <Text>{t('pages.benefits2.documents.first.table.header.legalEntityName')}</Text>
+            </View>
+            <View style={styles.tableCellValue}>
+              <Text>{formData.legalEntityName}</Text>
+            </View>
+          </View>
+          <View style={styles.tableRowLast}>
+            <View style={styles.tableCellNumber}>
+              <Text>2.</Text>
+            </View>
+            <View style={styles.tableCellLabel}>
+              <Text>{t('pages.benefits2.documents.first.table.header.tin')}</Text>
+            </View>
+            <View style={styles.tableCellValue}>
+              <Text>{formData.stir}</Text>
+            </View>
+          </View>
+        </View>
+
+        <Text style={[styles.sectionTitle, { marginTop: 15 }]}>
+          {t('pages.benefits2.documents.first.table.header.legalEntityInfo2')}
+        </Text>
+
+        <View style={styles.table}>
+          <View style={styles.tableRow}>
+            <View style={styles.tableCellNumber}>
+              <Text>1.</Text>
+            </View>
+            <View style={styles.tableCellLabel}>
+              <Text>{t('pages.benefits2.documents.first.table.header.legalEntityName')}</Text>
+            </View>
+            <View style={styles.tableCellValue}>
+              <Text>{formData.relativeLegalEntityName}</Text>
+            </View>
+          </View>
+          <View style={styles.tableRowLast}>
+            <View style={styles.tableCellNumber}>
+              <Text>2.</Text>
+            </View>
+            <View style={styles.tableCellLabel}>
+              <Text>{t('pages.benefits2.documents.first.table.header.tin')}</Text>
+            </View>
+            <View style={styles.tableCellValue}>
+              <Text>{formData.relativeSTIR}</Text>
+            </View>
+          </View>
+        </View>
+      </View>
+
+      <Text style={styles.introText}>
+        {t('pages.benefits2.documents.first.footnote')}
+      </Text>
+    </Page>
+
+    {/* Second Page */}
+    <Page size="A4" style={styles.page}>
+      {/* Page number */}
+      <Text style={styles.pageNumber}>5</Text>
+
+      {/* Main content */}
+      <View style={styles.secondPageSection}>
+        <Text style={styles.secondPageTitle}>
+          {t('pages.benefits2.documents.second.section3Title')}
+        </Text>
+        <Text style={styles.borderBottom}>
+          {formData.description || '_________________'}
+        </Text>
+      </View>
+
+      <View style={styles.secondPageSection}>
+        <Text style={styles.secondPageTitle}>
+          {t('pages.benefits2.documents.second.section4Title')}
+        </Text>
+        <Text style={styles.borderBottom}>
+          {formData.additionalInfo || '_________________'}
+        </Text>
+        <Text style={styles.infoNote}>
+          {t('pages.benefits2.documents.second.additionalInfoNote')}
+        </Text>
+      </View>
+
+      {/* Signature block */}
+      <View style={styles.signatureBlock}>
+        <Text>{t('pages.benefits2.documents.second.employeePosition')}</Text>
+        <View style={styles.signatureLine} />
+        <Text>({formData.managerFIO || '_______________'})</Text>
+      </View>
+
+      {/* Date block */}
+      <View style={styles.dateBlock}>
+        <Text>{t('pages.benefits2.documents.second.fillingDate')}</Text>
+        <Text>{formData.date || '_______________'}</Text>
+      </View>
+
+      {/* Registration info */}
+      <View style={styles.registrationInfo}>
+        <Text>{t('pages.benefits2.documents.second.registrationInfo')}</Text>
+      </View>
+
+      {/* Extra info section */}
+      <View style={[styles.secondPageSection, { marginTop: 30 }]}>
+        <Text style={styles.secondPageTitle}>
+          {t('pages.benefits2.documents.second.relatedPersonTitle')}
+        </Text>
+
+        <Text style={[styles.sectionTitle, { marginTop: 15 }]}>
+          {t('pages.benefits2.documents.second.relativeInfo')}
+        </Text>
+
+        <View style={styles.table}>
+          <View style={styles.tableRow}>
+            <View style={styles.tableCellNumber}>
+              <Text>1.</Text>
+            </View>
+            <View style={styles.tableCellLabel}>
+              <Text>{t('pages.benefits2.documents.second.idCardInfo')}</Text>
+            </View>
+            <View style={styles.tableCellValue}>
+              <Text>{formData.passportSeries} {formData.passportIssueDate}</Text>
+            </View>
+          </View>
+          <View style={styles.tableRowLast}>
+            <View style={styles.tableCellNumber}>
+              <Text>2.</Text>
+            </View>
+            <View style={styles.tableCellLabel}>
+              <Text>{t('pages.benefits2.documents.second.pinflInfo')}</Text>
+            </View>
+            <View style={styles.tableCellValue}>
+              <Text>{formData.jshshir}</Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Legal entities info */}
+        <Text style={[styles.sectionTitle, { marginTop: 15 }]}>
+          {t('pages.benefits2.documents.second.legalEntityInfo1')}
+        </Text>
+
+        <View style={styles.table}>
+          <View style={styles.tableRow}>
+            <View style={styles.tableCellNumber}>
+              <Text>1.</Text>
+            </View>
+            <View style={styles.tableCellLabel}>
+              <Text>{t('pages.benefits2.documents.second.legalEntityName')}</Text>
+            </View>
+            <View style={styles.tableCellValue}>
+              <Text>{formData.legalEntityName}</Text>
+            </View>
+          </View>
+          <View style={styles.tableRowLast}>
+            <View style={styles.tableCellNumber}>
+              <Text>2.</Text>
+            </View>
+            <View style={styles.tableCellLabel}>
+              <Text>{t('pages.benefits2.documents.second.tin')}</Text>
+            </View>
+            <View style={styles.tableCellValue}>
+              <Text>{formData.stir}</Text>
+            </View>
+          </View>
+        </View>
+
+        <Text style={[styles.sectionTitle, { marginTop: 15 }]}>
+          {t('pages.benefits2.documents.second.legalEntityInfo2')}
+        </Text>
+
+        <View style={styles.table}>
+          <View style={styles.tableRow}>
+            <View style={styles.tableCellNumber}>
+              <Text>1.</Text>
+            </View>
+            <View style={styles.tableCellLabel}>
+              <Text>{t('pages.benefits2.documents.second.legalEntityName')}</Text>
+            </View>
+            <View style={styles.tableCellValue}>
+              <Text>{formData.relativeLegalEntityName}</Text>
+            </View>
+          </View>
+          <View style={styles.tableRowLast}>
+            <View style={styles.tableCellNumber}>
+              <Text>2.</Text>
+            </View>
+            <View style={styles.tableCellLabel}>
+              <Text>{t('pages.benefits2.documents.second.tin')}</Text>
+            </View>
+            <View style={styles.tableCellValue}>
+              <Text>{formData.relativeSTIR}</Text>
+            </View>
+          </View>
+        </View>
+      </View>
+
+      {/* Footer note */}
+      <Text style={styles.infoNote}>
+        {t('pages.benefits2.documents.second.infoNote')}
+      </Text>
+    </Page>
+  </Document>
+);
+
 
 const Step1Form = ({ formData, handleInputChange }) => {
   const { t } = useTranslation();
@@ -29,7 +500,7 @@ const Step1Form = ({ formData, handleInputChange }) => {
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            Lavozim <span className="text-red-500">*</span>
+            {t('pages.benefits2.form1.position')} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -37,13 +508,13 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.position}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder="Lavozim"
+            placeholder={t('pages.benefits2.form1.position')}
           />
         </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            Passport seriyasi va raqami <span className="text-red-500">*</span>
+            {t('pages.benefits.form1.passportSeries')} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -51,26 +522,30 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.passportSeries}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder="Passport seriyasi va raqami"
+            placeholder={t('pages.benefits.form1.passportSeries')}
           />
         </div>
 
-        <div className="form-group">
+        <div className="relative">
           <label className="block text-gray-500 text-sm mb-1">
-            Passport berilgan sanasi <span className="text-red-500">*</span>
+            {t('pages.benefits.form1.passportDate')} <span className="text-red-500">*</span>
           </label>
-          <input
-            type="date"
-            name="passportIssueDate"
-            value={formData.passportIssueDate}
-            onChange={handleInputChange}
-            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
+
+          <DatePicker
+            selected={formData.passportIssueDate}
+            onChange={(date) => {
+              const formattedDate = date.toISOString().split('T')[0];
+              handleInputChange({ target: { name: 'passportIssueDate', value: formattedDate } });
+            }}
+            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg pl-10"
           />
+          <Calendar className="w-5 h-5 text-blue-500 absolute left-3 top-[50px] -translate-y-1/2 pointer-events-none" />
+
         </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            JSHSHIR <span className="text-red-500">*</span>
+            {t('pages.benefits.form1.jshshir')} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -78,14 +553,14 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.jshshir}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder="123 456 789 012"
+            placeholder={t('pages.benefits.form1.jshshir')}
             maxLength="14"
           />
         </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            Yuridik shaxsning nomi <span className="text-red-500">*</span>
+            {t('pages.benefits2.form1.legalEntityName')} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -93,13 +568,13 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.legalEntityName}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder="Yuridik shaxsning nomi"
+            placeholder={t('pages.benefits2.form1.legalEntityName')}
           />
         </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            STIR <span className="text-red-500">*</span>
+            {t('pages.benefits.form1.tin')} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -107,7 +582,7 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.stir}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder="STIR"
+            placeholder={t('pages.benefits.form1.tin')}
           />
         </div>
       </div>
@@ -115,12 +590,12 @@ const Step1Form = ({ formData, handleInputChange }) => {
       {/* Manfaatlar To'qnashuvi Yuzaga Kelayotgan Shaxs Haqida Ma'lumot */}
       <div className="bg-white p-6 rounded-lg shadow-sm space-y-4">
         <h2 className="text-xl font-medium mb-6">
-          Manfaatlar To'qnashuvi Yuzaga Kelayotgan Shaxs Haqida Ma'lumot
+          {t('pages.benefits2.form2.title')}
         </h2>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            F.I.O <span className="text-red-500">*</span>
+            {t('pages.benefits2.form2.relativeFIO')} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -128,13 +603,13 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.relativeFIO}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder="Familiya, ism, otasining ismi"
+            placeholder={t('pages.benefits2.form2.relativeFIO')}
           />
         </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            Passport seriyasi va raqami <span className="text-red-500">*</span>
+            {t('pages.benefits.form1.passportSeries')} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -142,26 +617,29 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.relativePassport}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder="Passport seriyasi va raqami"
+            placeholder={t('pages.benefits.form1.passportSeries')}
           />
         </div>
 
-        <div className="form-group">
+        <div className="relative">
           <label className="block text-gray-500 text-sm mb-1">
-            Passport berilgan sanasi <span className="text-red-500">*</span>
+            {t('pages.benefits.form1.passportDate')} <span className="text-red-500">*</span>
           </label>
-          <input
-            type="date"
-            name="relativePassportDate"
-            value={formData.relativePassportDate}
-            onChange={handleInputChange}
-            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
+
+          <DatePicker
+            selected={formData.relativePassportDate}
+            onChange={(date) => {
+              const formattedDate = date.toISOString().split('T')[0];
+              handleInputChange({ target: { name: 'relativePassportDate', value: formattedDate } });
+            }}
+            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg pl-10"
           />
+          <Calendar className="w-5 h-5 text-blue-500 absolute left-3 top-[50px] -translate-y-1/2 pointer-events-none" />
         </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            JSHSHIR <span className="text-red-500">*</span>
+            {t('pages.benefits.form1.jshshir')} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -169,14 +647,14 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.relativeJSHSHIR}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder="123 456 789 012"
+            placeholder={t('pages.benefits.form1.jshshir')}
             maxLength="14"
           />
         </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            Yuridik shaxsning nomi <span className="text-red-500">*</span>
+            {t('pages.benefits2.form2.legalEntityName')} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -184,13 +662,13 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.relativeLegalEntityName}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder="Yuridik shaxsning nomi"
+            placeholder={t('pages.benefits2.form2.legalEntityName')}
           />
         </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            STIR <span className="text-red-500">*</span>
+            {t('pages.benefits.form1.tin')} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -198,7 +676,7 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.relativeSTIR}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder="STIR"
+            placeholder={t('pages.benefits.form1.tin')}
           />
         </div>
       </div>
@@ -217,17 +695,20 @@ const Step2Form = ({ formData, handleInputChange }) => {
           {t("pages.benefits2.form2.title")}
         </h2>
 
-        <div className="form-group">
+        <div className="relative">
           <label className="block text-gray-500 text-sm mb-1">
             {t("pages.benefits2.form2.date")}
           </label>
-          <input
-            type="date"
-            name="date"
-            value={formData.date}
-            onChange={handleInputChange}
-            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
+
+          <DatePicker
+            selected={formData.date}
+            onChange={(date) => {
+              const formattedDate = date.toISOString().split('T')[0];
+              handleInputChange({ target: { name: 'date', value: formattedDate } });
+            }}
+            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg pl-10"
           />
+          <Calendar className="w-5 h-5 text-blue-500 absolute left-3 top-[50px] -translate-y-1/2 pointer-events-none" />
         </div>
 
         <div className="form-group">
@@ -594,102 +1075,117 @@ const BenefitsItem2 = () => {
     return requiredFields.every(field => formData[field] && formData[field].trim() !== '');
   };
 
-  const generatePDF = () => {
+  const generatePDF = async () => {
     if (!isStep2Valid()) {
       return;
     }
-    // Create a temporary div to hold both documents
-    const tempDiv = document.createElement('div');
-    const hiddenStyle = 'position: absolute; left: -9999px;';
 
-    // Render both documents
-    const root = ReactDOM.createRoot(tempDiv);
-    root.render(
-      <div style={{ display: 'none' }}>
-        <FirstDocument ref={firstPageRef} formData={formData} />
-        <SecondDocument ref={secondPageRef} formData={formData} />
-      </div>
-    );
+    try {
+      const blob = await pdf(
+        <PDFDocument2 formData={formData} t={t} />
+      ).toBlob();
 
-    // Wait for render to complete
-    setTimeout(() => {
-      const firstPage = firstPageRef.current;
-      const secondPage = secondPageRef.current;
-
-      if (!firstPage || !secondPage) {
-        console.error("Documents not rendered properly");
-        return;
-      }
-
-      const printWindow = window.open('', '_blank');
-
-      if (!printWindow) {
-        alert("Please allow popups for this website");
-        return;
-      }
-
-      printWindow.document.write(`
-        <html>
-          <head>
-            <title>Xabarnoma</title>
-            <style>
-              body { 
-                font-family: Arial, sans-serif;
-                padding: 20px;
-                max-width: 800px;
-                margin: 0 auto;
-              }
-              table {
-                width: 100%;
-                border-collapse: collapse;
-                margin: 20px 0;
-              }
-              td, th {
-                border: 1px solid #ddd;
-                padding: 8px;
-              }
-              .header-text {
-                text-align: right;
-                margin-bottom: 30px;
-              }
-              .title {
-                text-align: center;
-                font-weight: bold;
-                font-size: 18px;
-                margin: 20px 0;
-              }
-              .section-title {
-                font-weight: bold;
-                margin: 15px 0;
-              }
-              .page-break {
-                page-break-before: always;
-              }
-            </style>
-          </head>
-          <body>
-            ${firstPage.outerHTML}
-            <div class="page-break"></div>
-            ${secondPage.outerHTML}
-            <script>
-              window.onload = function() {
-                window.print();
-                window.onafterprint = function() {
-                  window.close();
-                }
-              }
-            </script>
-          </body>
-        </html>
-      `);
-
-      printWindow.document.close();
-
-      // Clean up
-      root.unmount();
-      tempDiv.remove();
-    }, 0);
+      saveAs(blob, 'xabarnoma.pdf');
+    } catch (error) {
+      console.error('PDF generation error:', error);
+    }
   };
+  // const generatePDF = () => {
+  //   if (!isStep2Valid()) {
+  //     return;
+  //   }
+  //   // Create a temporary div to hold both documents
+  //   const tempDiv = document.createElement('div');
+  //   const hiddenStyle = 'position: absolute; left: -9999px;';
+
+  //   // Render both documents
+  //   const root = ReactDOM.createRoot(tempDiv);
+  //   root.render(
+  //     <div style={{ display: 'none' }}>
+  //       <FirstDocument ref={firstPageRef} formData={formData} />
+  //       <SecondDocument ref={secondPageRef} formData={formData} />
+  //     </div>
+  //   );
+
+  //   // Wait for render to complete
+  //   setTimeout(() => {
+  //     const firstPage = firstPageRef.current;
+  //     const secondPage = secondPageRef.current;
+
+  //     if (!firstPage || !secondPage) {
+  //       console.error("Documents not rendered properly");
+  //       return;
+  //     }
+
+  //     const printWindow = window.open('', '_blank');
+
+  //     if (!printWindow) {
+  //       alert("Please allow popups for this website");
+  //       return;
+  //     }
+
+  //     printWindow.document.write(`
+  //       <html>
+  //         <head>
+  //           <title>Xabarnoma</title>
+  //           <style>
+  //             body { 
+  //               font-family: Arial, sans-serif;
+  //               padding: 20px;
+  //               max-width: 800px;
+  //               margin: 0 auto;
+  //             }
+  //             table {
+  //               width: 100%;
+  //               border-collapse: collapse;
+  //               margin: 20px 0;
+  //             }
+  //             td, th {
+  //               border: 1px solid #ddd;
+  //               padding: 8px;
+  //             }
+  //             .header-text {
+  //               text-align: right;
+  //               margin-bottom: 30px;
+  //             }
+  //             .title {
+  //               text-align: center;
+  //               font-weight: bold;
+  //               font-size: 18px;
+  //               margin: 20px 0;
+  //             }
+  //             .section-title {
+  //               font-weight: bold;
+  //               margin: 15px 0;
+  //             }
+  //             .page-break {
+  //               page-break-before: always;
+  //             }
+  //           </style>
+  //         </head>
+  //         <body>
+  //           ${firstPage.outerHTML}
+  //           <div class="page-break"></div>
+  //           ${secondPage.outerHTML}
+  //           <script>
+  //             window.onload = function() {
+  //               window.print();
+  //               window.onafterprint = function() {
+  //                 window.close();
+  //               }
+  //             }
+  //           </script>
+  //         </body>
+  //       </html>
+  //     `);
+
+  //     printWindow.document.close();
+
+  //     // Clean up
+  //     root.unmount();
+  //     tempDiv.remove();
+  //   }, 0);
+  // };
 
   // Add this function to check if all required fields are filled
   const isStep1Valid = () => {
