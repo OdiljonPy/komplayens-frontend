@@ -3,7 +3,288 @@ import React, { useState, useRef } from 'react';
 import { Download } from 'lucide-react';
 import ReactDOM from 'react-dom';
 import { useTranslation } from 'react-i18next';
+import { Page, Text, View, Document, StyleSheet, Font, pdf } from '@react-pdf/renderer';
+import { saveAs } from 'file-saver';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
+import { Calendar } from 'lucide-react';
 
+// Add Font registration
+Font.register({
+  family: 'Roboto',
+  src: 'https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-light-webfont.ttf',
+});
+
+// Add PDF styles
+const styles = StyleSheet.create({
+  page: {
+    padding: 40,
+    fontSize: 11,
+    fontFamily: 'Roboto',
+  },
+  mainTitle: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 24,
+    fontWeight: 'bold'
+  },
+  introText: {
+    marginBottom: 20,
+    lineHeight: 1.4,
+    textAlign: 'justify'
+  },
+  table: {
+    width: '100%',
+    marginBottom: 15,
+    border: 1,
+    borderColor: '#000'
+  },
+  tableRow: {
+    flexDirection: 'row',
+    borderBottom: 1,
+    borderBottomColor: '#000'
+  },
+  tableRowLast: {
+    flexDirection: 'row'
+  },
+  tableCellNumber: {
+    width: '5%',
+    borderRight: 1,
+    borderRightColor: '#000',
+    padding: 4,
+    fontSize: 10
+  },
+  tableCellLabel: {
+    width: '45%',
+    borderRight: 1,
+    borderRightColor: '#000',
+    padding: 4,
+    fontSize: 10
+  },
+  tableCellValue: {
+    width: '50%',
+    padding: 4,
+    fontSize: 10
+  },
+  signature: {
+    marginTop: 30,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end'
+  },
+  pageNumber: {
+    position: 'absolute',
+    top: 20,
+    right: 30,
+    fontSize: 10,
+  },
+  section: {
+    marginBottom: 20,
+  },
+  sectionTitle: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  contentText: {
+    borderBottom: 1,
+    borderColor: '#000',
+    paddingBottom: 8,
+    marginBottom: 15,
+    minHeight: 30,
+  },
+  noteText: {
+    fontSize: 10,
+    color: '#666',
+    marginTop: 4,
+  },
+  signatureSection: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 30,
+  },
+  signatureLine: {
+    flex: 1,
+    borderBottom: 1,
+    borderColor: '#000',
+    marginHorizontal: 10,
+  },
+  dateSection: {
+    marginTop: 15,
+    alignItems: 'flex-end',
+  },
+  registrationInfo: {
+    fontSize: 11,
+    marginTop: 20,
+  },
+  signatureBlock: {
+    alignItems: 'center',
+  },
+});
+
+// Add PDF Document component
+const PDFDocument3 = ({ formData, t }) => (
+  <Document>
+    {/* First Page */}
+    <Page size="A4" style={styles.page}>
+      <Text style={styles.mainTitle}>
+        {t('pages.benefits3.documents2.mainTitle')}
+      </Text>
+
+      <Text style={styles.mainTitle}>
+        {t('pages.benefits3.documents2.declarationText')}
+      </Text>
+
+      <View style={styles.introText}>
+        <Text>
+          {t('pages.benefits3.documents2.introText')} {formData.managerFIO}
+          {t('pages.benefits3.documents2.purposeText')}
+        </Text>
+      </View>
+
+      <View style={styles.table}>
+        <View style={styles.tableRow}>
+          <View style={styles.tableCellNumber}>
+            <Text>1.</Text>
+          </View>
+          <View style={styles.tableCellLabel}>
+            <Text>{t('pages.benefits3.documents2.table.header.pinfl')}</Text>
+          </View>
+          <View style={styles.tableCellValue}>
+            <Text>{formData.jshshir}</Text>
+          </View>
+        </View>
+
+        <View style={styles.tableRow}>
+          <View style={styles.tableCellNumber}>
+            <Text>3.</Text>
+          </View>
+          <View style={styles.tableCellLabel}>
+            <Text>{t('pages.benefits3.documents2.table.header.legalEntityName')}</Text>
+          </View>
+          <View style={styles.tableCellValue}>
+            <Text>{formData.legalEntityName}</Text>
+          </View>
+        </View>
+
+        <View style={styles.tableRow}>
+          <View style={styles.tableCellNumber}>
+            <Text>4.</Text>
+          </View>
+          <View style={styles.tableCellLabel}>
+            <Text>{t('pages.benefits3.documents2.table.header.tin')}</Text>
+          </View>
+          <View style={styles.tableCellValue}>
+            <Text>{formData.stir}</Text>
+          </View>
+        </View>
+
+        <View style={styles.tableRow}>
+          <View style={styles.tableCellNumber}>
+            <Text>5.</Text>
+          </View>
+          <View style={styles.tableCellLabel}>
+            <Text>{t('pages.benefits3.documents2.table.header.position')}</Text>
+          </View>
+          <View style={styles.tableCellValue}>
+            <Text>{formData.position}</Text>
+          </View>
+        </View>
+
+        <View style={styles.tableRow}>
+          <View style={styles.tableCellNumber}>
+            <Text>6.</Text>
+          </View>
+          <View style={styles.tableCellLabel}>
+            <Text>
+              {t('pages.benefits3.documents2.table.header.relativeInfo')}
+              {'\n'}
+              <Text style={styles.noteText}>
+                {t('pages.benefits3.documents2.table.header.relativeInfoNote')}
+              </Text>
+            </Text>
+          </View>
+          <View style={styles.tableCellValue}>
+            <Text>{formData.relativeInfo}</Text>
+          </View>
+        </View>
+
+        <View style={styles.tableRow}>
+          <View style={styles.tableCellNumber}>
+            <Text>7.</Text>
+          </View>
+          <View style={styles.tableCellLabel}>
+            <Text>
+              {t('pages.benefits3.documents2.table.header.legalEntityInfo')}
+              {'\n'}
+              <Text style={styles.noteText}>
+                {t('pages.benefits3.documents2.table.header.legalEntityInfoNote')}
+              </Text>
+            </Text>
+          </View>
+          <View style={styles.tableCellValue}>
+            <Text>{formData.legalEntityInfo}</Text>
+          </View>
+        </View>
+      </View>
+
+      <View style={styles.signature}>
+        <Text>{t('pages.benefits3.documents2.relatedPerson')}</Text>
+        <View style={styles.signatureBlock}>
+          <Text>{t('pages.benefits3.documents2.signature.title')}</Text>
+          <Text>{t('pages.benefits3.documents2.signature.subtitle')}</Text>
+        </View>
+        <Text>{formData.managerFIO}</Text>
+      </View>
+
+      <Text style={styles.registrationInfo}>
+        {t('pages.benefits3.documents2.registrationInfo')}
+      </Text>
+    </Page>
+
+    {/* Second Page */}
+    <Page size="A4" style={styles.page}>
+      <Text style={styles.pageNumber}>5</Text>
+
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>
+          {t('pages.benefits3.documents2.section3Title')}
+        </Text>
+        <Text style={styles.contentText}>
+          {formData.description || '_________________'}
+        </Text>
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>
+          {t('pages.benefits3.documents2.section4Title')}
+        </Text>
+        <Text style={styles.contentText}>
+          {formData.additionalInfo || '_________________'}
+        </Text>
+        <Text style={styles.noteText}>
+          {t('pages.benefits3.documents2.additionalInfoNote')}
+        </Text>
+      </View>
+
+      <View style={styles.signatureSection}>
+        <Text>{t('pages.benefits3.documents2.employeePosition')}</Text>
+        <View style={styles.signatureLine} />
+        <Text>({formData.managerFIO || '_______________'})</Text>
+      </View>
+
+      <View style={styles.dateSection}>
+        <Text>{t('pages.benefits3.documents2.fillingDate')}</Text>
+        <Text>{formData.date || '_______________'}</Text>
+      </View>
+
+      <Text style={styles.registrationInfo}>
+        {t('pages.benefits3.documents2.registrationInfo')}
+      </Text>
+    </Page>
+  </Document>
+);
 
 const Step1Form = ({ formData, handleInputChange }) => {
   const { t } = useTranslation();
@@ -156,17 +437,26 @@ const Step2Form = ({ formData, handleInputChange }) => {
           {t("pages.benefits3.documents.second.section3Title")}
         </h2>
 
-        <div className="form-group">
+        <div className="relative">
           <label className="block text-gray-500 text-sm mb-1">
             {t("pages.benefits3.documents.second.fillingDate")} <span className="text-red-500">*</span>
           </label>
-          <input
+          {/* <input
             type="date"
             name="date"
             value={formData.date}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
+          /> */}
+          <DatePicker
+            selected={formData.date}
+            onChange={(date) => {
+              const formattedDate = date.toISOString().split('T')[0];
+              handleInputChange({ target: { name: 'date', value: formattedDate } });
+            }}
+            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg pl-10"
           />
+          <Calendar className="w-5 h-5 text-blue-500 absolute left-3 top-[50px] -translate-y-1/2 pointer-events-none" />
         </div>
       </div>
     </div>
@@ -415,99 +705,21 @@ const BenefitsItem3 = () => {
     </div>
   ));
 
+  // Update generatePDF function
+  const generatePDF = async () => {
+    if (!isStep2Valid()) {
+      return;
+    }
 
-  const generatePDF = () => {
-    // Create a temporary div to hold both documents
-    const tempDiv = document.createElement('div');
-    const hiddenStyle = 'position: absolute; left: -9999px;';
+    try {
+      const blob = await pdf(
+        <PDFDocument3 formData={formData} t={t} />
+      ).toBlob();
 
-    // Render both documents
-    const root = ReactDOM.createRoot(tempDiv);
-    root.render(
-      <div style={{ display: 'none' }}>
-        <FirstDocument ref={firstPageRef} formData={formData} />
-        <SecondDocument ref={secondPageRef} formData={formData} />
-      </div>
-    );
-
-    // Wait for render to complete
-    setTimeout(() => {
-      const firstPage = firstPageRef.current;
-      const secondPage = secondPageRef.current;
-
-      if (!firstPage || !secondPage) {
-        console.error("Documents not rendered properly");
-        return;
-      }
-
-      const printWindow = window.open('', '_blank');
-
-      if (!printWindow) {
-        alert("Please allow popups for this website");
-        return;
-      }
-
-      printWindow.document.write(`
-        <html>
-          <head>
-            <title>Xabarnoma</title>
-            <style>
-              body { 
-                font-family: Arial, sans-serif;
-                padding: 20px;
-                max-width: 800px;
-                margin: 0 auto;
-              }
-              table {
-                width: 100%;
-                border-collapse: collapse;
-                margin: 20px 0;
-              }
-              td, th {
-                border: 1px solid #ddd;
-                padding: 8px;
-              }
-              .header-text {
-                text-align: right;
-                margin-bottom: 30px;
-              }
-              .title {
-                text-align: center;
-                font-weight: bold;
-                font-size: 18px;
-                margin: 20px 0;
-              }
-              .section-title {
-                font-weight: bold;
-                margin: 15px 0;
-              }
-              .page-break {
-                page-break-before: always;
-              }
-            </style>
-          </head>
-          <body>
-            ${firstPage.outerHTML}
-            <div class="page-break"></div>
-            ${secondPage.outerHTML}
-            <script>
-              window.onload = function() {
-                window.print();
-                window.onafterprint = function() {
-                  window.close();
-                }
-              }
-            </script>
-          </body>
-        </html>
-      `);
-
-      printWindow.document.close();
-
-      // Clean up
-      root.unmount();
-      tempDiv.remove();
-    }, 0);
+      saveAs(blob, 'xabarnoma.pdf');
+    } catch (error) {
+      console.error('PDF generation error:', error);
+    }
   };
 
   return (

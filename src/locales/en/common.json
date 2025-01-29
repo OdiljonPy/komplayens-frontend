@@ -732,7 +732,13 @@
             "legalEntityInfo2": "Information about the legal entity in whose authorized fund (charter capital) the employee's close relative owns shares or stakes, or is a head or member of management bodies",
             "legalEntityInfo2Note": "Information about the legal entity in whose authorized fund (charter capital) the employee's close relative owns shares or stakes, or is a head or member of management bodies"
           }
-        }
+        },
+        "section3Title": "3. INFORMATION ABOUT EXISTING CONFLICT OF INTEREST",
+        "section4Title": "4. ADDITIONAL INFORMATION",
+        "additionalInfoNote": "(other situations that the employee evaluates as conflict of interest situations are indicated)",
+        "employeePosition": "Employee position",
+        "personalSignature": "Personal signature or digital signature",
+        "fillingDate": "Filling date 20___ year \"___\" _______"
       }
     }
   }

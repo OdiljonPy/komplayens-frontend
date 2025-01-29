@@ -732,7 +732,13 @@
             "legalEntityInfo": "Yuridik shaxsning soliq to'lovchi raqami (STIR)",
             "legalEntityInfoNote": "Yuridik shaxsning ustav fondi (ustav kapitali) aktsiyalariga ega ulushlarga malik qilsa yoki boshqaruv organlari rahbari yoki a'zosi bo'lsa, o'sha yuridik shaxsga oid ma'lumotlar"
           }
-        }
+        },
+        "section3Title": "3. MAVJUD MANFAATLAR TO'QNASHUVI TO'G'RISIDA MA'LUMOT",
+        "section4Title": "4. QO'SHIMCHA MA'LUMOTLAR",
+        "additionalInfoNote": "(xodim tomonidan manfaatlar to'qnashuvi vaziyati sifatida baholanadigan boshqa holatlar ko'rsatiladi)",
+        "employeePosition": "Xodimning lavozimi",
+        "personalSignature": "Shaxsiy imzo yoki elektron raqamli imzosi",
+        "fillingDate": "To'ldirilgan sana 20___ yil \"___\" _______"
       }
     }
   }
