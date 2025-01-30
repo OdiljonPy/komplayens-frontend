@@ -279,7 +279,8 @@ const Navbar = () => {
                   onClick={() => setIsLangOpen(!isLangOpen)}
                   className="flex items-center space-x-2 px-2 py-1 text-sm"
                 >
-                  <div className="w-5 h-5 rounded-full bg-blue-100"></div>
+
+                  <img src={`/flags/${i18n.language}.png`} alt={i18n.language} className={` ${i18n.language == "uz" ? "w-5 h-5" : "w-8 h-6"}`} />
                   <span>{getCurrentLanguageLabel()}</span>
                   <ChevronDown className="h-4 w-4" />
                 </button>
