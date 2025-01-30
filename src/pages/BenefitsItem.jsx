@@ -656,13 +656,21 @@ const BenefitsItem = () => {
         <div className="text-right mb-8 text-sm">
           <p>{t('pages.benefits.form1.to')}</p>
           <div className="break-words max-w-[300px] ml-auto">
-            <p>{formData.supervisorPosition || ''}</p>
-            <p>{formData.supervisorFIO || ''}</p>
+            {formData.supervisorPosition && (
+              <p><span className="bg-[#FFFF00] px-1">{formData.supervisorPosition}</span></p>
+            )}
+            {formData.supervisorFIO && (
+              <p><span className="bg-[#FFFF00] px-1">{formData.supervisorFIO}</span></p>
+            )}
           </div>
           <p className="mt-4">{t('pages.benefits.form1.from')}</p>
           <div className="break-words max-w-[300px] ml-auto">
-            <p>{formData.position || ''}</p>
-            <p>{formData.managerFIO || ''}</p>
+            {formData.position && (
+              <p><span className="bg-[#FFFF00] px-1">{formData.position}</span></p>
+            )}
+            {formData.managerFIO && (
+              <p><span className="bg-[#FFFF00] px-1">{formData.managerFIO}</span></p>
+            )}
           </div>
         </div>
 
@@ -687,7 +695,11 @@ const BenefitsItem = () => {
                       {t('pages.benefits.form1.tables.employeeTable.idCardInfo')}
                     </td>
                     <td className="border border-gray-300 p-2 whitespace-normal">
-                      {`${formData.passportSeries} ${formData.passportIssueDate}`}
+                      {formData.passportSeries && formData.passportIssueDate && (
+                        <span className="bg-[#FFFF00] px-1">
+                          {`${formData.passportSeries} ${formData.passportIssueDate}`}
+                        </span>
+                      )}
                     </td>
                   </tr>
                   <tr>
@@ -695,7 +707,11 @@ const BenefitsItem = () => {
                     <td className="border border-gray-300 p-2 whitespace-normal">
                       {t('pages.benefits.form1.tables.employeeTable.pinfl')}
                     </td>
-                    <td className="border border-gray-300 p-2">{formData.jshshir}</td>
+                    <td className="border border-gray-300 p-2">
+                      {formData.jshshir && (
+                        <span className="bg-[#FFFF00] px-1">{formData.jshshir}</span>
+                      )}
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -715,21 +731,33 @@ const BenefitsItem = () => {
                     <td className="border border-gray-300 p-2">
                       {t('pages.benefits.form1.tables.relativeTable.fullName')}
                     </td>
-                    <td className="border border-gray-300 p-2">{formData.relativeFIO}</td>
+                    <td className="border border-gray-300 p-2">
+                      {formData.relativeFIO && (
+                        <span className="bg-[#FFFF00] px-1">{formData.relativeFIO}</span>
+                      )}
+                    </td>
                   </tr>
                   <tr>
                     <td className="border border-gray-300 p-2">2.</td>
                     <td className="border border-gray-300 p-2 whitespace-normal">
                       {t('pages.benefits.form1.tables.relativeTable.idCardInfo')}
                     </td>
-                    <td className="border border-gray-300 p-2">{formData.relativePassport}</td>
+                    <td className="border border-gray-300 p-2">
+                      {formData.relativePassport && (
+                        <span className="bg-[#FFFF00] px-1">{formData.relativePassport}</span>
+                      )}
+                    </td>
                   </tr>
                   <tr>
                     <td className="border border-gray-300 p-2">3.</td>
                     <td className="border border-gray-300 p-2 whitespace-normal">
                       {t('pages.benefits.form1.tables.relativeTable.pinfl')}
                     </td>
-                    <td className="border border-gray-300 p-2">{formData.relativeJSHSHIR}</td>
+                    <td className="border border-gray-300 p-2">
+                      {formData.relativeJSHSHIR && (
+                        <span className="bg-[#FFFF00] px-1">{formData.relativeJSHSHIR}</span>
+                      )}
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -751,14 +779,22 @@ const BenefitsItem = () => {
                       <td className="border border-gray-300 p-2">
                         {t('pages.benefits.form1.tables.legalEntity1.name')}
                       </td>
-                      <td className="border border-gray-300 p-2">{formData.legalEntityName1}</td>
+                      <td className="border border-gray-300 p-2">
+                        {formData.legalEntityName1 && (
+                          <span className="bg-[#FFFF00] px-1">{formData.legalEntityName1}</span>
+                        )}
+                      </td>
                     </tr>
                     <tr>
                       <td className="border border-gray-300 p-2">2.</td>
                       <td className="border border-gray-300 p-2">
                         {t('pages.benefits.form1.tables.legalEntity1.tin')}
                       </td>
-                      <td className="border border-gray-300 p-2">{formData.stir1}</td>
+                      <td className="border border-gray-300 p-2">
+                        {formData.stir1 && (
+                          <span className="bg-[#FFFF00] px-1">{formData.stir1}</span>
+                        )}
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -778,14 +814,22 @@ const BenefitsItem = () => {
                       <td className="border border-gray-300 p-2">
                         {t('pages.benefits.form1.tables.legalEntity2.name')}
                       </td>
-                      <td className="border border-gray-300 p-2">{formData.legalEntityName2}</td>
+                      <td className="border border-gray-300 p-2">
+                        {formData.legalEntityName2 && (
+                          <span className="bg-[#FFFF00] px-1">{formData.legalEntityName2}</span>
+                        )}
+                      </td>
                     </tr>
                     <tr>
                       <td className="border border-gray-300 p-2">2.</td>
                       <td className="border border-gray-300 p-2">
                         {t('pages.benefits.form1.tables.legalEntity2.tin')}
                       </td>
-                      <td className="border border-gray-300 p-2">{formData.stir2}</td>
+                      <td className="border border-gray-300 p-2">
+                        {formData.stir2 && (
+                          <span className="bg-[#FFFF00] px-1">{formData.stir2}</span>
+                        )}
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -816,7 +860,9 @@ const BenefitsItem = () => {
                 {t('pages.benefits.form2.existingConflict')}
               </td>
               <td className="border border-gray-300 p-2 min-w-[200px] whitespace-normal">
-                {formData.description || ''}
+                {formData.description && (
+                  <span className="bg-[#FFFF00] px-1">{formData.description}</span>
+                )}
               </td>
             </tr>
           </tbody>
@@ -835,7 +881,9 @@ const BenefitsItem = () => {
             </div>
             <div className="border-b border-gray-400 flex-1 mx-2 min-w-[100px]"></div>
             <div className="whitespace-nowrap">
-              {formData.managerFIO && `(${formData.managerFIO})`}
+              {formData.managerFIO && (
+                <span className="bg-[#FFFF00] px-1">({formData.managerFIO})</span>
+              )}
             </div>
           </div>
         </div>
@@ -847,7 +895,9 @@ const BenefitsItem = () => {
           {t('pages.benefits.measures')}:
         </p>
         <div className="border-b border-gray-400 min-h-[40px] whitespace-normal">
-          {formData.measures || ''}
+          {formData.measures && (
+            <span className="bg-[#FFFF00] px-1">{formData.measures}</span>
+          )}
         </div>
       </div>
 

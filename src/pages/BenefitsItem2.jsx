@@ -167,16 +167,18 @@ const PDFDocument2 = ({ formData, t }) => (
 
       <View style={styles.introText}>
         <Text>
-          Men, {formData.managerFIO || '_________________'}
-          {'\n'}
+          Men, {formData.managerFIO ? (
+            <span className="bg-[#FFFF00] px-1">{formData.managerFIO}</span>
+          ) : '_______________________'}
         </Text>
         <Text style={styles.infoLabel}>
           {t('pages.benefits2.documents.first.fullNameNote')}
         </Text>
 
         <Text style={{ marginTop: 10 }}>
-          {formData.position || '_________________'}
-          {'\n'}
+          {formData.position ? (
+            <span className="bg-[#FFFF00] px-1">{formData.position}</span>
+          ) : '_______________________'}
         </Text>
         <Text style={styles.infoLabel}>
           {t('pages.benefits2.documents.first.positionNote')}
@@ -202,7 +204,11 @@ const PDFDocument2 = ({ formData, t }) => (
               <Text>{t('pages.benefits2.documents.first.table.header.fullName')}</Text>
             </View>
             <View style={styles.tableCellValue}>
-              <Text>{`${formData.passportSeries} ${formData.passportIssueDate}`}</Text>
+              <Text>{formData.passportSeries && formData.passportIssueDate ? (
+                <span className="bg-[#FFFF00] px-1">
+                  {`${formData.passportSeries} ${formData.passportIssueDate}`}
+                </span>
+              ) : ''}</Text>
             </View>
           </View>
           <View style={styles.tableRowLast}>
@@ -213,7 +219,9 @@ const PDFDocument2 = ({ formData, t }) => (
               <Text>{t('pages.benefits2.documents.first.table.header.passportInfo')}</Text>
             </View>
             <View style={styles.tableCellValue}>
-              <Text>{formData.jshshir}</Text>
+              <Text>{formData.jshshir ? (
+                <span className="bg-[#FFFF00] px-1">{formData.jshshir}</span>
+              ) : ''}</Text>
             </View>
           </View>
         </View>
@@ -234,7 +242,9 @@ const PDFDocument2 = ({ formData, t }) => (
               <Text>{t('pages.benefits2.documents.first.table.header.fullName')}</Text>
             </View>
             <View style={styles.tableCellValue}>
-              <Text>{formData.relativeFIO}</Text>
+              <Text>{formData.relativeFIO ? (
+                <span className="bg-[#FFFF00] px-1">{formData.relativeFIO}</span>
+              ) : ''}</Text>
             </View>
           </View>
           <View style={styles.tableRow}>
@@ -245,7 +255,9 @@ const PDFDocument2 = ({ formData, t }) => (
               <Text>{t('pages.benefits2.documents.first.table.header.passportInfo')}</Text>
             </View>
             <View style={styles.tableCellValue}>
-              <Text>{formData.relativePassport}</Text>
+              <Text>{formData.relativePassport ? (
+                <span className="bg-[#FFFF00] px-1">{formData.relativePassport}</span>
+              ) : ''}</Text>
             </View>
           </View>
           <View style={styles.tableRowLast}>
@@ -256,7 +268,9 @@ const PDFDocument2 = ({ formData, t }) => (
               <Text>{t('pages.benefits2.documents.first.table.header.pinfl')}</Text>
             </View>
             <View style={styles.tableCellValue}>
-              <Text>{formData.relativeJSHSHIR}</Text>
+              <Text>{formData.relativeJSHSHIR ? (
+                <span className="bg-[#FFFF00] px-1">{formData.relativeJSHSHIR}</span>
+              ) : ''}</Text>
             </View>
           </View>
         </View>
@@ -275,7 +289,9 @@ const PDFDocument2 = ({ formData, t }) => (
               <Text>{t('pages.benefits2.documents.first.table.header.legalEntityName')}</Text>
             </View>
             <View style={styles.tableCellValue}>
-              <Text>{formData.legalEntityName}</Text>
+              <Text>{formData.legalEntityName ? (
+                <span className="bg-[#FFFF00] px-1">{formData.legalEntityName}</span>
+              ) : ''}</Text>
             </View>
           </View>
           <View style={styles.tableRowLast}>
@@ -286,7 +302,9 @@ const PDFDocument2 = ({ formData, t }) => (
               <Text>{t('pages.benefits2.documents.first.table.header.tin')}</Text>
             </View>
             <View style={styles.tableCellValue}>
-              <Text>{formData.stir}</Text>
+              <Text>{formData.stir ? (
+                <span className="bg-[#FFFF00] px-1">{formData.stir}</span>
+              ) : ''}</Text>
             </View>
           </View>
         </View>
@@ -304,7 +322,9 @@ const PDFDocument2 = ({ formData, t }) => (
               <Text>{t('pages.benefits2.documents.first.table.header.legalEntityName')}</Text>
             </View>
             <View style={styles.tableCellValue}>
-              <Text>{formData.relativeLegalEntityName}</Text>
+              <Text>{formData.relativeLegalEntityName ? (
+                <span className="bg-[#FFFF00] px-1">{formData.relativeLegalEntityName}</span>
+              ) : ''}</Text>
             </View>
           </View>
           <View style={styles.tableRowLast}>
@@ -315,7 +335,9 @@ const PDFDocument2 = ({ formData, t }) => (
               <Text>{t('pages.benefits2.documents.first.table.header.tin')}</Text>
             </View>
             <View style={styles.tableCellValue}>
-              <Text>{formData.relativeSTIR}</Text>
+              <Text>{formData.relativeSTIR ? (
+                <span className="bg-[#FFFF00] px-1">{formData.relativeSTIR}</span>
+              ) : ''}</Text>
             </View>
           </View>
         </View>
@@ -337,7 +359,9 @@ const PDFDocument2 = ({ formData, t }) => (
           {t('pages.benefits2.documents.second.section3Title')}
         </Text>
         <Text style={styles.borderBottom}>
-          {formData.description || '_________________'}
+          {formData.description ? (
+            <span className="bg-[#FFFF00] px-1 block">{formData.description}</span>
+          ) : '_______________________'}
         </Text>
       </View>
 
@@ -346,7 +370,9 @@ const PDFDocument2 = ({ formData, t }) => (
           {t('pages.benefits2.documents.second.section4Title')}
         </Text>
         <Text style={styles.borderBottom}>
-          {formData.additionalInfo || '_________________'}
+          {formData.additionalInfo ? (
+            <span className="bg-[#FFFF00] px-1 block">{formData.additionalInfo}</span>
+          ) : '_______________________'}
         </Text>
         <Text style={styles.infoNote}>
           {t('pages.benefits2.documents.second.additionalInfoNote')}
@@ -357,13 +383,17 @@ const PDFDocument2 = ({ formData, t }) => (
       <View style={styles.signatureBlock}>
         <Text>{t('pages.benefits2.documents.second.employeePosition')}</Text>
         <View style={styles.signatureLine} />
-        <Text>({formData.managerFIO || '_______________'})</Text>
+        <Text>({formData.managerFIO ? (
+          <span className="bg-[#FFFF00] px-1">({formData.managerFIO})</span>
+        ) : '(_______________)'}</Text>
       </View>
 
       {/* Date block */}
       <View style={styles.dateBlock}>
         <Text>{t('pages.benefits2.documents.second.fillingDate')}</Text>
-        <Text>{formData.date || '_______________'}</Text>
+        <Text>{formData.date ? (
+          <span className="bg-[#FFFF00] px-1">{formData.date}</span>
+        ) : '_______________'}</Text>
       </View>
 
       {/* Registration info */}
@@ -390,7 +420,11 @@ const PDFDocument2 = ({ formData, t }) => (
               <Text>{t('pages.benefits2.documents.second.idCardInfo')}</Text>
             </View>
             <View style={styles.tableCellValue}>
-              <Text>{formData.passportSeries} {formData.passportIssueDate}</Text>
+              <Text>{formData.passportSeries && formData.passportIssueDate ? (
+                <span className="bg-[#FFFF00] px-1">
+                  {`${formData.passportSeries} ${formData.passportIssueDate}`}
+                </span>
+              ) : ''}</Text>
             </View>
           </View>
           <View style={styles.tableRowLast}>
@@ -401,7 +435,9 @@ const PDFDocument2 = ({ formData, t }) => (
               <Text>{t('pages.benefits2.documents.second.pinflInfo')}</Text>
             </View>
             <View style={styles.tableCellValue}>
-              <Text>{formData.jshshir}</Text>
+              <Text>{formData.jshshir ? (
+                <span className="bg-[#FFFF00] px-1">{formData.jshshir}</span>
+              ) : ''}</Text>
             </View>
           </View>
         </View>
@@ -420,7 +456,9 @@ const PDFDocument2 = ({ formData, t }) => (
               <Text>{t('pages.benefits2.documents.second.legalEntityName')}</Text>
             </View>
             <View style={styles.tableCellValue}>
-              <Text>{formData.legalEntityName}</Text>
+              <Text>{formData.legalEntityName ? (
+                <span className="bg-[#FFFF00] px-1">{formData.legalEntityName}</span>
+              ) : ''}</Text>
             </View>
           </View>
           <View style={styles.tableRowLast}>
@@ -431,7 +469,9 @@ const PDFDocument2 = ({ formData, t }) => (
               <Text>{t('pages.benefits2.documents.second.tin')}</Text>
             </View>
             <View style={styles.tableCellValue}>
-              <Text>{formData.stir}</Text>
+              <Text>{formData.stir ? (
+                <span className="bg-[#FFFF00] px-1">{formData.stir}</span>
+              ) : ''}</Text>
             </View>
           </View>
         </View>
@@ -449,7 +489,9 @@ const PDFDocument2 = ({ formData, t }) => (
               <Text>{t('pages.benefits2.documents.second.legalEntityName')}</Text>
             </View>
             <View style={styles.tableCellValue}>
-              <Text>{formData.relativeLegalEntityName}</Text>
+              <Text>{formData.relativeLegalEntityName ? (
+                <span className="bg-[#FFFF00] px-1">{formData.relativeLegalEntityName}</span>
+              ) : ''}</Text>
             </View>
           </View>
           <View style={styles.tableRowLast}>
@@ -460,7 +502,9 @@ const PDFDocument2 = ({ formData, t }) => (
               <Text>{t('pages.benefits2.documents.second.tin')}</Text>
             </View>
             <View style={styles.tableCellValue}>
-              <Text>{formData.relativeSTIR}</Text>
+              <Text>{formData.relativeSTIR ? (
+                <span className="bg-[#FFFF00] px-1">{formData.relativeSTIR}</span>
+              ) : ''}</Text>
             </View>
           </View>
         </View>
@@ -760,16 +804,20 @@ const FirstDocument = React.forwardRef(({ formData }, ref) => {
 
         <div className="mb-8 text-justify">
           <p>
-            Мен, {formData.managerFIO || '_______________________'}
+            Men, {formData.managerFIO ? (
+              <span className="bg-[#FFFF00] px-1">{formData.managerFIO}</span>
+            ) : '_______________________'}
           </p>
           <p className="text-sm text-gray-600 text-center">{t("pages.benefits2.documents.first.fullNameNote")}</p>
 
           <p className="mt-4">
-            {formData.position || '_______________________'}
+            {formData.position ? (
+              <span className="bg-[#FFFF00] px-1">{formData.position}</span>
+            ) : '_______________________'}
           </p>
           <p className="text-sm text-gray-600 text-center">{t("pages.benefits2.documents.first.positionNote")}</p>
 
-          <p>
+          <p className="mt-4">
             {t("pages.benefits2.documents.first.declarationText")}
           </p>
         </div>
@@ -786,7 +834,11 @@ const FirstDocument = React.forwardRef(({ formData }, ref) => {
                     {t("pages.benefits2.documents.first.table.header.fullName")}
                   </td>
                   <td className="border border-gray-300 p-2 min-w-[200px]">
-                    {formData.passportSeries} {formData.passportIssueDate}
+                    {formData.passportSeries && formData.passportIssueDate ? (
+                      <span className="bg-[#FFFF00] px-1">
+                        {`${formData.passportSeries} ${formData.passportIssueDate}`}
+                      </span>
+                    ) : ''}
                   </td>
                 </tr>
                 <tr>
@@ -795,7 +847,9 @@ const FirstDocument = React.forwardRef(({ formData }, ref) => {
                     {t("pages.benefits2.documents.first.table.header.passportInfo")}
                   </td>
                   <td className="border border-gray-300 p-2">
-                    {formData.jshshir}
+                    {formData.jshshir ? (
+                      <span className="bg-[#FFFF00] px-1">{formData.jshshir}</span>
+                    ) : ''}
                   </td>
                 </tr>
               </tbody>
@@ -805,101 +859,84 @@ const FirstDocument = React.forwardRef(({ formData }, ref) => {
 
         {/* 2. Aloqador shaxsga oid ma'lumotlar */}
         <div className="mb-8">
-          <h2 className="font-bold mb-4">{t("pages.benefits2.documents.first.table.header.relatedPersonInfo")}</h2>
-
-          {/* First subtable */}
-          <div className="mb-6">
-            <p className="font-medium mb-2 border-b border-gray-300 pb-2">
-              {t("pages.benefits2.documents.first.table.header.relatedPersonInfo")}
-            </p>
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse border border-gray-300">
-                <tbody>
-                  <tr>
-                    <td className="border border-gray-300 p-2 w-8">1.</td>
-                    <td className="border border-gray-300 p-2">
-                      {t("pages.benefits2.documents.first.table.header.fullName")}
-                    </td>
-                    <td className="border border-gray-300 p-2">{formData.relativeFIO}</td>
-                  </tr>
-                  <tr>
-                    <td className="border border-gray-300 p-2">2.</td>
-                    <td className="border border-gray-300 p-2">
-                      {t("pages.benefits2.documents.first.table.header.passportInfo")}
-                    </td>
-                    <td className="border border-gray-300 p-2">{formData.relativePassport}</td>
-                  </tr>
-                  <tr>
-                    <td className="border border-gray-300 p-2">3.</td>
-                    <td className="border border-gray-300 p-2">
-                      {t("pages.benefits2.documents.first.table.header.pinfl")}
-                    </td>
-                    <td className="border border-gray-300 p-2">{formData.relativeJSHSHIR}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Second subtable */}
-          <div className="mb-6">
-            <p className="font-medium mb-2 border-b border-gray-300 pb-2 text-sm">
-              {t("pages.benefits2.documents.first.table.header.legalEntityInfo1")}
-            </p>
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse border border-gray-300">
-                <tbody>
-                  <tr>
-                    <td className="border border-gray-300 p-2 w-8">1.</td>
-                    <td className="border border-gray-300 p-2">
-                      {t("pages.benefits2.documents.first.table.header.legalEntityName")}
-                    </td>
-                    <td className="border border-gray-300 p-2">{formData.legalEntityName}</td>
-                  </tr>
-                  <tr>
-                    <td className="border border-gray-300 p-2">2.</td>
-                    <td className="border border-gray-300 p-2">
-                      {t("pages.benefits2.documents.first.table.header.tin")}
-                    </td>
-                    <td className="border border-gray-300 p-2">{formData.stir}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Third subtable */}
-          <div>
-            <p className="font-medium mb-2 border-b border-gray-300 pb-2 text-sm">
-              {t("pages.benefits2.documents.first.table.header.legalEntityInfo2")}
-            </p>
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse border border-gray-300">
-                <tbody>
-                  <tr>
-                    <td className="border border-gray-300 p-2 w-8">1.</td>
-                    <td className="border border-gray-300 p-2">
-                      {t("pages.benefits2.documents.first.table.header.legalEntityName")}
-                    </td>
-                    <td className="border border-gray-300 p-2">{formData.relativeLegalEntityName}</td>
-                  </tr>
-                  <tr>
-                    <td className="border border-gray-300 p-2">2.</td>
-                    <td className="border border-gray-300 p-2">
-                      {t("pages.benefits2.documents.first.table.header.tin")}
-                    </td>
-                    <td className="border border-gray-300 p-2">{formData.relativeSTIR}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+          <h2 className="font-bold mb-4">
+            {t("pages.benefits2.documents.first.table.header.relatedPersonInfo")}
+          </h2>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse border border-gray-300">
+              <tbody>
+                <tr>
+                  <td className="border border-gray-300 p-2 w-8">1.</td>
+                  <td className="border border-gray-300 p-2">
+                    {t("pages.benefits2.documents.first.table.header.fullName")}
+                  </td>
+                  <td className="border border-gray-300 p-2">
+                    {formData.relativeFIO ? (
+                      <span className="bg-[#FFFF00] px-1">{formData.relativeFIO}</span>
+                    ) : ''}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 p-2">2.</td>
+                  <td className="border border-gray-300 p-2">
+                    {t("pages.benefits2.documents.first.table.header.passportInfo")}
+                  </td>
+                  <td className="border border-gray-300 p-2">
+                    {formData.relativePassport ? (
+                      <span className="bg-[#FFFF00] px-1">{formData.relativePassport}</span>
+                    ) : ''}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 p-2">3.</td>
+                  <td className="border border-gray-300 p-2">
+                    {t("pages.benefits2.documents.first.table.header.pinfl")}
+                  </td>
+                  <td className="border border-gray-300 p-2">
+                    {formData.relativeJSHSHIR ? (
+                      <span className="bg-[#FFFF00] px-1">{formData.relativeJSHSHIR}</span>
+                    ) : ''}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
 
-        {/* Footnote */}
-        <p className="text-sm text-gray-600 text-justify">
-          {t("pages.benefits2.documents.first.footnote")}
-        </p>
+        {/* Yuridik shaxs ma'lumotlari */}
+        <div className="mb-8">
+          <h2 className="font-bold mb-4">
+            {t("pages.benefits2.documents.first.table.header.legalEntityInfo1")}
+          </h2>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse border border-gray-300">
+              <tbody>
+                <tr>
+                  <td className="border border-gray-300 p-2 w-8">1.</td>
+                  <td className="border border-gray-300 p-2">
+                    {t("pages.benefits2.documents.first.table.header.legalEntityName")}
+                  </td>
+                  <td className="border border-gray-300 p-2">
+                    {formData.legalEntityName ? (
+                      <span className="bg-[#FFFF00] px-1">{formData.legalEntityName}</span>
+                    ) : ''}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 p-2">2.</td>
+                  <td className="border border-gray-300 p-2">
+                    {t("pages.benefits2.documents.first.table.header.tin")}
+                  </td>
+                  <td className="border border-gray-300 p-2">
+                    {formData.stir ? (
+                      <span className="bg-[#FFFF00] px-1">{formData.stir}</span>
+                    ) : ''}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -910,31 +947,39 @@ const SecondDocument = React.forwardRef(({ formData }, ref) => {
   return (
     <div ref={ref} className="bg-white p-6 overflow-x-hidden min-w-[320px]">
       <div className="mx-auto max-w-4xl">
+        {/* Page number */}
         <div className="text-right mb-8">
           <span>5</span>
         </div>
 
+        {/* Description section */}
         <div className="mb-12">
           <h2 className="font-bold text-xl mb-4">
             {t("pages.benefits2.documents.second.section3Title")}
           </h2>
-          <div className="border-b border-gray-300">
-            {formData.description || '________________________________________'}
+          <div className="border-b border-gray-300 min-h-[30px]">
+            {formData.description ? (
+              <span className="bg-[#FFFF00] px-1">{formData.description}</span>
+            ) : '_______________________'}
           </div>
         </div>
 
+        {/* Additional Info section */}
         <div className="mb-12">
           <h2 className="font-bold text-xl mb-4">
             {t("pages.benefits2.documents.second.section4Title")}
           </h2>
-          <div className="border-b border-gray-300">
-            {formData.additionalInfo || '________________________________________'}
+          <div className="border-b border-gray-300 min-h-[30px]">
+            {formData.additionalInfo ? (
+              <span className="bg-[#FFFF00] px-1">{formData.additionalInfo}</span>
+            ) : '_______________________'}
           </div>
           <p className="text-sm text-gray-600 mt-2">
             {t("pages.benefits2.documents.second.additionalInfoNote")}
           </p>
         </div>
 
+        {/* Signature block */}
         <div className="mb-12">
           <div className="grid grid-cols-3 gap-4 items-center">
             <div>
@@ -944,76 +989,25 @@ const SecondDocument = React.forwardRef(({ formData }, ref) => {
               {t("pages.benefits2.documents.second.personalSignature")}
             </div>
             <div className="text-right">
-              ({formData.managerFIO || '_______________'})
+              {formData.managerFIO ? (
+                <span className="bg-[#FFFF00] px-1">({formData.managerFIO})</span>
+              ) : '(_______________)'}
             </div>
           </div>
-          <div className="text-right mt-4">
-            <p>{t("pages.benefits2.documents.second.fillingDate")}</p>
-          </div>
         </div>
 
-        <div className="text-sm">
-          <p>
-            {t("pages.benefits2.documents.second.registrationInfo")}
-          </p>
-        </div>
-
-        <p>
-          {t("pages.benefits2.documents.second.registrationInfo")}
-        </p>
-
+        {/* Date block */}
         <div className="text-right mt-4">
-          {t("pages.benefits2.documents.second.fillingDate")}
+          <p>{t("pages.benefits2.documents.second.fillingDate")}</p>
+          {formData.date ? (
+            <span className="bg-[#FFFF00] px-1">{formData.date}</span>
+          ) : '_______________'}
         </div>
 
-        <div>
-          <span>{t("pages.benefits2.documents.second.employeePosition")}</span>
-          {t("pages.benefits2.documents.second.personalSignature")}
+        {/* Registration info */}
+        <div className="text-sm mt-8">
+          <p>{t("pages.benefits2.documents.second.registrationInfo")}</p>
         </div>
-
-        <td className="border border-gray-300 p-2">
-          {t("pages.benefits2.documents.second.idCardInfo")}
-        </td>
-
-        <td className="border border-gray-300 p-2">
-          {t("pages.benefits2.documents.second.pinflInfo")}
-        </td>
-
-        <h2 className="font-bold mb-4">
-          {t("pages.benefits2.documents.second.relatedPersonTitle")}
-        </h2>
-
-        <p className="font-medium mb-2 border-b border-gray-300 pb-2">
-          {t("pages.benefits2.documents.second.relativeInfo")}
-        </p>
-
-        <td className="border border-gray-300 p-2">
-          {t("pages.benefits2.documents.second.fullName")}
-        </td>
-
-        <td className="border border-gray-300 p-2">
-          {t("pages.benefits2.documents.second.idCardPassportInfo")}
-        </td>
-
-        <p className="font-medium mb-2 border-b border-gray-300 pb-2 text-sm">
-          {t("pages.benefits2.documents.second.legalEntityInfo1")}
-        </p>
-
-        <p className="font-medium mb-2 border-b border-gray-300 pb-2 text-sm">
-          {t("pages.benefits2.documents.second.legalEntityInfo2")}
-        </p>
-
-        <td className="border border-gray-300 p-2">
-          {t("pages.benefits2.documents.second.legalEntityName")}
-        </td>
-
-        <td className="border border-gray-300 p-2">
-          {t("pages.benefits2.documents.second.tin")}
-        </td>
-
-        <p className="text-sm text-gray-600 text-justify">
-          {t("pages.benefits2.documents.second.infoNote")}
-        </p>
       </div>
     </div>
   );
@@ -1099,102 +1093,6 @@ const BenefitsItem2 = () => {
       console.error('PDF generation error:', error);
     }
   };
-  // const generatePDF = () => {
-  //   if (!isStep2Valid()) {
-  //     return;
-  //   }
-  //   // Create a temporary div to hold both documents
-  //   const tempDiv = document.createElement('div');
-  //   const hiddenStyle = 'position: absolute; left: -9999px;';
-
-  //   // Render both documents
-  //   const root = ReactDOM.createRoot(tempDiv);
-  //   root.render(
-  //     <div style={{ display: 'none' }}>
-  //       <FirstDocument ref={firstPageRef} formData={formData} />
-  //       <SecondDocument ref={secondPageRef} formData={formData} />
-  //     </div>
-  //   );
-
-  //   // Wait for render to complete
-  //   setTimeout(() => {
-  //     const firstPage = firstPageRef.current;
-  //     const secondPage = secondPageRef.current;
-
-  //     if (!firstPage || !secondPage) {
-  //       console.error("Documents not rendered properly");
-  //       return;
-  //     }
-
-  //     const printWindow = window.open('', '_blank');
-
-  //     if (!printWindow) {
-  //       alert("Please allow popups for this website");
-  //       return;
-  //     }
-
-  //     printWindow.document.write(`
-  //       <html>
-  //         <head>
-  //           <title>Xabarnoma</title>
-  //           <style>
-  //             body { 
-  //               font-family: Arial, sans-serif;
-  //               padding: 20px;
-  //               max-width: 800px;
-  //               margin: 0 auto;
-  //             }
-  //             table {
-  //               width: 100%;
-  //               border-collapse: collapse;
-  //               margin: 20px 0;
-  //             }
-  //             td, th {
-  //               border: 1px solid #ddd;
-  //               padding: 8px;
-  //             }
-  //             .header-text {
-  //               text-align: right;
-  //               margin-bottom: 30px;
-  //             }
-  //             .title {
-  //               text-align: center;
-  //               font-weight: bold;
-  //               font-size: 18px;
-  //               margin: 20px 0;
-  //             }
-  //             .section-title {
-  //               font-weight: bold;
-  //               margin: 15px 0;
-  //             }
-  //             .page-break {
-  //               page-break-before: always;
-  //             }
-  //           </style>
-  //         </head>
-  //         <body>
-  //           ${firstPage.outerHTML}
-  //           <div class="page-break"></div>
-  //           ${secondPage.outerHTML}
-  //           <script>
-  //             window.onload = function() {
-  //               window.print();
-  //               window.onafterprint = function() {
-  //                 window.close();
-  //               }
-  //             }
-  //           </script>
-  //         </body>
-  //       </html>
-  //     `);
-
-  //     printWindow.document.close();
-
-  //     // Clean up
-  //     root.unmount();
-  //     tempDiv.remove();
-  //   }, 0);
-  // };
 
   // Add this function to check if all required fields are filled
   const isStep1Valid = () => {
