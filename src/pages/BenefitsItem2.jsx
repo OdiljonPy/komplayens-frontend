@@ -1,7 +1,6 @@
 // BenefitsItem.jsx
 import React, { useState, useRef } from 'react';
 import { Download, Calendar } from 'lucide-react';
-import ReactDOM from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";

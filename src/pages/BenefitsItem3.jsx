@@ -1,299 +1,139 @@
 // BenefitsItem.jsx
 import React, { useState, useRef } from 'react';
 import { Download } from 'lucide-react';
-import ReactDOM from 'react-dom';
 import { useTranslation } from 'react-i18next';
-import { Page, Text, View, Document, StyleSheet, Font, pdf } from '@react-pdf/renderer';
-import { saveAs } from 'file-saver';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { Calendar } from 'lucide-react';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
-// Add Font registration
-Font.register({
-  family: 'Roboto',
-  src: 'https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-light-webfont.ttf',
-});
 
-// Add PDF styles
-const styles = StyleSheet.create({
-  page: {
-    padding: 40,
-    fontSize: 11,
-    fontFamily: 'Roboto',
-  },
-  mainTitle: {
-    fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 24,
-    fontWeight: 'bold'
-  },
-  introText: {
-    marginBottom: 20,
-    lineHeight: 1.4,
-    textAlign: 'justify'
-  },
-  table: {
-    width: '100%',
-    marginBottom: 15,
-    border: 1,
-    borderColor: '#000'
-  },
-  tableRow: {
-    flexDirection: 'row',
-    borderBottom: 1,
-    borderBottomColor: '#000'
-  },
-  tableRowLast: {
-    flexDirection: 'row'
-  },
-  tableCellNumber: {
-    width: '5%',
-    borderRight: 1,
-    borderRightColor: '#000',
-    padding: 4,
-    fontSize: 10
-  },
-  tableCellLabel: {
-    width: '45%',
-    borderRight: 1,
-    borderRightColor: '#000',
-    padding: 4,
-    fontSize: 10
-  },
-  tableCellValue: {
-    width: '50%',
-    padding: 4,
-    fontSize: 10
-  },
-  signature: {
-    marginTop: 30,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end'
-  },
-  pageNumber: {
-    position: 'absolute',
-    top: 20,
-    right: 30,
-    fontSize: 10,
-  },
-  section: {
-    marginBottom: 20,
-  },
-  sectionTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  contentText: {
-    borderBottom: 1,
-    borderColor: '#000',
-    paddingBottom: 8,
-    marginBottom: 15,
-    minHeight: 30,
-  },
-  noteText: {
-    fontSize: 10,
-    color: '#666',
-    marginTop: 4,
-  },
-  signatureSection: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 30,
-  },
-  signatureLine: {
-    flex: 1,
-    borderBottom: 1,
-    borderColor: '#000',
-    marginHorizontal: 10,
-  },
-  dateSection: {
-    marginTop: 15,
-    alignItems: 'flex-end',
-  },
-  registrationInfo: {
-    fontSize: 11,
-    marginTop: 20,
-  },
-  signatureBlock: {
-    alignItems: 'center',
-  },
-});
+const FirstDocument = React.forwardRef(({ formData }, ref) => (
+  <div ref={ref} className="bg-white p-4 md:p-6 overflow-x-hidden min-w-[320px] font-serif" style={{ fontSize: '0.9rem' }}>
+    {/* Title */}
+    <div className="text-center mb-6">
+      <h1 className="font-bold mb-2">Алоқадор шахсларнинг эҳтимолий манфаатлар тўқнашуви тўғрисидаги</h1>
+      <h1 className="font-bold">ДЕКЛАРАЦИЯ</h1>
+    </div>
 
-// Add PDF Document component
-const PDFDocument3 = ({ formData, t }) => (
-  <Document>
-    {/* First Page */}
-    <Page size="A4" style={styles.page}>
-      <Text style={styles.mainTitle}>
-        {t('pages.benefits3.documents2.mainTitle')}
-      </Text>
+    {/* Introduction text */}
+    <p className="mb-6 text-justify">
+      Мен <span className="bg-[#FFFF00] px-1 pb-2">{formData.managerFIO}</span>, ушбу декларацияда алоқадор шахс сифатида
+      ўзим ва ходим (ишга кираётган номзоднинг) эҳтимолий манфаатлар тўқнашувига оид қуйидаги маълумотларни маълум қиламан:
+    </p>
 
-      <Text style={styles.mainTitle}>
-        {t('pages.benefits3.documents2.declarationText')}
-      </Text>
+    {/* Table */}
+    <table className="w-full border-collapse border border-black mb-6">
+      <tbody>
+        <tr>
+          <td className="border border-black p-2 w-12">1.</td>
+          <td className="border border-black p-2">
+            Ходимга алоқадор жисмоний шахснинг шахсий идентификация рақами (ЖШШИР)
+          </td>
+          <td className="border border-black p-2">
+            <span className="bg-[#FFFF00] px-1 pb-2">{formData.jshshir}</span>
+          </td>
+        </tr>
+        <tr>
+          <td className="border border-black p-2">3.</td>
+          <td className="border border-black p-2">
+            Ходимга алоқадор юридик шахснинг номи
+          </td>
+          <td className="border border-black p-2">
+            <span className="bg-[#FFFF00] px-1 pb-2">{formData.legalEntityName}</span>
+          </td>
+        </tr>
+        <tr>
+          <td className="border border-black p-2">4.</td>
+          <td className="border border-black p-2">
+            Ходимга алоқадор солиқ тўловчининг идентификация рақами (СТИР)
+          </td>
+          <td className="border border-black p-2">
+            <span className="bg-[#FFFF00] px-1 pb-2">{formData.stir}</span>
+          </td>
+        </tr>
+        <tr>
+          <td className="border border-black p-2">5.</td>
+          <td className="border border-black p-2">
+            Ходимнинг Ф.И.О. ва лавозими
+          </td>
+          <td className="border border-black p-2">
+            <span className="bg-[#FFFF00] px-1 pb-2">{formData.position} {formData.managerFIO}</span>
+          </td>
+        </tr>
+        <tr>
+          <td className="border border-black p-2">6.</td>
+          <td className="border border-black p-2">
+            <div>
+              Жисмоний шахснинг ходим билан қариндошлиги тўғрисидаги маълумотлар
+            </div>
+            <div className="italic text-sm mt-1">
+              (ота-онаси, ака-укалар, опа-сингиллар, ўғил-қизлар, эр-хотин, шунингдек эр-хотиннинг ота-онаси, ака-укалари, опа-сингиллари ва ўғил-қизлари)
+            </div>
+          </td>
+          <td className="border border-black p-2">
+            <span className="bg-[#FFFF00] px-1 pb-2">{formData.relativeInfo}</span>
+          </td>
+        </tr>
+        <tr>
+          <td className="border border-black p-2">7.</td>
+          <td className="border border-black p-2">
+            <div>
+              Юридик шахснинг ходим билан алоқадорлиги тўғрисидаги маълумотлар
+            </div>
+            <div className="italic text-sm mt-1">
+              (ходим ва унинг яқин қариндошлари таъсис этган ёки юридик шахснинг устав фонди (устав капитали)да иштирок этаётган юридик шахслар ҳақида маълумот, бундай шахсларнинг раҳбари ёки аъзоси бўлса, уни юридик шахс)
+            </div>
+          </td>
+          <td className="border border-black p-2">
+            <span className="bg-[#FFFF00] px-1 pb-2">{formData.employeeInfo}</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-      <View style={styles.introText}>
-        <Text>
-          {t('pages.benefits3.documents2.introText')} {formData.managerFIO}
-          {t('pages.benefits3.documents2.purposeText')}
-        </Text>
-      </View>
+    {/* Signature section */}
+    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mt-8">
+      <div className="whitespace-nowrap">Алоқадор шахс</div>
+      <div className="flex items-center gap-4">
+        <div className="italic whitespace-nowrap">Шахсий имзо ёки электрон рақамли имзоси</div>
+        <div className="border-b border-black min-w-[180px] text-center">
+          <span className="bg-[#FFFF00] px-1 pb-2">{formData.managerFIO}</span>
+        </div>
+      </div>
+    </div>
+    <div className="text-right mt-2 ">
+      <span className="bg-[#FFFF00] px-1 pb-2">{formData.date}</span>
+    </div>
 
-      <View style={styles.table}>
-        <View style={styles.tableRow}>
-          <View style={styles.tableCellNumber}>
-            <Text>1.</Text>
-          </View>
-          <View style={styles.tableCellLabel}>
-            <Text>{t('pages.benefits3.documents2.table.header.pinfl')}</Text>
-          </View>
-          <View style={styles.tableCellValue}>
-            <Text>{formData.jshshir}</Text>
-          </View>
-        </View>
-
-        <View style={styles.tableRow}>
-          <View style={styles.tableCellNumber}>
-            <Text>3.</Text>
-          </View>
-          <View style={styles.tableCellLabel}>
-            <Text>{t('pages.benefits3.documents2.table.header.legalEntityName')}</Text>
-          </View>
-          <View style={styles.tableCellValue}>
-            <Text>{formData.legalEntityName}</Text>
-          </View>
-        </View>
-
-        <View style={styles.tableRow}>
-          <View style={styles.tableCellNumber}>
-            <Text>4.</Text>
-          </View>
-          <View style={styles.tableCellLabel}>
-            <Text>{t('pages.benefits3.documents2.table.header.tin')}</Text>
-          </View>
-          <View style={styles.tableCellValue}>
-            <Text>{formData.stir}</Text>
-          </View>
-        </View>
-
-        <View style={styles.tableRow}>
-          <View style={styles.tableCellNumber}>
-            <Text>5.</Text>
-          </View>
-          <View style={styles.tableCellLabel}>
-            <Text>{t('pages.benefits3.documents2.table.header.position')}</Text>
-          </View>
-          <View style={styles.tableCellValue}>
-            <Text>{formData.position}</Text>
-          </View>
-        </View>
-
-        <View style={styles.tableRow}>
-          <View style={styles.tableCellNumber}>
-            <Text>6.</Text>
-          </View>
-          <View style={styles.tableCellLabel}>
-            <Text>
-              {t('pages.benefits3.documents2.table.header.relativeInfo')}
-              {'\n'}
-              <Text style={styles.noteText}>
-                {t('pages.benefits3.documents2.table.header.relativeInfoNote')}
-              </Text>
-            </Text>
-          </View>
-          <View style={styles.tableCellValue}>
-            <Text>{formData.relativeInfo}</Text>
-          </View>
-        </View>
-
-        <View style={styles.tableRow}>
-          <View style={styles.tableCellNumber}>
-            <Text>7.</Text>
-          </View>
-          <View style={styles.tableCellLabel}>
-            <Text>
-              {t('pages.benefits3.documents2.table.header.legalEntityInfo')}
-              {'\n'}
-              <Text style={styles.noteText}>
-                {t('pages.benefits3.documents2.table.header.legalEntityInfoNote')}
-              </Text>
-            </Text>
-          </View>
-          <View style={styles.tableCellValue}>
-            <Text>{formData.legalEntityInfo}</Text>
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.signature}>
-        <Text>{t('pages.benefits3.documents2.relatedPerson')}</Text>
-        <View style={styles.signatureBlock}>
-          <Text>{t('pages.benefits3.documents2.signature.title')}</Text>
-          <Text>{t('pages.benefits3.documents2.signature.subtitle')}</Text>
-        </View>
-        <Text>{formData.managerFIO}</Text>
-      </View>
-
-      <Text style={styles.registrationInfo}>
-        {t('pages.benefits3.documents2.registrationInfo')}
-      </Text>
-    </Page>
-
-    {/* Second Page */}
-    <Page size="A4" style={styles.page}>
-      <Text style={styles.pageNumber}>5</Text>
-
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>
-          {t('pages.benefits3.documents2.section3Title')}
-        </Text>
-        <Text style={styles.contentText}>
-          {formData.description || '_________________'}
-        </Text>
-      </View>
-
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>
-          {t('pages.benefits3.documents2.section4Title')}
-        </Text>
-        <Text style={styles.contentText}>
-          {formData.additionalInfo || '_________________'}
-        </Text>
-        <Text style={styles.noteText}>
-          {t('pages.benefits3.documents2.additionalInfoNote')}
-        </Text>
-      </View>
-
-      <View style={styles.signatureSection}>
-        <Text>{t('pages.benefits3.documents2.employeePosition')}</Text>
-        <View style={styles.signatureLine} />
-        <Text>({formData.managerFIO || '_______________'})</Text>
-      </View>
-
-      <View style={styles.dateSection}>
-        <Text>{t('pages.benefits3.documents2.fillingDate')}</Text>
-        <Text>{formData.date || '_______________'}</Text>
-      </View>
-
-      <Text style={styles.registrationInfo}>
-        {t('pages.benefits3.documents2.registrationInfo')}
-      </Text>
-    </Page>
-  </Document>
-);
+    {/* Registration info */}
+    <div className="mt-8 text-sm">
+      Эҳтимолий манфаатлар тўқнашуви аниқланган ходимлар Манфаатлар тўқнашувини
+      ҳисобга олиш реестрида рўйхатга олинган санаси ва рақами: 20___ йил "___" _______;
+      реестр рақами № _______.
+    </div>
+  </div>
+));
 
 const Step1Form = ({ formData, handleInputChange }) => {
-  const { t } = useTranslation();
 
   // JSHSHIR inputi uchun handler
   const handleJSHSHIRChange = (e) => {
     const { name, value } = e.target;
     const numbers = value.replace(/[^0-9]/g, '').slice(0, 14);
+    handleInputChange({
+      target: {
+        name,
+        value: numbers
+      }
+    });
+  };
 
+  // STIR inputi uchun handler
+  const handleSTIRChange = (e) => {
+    const { name, value } = e.target;
+    const numbers = value.replace(/[^0-9]/g, '').slice(0, 9);
     handleInputChange({
       target: {
         name,
@@ -307,12 +147,12 @@ const Step1Form = ({ formData, handleInputChange }) => {
       {/* Xodimga Oid Ma'lumotlar */}
       <div className="bg-white p-6 rounded-lg shadow-sm space-y-4">
         <h2 className="text-lg font-medium mb-4">
-          {t("pages.benefits3.Step1Form.employeeInfo")}
+          Xodimga Oid Ma'lumotlar
         </h2>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            {t("pages.benefits3.documents.first.fullName")} <span className="text-red-500">*</span>
+            F.I.O <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -320,13 +160,13 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.managerFIO}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder={t("pages.benefits3.documents.first.fullNameNote")}
+            placeholder="Familiya, ism, otasining ismi"
           />
         </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            {t("pages.benefits3.documents.first.table.header.pinfl")}
+            JSHSHIR
           </label>
           <input
             type="text"
@@ -341,7 +181,7 @@ const Step1Form = ({ formData, handleInputChange }) => {
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            {t("pages.benefits3.documents.first.table.header.legalEntityName")}
+            Yuridik shaxsni nomi
           </label>
           <input
             type="text"
@@ -349,27 +189,28 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.legalEntityName}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder={t("pages.benefits3.documents.first.table.header.legalEntityName")}
+            placeholder="Yuridik shaxsni nomi"
           />
         </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            {t("pages.benefits3.documents.first.table.header.tin")}
+            STIR
           </label>
           <input
             type="text"
             name="stir"
             value={formData.stir}
-            onChange={handleInputChange}
+            onChange={handleSTIRChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder={t("pages.benefits3.documents.first.table.header.tin")}
+            placeholder="STIR"
+            maxLength="9"
           />
         </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            {t("pages.benefits3.documents.first.table.header.position")}
+            Lavozim
           </label>
           <input
             type="text"
@@ -377,13 +218,13 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.position}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder={t("pages.benefits3.documents.first.table.header.position")}
+            placeholder="Lavozimni kiriting"
           />
         </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            {t("pages.benefits3.documents.first.relativeInfo")}
+            Qarindoshlar to'g'risidagi ma'lumotlar
           </label>
           <textarea
             name="relativeInfo"
@@ -392,6 +233,7 @@ const Step1Form = ({ formData, handleInputChange }) => {
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg resize-none"
             rows={4}
             maxLength={460}
+            placeholder="Qarindoshlar to'g'risidagi ma'lumotlarni kiriting"
           />
           <div className="text-right text-sm text-gray-500">
             {(formData.relativeInfo || '').length}/460
@@ -400,7 +242,7 @@ const Step1Form = ({ formData, handleInputChange }) => {
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            {t("pages.benefits3.documents.first.table.header.relatedPersonInfo")}
+            Xodimlar to'g'risidagi ma'lumotlar
           </label>
           <textarea
             name="employeeInfo"
@@ -409,31 +251,11 @@ const Step1Form = ({ formData, handleInputChange }) => {
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg resize-none"
             rows={4}
             maxLength={460}
+            placeholder="Xodimlar to'g'risidagi ma'lumotlarni kiriting"
           />
           <div className="text-right text-sm text-gray-500">
             {(formData.employeeInfo || '').length}/460
           </div>
-        </div>
-      </div>
-
-      {/* Manfaatlar To'qnashuvi Yuzaga Kelayotgan Shaxs Haqida Ma'lumot */}
-      <div className="bg-white p-6 rounded-lg shadow-sm space-y-4">
-        <h2 className="text-lg font-medium mb-4">
-          {t("pages.benefits3.documents.first.relatedPersonTitle")}
-        </h2>
-
-        <div className="form-group">
-          <label className="block text-gray-500 text-sm mb-1">
-            {t("pages.benefits3.documents.first.fullName")} <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="text"
-            name="conflictPersonFIO"
-            value={formData.conflictPersonFIO}
-            onChange={handleInputChange}
-            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder={t("pages.benefits3.documents.first.fullNameNote")}
-          />
         </div>
       </div>
     </div>
@@ -441,32 +263,31 @@ const Step1Form = ({ formData, handleInputChange }) => {
 };
 
 const Step2Form = ({ formData, handleInputChange }) => {
-  const { t } = useTranslation();
 
   return (
     <div className="space-y-6">
       <div className="bg-white p-6 rounded-lg shadow-sm space-y-4">
         <h2 className="text-lg font-medium mb-4">
-          {t("pages.benefits3.documents.second.section3Title")}
+          Manfaatlar To'qnashuvi To'g'risidagi Axborot
         </h2>
 
         <div className="relative">
           <label className="block text-gray-500 text-sm mb-1">
-            {t("pages.benefits3.documents.second.fillingDate")} <span className="text-red-500">*</span>
+            To'ldirilgan sana <span className="text-red-500">*</span>
           </label>
-          {/* <input
-            type="date"
-            name="date"
-            value={formData.date}
-            onChange={handleInputChange}
-            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-          /> */}
+
           <DatePicker
-            selected={formData.date}
+            selected={formData.date ? new Date(formData.date) : null}
             onChange={(date) => {
-              const formattedDate = date.toISOString().split('T')[0];
-              handleInputChange({ target: { name: 'date', value: formattedDate } });
+              handleInputChange({
+                target: {
+                  name: 'date',
+                  value: date ? date.toISOString().split('T')[0] : ''
+                }
+              });
             }}
+            dateFormat="dd.MM.yyyy"
+            placeholderText="DD.MM.YYYY"
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg pl-10"
           />
           <Calendar className="w-5 h-5 text-blue-500 absolute left-3 top-[50px] -translate-y-1/2 pointer-events-none" />
@@ -476,6 +297,114 @@ const Step2Form = ({ formData, handleInputChange }) => {
   );
 };
 
+const SecondDocument = React.forwardRef(({ formData }, ref) => (
+  <div ref={ref} className="bg-white p-4 md:p-6 overflow-x-hidden min-w-[320px] font-serif" style={{ fontSize: '0.9rem' }}>
+    {/* Title */}
+    <div className="text-center mb-6">
+      <h1 className="font-bold mb-2">Алоқадор шахсларнинг эҳтимолий манфаатлар тўқнашуви</h1>
+      <h1 className="font-bold mb-2">тўғрисидаги</h1>
+      <h1 className="font-bold">ДЕКЛАРАЦИЯ</h1>
+    </div>
+
+    {/* Introduction text */}
+    <div className="mb-8">
+      <div className="flex items-baseline gap-2">
+        <span>Мен</span>
+        <div className="flex-1 border-b border-black min-h-[24px] relative">
+          <div className="absolute -bottom-4 left-0 right-0 text-center text-[10px]">
+            (фамилияси, исми ва шарифи)
+          </div>
+        </div>
+      </div>
+      <p className="mt-6">
+        сифатида ўзим ва ходим (ишга кираётган номзоднинг) эҳтимолий манфаатлар тўқнашувига оид қуйидаги маълумотларни маълум қиламан:
+      </p>
+    </div>
+
+    {/* Table */}
+    <table className="w-full border-collapse border border-black mb-8">
+      <tbody>
+        <tr>
+          <td className="border border-black p-2 w-12">1.</td>
+          <td className="border border-black p-2">
+            Ходимга алоқадор жисмоний шахснинг шахсий идентификация рақами (ЖШШИР)
+          </td>
+          <td className="border border-black p-2 min-w-[200px]"></td>
+        </tr>
+        <tr>
+          <td className="border border-black p-2">3.</td>
+          <td className="border border-black p-2">
+            Ходимга алоқадор юридик шахснинг номи
+          </td>
+          <td className="border border-black p-2"></td>
+        </tr>
+        <tr>
+          <td className="border border-black p-2">4.</td>
+          <td className="border border-black p-2">
+            Ходимга алоқадор солиқ тўловчининг идентификация рақами (СТИР)
+          </td>
+          <td className="border border-black p-2"></td>
+        </tr>
+        <tr>
+          <td className="border border-black p-2">5.</td>
+          <td className="border border-black p-2">
+            Ходимнинг Ф.И.О. ва лавозими
+          </td>
+          <td className="border border-black p-2"></td>
+        </tr>
+        <tr>
+          <td className="border border-black p-2">6.</td>
+          <td className="border border-black p-2">
+            <div>
+              Жисмоний шахснинг ходим билан қариндошлиги тўғрисидаги маълумотлар
+            </div>
+            <div className="italic text-sm mt-1">
+              (ота-онаси, ака-укалар, опа-сингиллар, ўғил-қизлар, эр-хотин, шунингдек эр-хотиннинг ота-онаси, ака-укалари, опа-сингиллари ва фарзандлари)
+            </div>
+          </td>
+          <td className="border border-black p-2"></td>
+        </tr>
+        <tr>
+          <td className="border border-black p-2">7.</td>
+          <td className="border border-black p-2">
+            <div>
+              Юридик шахснинг ходим билан алоқадорлиги тўғрисидаги маълумотлар
+            </div>
+            <div className="italic text-sm mt-1">
+              (ходим ва унинг яқин қариндошлари таъсис этган ёки юридик шахснинг устав фонди (устав капитали)да иштирок этаётган юридик шахслар ҳақида маълумот, бундай шахсларнинг раҳбари ёки аъзоси бўлса, уша юридик шахс)
+            </div>
+          </td>
+          <td className="border border-black p-2"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    {/* Signature section */}
+    <div className="flex justify-between items-start mt-8">
+      <div>Алоқадор шахс</div>
+      <div className="flex flex-col items-end gap-2">
+        <div className="flex items-center gap-4">
+          <div className="italic text-sm">Шахсий имзо ёки электрон рақамли имзоси</div>
+          <div className="border-b border-black min-w-[200px]"></div>
+        </div>
+        <div className="flex items-center gap-4">
+          <div className="text-sm">(Ф.И.О.)</div>
+          <div className="text-sm">
+            Тўлдирилган сана 20{formData.date ? new Date(formData.date).getFullYear().toString().slice(2) : '___'} йил "{formData.date ? new Date(formData.date).getDate().toString().padStart(2, '0') : '___'}" {formData.date ? new Date(formData.date).toLocaleString('default', { month: 'short' }) : '___'}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Registration info */}
+    <div className="mt-8 text-sm">
+      Эҳтимолий манфаатлар тўқнашуви аниқланган ходимлар Манфаатлар тўқнашувини
+      ҳисобга олиш реестрида рўйхатга олинган санаси ва рақами: 20___ йил "___" _______
+      "_______________"; реестр рақами № _______.
+    </div>
+  </div>
+));
+
 const BenefitsItem3 = () => {
   const { t } = useTranslation();
   const [currentStep, setCurrentStep] = useState(1);
@@ -483,33 +412,15 @@ const BenefitsItem3 = () => {
   const secondPageRef = useRef(null);
 
   const [formData, setFormData] = useState({
-
-    supervisorPosition: '', // Rahbar lavozimi
-    supervisorFIO: '', // Rahbar FIO
-
-    // Xodim ma'lumotlari
-    position: '', // Xodim lavozimi
-    managerFIO: '', // Xodim FIO
-    passportSeries: '',
-    passportIssueDate: '',
+    managerFIO: '',
     jshshir: '',
-
-    // Yaqin qarindosh ma'lumotlari
-    relativeFIO: '',
-    relativePassport: '',
-    relativeJSHSHIR: '',
-
-    // Birinchi yuridik shaxs
-    legalEntityName1: '',
-    stir1: '',
-
-    // Ikkinchi yuridik shaxs (qarindoshniki)
-    legalEntityName2: '',
-    stir2: '',
-
-    // Step 2 uchun
+    legalEntityName: '',
+    stir: '',
+    position: '',
+    relativeInfo: '',
+    employeeInfo: '',
     description: '',
-    measures: '',
+    additionalInfo: '',
     date: ''
   });
 
@@ -523,225 +434,79 @@ const BenefitsItem3 = () => {
 
   const handleNext = () => setCurrentStep(2);
 
-  // Add validation check for required fields
+  // Step 1 validatsiyasi
   const isStep1Valid = () => {
-    return formData.managerFIO?.trim() && formData.conflictPersonFIO?.trim();
+    const requiredFields = [
+      'managerFIO',
+      'jshshir',
+      'legalEntityName',
+      'stir',
+      'position',
+      'relativeInfo',
+      'employeeInfo'
+    ];
+    return requiredFields.every(field => formData[field]?.trim());
   };
 
-  // Add validation check for Step 2
+  // Step 2 validatsiyasi
   const isStep2Valid = () => {
-    return formData.date?.trim();
+    const requiredFields = ['date', 'description'];
+    return requiredFields.every(field => formData[field] && formData[field].trim() !== '');
   };
 
-  const FirstDocument = React.forwardRef(({ formData }, ref) => (
-    <div ref={ref} className="bg-white p-4 md:p-6 rounded-lg shadow-sm min-w-[320px] max-w-full overflow-x-auto">
-      {/* Header section */}
-      <div className="text-center mb-6 max-w-3xl mx-auto">
-        <h1 className="font-bold text-base md:text-lg mb-1 whitespace-normal">
-          {t('pages.benefits3.documents2.mainTitle')}
-        </h1>
-        <h1 className="font-bold text-lg md:text-xl whitespace-normal">
-          {t('pages.benefits3.documents2.declarationText')}
-        </h1>
-      </div>
-
-      {/* Introduction text */}
-      <div className="mb-6 text-sm md:text-base">
-        <p className="whitespace-normal">
-          {t('pages.benefits3.documents2.introText')} {formData.managerFIO ? (
-            <span className="inline">
-              <span className="bg-[#FFFF00] px-1">{formData.managerFIO}</span>
-            </span>
-          ) : '________________'},
-          {t('pages.benefits3.documents2.purposeText')}
-        </p>
-      </div>
-
-      {/* Table section */}
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse border border-gray-300 mb-6 min-w-[600px]">
-          <tbody>
-            <tr>
-              <td className="border border-gray-300 p-2 align-top w-12">1.</td>
-              <td className="border border-gray-300 p-2 whitespace-normal">
-                <div className="break-words">
-                  {t('pages.benefits3.documents2.table.header.pinfl')}
-                </div>
-              </td>
-              <td className="border border-gray-300 p-2 min-w-[200px]">
-                {formData.jshshir ? (
-                  <span className="bg-[#FFFF00] px-1 break-all">{formData.jshshir}</span>
-                ) : ''}
-              </td>
-            </tr>
-            <tr>
-              <td className="border border-gray-300 p-2 align-top">3.</td>
-              <td className="border border-gray-300 p-2 whitespace-normal">
-                <div className="break-words">
-                  {t('pages.benefits3.documents2.table.header.legalEntityName')}
-                </div>
-              </td>
-              <td className="border border-gray-300 p-2">
-                {formData.legalEntityName ? (
-                  <span className="bg-[#FFFF00] px-1 break-words">{formData.legalEntityName}</span>
-                ) : ''}
-              </td>
-            </tr>
-            <tr>
-              <td className="border border-gray-300 p-2 align-top">4.</td>
-              <td className="border border-gray-300 p-2 whitespace-normal">
-                <div className="break-words">
-                  {t('pages.benefits3.documents2.table.header.tin')}
-                </div>
-              </td>
-              <td className="border border-gray-300 p-2">
-                {formData.stir ? (
-                  <span className="bg-[#FFFF00] px-1 break-all">{formData.stir}</span>
-                ) : ''}
-              </td>
-            </tr>
-            <tr>
-              <td className="border border-gray-300 p-2 align-top">5.</td>
-              <td className="border border-gray-300 p-2 whitespace-normal">
-                <div className="break-words">
-                  {t('pages.benefits3.documents2.table.header.position')}
-                </div>
-              </td>
-              <td className="border border-gray-300 p-2">
-                {formData.position ? (
-                  <span className="bg-[#FFFF00] px-1 break-words">{formData.position}</span>
-                ) : ''}
-              </td>
-            </tr>
-            <tr>
-              <td className="border border-gray-300 p-2 align-top">6.</td>
-              <td className="border border-gray-300 p-2">
-                <div className="whitespace-normal break-words">
-                  {t('pages.benefits3.documents2.table.header.relativeInfo')}
-                </div>
-                <div className="italic text-sm mt-1 whitespace-normal break-words">
-                  {t('pages.benefits3.documents2.table.header.relativeInfoNote')}
-                </div>
-              </td>
-              <td className="border border-gray-300 p-2">
-                {formData.relativeInfo ? (
-                  <span className="bg-[#FFFF00] px-1 break-words">{formData.relativeInfo}</span>
-                ) : ''}
-              </td>
-            </tr>
-            <tr>
-              <td className="border border-gray-300 p-2 align-top">7.</td>
-              <td className="border border-gray-300 p-2">
-                <div className="whitespace-normal break-words">
-                  {t('pages.benefits3.documents2.table.header.legalEntityInfo')}
-                </div>
-                <div className="italic text-sm mt-1 whitespace-normal break-words">
-                  {t('pages.benefits3.documents2.table.header.legalEntityInfoNote')}
-                </div>
-              </td>
-              <td className="border border-gray-300 p-2">
-                {formData.legalEntityInfo ? (
-                  <span className="bg-[#FFFF00] px-1 break-words">{formData.legalEntityInfo}</span>
-                ) : ''}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      {/* Signature section */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mt-8">
-        <div className="whitespace-nowrap">{t('pages.benefits3.documents2.relatedPerson')}</div>
-        <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
-          <div className="text-center">
-            <div className="whitespace-nowrap">{t('pages.benefits3.documents2.signature.title')}</div>
-            <div className="whitespace-nowrap">{t('pages.benefits3.documents2.signature.subtitle')}</div>
-          </div>
-          {(formData.signature || formData.signDate) ? (
-            <div className="bg-[#FFFF00] px-1 break-words max-w-full">
-              {formData.signature}<br />
-              {formData.signDate}
-            </div>
-          ) : null}
-        </div>
-      </div>
-
-      {/* Footer text */}
-      <div className="mt-8 text-sm whitespace-normal break-words">
-        {t('pages.benefits3.documents2.registrationInfo')}
-      </div>
-    </div>
-  ));
-
-  const SecondDocument = React.forwardRef(({ formData }, ref) => (
-    <div ref={ref} className="bg-white p-6 rounded-lg shadow-sm">
-      <div className="text-center mb-6">
-        <h1 className="font-bold text-lg mb-1">
-          {t('pages.benefits3.documents2.mainTitle')}
-        </h1>
-        <h1 className="font-bold text-lg mb-1">
-          {t('pages.benefits3.documents2.declarationText')}
-        </h1>
-      </div>
-
-      <div className="mb-6">
-        <p className="text-base">
-          {t('pages.benefits3.documents2.introText')} {formData.managerFIO ? (
-            <span className="text-sm">(фамилияси, исми ва шарифи)</span>
-          ) : '________________'},
-          {t('pages.benefits3.documents2.purposeText')}
-        </p>
-      </div>
-
-      {/* Same table structure as FirstDocument but without values */}
-      <table className="w-full border-collapse border border-gray-300 mb-6">
-        {/* ... table content same as FirstDocument but without values ... */}
-      </table>
-
-      <div className="flex justify-between items-start mt-8">
-        <div>{t('pages.benefits3.documents2.relatedPerson')}</div>
-        <div className="flex items-center gap-4">
-          <div>
-            <div>{t('pages.benefits3.documents2.signature.title')}</div>
-            <div>{t('pages.benefits3.documents2.signature.subtitle')}</div>
-          </div>
-          <div className="text-right">
-            <div>(Ф.И.О.)</div>
-            <div>Тўлдирилган сана 20___ йил "___" _______</div>
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-8 text-sm">
-        {t('pages.benefits3.documents2.registrationInfo')}
-      </div>
-    </div>
-  ));
-
-  // Update generatePDF function
   const generatePDF = async () => {
-    if (!isStep2Valid()) {
-      return;
-    }
+    console.log("isStep2Valid", isStep2Valid());
+    // if (!isStep2Valid()) return;
 
     try {
-      const blob = await pdf(
-        <PDFDocument3 formData={formData} t={t} />
-      ).toBlob();
+      setCurrentStep(1);
+      await new Promise(resolve => setTimeout(resolve, 100));
 
-      // Save PDF file
-      saveAs(blob, 'xabarnoma.pdf');
+      const doc = new jsPDF('p', 'mm', 'a4');
 
-      // Create object URL for the blob
-      const pdfUrl = URL.createObjectURL(blob);
+      const options = {
+        scale: 1.3,
+        useCORS: true,
+        scrollX: 0,
+        scrollY: 0,
+        windowWidth: document.documentElement.scrollWidth,
+        windowHeight: document.documentElement.scrollHeight,
+        margin: [5, 5, 5, 5]
+      };
 
-      // Open PDF in new tab
+      // Birinchi sahifani generatsiya qilish
+      if (firstPageRef.current) {
+        const firstCanvas = await html2canvas(firstPageRef.current, options);
+        const firstImgData = firstCanvas.toDataURL('image/png');
+
+        const imgProps = doc.getImageProperties(firstImgData);
+        const pdfWidth = doc.internal.pageSize.getWidth() - 10;
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+        doc.addImage(firstImgData, 'PNG', 5, 5, pdfWidth, pdfHeight);
+      }
+
+      // Ikkinchi sahifaga o'tish
+      setCurrentStep(2);
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      // Ikkinchi sahifani generatsiya qilish
+      if (secondPageRef.current) {
+        const secondCanvas = await html2canvas(secondPageRef.current, options);
+        const secondImgData = secondCanvas.toDataURL('image/png');
+
+        const imgProps = doc.getImageProperties(secondImgData);
+        const pdfWidth = doc.internal.pageSize.getWidth() - 10;
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+        doc.addPage();
+        doc.addImage(secondImgData, 'PNG', 5, 5, pdfWidth, pdfHeight);
+      }
+
+      // PDF ni ochish
+      const pdfBlob = doc.output('blob');
+      const pdfUrl = URL.createObjectURL(pdfBlob);
       window.open(pdfUrl, '_blank');
-
-      // Clean up the object URL after the window is loaded
-      setTimeout(() => {
-        URL.revokeObjectURL(pdfUrl);
-      }, 100);
 
     } catch (error) {
       console.error('PDF generation error:', error);
@@ -760,29 +525,62 @@ const BenefitsItem3 = () => {
 
             {/* Buttons */}
             {currentStep === 1 ? (
-              <button
-                onClick={handleNext}
-                disabled={!isStep1Valid()}
-                className={`w-full sm:w-auto px-4 md:px-6 py-2.5 text-white rounded transition-colors duration-200 text-sm md:text-base flex items-center justify-center
-                ${isStep1Valid()
-                    ? 'bg-[#024073] hover:bg-blue-700'
-                    : 'bg-gray-400 cursor-not-allowed'}`}
-              >
-                <span>{t('pages.benefits.next')}</span>
-                <span className="ml-1">›</span>
-              </button>
+              <div className="flex gap-4">
+                <button
+                  onClick={() => setCurrentStep(2)}
+                  disabled={!isStep1Valid()}
+                  className={`flex items-center gap-2 px-6 py-2.5 rounded-lg text-white
+                    ${isStep1Valid()
+                      ? 'bg-[#024073] hover:bg-[#024073]/90'
+                      : 'bg-gray-300 cursor-not-allowed'}`}
+                >
+                  Keyingisi
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={2}
+                    stroke="currentColor"
+                    className="w-4 h-4"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                    />
+                  </svg>
+                </button>
+              </div>
             ) : (
-              <button
-                onClick={generatePDF}
-                disabled={!isStep2Valid()}
-                className={`w-full sm:w-auto px-4 md:px-6 py-2.5 text-white rounded transition-colors duration-200 text-sm md:text-base flex items-center justify-center gap-2
-                ${isStep2Valid()
-                    ? 'bg-[#024073] hover:bg-blue-700'
-                    : 'bg-gray-400 cursor-not-allowed'}`}
-              >
-                <Download className="w-4 h-4 md:w-5 md:h-5" />
-                <span className="whitespace-nowrap">{t('pages.benefits.generateNotification')}</span>
-              </button>
+              <div className="flex gap-4">
+                <button
+                  onClick={() => setCurrentStep(1)}
+                  className="flex items-center gap-2 px-6 py-2.5 rounded-lg border border-[#024073] text-[#024073]"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={2}
+                    stroke="currentColor"
+                    className="w-4 h-4"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15.75 19.5L8.25 12l7.5-7.5"
+                    />
+                  </svg>
+                  Orqaga
+                </button>
+                <button
+                  onClick={generatePDF}
+                  className="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-[#024073] text-white"
+                >
+                  <Download size={16} />
+                  Yuklab olish
+                </button>
+              </div>
             )}
           </div>
         </div>
@@ -816,19 +614,20 @@ const BenefitsItem3 = () => {
             {currentStep === 1 ? (
               <Step1Form formData={formData} handleInputChange={handleInputChange} />
             ) : (
-              <Step2Form
-                formData={formData}
-                handleInputChange={handleInputChange}
-              />
+              <Step2Form formData={formData} handleInputChange={handleInputChange} />
             )}
           </div>
 
           {/* RIGHT SIDE - Preview */}
           <div className="lg:col-span-7">
             {currentStep === 1 ? (
-              <FirstDocument ref={firstPageRef} formData={formData} />
+              <div>
+                <FirstDocument ref={firstPageRef} formData={formData} />
+              </div>
             ) : (
-              <SecondDocument ref={secondPageRef} formData={formData} />
+              <div>
+                <SecondDocument ref={secondPageRef} formData={formData} />
+              </div>
             )}
           </div>
         </div>
