@@ -6,7 +6,6 @@ import { Calendar } from 'lucide-react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import { saveAs } from 'file-saver';
 
 import { Page, Text, View, Document, StyleSheet, Font, pdf } from '@react-pdf/renderer';
 import jsPDF from 'jspdf';
@@ -17,346 +16,6 @@ Font.register({
   family: 'Roboto',
   src: 'https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-light-webfont.ttf',
 });
-
-// PDF Component
-const PDFDocument = ({ formData }) => {
-  const styles = StyleSheet.create({
-    page: {
-      padding: 40,
-      fontSize: 11,
-      fontFamily: 'Roboto',
-    },
-    container: {
-      flex: 1
-    },
-    headerRight: {
-      alignItems: 'flex-end',
-      marginBottom: 30
-    },
-    headerItem: {
-      alignItems: 'flex-end'
-    },
-    headerLine: {
-      flexDirection: 'row',
-      borderBottomWidth: 1,
-      borderBottomColor: '#000000',
-      marginBottom: 5
-    },
-    headerText: {
-      marginLeft: 10
-    },
-    smallText: {
-      fontSize: 10
-    },
-    titleContainer: {
-      alignItems: 'center',
-      marginBottom: 20
-    },
-    title: {
-      fontSize: 14,
-      fontWeight: 700, // bold
-      textAlign: 'center',
-      fontFamily: 'Roboto',
-
-    },
-    text: {
-      marginBottom: 10,
-      textAlign: 'justify',
-    },
-    section: {
-      marginBottom: 20
-    },
-    sectionTitle: {
-      fontWeight: 'bold',
-      marginBottom: 10,
-      fontFamily: 'Roboto',
-
-    },
-    table: {
-      borderWidth: 1,
-      borderColor: '#000000'
-    },
-    tableHeader: {
-      borderBottomWidth: 1,
-      borderBottomColor: '#000000',
-      padding: 5
-    },
-    tableHeaderText: {
-      textAlign: 'center',
-      fontWeight: 'bold',
-    },
-    tableRow: {
-      flexDirection: 'row',
-      borderBottomWidth: 1,
-      borderBottomColor: '#000000'
-    },
-    tableCellNumber: {
-      width: 30,
-      padding: 5,
-      borderRightWidth: 1,
-      borderRightColor: '#000000'
-    },
-    tableCellLabel: {
-      flex: 2,
-      padding: 5,
-      borderRightWidth: 1,
-      borderRightColor: '#000000'
-    },
-    tableCellValue: {
-      flex: 1,
-      padding: 5
-    },
-    signatureSection: {
-      marginVertical: 20
-    },
-    signatureRow: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      marginBottom: 10
-    },
-    italic: {
-      fontStyle: 'italic',
-    },
-    underline: {
-      borderBottomWidth: 1,
-      borderBottomColor: '#000000',
-      minWidth: 200
-    },
-    date: {
-      textAlign: 'right'
-    }
-  });
-
-  return (
-    <Document>
-      {/* First Page */}
-      <Page size="A4" style={styles.page}>
-        <View style={styles.container}>
-          {/* Header section */}
-          <View style={styles.headerRight}>
-            <View style={styles.headerItem}>
-              <View style={styles.headerLine}>
-                <Text style={styles.headerText}>{formData.supervisorPosition} {formData.supervisorFIO}</Text>
-                <Text style={styles.headerText}>га</Text>
-              </View>
-              <Text style={styles.smallText}>(бевосита раҳбарнинг лавозими ва Ф.И.О.)</Text>
-            </View>
-
-            <View style={[styles.headerItem, { marginTop: 15 }]}>
-              <View style={styles.headerLine}>
-                <Text style={styles.headerText}>{formData.position} {formData.managerFIO}</Text>
-                <Text style={styles.headerText}>дан</Text>
-              </View>
-              <Text style={styles.smallText}>(ходимнинг лавозими ва Ф.И.О.)</Text>
-            </View>
-          </View>
-
-          {/* Title */}
-          <View style={styles.titleContainer}>
-            <Text style={styles.title}>Мавжуд манфаатлар тўқнашуви тўғрисидаги</Text>
-            <Text style={styles.title}>ХАБАРНОМА</Text>
-          </View>
-
-          {/* Introduction text */}
-          <Text style={styles.text}>
-            Мен ушбу хабарномада ўзим ва менга алоқадор шахсларнинг мавжуд манфаатлар тўқнашувига оид қуйидаги маълумотлар тўғрисида хабар бераман:
-          </Text>
-
-          {/* Employee Information Section */}
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>1. Ходимга оид маълумотлар</Text>
-            <View style={styles.table}>
-              <View style={styles.tableRow}>
-                <View style={styles.tableCellNumber}><Text>1.</Text></View>
-                <View style={styles.tableCellLabel}>
-                  <Text>Идентификация ID-картаси ёки биометрик паспорт маълумотлари (серияси, рақами, берилган санаси)</Text>
-                </View>
-                <View style={styles.tableCellValue}>
-                  <Text>{formData.passportSeries} {formData.passportIssueDate}</Text>
-                </View>
-              </View>
-              <View style={styles.tableRow}>
-                <View style={styles.tableCellNumber}><Text>2.</Text></View>
-                <View style={styles.tableCellLabel}>
-                  <Text>Жисмоний шахснинг шахсий идентификация рақами (ЖШШИР)</Text>
-                </View>
-                <View style={styles.tableCellValue}>
-                  <Text>{formData.jshshir}</Text>
-                </View>
-              </View>
-            </View>
-          </View>
-
-          {/* Relative Information Section */}
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>2. Алоқадор шахсларга оид маълумотлар*</Text>
-
-            {/* Qarindosh ma'lumotlari */}
-            <View style={[styles.table, { marginBottom: 10 }]}>
-              <View style={styles.tableHeader}>
-                <Text style={styles.tableHeaderText}>Ходимнинг яқин қариндошига оид маълумотлар</Text>
-              </View>
-              <View style={styles.tableRow}>
-                <View style={styles.tableCellNumber}>
-                  <Text>1.</Text>
-                </View>
-                <View style={styles.tableCellLabel}>
-                  <Text>Фамилия, исми, отасининг исми</Text>
-                </View>
-                <View style={styles.tableCellValue}>
-                  <Text>{formData.relativeFIO}</Text>
-                </View>
-              </View>
-              <View style={styles.tableRow}>
-                <View style={styles.tableCellNumber}>
-                  <Text>2.</Text>
-                </View>
-                <View style={styles.tableCellLabel}>
-                  <Text>Идентификация ID-картаси ёки биометрик паспорт</Text>
-                </View>
-                <View style={styles.tableCellValue}>
-                  <Text>{formData.relativePassport}</Text>
-                </View>
-              </View>
-              <View style={styles.tableRow}>
-                <View style={styles.tableCellNumber}>
-                  <Text>3.</Text>
-                </View>
-                <View style={styles.tableCellLabel}>
-                  <Text>ЖШШИР</Text>
-                </View>
-                <View style={styles.tableCellValue}>
-                  <Text>{formData.relativeJSHSHIR}</Text>
-                </View>
-              </View>
-            </View>
-
-            {/* Xodim yuridik shaxs ma'lumotlari */}
-            <View style={[styles.table, { marginBottom: 10 }]}>
-              <View style={styles.tableHeader}>
-                <Text style={styles.tableHeaderText}>
-                  Ходим қайси юридик шахснинг устав фонди (устав капитали) акцияларига ёки улушларига эгалик қилса ёхуд унда бошқарув органининг раҳбари ёки аъзоси бўлса, ўша юридик шахсга оид маълумотлар
-                </Text>
-              </View>
-              <View style={styles.tableRow}>
-                <View style={styles.tableCellNumber}>
-                  <Text>1.</Text>
-                </View>
-                <View style={styles.tableCellLabel}>
-                  <Text>Юридик шахснинг номи</Text>
-                </View>
-                <View style={styles.tableCellValue}>
-                  <Text>{formData.legalEntityName2}</Text>
-                </View>
-              </View>
-              <View style={styles.tableRow}>
-                <View style={styles.tableCellNumber}>
-                  <Text>2.</Text>
-                </View>
-                <View style={styles.tableCellLabel}>
-                  <Text>СТИР</Text>
-                </View>
-                <View style={styles.tableCellValue}>
-                  <Text>{formData.stir2}</Text>
-                </View>
-              </View>
-            </View>
-
-            {/* Qarindosh yuridik shaxs ma'lumotlari */}
-            <View style={[styles.table]}>
-              <View style={styles.tableHeader}>
-                <Text style={styles.tableHeaderText}>
-                  Ходимнинг яқин қариндоши қайси юридик шахснинг устав фонди (устав капитали) акцияларига ёки улушларига эгалик қилса ёхуд унда бошқаруv органининг раҳбари ёки аъзоси бўлса, ўша юридик шахсга оид маълумотлар
-                </Text>
-              </View>
-              <View style={styles.tableRow}>
-                <View style={styles.tableCellNumber}>
-                  <Text>1.</Text>
-                </View>
-                <View style={styles.tableCellLabel}>
-                  <Text>Юридик шахснинг номи</Text>
-                </View>
-                <View style={styles.tableCellValue}>
-                  <Text>{formData.legalEntityName1}</Text>
-                </View>
-              </View>
-              <View style={styles.tableRow}>
-                <View style={styles.tableCellNumber}>
-                  <Text>2.</Text>
-                </View>
-                <View style={styles.tableCellLabel}>
-                  <Text>СТИР</Text>
-                </View>
-                <View style={styles.tableCellValue}>
-                  <Text>{formData.stir1}</Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        </View>
-      </Page>
-
-      {/* Second Page */}
-      <Page size="A4" style={styles.page}>
-        <View style={styles.container}>
-          {/* Izoh matni */}
-          <Text style={[styles.text, { fontSize: 10, marginBottom: 20 }]}>
-            *Ходим унга алоқадор шахсларнинг (ходимнинг яқин қариндошлари ёки ходимнинг яқин қариндошлари устав фонди (устав капитали) акцияларига ёки улушларига эгалик қиладиган ёхуд бошқаруv органи раҳбари ёки аъзоси бўлган юридик шахс) идентификация ID-картаси (биометрик паспорти), ЖШШИР, СТИР бўйича маълумотларни олиш имкониятига эга бўлмаса, у томонидан тегишли позицияларда "маълумотга эга эмасман" деб изоҳ кўрсатилиши мумкин.
-          </Text>
-
-          {/* 3-bo'lim */}
-          <Text style={styles.sectionTitle}>3. Мавжуд манфаатлар тўқнашуви бўйича маълумот</Text>
-          <View style={[styles.table, { marginBottom: 20 }]}>
-            <View style={styles.tableRow}>
-              <View style={styles.tableCellNumber}>
-                <Text>1.</Text>
-              </View>
-              <View style={styles.tableCellLabel}>
-                <Text>Мавжуд манфаатлар тўқнашуви тўғрисида маълумот</Text>
-              </View>
-              <View style={styles.tableCellValue}>
-                <Text>{formData.description}</Text>
-              </View>
-            </View>
-          </View>
-
-          {/* Imzo qismi */}
-          <View style={styles.signatureSection}>
-            <View style={styles.signatureRow}>
-              <Text>Ходимнинг лавозими</Text>
-              <Text style={styles.italic}>Шахсий имзо ёки электрон рақамли имзоси</Text>
-              <Text style={styles.underline}>{formData.managerFIO}</Text>
-            </View>
-            <Text style={styles.date}>Тўлдирилган сана 20___ йил "___" ________</Text>
-          </View>
-
-          {/* Rahbar qismi */}
-          <Text style={[styles.title, { marginVertical: 20 }]}>Ходимнинг бевосита раҳбари</Text>
-
-          <Text style={styles.text}>
-            Мавжуд манфаатлар тўқнашувини тартибга солиш бўйича кўрилган чора:
-          </Text>
-          <Text style={[styles.underline, { marginBottom: 20 }]}>{formData.measures}</Text>
-
-          {/* Rahbar imzosi */}
-          <View style={styles.signatureSection}>
-            <View style={styles.signatureRow}>
-              <Text>Ходимнинг бевосита{'\n'}раҳбарининг лавозими</Text>
-              <Text style={styles.italic}>Шахсий имзо ёки электрон{'\n'}рақамли имзоси</Text>
-              <Text style={styles.underline}>{formData.supervisorFIO}</Text>
-            </View>
-            <Text style={styles.date}>Тўлдирилган сана 20___ йил "___" ________</Text>
-          </View>
-
-          {/* Ro'yxat raqami */}
-          <Text style={[styles.text, { marginTop: 20 }]}>
-            Мавжуд манфаатлар тўқнашуви аниқланган ҳолатлар Манфаатлар тўқнашувини ҳисобга олиш реестрида рўйхатга олинган санаси ва тартиб рақами: 20___ йил "___" ____________ "-_______________-сон.
-          </Text>
-        </View>
-      </Page>
-    </Document>
-  );
-};
 
 const Step1Form = ({ formData, handleInputChange }) => {
   const handlePassportSeriesChange = (name, e) => {
@@ -676,6 +335,217 @@ const Step2Form = ({ formData, handleInputChange }) => {
   );
 };
 
+const FirstDocument = ({ formData }) => (
+  <div className="bg-white p-4 md:p-6 overflow-x-hidden min-w-[320px] font-serif" style={{ fontSize: '0.9rem' }}>
+    {/* Header */}
+    <div className="text-right mb-8">
+      <div>
+        <div className="flex justify-end">
+          <div className="border-b border-black mt-1 pb-2">
+            {formData.supervisorPosition} {formData.supervisorFIO}
+          </div>
+          <div className="border-b border-black ml-2">га</div>
+        </div>
+        <div className="text-xs mt-1">(бевосита раҳбарнинг лавозими ва Ф.И.О.)</div>
+      </div>
+
+      <div className="mt-4">
+        <div className="flex justify-end">
+          <div className="border-b border-black mt-1 pb-2" style={{ minWidth: "200px" }}>
+            {formData.position} {formData.managerFIO}
+          </div>
+          <div className="border-b border-black ml-2">дан</div>
+        </div>
+        <div className="text-xs mt-1">(ходимнинг лавозими ва Ф.И.О.)</div>
+      </div>
+    </div>
+
+    {/* Title */}
+    <div className="text-center mb-6">
+      <h1 className="font-bold mb-2">Мавжуд манфаатлар тўқнашуви тўғрисидаги</h1>
+      <h1 className="font-bold">ХАБАРНОМА</h1>
+    </div>
+
+    {/* Introduction text */}
+    <p className="mb-6 text-justify">
+      Мен ушбу хабарномада ўзим ва менга алоқадор шахсларнинг мавжуд манфаатлар тўқнашувига оид қуйидаги маълумотлар тўғрисида хабар бераман:
+    </p>
+
+    {/* Employee Information Section */}
+    <div className="mb-6">
+      <h2 className="font-bold mb-4">1. Ходимга оид маълумотлар</h2>
+      <table className="w-full border-collapse border border-black" >
+        <tbody>
+          <tr>
+            <td className="border border-black p-2 w-8 align-top">1.</td>
+            <td className="border border-black p-2" style={{ width: "60%" }}>
+              Идентификация ID-картаси ёки биометрик паспорт маълумотлари (серияси, рақами, берилган санаси)
+            </td>
+            <td className="border border-black p-2" style={{ width: "30%" }}>
+              {formData.passportSeries} {formData.passportIssueDate}
+            </td>
+          </tr>
+          <tr>
+            <td className="border border-black p-2">2.</td>
+            <td className="border border-black p-2">
+              Жисмоний шахснинг шахсий идентификация рақами (ЖШШИР)
+            </td>
+            <td className="border border-black p-2">{formData.jshshir}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    {/* Related Person Information */}
+    <div className="mb-6">
+      <h2 className="font-bold mb-4">2. Алоқадор шахсларга оид маълумотлар*</h2>
+
+      {/* Qarindosh ma'lumotlari */}
+      <table className="w-full border-collapse border border-black mb-6" >
+        <tbody>
+          <tr>
+            <td colSpan="3" className="border border-black p-2 text-center font-bold">
+              Ходимнинг яқин қариндошига оид маълумотлар
+            </td>
+          </tr>
+          <tr>
+            <td className="border border-black p-2 w-8">1.</td>
+            <td className="border border-black p-2">Фамилия, исми, отасининг исми</td>
+            <td className="border border-black p-2">{formData.relativeFIO}</td>
+          </tr>
+          <tr>
+            <td className="border border-black p-2">2.</td>
+            <td className="border border-black p-2">
+              Идентификация ID-картаси ёки биометрик паспорт маълумотлари
+            </td>
+            <td className="border border-black p-2">{formData.relativePassport}</td>
+          </tr>
+          <tr>
+            <td className="border border-black p-2">3.</td>
+            <td className="border border-black p-2">ЖШШИР</td>
+            <td className="border border-black p-2">{formData.relativeJSHSHIR}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      {/* Xodim yuridik shaxs ma'lumotlari */}
+      <table className="w-full border-collapse border border-black mb-6" >
+        <tbody>
+          <tr>
+            <td colSpan="3" className="border border-black p-2 text-center font-bold">
+              Ходим қайси юридик шахснинг устав фонди (устав капитали) акцияларига ёки улушларига эгалик қилса ёхуд унда бошқаруv органининг раҳбари ёки аъзоси бўлса, ўша юридик шахсга оид маълумотлар
+            </td>
+          </tr>
+          <tr>
+            <td className="border border-black p-2 w-8">1.</td>
+            <td className="border border-black p-2">Юридик шахснинг номи</td>
+            <td className="border border-black p-2">{formData.legalEntityName2}</td>
+          </tr>
+          <tr>
+            <td className="border border-black p-2">2.</td>
+            <td className="border border-black p-2">СТИР</td>
+            <td className="border border-black p-2">{formData.stir2}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      {/* Qarindosh yuridik shaxs ma'lumotlari */}
+      <table className="w-full border-collapse border border-black" >
+        <tbody>
+          <tr>
+            <td colSpan="3" className="border border-black p-2 text-center font-bold">
+              Ходимнинг яқин қариндоши қайси юридик шахснинг устав фонди (устав капитали) акцияларига ёки улушларига эгалик қилса ёхуд унда бошқаруv органининг раҳбари ёки аъзоси бўлса, ўша юридик шахсга оид маълумотлар
+            </td>
+          </tr>
+          <tr>
+            <td className="border border-black p-2 w-8">1.</td>
+            <td className="border border-black p-2">Юридик шахснинг номи</td>
+            <td className="border border-black p-2">{formData.legalEntityName1}</td>
+          </tr>
+          <tr>
+            <td className="border border-black p-2">2.</td>
+            <td className="border border-black p-2">СТИР</td>
+            <td className="border border-black p-2">{formData.stir1}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+);
+
+const SecondDocument = React.forwardRef(({ formData }, ref) => (
+  <div ref={ref} className="bg-white p-4 md:p-6 overflow-x-hidden min-w-[320px] font-serif" style={{ fontSize: '0.9rem' }}>
+    {/* Izoh matni */}
+    <p className="text-sm mb-6 text-justify">
+      *Ходим унга алоқадор шахсларнинг (ходимнинг яқин қариндошлари ёки ходимнинг яқин қариндошлари устав фонди (устав капитали) акцияларига ёки улушларига эгалик қиладиган ёхуд бошқаруv органи раҳбари ёки аъзоси бўлган юридик шахс) идентификация ID-картаси (биометрик паспорти), ЖШШИР, СТИР бўйича маълумотларни олиш имкониятига эга бўлмаса, у томонидан тегишли позицияларда "маълумотга эга эмасман" деб изоҳ кўрсатилиши мумкин.
+    </p>
+
+    {/* 3-bo'lim */}
+    <h2 className="font-bold mb-3">3. Мавжуд манфаатлар тўқнашуви бўйича маълумот</h2>
+
+    <table className="w-full border-collapse border border-black mb-6" >
+      <tbody>
+        <tr>
+          <td className="border border-black p-2 w-8">1.</td>
+          <td className="border border-black p-2">
+            Мавжуд манфаатлар тўқнашуви тўғрисида маълумот
+          </td>
+          <td className="border border-black p-2">
+            {formData.description}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    {/* Imzo qismi */}
+    <div className="mb-6">
+      <div className="flex justify-between items-center mb-4">
+        <div>Ходимнинг лавозими</div>
+        <div className="italic">Шахсий имзо ёки электрон рақамли имзоси</div>
+        <div className="border-b border-black" style={{ minWidth: "180px" }}>
+          {formData.managerFIO}
+        </div>
+      </div>
+      <div className="text-right">
+        Тўлдирилган сана 20___ йил "___" ________
+      </div>
+    </div>
+
+    {/* Rahbar qismi */}
+    <div className="mb-3 text-center font-bold">
+      Ходимнинг бевосита раҳбари
+    </div>
+
+    <div className="mb-6">
+      <p className="mb-4">
+        Мавжуд манфаатлар тўқнашувини тартибга солиш бўйича кўрилган чора:
+      </p>
+      <div className="border-b border-black mb-4">
+        {formData.measures}
+      </div>
+    </div>
+
+    {/* Rahbar imzosi */}
+    <div className="mb-6">
+      <div className="flex justify-between items-center mb-4">
+        <div>Ходимнинг бевосита<br />раҳбарининг лавозими</div>
+        <div className="italic">Шахсий имзо ёки электрон<br />рақамли имзоси</div>
+        <div className="border-b border-black" style={{ minWidth: "180px" }}>
+          {formData.supervisorFIO}
+        </div>
+      </div>
+      <div className="text-right">
+        Тўлдирилган сана 20___ йил "___" ________
+      </div>
+    </div>
+
+    {/* Ro'yxat raqami */}
+    <p className="text-justify" style={{ fontSize: '0.85rem' }}>
+      Мавжуд манфаатлар тўқнашуви аниқланган ҳолатлар Манфаатлар тўқнашувини ҳисобга олиш реестрида рўйхатга олинган санаси ва тартиб рақами: 20___ йил "___" ____________ "-_______________-сон.
+    </p>
+  </div>
+));
+
 const BenefitsItem = () => {
   const { t } = useTranslation();
   const [currentStep, setCurrentStep] = useState(1);
@@ -749,53 +619,67 @@ const BenefitsItem = () => {
     if (!isStep2Valid()) return;
 
     try {
-      // Birinchi sahifani ko'rsatish
-      setCurrentStep(1);
-
-      await new Promise(resolve => setTimeout(resolve, 100));
-
       const doc = new jsPDF('p', 'mm', 'a4');
+
+      // Birinchi sahifani generatsiya qilish
+      setCurrentStep(1);
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      if (!firstPageRef.current) {
+        console.error('First page reference not found');
+        return;
+      }
+
       const options = {
-        scale: 2,
+        scale: 1.3,
         useCORS: true,
         scrollX: 0,
         scrollY: 0,
-        // Table va text uchun maxsus width
-        width: 800, // Kenglikni cheklash
-        windowWidth: 800,
+        windowWidth: firstPageRef.current.offsetWidth,
+        windowHeight: firstPageRef.current.offsetHeight,
+        margin: [5, 5, 5, 5]
       };
 
       // First page
-      if (firstPageRef.current) {
-        const firstCanvas = await html2canvas(firstPageRef.current, options);
-        const firstImgData = firstCanvas.toDataURL('image/png');
-        const pageWidth = doc.internal.pageSize.getWidth();
-        const pageHeight = doc.internal.pageSize.getHeight();
-        doc.addImage(firstImgData, 'PNG', 0, 0, pageWidth, pageHeight);
-      }
+      const firstCanvas = await html2canvas(firstPageRef.current, options);
+      const firstImgData = firstCanvas.toDataURL('image/png');
 
-      // Ikkinchi sahifani ko'rsatish
+      const firstImgProps = doc.getImageProperties(firstImgData);
+      const pdfWidth = doc.internal.pageSize.getWidth() - 10;
+      const pdfHeight = (firstImgProps.height * pdfWidth) / firstImgProps.width;
+
+      doc.addImage(firstImgData, 'PNG', 5, 5, pdfWidth, pdfHeight);
+
+      // Ikkinchi sahifani generatsiya qilish
       setCurrentStep(2);
+      await new Promise(resolve => setTimeout(resolve, 500));
 
-      await new Promise(resolve => setTimeout(resolve, 100));
-
-      // Second page
-      if (secondPageRef.current) {
-        const secondCanvas = await html2canvas(secondPageRef.current, options);
-        const secondImgData = secondCanvas.toDataURL('image/png');
-        const pageWidth = doc.internal.pageSize.getWidth();
-        const pageHeight = doc.internal.pageSize.getHeight();
-        doc.addPage();
-        doc.addImage(secondImgData, 'PNG', 0, 0, pageWidth, pageHeight);
+      // Ikkinchi ref mavjudligini tekshirish
+      if (!secondPageRef.current) {
+        console.error('Second page reference not found');
+        return;
       }
 
-      // PDF ni yangi tabda ochish
+      const secondCanvas = await html2canvas(secondPageRef.current, options);
+      const secondImgData = secondCanvas.toDataURL('image/png');
+
+      doc.addPage();
+
+      const secondImgProps = doc.getImageProperties(secondImgData);
+      const secondPdfHeight = (secondImgProps.height * pdfWidth) / secondImgProps.width;
+
+      doc.addImage(secondImgData, 'PNG', 5, 5, pdfWidth, secondPdfHeight);
+
+      // PDF ni ochish
       const pdfBlob = doc.output('blob');
       const pdfUrl = URL.createObjectURL(pdfBlob);
       window.open(pdfUrl, '_blank');
 
     } catch (error) {
       console.error('PDF generation error:', error);
+    } finally {
+      // Har qanday holatda birinchi sahifaga qaytish
+      setCurrentStep(1);
     }
   };
 
@@ -863,222 +747,19 @@ const BenefitsItem = () => {
             {currentStep === 1 ? (
               <Step1Form formData={formData} handleInputChange={handleInputChange} />
             ) : (
-              <Step2Form
-                formData={formData}
-                handleInputChange={handleInputChange}
-              />
+              <Step2Form formData={formData} handleInputChange={handleInputChange} />
             )}
           </div>
 
           {/* RIGHT SIDE - Preview */}
           <div className="lg:col-span-7">
             {currentStep === 1 ? (
-              <div ref={firstPageRef} className="bg-white p-4 md:p-6 overflow-x-hidden min-w-[320px] font-serif">
-                {/* Header section */}
-                <div className="text-right mb-8">
-                  <div>
-                    <div className="flex justify-end">
-                      <div className="border-b border-black mt-1" >
-                        {formData.supervisorPosition} {formData.supervisorFIO}
-                      </div>
-                      <div className="border-b border-black ml-2">га</div>
-                    </div>
-                    <div className="text-xs mt-1">(бевосита раҳбарнинг лавозими ва Ф.И.О.)</div>
-                  </div>
-
-                  <div className="mt-4">
-                    <div className="flex justify-end">
-                      <div className="border-b border-black mt-1" style={{ minWidth: "200px" }}>
-                        {formData.position}  {formData.managerFIO}
-                      </div>
-                      <div className="border-b border-black ml-2" >дан</div>
-                    </div>
-                    <div className="text-xs mt-1">(ходимнинг лавозими ва Ф.И.О.)</div>
-
-                  </div>
-                </div>
-
-                {/* Title */}
-                <div className="text-center mb-6">
-                  <h1 className="font-bold mb-2">Мавжуд манфаатлар тўқнашуви тўғрисидаги</h1>
-                  <h1 className="font-bold">ХАБАРНОМА</h1>
-                </div>
-
-                {/* Introduction text */}
-                <p className="mb-6 text-justify">
-                  Мен ушбу хабарномада ўзим ва менга алоқадор шахсларнинг мавжуд манфаатлар тўқнашувига оид қуйидаги маълумотлар тўғрисида хабар бераман:
-                </p>
-
-                {/* Employee Information Section */}
-                <div className="mb-6">
-                  <h2 className="font-bold mb-4">1. Ходимга оид маълумотлар</h2>
-                  <table className="w-full border-collapse border border-black" style={{ maxWidth: "700px", margin: "0 auto" }}>
-                    <tbody>
-                      <tr>
-                        <td className="border border-black p-2 w-8 align-top">1.</td>
-                        <td className="border border-black p-2" style={{ width: "60%" }}>
-                          Идентификация ID-картаси ёки биометрик паспорт маълумотлари (серияси, рақами, берилган санаси)
-                        </td>
-                        <td className="border border-black p-2" style={{ width: "30%" }}>
-                          {formData.passportSeries} {formData.passportIssueDate}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="border border-black p-2">2.</td>
-                        <td className="border border-black p-2">
-                          Жисмоний шахснинг шахсий идентификация рақами (ЖШШИР)
-                        </td>
-                        <td className="border border-black p-2">{formData.jshshir}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                {/* Relative Information Section */}
-                <div className="mb-6">
-                  <h2 className="font-bold mb-4">2. Алоқадор шахсларга оид маълумотлар*</h2>
-
-                  {/* Qarindosh ma'lumotlari */}
-                  <table className="w-full border-collapse border border-black mb-6" style={{ maxWidth: "700px", margin: "0 auto" }}>
-                    <tbody>
-                      <tr>
-                        <td colSpan="3" className="border border-black p-2 text-center font-bold">
-                          Ходимнинг яқин қариндошига оид маълумотлар
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="border border-black p-2 w-8">1.</td>
-                        <td className="border border-black p-2">Фамилия, исми, отасининг исми</td>
-                        <td className="border border-black p-2">{formData.relativeFIO}</td>
-                      </tr>
-                      <tr>
-                        <td className="border border-black p-2">2.</td>
-                        <td className="border border-black p-2">
-                          Идентификация ID-картаси ёки биометрик паспорт маълумотлари
-                        </td>
-                        <td className="border border-black p-2">{formData.relativePassport}</td>
-                      </tr>
-                      <tr>
-                        <td className="border border-black p-2">3.</td>
-                        <td className="border border-black p-2">ЖШШИР</td>
-                        <td className="border border-black p-2">{formData.relativeJSHSHIR}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-
-                  {/* Xodim yuridik shaxs ma'lumotlari */}
-                  <table className="w-full border-collapse border border-black mb-6" style={{ maxWidth: "700px", margin: "0 auto" }}>
-                    <tbody>
-                      <tr>
-                        <td colSpan="3" className="border border-black p-2 text-center font-bold">
-                          Ходим қайси юридик шахснинг устав фонди (устав капитали) акцияларига ёки улушларига эгалик қилса ёхуд унда бошқаруv органининг раҳбари ёки аъзоси бўлса, ўша юридик шахсга оид маълумотлар
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="border border-black p-2 w-8">1.</td>
-                        <td className="border border-black p-2">Юридик шахснинг номи</td>
-                        <td className="border border-black p-2">{formData.legalEntityName2}</td>
-                      </tr>
-                      <tr>
-                        <td className="border border-black p-2">2.</td>
-                        <td className="border border-black p-2">СТИР</td>
-                        <td className="border border-black p-2">{formData.stir2}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-
-                  {/* Qarindosh yuridik shaxs ma'lumotlari */}
-                  <table className="w-full border-collapse border border-black" style={{ maxWidth: "700px", margin: "0 auto" }}>
-                    <tbody>
-                      <tr>
-                        <td colSpan="3" className="border border-black p-2 text-center font-bold">
-                          Ходимнинг яқин қариндоши қайси юридик шахснинг устав фонди (устав капитали) акцияларига ёки улушларига эгалик қилса ёхуд унда бошқаруv органининг раҳбари ёки аъзоси бўлса, ўша юридик шахсга оид маълумотлар
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="border border-black p-2 w-8">1.</td>
-                        <td className="border border-black p-2">Юридик шахснинг номи</td>
-                        <td className="border border-black p-2">{formData.legalEntityName1}</td>
-                      </tr>
-                      <tr>
-                        <td className="border border-black p-2">2.</td>
-                        <td className="border border-black p-2">СТИР</td>
-                        <td className="border border-black p-2">{formData.stir1}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+              <div ref={firstPageRef}>
+                <FirstDocument formData={formData} />
               </div>
             ) : (
-              <div ref={secondPageRef} className="bg-white p-4 md:p-6 overflow-x-hidden min-w-[320px] font-serif">
-                {/* Izoh matni */}
-                <p className="text-sm mb-8 text-justify">
-                  *Ходим унга алоқадор шахсларнинг (ходимнинг яқин қариндошлари ёки ходимнинг яқин қариндошлари устав фонди (устав капитали) акцияларига ёки улушларига эгалик қиладиган ёхуд бошқаруv органи раҳбари ёки аъзоси бўлган юридик шахс) идентификация ID-картаси (биометрик паспорти), ЖШШИР, СТИР бўйича маълумотларни олиш имкониятига эга бўлмаса, у томонидан тегишли позицияларда "маълумотга эга эмасман" деб изоҳ кўрсатилиши мумкин.
-                </p>
-
-                {/* 3-bo'lim */}
-                <h2 className="font-bold mb-4">3. Мавжуд манфаатлар тўқнашуви бўйича маълумот</h2>
-
-                <table className="w-full border-collapse border border-black mb-8" style={{ maxWidth: "700px", margin: "0 auto" }}>
-                  <tbody>
-                    <tr>
-                      <td className="border border-black p-2 w-8">1.</td>
-                      <td className="border border-black p-2">
-                        Мавжуд манфаатлар тўқнашуви тўғрисида маълумот
-                      </td>
-                      <td className="border border-black p-2">
-                        {formData.description}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-
-                {/* Imzo qismi */}
-                <div className="mb-8">
-                  <div className="flex justify-between items-center mb-6">
-                    <div>Ходимнинг лавозими</div>
-                    <div className="italic">Шахсий имзо ёки электрон рақамли имзоси</div>
-                    <div className="border-b border-black" style={{ minWidth: "200px" }}>
-                      {formData.managerFIO}
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    Тўлдирилган сана 20___ йил "___" ________
-                  </div>
-                </div>
-
-                {/* Rahbar qismi */}
-                <div className="mb-4 text-center font-bold">
-                  Ходимнинг бевосита раҳбари
-                </div>
-
-                <div className="mb-8">
-                  <p className="mb-6">
-                    Мавжуд манфаатлар тўқнашувини тартибга солиш бўйича кўрилган чора:
-                  </p>
-                  <div className="border-b border-black mb-4">
-                    {formData.measures}
-                  </div>
-                </div>
-
-                {/* Rahbar imzosi */}
-                <div className="mb-8">
-                  <div className="flex justify-between items-center mb-6">
-                    <div>Ходимнинг бевосита<br />раҳбарининг лавозими</div>
-                    <div className="italic">Шахсий имзо ёки электрон<br />рақамли имзоси</div>
-                    <div className="border-b border-black" style={{ minWidth: "200px" }}>
-                      {formData.supervisorFIO}
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    Тўлдирилган сана 20___ йил "___" ________
-                  </div>
-                </div>
-
-                {/* Ro'yxat raqami */}
-                <p className="text-justify">
-                  Мавжуд манфаатлар тўқнашуви аниқланган ҳолатлар Манфаатлар тўқнашувини ҳисобга олиш реестрида рўйхатга олинган санаси ва тартиб рақами: 20___ йил "___" ____________ "-_______________-сон.
-                </p>
+              <div ref={secondPageRef}>
+                <SecondDocument formData={formData} />
               </div>
             )}
           </div>

@@ -5,523 +5,10 @@ import ReactDOM from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
-import { Page, Text, View, Document, StyleSheet, Font, pdf } from '@react-pdf/renderer';
-import { saveAs } from 'file-saver';
-// Custom font registration
-Font.register({
-  family: 'Roboto',
-  src: 'https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-light-webfont.ttf',
-});
-
-// PDF styles
-const styles = StyleSheet.create({
-  page: {
-    padding: 40,
-    fontSize: 11,
-    fontFamily: 'Roboto',
-
-  },
-  mainTitle: {
-    fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 24,
-    fontWeight: 'bold'
-  },
-  introText: {
-    marginBottom: 20,
-    lineHeight: 1.4,
-    textAlign: 'justify'
-  },
-  infoBlock: {
-    marginBottom: 15,
-  },
-  infoField: {
-    marginBottom: 8,
-  },
-  infoLabel: {
-    fontSize: 10,
-    color: '#666',
-    textAlign: 'center'
-  },
-  infoValue: {
-    borderBottom: 1,
-    borderColor: '#000',
-    paddingBottom: 2,
-    marginBottom: 4
-  },
-  section: {
-    marginBottom: 20,
-  },
-  sectionTitle: {
-    fontSize: 12,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  table: {
-    width: '100%',
-    marginBottom: 15,
-    border: 1,
-    borderColor: '#000'
-  },
-  tableRow: {
-    flexDirection: 'row',
-    borderBottom: 1,
-    borderBottomColor: '#000'
-  },
-  tableRowLast: {
-    flexDirection: 'row'
-  },
-  tableCellNumber: {
-    width: '5%',
-    borderRight: 1,
-    borderRightColor: '#000',
-    padding: 4,
-    fontSize: 10
-  },
-  tableCellLabel: {
-    width: '45%',
-    borderRight: 1,
-    borderRightColor: '#000',
-    padding: 4,
-    fontSize: 10
-  },
-  tableCellValue: {
-    width: '50%',
-    padding: 4,
-    fontSize: 10
-  },
-  signature: {
-    marginTop: 30,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end'
-  },
-  signatureLeft: {
-    width: '30%'
-  },
-  signatureMiddle: {
-    width: '40%',
-    borderBottom: 1,
-    borderBottomColor: '#000',
-    marginHorizontal: 10
-  },
-  signatureRight: {
-    width: '30%',
-    textAlign: 'right'
-  },
-  pageNumber: {
-    position: 'absolute',
-    top: 20,
-    right: 30,
-    fontSize: 10
-  },
-  secondPageSection: {
-    marginBottom: 20,
-  },
-  secondPageTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  borderBottom: {
-    borderBottom: 1,
-    borderColor: '#000',
-    paddingBottom: 8,
-    marginBottom: 15,
-    minHeight: 30
-  },
-  infoNote: {
-    fontSize: 10,
-    color: '#666',
-    marginTop: 4,
-  },
-  registrationInfo: {
-    fontSize: 11,
-    marginTop: 20,
-  },
-  signatureBlock: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 30,
-  },
-  signatureItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-  },
-  dateBlock: {
-    marginTop: 15,
-    textAlign: 'right',
-  }
-
-});
-
-const PDFDocument2 = ({ formData, t }) => (
-  <Document>
-    {/* First Page */}
-    <Page size="A4" style={styles.page}>
-      <Text style={styles.mainTitle}>
-        {t('pages.benefits2.documents.first.mainTitle')}
-      </Text>
-
-      <View style={styles.introText}>
-        <Text>
-          Men, {formData.managerFIO ? (
-            <span className="bg-[#FFFF00] px-1">{formData.managerFIO}</span>
-          ) : '_______________________'}
-        </Text>
-        <Text style={styles.infoLabel}>
-          {t('pages.benefits2.documents.first.fullNameNote')}
-        </Text>
-
-        <Text style={{ marginTop: 10 }}>
-          {formData.position ? (
-            <span className="bg-[#FFFF00] px-1">{formData.position}</span>
-          ) : '_______________________'}
-        </Text>
-        <Text style={styles.infoLabel}>
-          {t('pages.benefits2.documents.first.positionNote')}
-        </Text>
-
-        <Text style={{ marginTop: 10 }}>
-          {t('pages.benefits2.documents.first.declarationText')}
-        </Text>
-      </View>
-
-      {/* Employee Information */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>
-          {t('pages.benefits2.documents.first.employeeInfoTitle')}
-        </Text>
-
-        <View style={styles.table}>
-          <View style={styles.tableRow}>
-            <View style={styles.tableCellNumber}>
-              <Text>1.</Text>
-            </View>
-            <View style={styles.tableCellLabel}>
-              <Text>{t('pages.benefits2.documents.first.table.header.fullName')}</Text>
-            </View>
-            <View style={styles.tableCellValue}>
-              <Text>{formData.passportSeries && formData.passportIssueDate ? (
-                <span className="bg-[#FFFF00] px-1">
-                  {`${formData.passportSeries} ${formData.passportIssueDate}`}
-                </span>
-              ) : ''}</Text>
-            </View>
-          </View>
-          <View style={styles.tableRowLast}>
-            <View style={styles.tableCellNumber}>
-              <Text>2.</Text>
-            </View>
-            <View style={styles.tableCellLabel}>
-              <Text>{t('pages.benefits2.documents.first.table.header.passportInfo')}</Text>
-            </View>
-            <View style={styles.tableCellValue}>
-              <Text>{formData.jshshir ? (
-                <span className="bg-[#FFFF00] px-1">{formData.jshshir}</span>
-              ) : ''}</Text>
-            </View>
-          </View>
-        </View>
-      </View>
-
-      {/* Related Person Information */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>
-          {t('pages.benefits2.documents.first.table.header.relatedPersonInfo')}
-        </Text>
-
-        <View style={styles.table}>
-          <View style={styles.tableRow}>
-            <View style={styles.tableCellNumber}>
-              <Text>1.</Text>
-            </View>
-            <View style={styles.tableCellLabel}>
-              <Text>{t('pages.benefits2.documents.first.table.header.fullName')}</Text>
-            </View>
-            <View style={styles.tableCellValue}>
-              <Text>{formData.relativeFIO ? (
-                <span className="bg-[#FFFF00] px-1">{formData.relativeFIO}</span>
-              ) : ''}</Text>
-            </View>
-          </View>
-          <View style={styles.tableRow}>
-            <View style={styles.tableCellNumber}>
-              <Text>2.</Text>
-            </View>
-            <View style={styles.tableCellLabel}>
-              <Text>{t('pages.benefits2.documents.first.table.header.passportInfo')}</Text>
-            </View>
-            <View style={styles.tableCellValue}>
-              <Text>{formData.relativePassport ? (
-                <span className="bg-[#FFFF00] px-1">{formData.relativePassport}</span>
-              ) : ''}</Text>
-            </View>
-          </View>
-          <View style={styles.tableRowLast}>
-            <View style={styles.tableCellNumber}>
-              <Text>3.</Text>
-            </View>
-            <View style={styles.tableCellLabel}>
-              <Text>{t('pages.benefits2.documents.first.table.header.pinfl')}</Text>
-            </View>
-            <View style={styles.tableCellValue}>
-              <Text>{formData.relativeJSHSHIR ? (
-                <span className="bg-[#FFFF00] px-1">{formData.relativeJSHSHIR}</span>
-              ) : ''}</Text>
-            </View>
-          </View>
-        </View>
-
-        {/* Legal Entity Information */}
-        <Text style={[styles.sectionTitle, { marginTop: 15 }]}>
-          {t('pages.benefits2.documents.first.table.header.legalEntityInfo1')}
-        </Text>
-
-        <View style={styles.table}>
-          <View style={styles.tableRow}>
-            <View style={styles.tableCellNumber}>
-              <Text>1.</Text>
-            </View>
-            <View style={styles.tableCellLabel}>
-              <Text>{t('pages.benefits2.documents.first.table.header.legalEntityName')}</Text>
-            </View>
-            <View style={styles.tableCellValue}>
-              <Text>{formData.legalEntityName ? (
-                <span className="bg-[#FFFF00] px-1">{formData.legalEntityName}</span>
-              ) : ''}</Text>
-            </View>
-          </View>
-          <View style={styles.tableRowLast}>
-            <View style={styles.tableCellNumber}>
-              <Text>2.</Text>
-            </View>
-            <View style={styles.tableCellLabel}>
-              <Text>{t('pages.benefits2.documents.first.table.header.tin')}</Text>
-            </View>
-            <View style={styles.tableCellValue}>
-              <Text>{formData.stir ? (
-                <span className="bg-[#FFFF00] px-1">{formData.stir}</span>
-              ) : ''}</Text>
-            </View>
-          </View>
-        </View>
-
-        <Text style={[styles.sectionTitle, { marginTop: 15 }]}>
-          {t('pages.benefits2.documents.first.table.header.legalEntityInfo2')}
-        </Text>
-
-        <View style={styles.table}>
-          <View style={styles.tableRow}>
-            <View style={styles.tableCellNumber}>
-              <Text>1.</Text>
-            </View>
-            <View style={styles.tableCellLabel}>
-              <Text>{t('pages.benefits2.documents.first.table.header.legalEntityName')}</Text>
-            </View>
-            <View style={styles.tableCellValue}>
-              <Text>{formData.relativeLegalEntityName ? (
-                <span className="bg-[#FFFF00] px-1">{formData.relativeLegalEntityName}</span>
-              ) : ''}</Text>
-            </View>
-          </View>
-          <View style={styles.tableRowLast}>
-            <View style={styles.tableCellNumber}>
-              <Text>2.</Text>
-            </View>
-            <View style={styles.tableCellLabel}>
-              <Text>{t('pages.benefits2.documents.first.table.header.tin')}</Text>
-            </View>
-            <View style={styles.tableCellValue}>
-              <Text>{formData.relativeSTIR ? (
-                <span className="bg-[#FFFF00] px-1">{formData.relativeSTIR}</span>
-              ) : ''}</Text>
-            </View>
-          </View>
-        </View>
-      </View>
-
-      <Text style={styles.introText}>
-        {t('pages.benefits2.documents.first.footnote')}
-      </Text>
-    </Page>
-
-    {/* Second Page */}
-    <Page size="A4" style={styles.page}>
-      {/* Page number */}
-      <Text style={styles.pageNumber}>5</Text>
-
-      {/* Main content */}
-      <View style={styles.secondPageSection}>
-        <Text style={styles.secondPageTitle}>
-          {t('pages.benefits2.documents.second.section3Title')}
-        </Text>
-        <Text style={styles.borderBottom}>
-          {formData.description ? (
-            <span className="bg-[#FFFF00] px-1 block">{formData.description}</span>
-          ) : '_______________________'}
-        </Text>
-      </View>
-
-      <View style={styles.secondPageSection}>
-        <Text style={styles.secondPageTitle}>
-          {t('pages.benefits2.documents.second.section4Title')}
-        </Text>
-        <Text style={styles.borderBottom}>
-          {formData.additionalInfo ? (
-            <span className="bg-[#FFFF00] px-1 block">{formData.additionalInfo}</span>
-          ) : '_______________________'}
-        </Text>
-        <Text style={styles.infoNote}>
-          {t('pages.benefits2.documents.second.additionalInfoNote')}
-        </Text>
-      </View>
-
-      {/* Signature block */}
-      <View style={styles.signatureBlock}>
-        <Text>{t('pages.benefits2.documents.second.employeePosition')}</Text>
-        <View style={styles.signatureLine} />
-        <Text>({formData.managerFIO ? (
-          <span className="bg-[#FFFF00] px-1">({formData.managerFIO})</span>
-        ) : '(_______________)'}</Text>
-      </View>
-
-      {/* Date block */}
-      <View style={styles.dateBlock}>
-        <Text>{t('pages.benefits2.documents.second.fillingDate')}</Text>
-        <Text>{formData.date ? (
-          <span className="bg-[#FFFF00] px-1">{formData.date}</span>
-        ) : '_______________'}</Text>
-      </View>
-
-      {/* Registration info */}
-      <View style={styles.registrationInfo}>
-        <Text>{t('pages.benefits2.documents.second.registrationInfo')}</Text>
-      </View>
-
-      {/* Extra info section */}
-      <View style={[styles.secondPageSection, { marginTop: 30 }]}>
-        <Text style={styles.secondPageTitle}>
-          {t('pages.benefits2.documents.second.relatedPersonTitle')}
-        </Text>
-
-        <Text style={[styles.sectionTitle, { marginTop: 15 }]}>
-          {t('pages.benefits2.documents.second.relativeInfo')}
-        </Text>
-
-        <View style={styles.table}>
-          <View style={styles.tableRow}>
-            <View style={styles.tableCellNumber}>
-              <Text>1.</Text>
-            </View>
-            <View style={styles.tableCellLabel}>
-              <Text>{t('pages.benefits2.documents.second.idCardInfo')}</Text>
-            </View>
-            <View style={styles.tableCellValue}>
-              <Text>{formData.passportSeries && formData.passportIssueDate ? (
-                <span className="bg-[#FFFF00] px-1">
-                  {`${formData.passportSeries} ${formData.passportIssueDate}`}
-                </span>
-              ) : ''}</Text>
-            </View>
-          </View>
-          <View style={styles.tableRowLast}>
-            <View style={styles.tableCellNumber}>
-              <Text>2.</Text>
-            </View>
-            <View style={styles.tableCellLabel}>
-              <Text>{t('pages.benefits2.documents.second.pinflInfo')}</Text>
-            </View>
-            <View style={styles.tableCellValue}>
-              <Text>{formData.jshshir ? (
-                <span className="bg-[#FFFF00] px-1">{formData.jshshir}</span>
-              ) : ''}</Text>
-            </View>
-          </View>
-        </View>
-
-        {/* Legal entities info */}
-        <Text style={[styles.sectionTitle, { marginTop: 15 }]}>
-          {t('pages.benefits2.documents.second.legalEntityInfo1')}
-        </Text>
-
-        <View style={styles.table}>
-          <View style={styles.tableRow}>
-            <View style={styles.tableCellNumber}>
-              <Text>1.</Text>
-            </View>
-            <View style={styles.tableCellLabel}>
-              <Text>{t('pages.benefits2.documents.second.legalEntityName')}</Text>
-            </View>
-            <View style={styles.tableCellValue}>
-              <Text>{formData.legalEntityName ? (
-                <span className="bg-[#FFFF00] px-1">{formData.legalEntityName}</span>
-              ) : ''}</Text>
-            </View>
-          </View>
-          <View style={styles.tableRowLast}>
-            <View style={styles.tableCellNumber}>
-              <Text>2.</Text>
-            </View>
-            <View style={styles.tableCellLabel}>
-              <Text>{t('pages.benefits2.documents.second.tin')}</Text>
-            </View>
-            <View style={styles.tableCellValue}>
-              <Text>{formData.stir ? (
-                <span className="bg-[#FFFF00] px-1">{formData.stir}</span>
-              ) : ''}</Text>
-            </View>
-          </View>
-        </View>
-
-        <Text style={[styles.sectionTitle, { marginTop: 15 }]}>
-          {t('pages.benefits2.documents.second.legalEntityInfo2')}
-        </Text>
-
-        <View style={styles.table}>
-          <View style={styles.tableRow}>
-            <View style={styles.tableCellNumber}>
-              <Text>1.</Text>
-            </View>
-            <View style={styles.tableCellLabel}>
-              <Text>{t('pages.benefits2.documents.second.legalEntityName')}</Text>
-            </View>
-            <View style={styles.tableCellValue}>
-              <Text>{formData.relativeLegalEntityName ? (
-                <span className="bg-[#FFFF00] px-1">{formData.relativeLegalEntityName}</span>
-              ) : ''}</Text>
-            </View>
-          </View>
-          <View style={styles.tableRowLast}>
-            <View style={styles.tableCellNumber}>
-              <Text>2.</Text>
-            </View>
-            <View style={styles.tableCellLabel}>
-              <Text>{t('pages.benefits2.documents.second.tin')}</Text>
-            </View>
-            <View style={styles.tableCellValue}>
-              <Text>{formData.relativeSTIR ? (
-                <span className="bg-[#FFFF00] px-1">{formData.relativeSTIR}</span>
-              ) : ''}</Text>
-            </View>
-          </View>
-        </View>
-      </View>
-
-      {/* Footer note */}
-      <Text style={styles.infoNote}>
-        {t('pages.benefits2.documents.second.infoNote')}
-      </Text>
-    </Page>
-  </Document>
-);
-
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 const Step1Form = ({ formData, handleInputChange }) => {
-  const { t } = useTranslation();
 
   // Passport seriyasi uchun handler
   const handlePassportSeriesChange = (e) => {
@@ -561,21 +48,21 @@ const Step1Form = ({ formData, handleInputChange }) => {
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            {t("pages.benefits2.form1.supervisorInfo")}
+            F.I.O <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
-            name="supervisorFullName"
-            value={formData.supervisorFullName}
+            name="managerFIO"
+            value={formData.managerFIO}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder={t("pages.benefits2.form1.supervisorFullName")}
+            placeholder="Familiya, ism, otasining ismi"
           />
         </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            {t('pages.benefits2.form1.position')} <span className="text-red-500">*</span>
+            Lavozim <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -583,13 +70,13 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.position}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder={t('pages.benefits2.form1.position')}
+            placeholder="Lavozim"
           />
         </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            {t('pages.benefits.form1.passportSeries')} <span className="text-red-500">*</span>
+            Pasport seriyasi va raqami <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -597,16 +84,15 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.passportSeries}
             onChange={handlePassportSeriesChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder="AA1234567"
+            placeholder="Pasport seriyasi va raqami"
             maxLength="9"
           />
         </div>
 
         <div className="relative">
           <label className="block text-gray-500 text-sm mb-1">
-            {t('pages.benefits.form1.passportDate')} <span className="text-red-500">*</span>
+            Pasport berilgan sanasi <span className="text-red-500">*</span>
           </label>
-
           <DatePicker
             selected={formData.passportIssueDate}
             onChange={(date) => {
@@ -614,14 +100,14 @@ const Step1Form = ({ formData, handleInputChange }) => {
               handleInputChange({ target: { name: 'passportIssueDate', value: formattedDate } });
             }}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg pl-10"
+            placeholderText="Pasport berilgan sanasi"
           />
           <Calendar className="w-5 h-5 text-blue-500 absolute left-3 top-[50px] -translate-y-1/2 pointer-events-none" />
-
         </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            {t('pages.benefits.form1.jshshir')} <span className="text-red-500">*</span>
+            JSHSHIR
           </label>
           <input
             type="text"
@@ -629,14 +115,14 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.jshshir}
             onChange={handleJSHSHIRChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder={t('pages.benefits.form1.jshshir')}
+            placeholder="123 456 789 012"
             maxLength="14"
           />
         </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            {t('pages.benefits2.form1.legalEntityName')} <span className="text-red-500">*</span>
+            Yuridik shaxsni nomi <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -644,13 +130,13 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.legalEntityName}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder={t('pages.benefits2.form1.legalEntityName')}
+            placeholder="Yuridik shaxsni nomi"
           />
         </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            {t('pages.benefits.form1.tin')} <span className="text-red-500">*</span>
+            STIR
           </label>
           <input
             type="text"
@@ -658,7 +144,7 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.stir}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder={t('pages.benefits.form1.tin')}
+            placeholder="STIR"
           />
         </div>
       </div>
@@ -666,12 +152,12 @@ const Step1Form = ({ formData, handleInputChange }) => {
       {/* Manfaatlar To'qnashuvi Yuzaga Kelayotgan Shaxs Haqida Ma'lumot */}
       <div className="bg-white p-6 rounded-lg shadow-sm space-y-4">
         <h2 className="text-xl font-medium mb-6">
-          {t('pages.benefits2.form2.title')}
+          Manfaatlar To'qnashuvi Yuzaga Kelayotgan Shaxs Haqida Ma'lumot
         </h2>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            {t('pages.benefits2.form2.relativeFIO')} <span className="text-red-500">*</span>
+            F.I.O <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -679,13 +165,13 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.relativeFIO}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder={t('pages.benefits2.form2.relativeFIO')}
+            placeholder="Familiya, ism, otasining ismi"
           />
         </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            {t('pages.benefits.form1.passportSeries')} <span className="text-red-500">*</span>
+            Pasport seriyasi va raqami <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -693,16 +179,15 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.relativePassport}
             onChange={handlePassportSeriesChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder="AA1234567"
+            placeholder="Pasport seriyasi va raqami"
             maxLength="9"
           />
         </div>
 
         <div className="relative">
           <label className="block text-gray-500 text-sm mb-1">
-            {t('pages.benefits.form1.passportDate')} <span className="text-red-500">*</span>
+            Pasport berilgan sanasi <span className="text-red-500">*</span>
           </label>
-
           <DatePicker
             selected={formData.relativePassportDate}
             onChange={(date) => {
@@ -710,13 +195,14 @@ const Step1Form = ({ formData, handleInputChange }) => {
               handleInputChange({ target: { name: 'relativePassportDate', value: formattedDate } });
             }}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg pl-10"
+            placeholderText="Pasport berilgan sanasi"
           />
           <Calendar className="w-5 h-5 text-blue-500 absolute left-3 top-[50px] -translate-y-1/2 pointer-events-none" />
         </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            {t('pages.benefits.form1.jshshir')} <span className="text-red-500">*</span>
+            JSHSHIR <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -724,14 +210,14 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.relativeJSHSHIR}
             onChange={handleJSHSHIRChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder={t('pages.benefits.form1.jshshir')}
+            placeholder="123 456 789 012"
             maxLength="14"
           />
         </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            {t('pages.benefits2.form2.legalEntityName')} <span className="text-red-500">*</span>
+            Yuridik shaxsni nomi <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -739,13 +225,13 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.relativeLegalEntityName}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder={t('pages.benefits2.form2.legalEntityName')}
+            placeholder="Yuridik shaxsni nomi"
           />
         </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            {t('pages.benefits.form1.tin')} <span className="text-red-500">*</span>
+            STIR <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -753,30 +239,27 @@ const Step1Form = ({ formData, handleInputChange }) => {
             value={formData.relativeSTIR}
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder={t('pages.benefits.form1.tin')}
+            placeholder="STIR"
           />
         </div>
       </div>
     </div>
   );
 };
-
 // Step2Form.jsx
 const Step2Form = ({ formData, handleInputChange }) => {
-  const { t } = useTranslation();
 
   return (
     <div className="space-y-6">
       <div className="bg-white p-6 rounded-lg shadow-sm space-y-4">
         <h2 className="text-xl font-medium mb-6">
-          {t("pages.benefits2.form2.title")}
+          Manfaatlar To'qnashuvi To'g'risidagi Axborot
         </h2>
 
         <div className="relative">
           <label className="block text-gray-500 text-sm mb-1">
-            {t("pages.benefits2.form2.date")}
+            Sana <span className="text-red-500">*</span>
           </label>
-
           <DatePicker
             selected={formData.date}
             onChange={(date) => {
@@ -784,6 +267,7 @@ const Step2Form = ({ formData, handleInputChange }) => {
               handleInputChange({ target: { name: 'date', value: formattedDate } });
             }}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg pl-10"
+            placeholderText="19.01.2025"
           />
           <Calendar className="w-5 h-5 text-blue-500 absolute left-3 top-[50px] -translate-y-1/2 pointer-events-none" />
         </div>
@@ -798,7 +282,7 @@ const Step2Form = ({ formData, handleInputChange }) => {
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
             rows={6}
-            placeholder={t("pages.benefits2.form2.descriptionPlaceholder")}
+            placeholder="Manfaatlar to'qnashuvi tafsifi"
           />
           <div className="text-right text-sm text-gray-500">
             <span>{formData.description?.length || 0}</span>/460
@@ -807,7 +291,7 @@ const Step2Form = ({ formData, handleInputChange }) => {
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
-            {t("pages.benefits2.form2.additionalInfo")}
+            Qo'shimcha ma'lumot
           </label>
           <textarea
             name="additionalInfo"
@@ -815,170 +299,236 @@ const Step2Form = ({ formData, handleInputChange }) => {
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
             rows={6}
-            placeholder={t("pages.benefits2.form2.additionalInfoNote")}
+            placeholder="Qo'shimcha ma'lumot"
           />
           <div className="text-right text-sm text-gray-500">
             <span>{formData.additionalInfo?.length || 0}</span>/460
           </div>
+        </div>
+
+        <div className="relative">
+          <label className="block text-gray-500 text-sm mb-1">
+            To'ldirilgan sana <span className="text-red-500">*</span>
+          </label>
+          <DatePicker
+            selected={formData.filledDate}
+            onChange={(date) => {
+              const formattedDate = date.toISOString().split('T')[0];
+              handleInputChange({ target: { name: 'filledDate', value: formattedDate } });
+            }}
+            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg pl-10"
+            placeholderText="19.01.2025"
+          />
+          <Calendar className="w-5 h-5 text-blue-500 absolute left-3 top-[50px] -translate-y-1/2 pointer-events-none" />
         </div>
       </div>
     </div>
   );
 };
 
-const FirstDocument = React.forwardRef(({ formData }, ref) => {
-  const { t } = useTranslation();
-  return (
-    <div ref={ref} className="bg-white p-6 overflow-x-hidden min-w-[320px]">
-      <div className="mx-auto max-w-4xl">
-        <h1 className="text-center font-bold text-xl mb-8">
-          {t("pages.benefits2.documents.first.mainTitle")}
-        </h1>
-
-        <div className="mb-8 text-justify">
-          <p>
-            Men, {formData.managerFIO ? (
-              <span className="bg-[#FFFF00] px-1">{formData.managerFIO}</span>
-            ) : '_______________________'}
-          </p>
-          <p className="text-sm text-gray-600 text-center">{t("pages.benefits2.documents.first.fullNameNote")}</p>
-
-          <p className="mt-4">
-            {formData.position ? (
-              <span className="bg-[#FFFF00] px-1">{formData.position}</span>
-            ) : '_______________________'}
-          </p>
-          <p className="text-sm text-gray-600 text-center">{t("pages.benefits2.documents.first.positionNote")}</p>
-
-          <p className="mt-4">
-            {t("pages.benefits2.documents.first.declarationText")}
-          </p>
-        </div>
-
-        {/* 1. Xodimga oid ma'lumotlar */}
-        <div className="mb-8">
-          <h2 className="font-bold mb-4">{t("pages.benefits2.documents.first.employeeInfoTitle")}</h2>
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse border border-gray-300">
-              <tbody>
-                <tr>
-                  <td className="border border-gray-300 p-2 w-8">1.</td>
-                  <td className="border border-gray-300 p-2">
-                    {t("pages.benefits2.documents.first.table.header.fullName")}
-                  </td>
-                  <td className="border border-gray-300 p-2 min-w-[200px]">
-                    {formData.passportSeries && formData.passportIssueDate ? (
-                      <span className="bg-[#FFFF00] px-1">
-                        {`${formData.passportSeries} ${formData.passportIssueDate}`}
-                      </span>
-                    ) : ''}
-                  </td>
-                </tr>
-                <tr>
-                  <td className="border border-gray-300 p-2">2.</td>
-                  <td className="border border-gray-300 p-2">
-                    {t("pages.benefits2.documents.first.table.header.passportInfo")}
-                  </td>
-                  <td className="border border-gray-300 p-2">
-                    {formData.jshshir ? (
-                      <span className="bg-[#FFFF00] px-1">{formData.jshshir}</span>
-                    ) : ''}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* 2. Aloqador shaxsga oid ma'lumotlar */}
-        <div className="mb-8">
-          <h2 className="font-bold mb-4">
-            {t("pages.benefits2.documents.first.table.header.relatedPersonInfo")}
-          </h2>
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse border border-gray-300">
-              <tbody>
-                <tr>
-                  <td className="border border-gray-300 p-2 w-8">1.</td>
-                  <td className="border border-gray-300 p-2">
-                    {t("pages.benefits2.documents.first.table.header.fullName")}
-                  </td>
-                  <td className="border border-gray-300 p-2">
-                    {formData.relativeFIO ? (
-                      <span className="bg-[#FFFF00] px-1">{formData.relativeFIO}</span>
-                    ) : ''}
-                  </td>
-                </tr>
-                <tr>
-                  <td className="border border-gray-300 p-2">2.</td>
-                  <td className="border border-gray-300 p-2">
-                    {t("pages.benefits2.documents.first.table.header.passportInfo")}
-                  </td>
-                  <td className="border border-gray-300 p-2">
-                    {formData.relativePassport ? (
-                      <span className="bg-[#FFFF00] px-1">{formData.relativePassport}</span>
-                    ) : ''}
-                  </td>
-                </tr>
-                <tr>
-                  <td className="border border-gray-300 p-2">3.</td>
-                  <td className="border border-gray-300 p-2">
-                    {t("pages.benefits2.documents.first.table.header.pinfl")}
-                  </td>
-                  <td className="border border-gray-300 p-2">
-                    {formData.relativeJSHSHIR ? (
-                      <span className="bg-[#FFFF00] px-1">{formData.relativeJSHSHIR}</span>
-                    ) : ''}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Yuridik shaxs ma'lumotlari */}
-        <div className="mb-8">
-          <h2 className="font-bold mb-4">
-            {t("pages.benefits2.documents.first.table.header.legalEntityInfo1")}
-          </h2>
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse border border-gray-300">
-              <tbody>
-                <tr>
-                  <td className="border border-gray-300 p-2 w-8">1.</td>
-                  <td className="border border-gray-300 p-2">
-                    {t("pages.benefits2.documents.first.table.header.legalEntityName")}
-                  </td>
-                  <td className="border border-gray-300 p-2">
-                    {formData.legalEntityName ? (
-                      <span className="bg-[#FFFF00] px-1">{formData.legalEntityName}</span>
-                    ) : ''}
-                  </td>
-                </tr>
-                <tr>
-                  <td className="border border-gray-300 p-2">2.</td>
-                  <td className="border border-gray-300 p-2">
-                    {t("pages.benefits2.documents.first.table.header.tin")}
-                  </td>
-                  <td className="border border-gray-300 p-2">
-                    {formData.stir ? (
-                      <span className="bg-[#FFFF00] px-1">{formData.stir}</span>
-                    ) : ''}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+const FirstDocument = ({ formData }) => (
+  <div className="bg-white p-4 md:p-6 overflow-x-hidden min-w-[320px] font-serif" style={{ fontSize: '0.9rem' }}>
+    {/* Title */}
+    <div className="text-center mb-6">
+      <h1 className="font-bold text-lg">
+        Ходимнинг эҳтимолий манфаатлар тўқнашуви тўғрисидаги
+      </h1>
+      <h1 className="font-bold text-lg">
+        ДЕКЛАРАЦИЯСИ
+      </h1>
     </div>
-  );
-});
+
+    {/* Introduction text */}
+    <div className="mb-6">
+      <div className="flex items-baseline mb-2">
+        <div className="mr-2">Мен,</div>
+        <div className="border-b border-black flex-grow text-center pb-2">
+          {formData.managerFIO}
+        </div>
+        <div className="ml-2">ушбу</div>
+      </div>
+      <div className="text-center text-xs">
+        (фамилияси, исми, отасининг исми ва унинг лавозими)
+      </div>
+
+      <div className="border-b border-black w-full mb-2 text-center pb-2">
+        {formData.position}
+      </div>
+      <div className="text-center text-xs mb-4">
+        (йиллик/ишга қабул қилинаётганда/бошқа ишга ўтказилаётганда)
+      </div>
+
+      <p className="text-justify">
+        тўлдираётган декларацияда ўзим ва менга алоқадор шахсларнинг эҳтимолий манфаатлар тўқнашувига оид қуйидаги маълумотларни ошкор қиламан:
+      </p>
+    </div>
+
+    {/* Employee Information Section */}
+    <div className="mb-6">
+      <h2 className="font-bold mb-3">1. Ходимга оид маълумотлар</h2>
+      <table className="w-full border-collapse border border-black" style={{ maxWidth: "650px", margin: "0 auto" }}>
+        <tbody>
+          <tr>
+            <td className="border border-black p-2 w-8">1.</td>
+            <td className="border border-black p-2" style={{ width: "60%" }}>
+              Идентификация ID-картаси ёки биометрик паспорт маълумотлари (серияси, рақами, берилган санаси)
+            </td>
+            <td className="border border-black p-2" style={{ width: "30%" }}>
+              {formData.passportSeries} {formData.passportIssueDate}
+            </td>
+          </tr>
+          <tr>
+            <td className="border border-black p-2">2.</td>
+            <td className="border border-black p-2">
+              Жисмоний шахснинг шахсий идентификация рақами (ЖШШИР)
+            </td>
+            <td className="border border-black p-2">{formData.jshshir}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    {/* Related Person Information */}
+    <div className="mb-6">
+      <h2 className="font-bold mb-3">
+        2. Алоқадор шахсга оид маълумотлар*
+      </h2>
+      <table className="w-full border-collapse border border-black mb-4" style={{ maxWidth: "650px", margin: "0 auto" }}>
+        <tbody>
+          <tr>
+            <td colSpan="3" className="border border-black p-2 text-center font-bold">
+              Ходимнинг яқин қариндошига оид маълумотлар
+            </td>
+          </tr>
+          <tr>
+            <td className="border border-black p-2 w-8">1.</td>
+            <td className="border border-black p-2">Фамилия, исми, отасининг исми</td>
+            <td className="border border-black p-2">{formData.relativeFIO}</td>
+          </tr>
+          <tr>
+            <td className="border border-black p-2">2.</td>
+            <td className="border border-black p-2">
+              Идентификация ID-картаси ёки биометрик паспорт маълумотлари
+            </td>
+            <td className="border border-black p-2">{formData.relativePassport} {formData.relativePassportDate}</td>
+          </tr>
+          <tr>
+            <td className="border border-black p-2">3.</td>
+            <td className="border border-black p-2">
+              Жисмоний шахснинг шахсий идентификация рақами (ЖШШИР)
+            </td>
+            <td className="border border-black p-2">{formData.relativeJSHSHIR}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      {/* Legal Entity Information */}
+      <table className="w-full border-collapse border border-black mb-4" style={{ maxWidth: "650px", margin: "0 auto" }}>
+        <tbody>
+          <tr>
+            <td colSpan="3" className="border border-black p-2 text-center font-bold">
+              Ходим қайси юридик шахснинг устав фонди (устав капитали) акцияларига ёки улушларига эгалик қилса ёхуд унда бошқарув органининг раҳбари ёки аъзоси бўлса, ўша юридик шахсга оид маълумотлар
+            </td>
+          </tr>
+          <tr>
+            <td className="border border-black p-2 w-8">1.</td>
+            <td className="border border-black p-2">Юридик шахснинг номи</td>
+            <td className="border border-black p-2">{formData.legalEntityName}</td>
+          </tr>
+          <tr>
+            <td className="border border-black p-2">2.</td>
+            <td className="border border-black p-2">
+              Солиқ тўловчининг идентификация рақами (СТИР)
+            </td>
+            <td className="border border-black p-2">{formData.stir}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      {/* Relative's Legal Entity Information */}
+      <table className="w-full border-collapse border border-black" style={{ maxWidth: "650px", margin: "0 auto" }}>
+        <tbody>
+          <tr>
+            <td colSpan="3" className="border border-black p-2 text-center font-bold">
+              Ходимнинг яқин қариндоши қайси юридик шахснинг устав фонди (устав капитали) акцияларига ёки улушларига эгалик қилса ёхуд унда бошқарув органининг раҳбари ёки аъзоси бўлса, ўша юридик шахсга оид маълумотлар
+            </td>
+          </tr>
+          <tr>
+            <td className="border border-black p-2 w-8">1.</td>
+            <td className="border border-black p-2">Юридик шахснинг номи</td>
+            <td className="border border-black p-2">{formData.relativeLegalEntityName}</td>
+          </tr>
+          <tr>
+            <td className="border border-black p-2">2.</td>
+            <td className="border border-black p-2">
+              Солиқ тўловчининг идентификация рақами (СТИР)
+            </td>
+            <td className="border border-black p-2">{formData.relativeSTIR}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    {/* Footnote */}
+    <div className="text-xs text-justify" style={{ fontSize: '0.7rem' }}>
+      *Ходим унга алоқадор шахсларнинг (ходимнинг яқин қариндошлари ёки ходимнинг яқин қариндошлари устав фонди (устав капитали) акцияларига ёки улушларига эгалик қиладиган ёхуд бошқарув органи раҳбари ёки аъзоси бўлган юридик шахс) идентификация ID-картаси (биометрик паспорти), ЖШШИР, СТИР бўйича маълумотларни олиш имкониятига эга бўлмаса, у томонидан тегишли позицияларда "маълумотга эга эмасман" деб изоҳ кўрсатилиши мумкин.
+    </div>
+  </div>
+);
 
 const SecondDocument = React.forwardRef(({ formData }, ref) => {
-  const { t } = useTranslation();
+
+  // Matn uzunligiga qarab qatorlarni hisoblash
+  const getTextLines = (text, maxWidth = 90) => {
+    if (!text) return ['_______________________'];
+
+    const words = text.split(' ');
+    const lines = [];
+    let currentLine = '';
+
+    words.forEach(word => {
+      const testLine = currentLine ? `${currentLine} ${word}` : word;
+      if (testLine.length <= maxWidth) {
+        currentLine = testLine;
+      } else {
+        lines.push(currentLine);
+        currentLine = word;
+      }
+    });
+
+    if (currentLine) {
+      lines.push(currentLine);
+    }
+
+    // Agar matn yo'q yoki qisqa bo'lsa, kamida bitta chiziq ko'rsatish
+    return lines.length ? lines : ['_______________________'];
+  };
+
+  // Description va additionalInfo uchun qatorlarni olish
+  const descriptionLines = getTextLines(formData.description);
+  const additionalInfoLines = getTextLines(formData.additionalInfo);
+
+  // Sanani formatlash uchun funksiya
+  const formatDate = (dateString) => {
+    if (!dateString) return { year: '___', day: '___', month: '________' };
+
+    const date = new Date(dateString);
+    const year = date.getFullYear().toString().slice(2); // oxirgi 2 raqam
+    const day = date.getDate().toString().padStart(2, '0');
+    const months = [
+      'январь', 'февраль', 'март', 'апрель', 'май', 'июнь',
+      'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'
+    ];
+    const month = months[date.getMonth()];
+
+    return { year, day, month };
+  };
+
+  const date = formatDate(formData.date);
+  const filledDate = formatDate(formData.filledDate);
+
   return (
-    <div ref={ref} className="bg-white p-6 overflow-x-hidden min-w-[320px]">
+    <div ref={ref} className="bg-white p-6 overflow-x-hidden min-w-[320px] font-serif">
       <div className="mx-auto max-w-4xl">
         {/* Page number */}
         <div className="text-right mb-8">
@@ -987,59 +537,56 @@ const SecondDocument = React.forwardRef(({ formData }, ref) => {
 
         {/* Description section */}
         <div className="mb-12">
-          <h2 className="font-bold text-xl mb-4">
-            {t("pages.benefits2.documents.second.section3Title")}
+          <h2 className="font-bold mb-4">
+            3. Эҳтимолий манфаатлар тўқнашуви тўғрисидаги маълумот
           </h2>
-          <div className="border-b border-gray-300 min-h-[30px]">
-            {formData.description ? (
-              <span className="bg-[#FFFF00] px-1">{formData.description}</span>
-            ) : '_______________________'}
-          </div>
+          {descriptionLines.map((line, index) => (
+            <div key={index} className="border-b border-gray-300 min-h-[30px] mb-2">
+              {line}
+            </div>
+          ))}
         </div>
 
         {/* Additional Info section */}
         <div className="mb-12">
-          <h2 className="font-bold text-xl mb-4">
-            {t("pages.benefits2.documents.second.section4Title")}
+          <h2 className="font-bold mb-4">
+            4. Эҳтимолий манфаатлар тўқнашуви тўғрисидаги декларацияда кўрсатилиши керак бўлган маълумотлардан ташқари қўшимча маълумотлар (агар мавжуд бўлса)
           </h2>
-          <div className="border-b border-gray-300 min-h-[30px]">
-            {formData.additionalInfo ? (
-              <span className="bg-[#FFFF00] px-1">{formData.additionalInfo}</span>
-            ) : '_______________________'}
+          {additionalInfoLines.map((line, index) => (
+            <div key={index} className="border-b border-gray-300 min-h-[30px] mb-2">
+              {line}
+            </div>
+          ))}
+          <div className="text-xs text-gray-600 mt-2 text-center">
+            (ходим томонидан манфаатлар тўқнашуви вазияти сифатида баҳоланадиган бошқа ҳолатлар кўрсатилади)
           </div>
-          <p className="text-sm text-gray-600 mt-2">
-            {t("pages.benefits2.documents.second.additionalInfoNote")}
-          </p>
         </div>
 
         {/* Signature block */}
         <div className="mb-12">
           <div className="grid grid-cols-3 gap-4 items-center">
             <div>
-              <span>{t("pages.benefits2.documents.second.employeePosition")}</span>
+              Ходимнинг лавозими
             </div>
-            <div className="text-center italic text-gray-500">
-              {t("pages.benefits2.documents.second.personalSignature")}
+            <div className="text-center italic">
+              Шахсий имзо ёки электрон рақамли имзоси
             </div>
             <div className="text-right">
               {formData.managerFIO ? (
-                <span className="bg-[#FFFF00] px-1">({formData.managerFIO})</span>
+                <span>({formData.managerFIO})</span>
               ) : '(_______________)'}
             </div>
           </div>
-        </div>
-
-        {/* Date block */}
-        <div className="text-right mt-4">
-          <p>{t("pages.benefits2.documents.second.fillingDate")}</p>
-          {formData.date ? (
-            <span className="bg-[#FFFF00] px-1">{formData.date}</span>
-          ) : '_______________'}
+          <div className="text-right mt-4">
+            Тўлдирилган сана 20{filledDate.year} йил "{filledDate.day}" {filledDate.month}
+          </div>
         </div>
 
         {/* Registration info */}
         <div className="text-sm mt-8">
-          <p>{t("pages.benefits2.documents.second.registrationInfo")}</p>
+          <p>
+            Эҳтимолий манфаатлар тўқнашуви аниқланган ҳолатлар Манфаатлар тўқнашувини ҳисобга олиш реестрида рўйхатга олинган санаси ва рақами: 20{date.year} йил "{date.day}" {date.month} "-_______________"; реестр рақами ______-сон.
+          </p>
         </div>
       </div>
     </div>
@@ -1079,7 +626,8 @@ const BenefitsItem2 = () => {
     // Step 2 uchun
     description: '',
     measures: '',
-    date: ''
+    date: '',
+    filledDate: ''
   });
 
   const handleInputChange = (e) => {
@@ -1092,59 +640,65 @@ const BenefitsItem2 = () => {
 
   const handleNext = () => setCurrentStep(2);
 
-  // Add validation for Step2Form
   const isStep2Valid = () => {
-    const requiredFields = [
-      'date',
-      'description'
-    ];
-
+    const requiredFields = ['date', 'description'];
     return requiredFields.every(field => formData[field] && formData[field].trim() !== '');
   };
 
   const generatePDF = async () => {
-    if (!isStep2Valid()) {
-      return;
-    }
+    if (!isStep2Valid()) return;
 
     try {
-      const blob = await pdf(
-        <PDFDocument2 formData={formData} t={t} />
-      ).toBlob();
+      setCurrentStep(1);
+      await new Promise(resolve => setTimeout(resolve, 100));
 
-      saveAs(blob, 'xabarnoma.pdf');
-      const pdfUrl = URL.createObjectURL(blob);
+      const doc = new jsPDF('p', 'mm', 'a4');
 
-      // Open PDF in new tab
+      const options = {
+        scale: 1.3,
+        useCORS: true,
+        scrollX: 0,
+        scrollY: 0,
+        windowWidth: firstPageRef.current.offsetWidth,
+        windowHeight: firstPageRef.current.offsetHeight,
+        margin: [5, 5, 5, 5]
+      };
+
+      // First page
+      if (firstPageRef.current) {
+        const firstCanvas = await html2canvas(firstPageRef.current, options);
+        const firstImgData = firstCanvas.toDataURL('image/png');
+
+        const imgProps = doc.getImageProperties(firstImgData);
+        const pdfWidth = doc.internal.pageSize.getWidth() - 10;
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+        doc.addImage(firstImgData, 'PNG', 5, 5, pdfWidth, pdfHeight);
+      }
+
+      // Second page
+      setCurrentStep(2);
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      if (secondPageRef.current) {
+        const secondCanvas = await html2canvas(secondPageRef.current, options);
+        const secondImgData = secondCanvas.toDataURL('image/png');
+
+        const imgProps = doc.getImageProperties(secondImgData);
+        const pdfWidth = doc.internal.pageSize.getWidth() - 10;
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+        doc.addPage();
+        doc.addImage(secondImgData, 'PNG', 5, 5, pdfWidth, pdfHeight);
+      }
+
+      const pdfBlob = doc.output('blob');
+      const pdfUrl = URL.createObjectURL(pdfBlob);
       window.open(pdfUrl, '_blank');
 
-      // Clean up the object URL after the window is loaded
-      setTimeout(() => {
-        URL.revokeObjectURL(pdfUrl);
-      }, 100);
     } catch (error) {
       console.error('PDF generation error:', error);
     }
-  };
-
-  // Add this function to check if all required fields are filled
-  const isStep1Valid = () => {
-    const requiredFields = [
-      'position',
-      'passportSeries',
-      'passportIssueDate',
-      'jshshir',
-      'legalEntityName',
-      'stir',
-      'relativeFIO',
-      'relativePassport',
-      'relativePassportDate',
-      'relativeJSHSHIR',
-      'relativeLegalEntityName',
-      'relativeSTIR'
-    ];
-
-    return requiredFields.every(field => formData[field] && formData[field].trim() !== '');
   };
 
   return (
@@ -1161,9 +715,8 @@ const BenefitsItem2 = () => {
             {currentStep === 1 ? (
               <button
                 onClick={handleNext}
-                disabled={!isStep1Valid()}
                 className={`w-full sm:w-auto px-4 md:px-6 py-2.5 text-white rounded transition-colors duration-200 text-sm md:text-base flex items-center justify-center
-                ${isStep1Valid()
+                ${isStep2Valid()
                     ? 'bg-[#024073] hover:bg-blue-700'
                     : 'bg-gray-400 cursor-not-allowed'}`}
               >
@@ -1225,9 +778,13 @@ const BenefitsItem2 = () => {
           {/* RIGHT SIDE - Preview */}
           <div className="lg:col-span-7">
             {currentStep === 1 ? (
-              <FirstDocument ref={firstPageRef} formData={formData} />
+              <div ref={firstPageRef}>
+                <FirstDocument formData={formData} />
+              </div>
             ) : (
-              <SecondDocument ref={secondPageRef} formData={formData} />
+              <div ref={secondPageRef}>
+                <SecondDocument formData={formData} />
+              </div>
             )}
           </div>
         </div>
