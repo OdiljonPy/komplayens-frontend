@@ -5,13 +5,17 @@ export default defineConfig({
   plugins: [react()],
   build: {
     rollupOptions: {
-      external: ['canvas']
-    },
-    commonjsOptions: {
-      include: [/node_modules/]
+      output: {
+        manualChunks: {
+          jspdf: ['jspdf'],
+          html2canvas: ['html2canvas']
+        }
+      }
     }
   },
-  optimizeDeps: {
-    exclude: ['jspdf', 'html2canvas']
+  resolve: {
+    alias: {
+      'canvas': 'null-loader'
+    }
   }
 })

@@ -7,8 +7,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 
-const html2canvas = (await import('html2canvas')).default;
-const jsPDF = (await import('jspdf')).default;
+
 
 // Font registratsiyasi
 
@@ -611,6 +610,8 @@ const BenefitsItem = () => {
   };
 
   const generatePDF = async () => {
+    const { jsPDF } = await import('jspdf');
+    const html2canvas = (await import('html2canvas')).default;
     if (!isStep2Valid()) return;
 
     try {

@@ -4,8 +4,7 @@ import { Download, Calendar } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-const html2canvas = (await import('html2canvas')).default;
-const jsPDF = (await import('jspdf')).default;
+
 
 const Step1Form = ({ formData, handleInputChange }) => {
 
@@ -645,6 +644,8 @@ const BenefitsItem2 = () => {
   };
 
   const generatePDF = async () => {
+    const { jsPDF } = await import('jspdf');
+    const html2canvas = (await import('html2canvas')).default;
     if (!isStep2Valid()) return;
 
     try {
