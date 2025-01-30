@@ -522,6 +522,36 @@ const PDFDocument2 = ({ formData, t }) => (
 const Step1Form = ({ formData, handleInputChange }) => {
   const { t } = useTranslation();
 
+  // Passport seriyasi uchun handler
+  const handlePassportSeriesChange = (e) => {
+    const { name, value } = e.target;
+    const upperValue = value.toUpperCase();
+    const letters = upperValue.slice(0, 2).replace(/[^A-Z]/g, '');
+    const numbers = upperValue.slice(2).replace(/[^0-9]/g, '');
+
+    const formattedValue = `${letters}${numbers}`.slice(0, 9);
+
+    handleInputChange({
+      target: {
+        name,
+        value: formattedValue
+      }
+    });
+  };
+
+  // JSHSHIR inputlari uchun handler
+  const handleJSHSHIRChange = (e) => {
+    const { name, value } = e.target;
+    const numbers = value.replace(/[^0-9]/g, '').slice(0, 14);
+
+    handleInputChange({
+      target: {
+        name,
+        value: numbers
+      }
+    });
+  };
+
   return (
     <div className="space-y-6">
       {/* Xodimga Oid Ma'lumotlar */}
@@ -564,9 +594,10 @@ const Step1Form = ({ formData, handleInputChange }) => {
             type="text"
             name="passportSeries"
             value={formData.passportSeries}
-            onChange={handleInputChange}
+            onChange={handlePassportSeriesChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder={t('pages.benefits.form1.passportSeries')}
+            placeholder="AA1234567"
+            maxLength="9"
           />
         </div>
 
@@ -595,7 +626,7 @@ const Step1Form = ({ formData, handleInputChange }) => {
             type="text"
             name="jshshir"
             value={formData.jshshir}
-            onChange={handleInputChange}
+            onChange={handleJSHSHIRChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
             placeholder={t('pages.benefits.form1.jshshir')}
             maxLength="14"
@@ -659,9 +690,10 @@ const Step1Form = ({ formData, handleInputChange }) => {
             type="text"
             name="relativePassport"
             value={formData.relativePassport}
-            onChange={handleInputChange}
+            onChange={handlePassportSeriesChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder={t('pages.benefits.form1.passportSeries')}
+            placeholder="AA1234567"
+            maxLength="9"
           />
         </div>
 
@@ -689,7 +721,7 @@ const Step1Form = ({ formData, handleInputChange }) => {
             type="text"
             name="relativeJSHSHIR"
             value={formData.relativeJSHSHIR}
-            onChange={handleInputChange}
+            onChange={handleJSHSHIRChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
             placeholder={t('pages.benefits.form1.jshshir')}
             maxLength="14"

@@ -340,6 +340,34 @@ const PDFDocument = ({ formData, t }) => {
 const Step1Form = ({ formData, handleInputChange }) => {
   const { t } = useTranslation();
 
+  const handlePassportSeriesChange = (e) => {
+    const value = e.target.value.toUpperCase();
+    const letters = value.slice(0, 2).replace(/[^A-Z]/g, '');
+    const numbers = value.slice(2).replace(/[^0-9]/g, '');
+
+    // Maksimal uzunlik: 2 ta harf + 7 ta raqam
+    const formattedValue = `${letters}${numbers}`.slice(0, 9);
+
+    handleInputChange({
+      target: {
+        name: 'passportSeries',
+        value: formattedValue
+      }
+    });
+  };
+
+  const handleJSHSHIRChange = (e) => {
+    const { name, value } = e.target;
+    const numbers = value.replace(/[^0-9]/g, '').slice(0, 14);
+
+    handleInputChange({
+      target: {
+        name,
+        value: numbers
+      }
+    });
+  };
+
   return (
     <div className="space-y-6">
       {/* Supervisor Information */}
@@ -415,9 +443,10 @@ const Step1Form = ({ formData, handleInputChange }) => {
             type="text"
             name="passportSeries"
             value={formData.passportSeries}
-            onChange={handleInputChange}
+            onChange={handlePassportSeriesChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
-            placeholder="AA 1234567"
+            placeholder="AA1234567"
+            maxLength="9"
           />
         </div>
 
@@ -446,7 +475,7 @@ const Step1Form = ({ formData, handleInputChange }) => {
             type="text"
             name="jshshir"
             value={formData.jshshir}
-            onChange={handleInputChange}
+            onChange={handleJSHSHIRChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
             placeholder="12345678901234"
             maxLength="14"
@@ -496,7 +525,7 @@ const Step1Form = ({ formData, handleInputChange }) => {
             type="text"
             name="relativeJSHSHIR"
             value={formData.relativeJSHSHIR}
-            onChange={handleInputChange}
+            onChange={handleJSHSHIRChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
             placeholder="12345678901234"
             maxLength="14"
@@ -563,17 +592,7 @@ const Step2Form = ({ formData, handleInputChange, handleGeneratePDF }) => {
         </div>
       </div>
 
-      <div className="flex justify-end space-x-4">
-        <button
-          onClick={handleGeneratePDF}
-          disabled={!isStep2Valid()}
-          className={`px-6 py-2.5 text-white rounded-lg transition-colors flex items-center gap-2 ${isStep2Valid() ? 'bg-primary hover:bg-primary-dark' : 'bg-gray-400 cursor-not-allowed'
-            }`}
-        >
-          <Download className="w-4 h-4 md:w-5 md:h-5" />
-          <span>{t('pages.benefits.generateNotification')}</span>
-        </button>
-      </div>
+
     </div>
   );
 };

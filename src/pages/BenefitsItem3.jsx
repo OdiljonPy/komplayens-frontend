@@ -289,6 +289,19 @@ const PDFDocument3 = ({ formData, t }) => (
 const Step1Form = ({ formData, handleInputChange }) => {
   const { t } = useTranslation();
 
+  // JSHSHIR inputi uchun handler
+  const handleJSHSHIRChange = (e) => {
+    const { name, value } = e.target;
+    const numbers = value.replace(/[^0-9]/g, '').slice(0, 14);
+
+    handleInputChange({
+      target: {
+        name,
+        value: numbers
+      }
+    });
+  };
+
   return (
     <div className="space-y-6">
       {/* Xodimga Oid Ma'lumotlar */}
@@ -319,7 +332,7 @@ const Step1Form = ({ formData, handleInputChange }) => {
             type="text"
             name="jshshir"
             value={formData.jshshir}
-            onChange={handleInputChange}
+            onChange={handleJSHSHIRChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
             placeholder="123 456 789 012"
             maxLength="14"
