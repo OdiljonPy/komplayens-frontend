@@ -7,15 +7,10 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 
-import { Page, Text, View, Document, StyleSheet, Font, pdf } from '@react-pdf/renderer';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+const html2canvas = (await import('html2canvas')).default;
+const jsPDF = (await import('jspdf')).default;
 
 // Font registratsiyasi
-Font.register({
-  family: 'Roboto',
-  src: 'https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-light-webfont.ttf',
-});
 
 const Step1Form = ({ formData, handleInputChange }) => {
   const handlePassportSeriesChange = (name, e) => {

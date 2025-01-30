@@ -4,8 +4,8 @@ import { Download, Calendar } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+const html2canvas = (await import('html2canvas')).default;
+const jsPDF = (await import('jspdf')).default;
 
 const Step1Form = ({ formData, handleInputChange }) => {
 
