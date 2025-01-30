@@ -253,7 +253,7 @@ const Operations = () => {
               <div className="absolute top-full left-0 mt-1 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
                 <div className="py-1 text-gray-600">
                   <button
-                    className="block w-full px-4 py-3 text-left hover:bg-gray-50 text-[#3981F7]"
+                    className={`block w-full px-4 py-3 text-left hover:bg-gray-50 ${selectedProfession === null ? 'text-[#3981F7]' : 'text-gray-600'}`}
                     onClick={() => handleProfessionSelect(null)}
                   >
                     {t('pages.operations.all')}
@@ -261,7 +261,7 @@ const Operations = () => {
                   {professions.map((profession) => (
                     <button
                       key={profession.id}
-                      className="block w-full px-4 py-3 text-left hover:bg-gray-50 text-gray-600"
+                      className={`block w-full px-4 py-3 text-left hover:bg-gray-50 ${selectedProfession === profession.id ? 'text-[#3981F7]' : 'text-gray-600'}`}
                       onClick={() => handleProfessionSelect(profession.id)}
                     >
                       {profession.name}

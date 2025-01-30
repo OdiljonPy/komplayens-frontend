@@ -30,13 +30,18 @@ import {
   Handouts,
   AnnouncementsItem,
 } from "../pages";
+import { allowedLanguages, defaultLanguage } from '../utils/constants';
 
-// Add language redirect for root path
-const defaultLanguage = 'uz';
+// URL dan tilni tekshirish uchun funksiya
+
 
 export const router = createBrowserRouter([
   {
     path: "/",
+    element: <Navigate to={`/${defaultLanguage}`} replace />
+  },
+  {
+    path: "/*",
     element: <Navigate to={`/${defaultLanguage}`} replace />
   },
   {

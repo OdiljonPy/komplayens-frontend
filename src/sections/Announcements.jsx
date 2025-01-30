@@ -2,13 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { Eye, Calendar } from 'lucide-react';
 import banner from "../assets/banners/05.png"
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 import { sendRequest } from '../utils/apiFunctions';
 
 
 const Announcements = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [announcements, setAnnouncements] = useState([]);
+
+  const getLocalizedPath = (path) => {
+    return `/${i18n.language}${path}`;
+  };
 
   useEffect(() => {
     // API dan ma'lumotlarni olish
@@ -68,12 +73,12 @@ const Announcements = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {announcements.map((announcement, idx) => (
-              <div key={idx} className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+              <Link to={getLocalizedPath(`/announcements/${announcement.id}`)} className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-shadow" key={idx}>
                 <div className="p-3">
                   <img
                     src={announcement.image || banner}
                     alt="Seminar"
-                    className="w-full h-full max-h-[200px] object-cover rounded-[8px]"
+                    className="w-full h-[200px] object-cover rounded-[8px]"
                   />
                 </div>
 
@@ -90,11 +95,11 @@ const Announcements = () => {
 
                     <div className="flex items-center gap-1 text-[#595959]">
                       <Calendar size={14} />
-                      <span>{announcement.date || ""}</span>
+                      <span>{announcement.published_date || ""}</span>
                     </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         )}

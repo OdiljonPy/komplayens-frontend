@@ -1,7 +1,6 @@
 // BenefitsItem.jsx
 import React, { useState, useRef } from 'react';
 import { Download } from 'lucide-react';
-import ReactDOM from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { Calendar } from 'lucide-react';
 import DatePicker from "react-datepicker";
@@ -13,13 +12,10 @@ import { saveAs } from 'file-saver';
 
 import { Page, Text, View, Document, StyleSheet, Font, pdf } from '@react-pdf/renderer';
 
-// Custom font registration for Uzbek characters
 Font.register({
   family: 'Roboto',
   src: 'https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-light-webfont.ttf',
 });
-
-// PDF styles
 
 
 // PDF Component
@@ -341,9 +337,6 @@ const PDFDocument = ({ formData, t }) => {
   );
 };
 
-
-
-
 const Step1Form = ({ formData, handleInputChange }) => {
   const { t } = useTranslation();
 
@@ -622,9 +615,6 @@ const BenefitsItem = () => {
   });
 
   const handleInputChange = (e) => {
-    console.log('====================================');
-    console.log(e);
-    console.log('====================================');
     const { name, value } = e.target;
     console.log(name, value);
     setFormData(prev => ({
@@ -884,110 +874,6 @@ const BenefitsItem = () => {
     } catch (error) {
       console.error('PDF generation error:', error);
     }
-
-    // try {
-    //   // Create PDF blob
-    //   const blob = await pdf(
-    //     <PDFDocument formData={formData} t={t} />
-    //   ).toBlob();
-
-    //   // Save the PDF
-    //   saveAs(blob, 'xabarnoma.pdf');
-    // } catch (error) {
-    //   console.error('PDF generation error:', error);
-    //   throw error;
-    // }
-    // // Create a temporary div to hold both documents
-    // const tempDiv = document.createElement('div');
-    // const hiddenStyle = 'position: absolute; left: -9999px;';
-
-    // // Render both documents
-    // const root = ReactDOM.createRoot(tempDiv);
-    // root.render(
-    //   <div style={{ display: 'none' }}>
-    //     <FirstDocument ref={firstPageRef} formData={formData} />
-    //     <SecondDocument ref={secondPageRef} formData={formData} />
-    //   </div>
-    // );
-
-    // // Wait for render to complete
-    // setTimeout(() => {
-    //   const firstPage = firstPageRef.current;
-    //   const secondPage = secondPageRef.current;
-
-    //   if (!firstPage || !secondPage) {
-    //     console.error("Documents not rendered properly");
-    //     return;
-    //   }
-
-    //   const printWindow = window.open('', '_blank');
-
-    //   if (!printWindow) {
-    //     alert("Please allow popups for this website");
-    //     return;
-    //   }
-
-    //   printWindow.document.write(`
-    //     <html>
-    //       <head>
-    //         <title>Xabarnoma</title>
-    //         <style>
-    //           body { 
-    //             font-family: Arial, sans-serif;
-    //             padding: 20px;
-    //             max-width: 800px;
-    //             margin: 0 auto;
-    //           }
-    //           table {
-    //             width: 100%;
-    //             border-collapse: collapse;
-    //             margin: 20px 0;
-    //           }
-    //           td, th {
-    //             border: 1px solid #ddd;
-    //             padding: 8px;
-    //           }
-    //           .header-text {
-    //             text-align: right;
-    //             margin-bottom: 30px;
-    //           }
-    //           .title {
-    //             text-align: center;
-    //             font-weight: bold;
-    //             font-size: 18px;
-    //             margin: 20px 0;
-    //           }
-    //           .section-title {
-    //             font-weight: bold;
-    //             margin: 15px 0;
-    //           }
-    //           .page-break {
-    //             page-break-before: always;
-    //           }
-    //         </style>
-    //       </head>
-    //       <body>
-    //         ${firstPage.outerHTML}
-    //         <div class="page-break"></div>
-    //         ${secondPage.outerHTML}
-    //         <script>
-    //           window.onload = function() {
-    //             window.print();
-    //             window.onafterprint = function() {
-    //               window.close();
-    //             }
-    //           }
-    //         </script>
-    //       </body>
-    //     </html>
-    //   `);
-
-    //   printWindow.document.close();
-
-    //   // Clean up
-    //   root.unmount();
-    //   tempDiv.remove();
-    // }, 0);
   };
 
   return (

@@ -177,6 +177,7 @@ const VideoCourseDashboard = () => {
               <h1 className="text-2xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959]">
                 {t('videoCourses.title')}
               </h1>
+
               <Link to={getLocalizedPath('/training-courses')}>
                 <button className="px-4 py-2 bg-white text-gray-700 rounded-[12px] flex items-center gap-2">
                   <span className='text-[14px]'>{t('common.details')}</span>
@@ -218,7 +219,7 @@ const VideoCourseDashboard = () => {
                             </span>
                             <span className="flex items-center gap-1">
                               <Calendar className="w-4 h-4" />
-                              {course.video_length} min
+                              {new Date(course.created_at).toLocaleDateString()}
                             </span>
                           </div>
                         </div>

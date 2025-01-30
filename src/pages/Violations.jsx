@@ -215,25 +215,14 @@ function Violations() {
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
           {/* Date Selection with MUI-like design */}
           <div className="w-full md:w-64 relative">
-            {/* <div className="relative border rounded-md focus-within:border-blue-500 transition-colors">
-              <label
-                className={`absolute left-3 transition-all pointer-events-none
-                ${selectedDate ? 'text-xs -top-2 bg-white px-1' : 'text-gray-500 top-2'}`}
-              >
-                {t('pages.corruptionRisks.sorting')}
-              </label>
-              <input
-                type="date"
-                className="w-full px-3 pt-3 pb-2 outline-none rounded-md bg-transparent"
-                value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)}
-              />
 
-            </div> */}
             <div className="relative">
               <DatePicker
                 selected={selectedDate}
-                onChange={(date) => setSelectedDate(date)}
+                onChange={(date) => {
+                  const formattedDate = date.toISOString().split('T')[0];
+                  setSelectedDate(formattedDate);
+                }}
                 className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pl-10"
                 calendarClassName="custom-calendar"
                 showPopperArrow={false}

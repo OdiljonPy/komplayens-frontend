@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Phone, ChevronDown, Menu, X } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import logo from "../../assets/logos/logo.png";
+import { allowedLanguages, defaultLanguage } from '../../utils/constants';
 
 
 const Navbar = () => {
@@ -15,16 +16,21 @@ const Navbar = () => {
 
   // Add effect to handle language changes
   useEffect(() => {
-    const currentLang = i18n.language;
     const currentPath = location.pathname;
-    const pathWithoutLang = currentPath.replace(/^\/(uz|ru|en)/, '');
+    const pathLang = currentPath.split('/')[1];
 
-    if (!currentPath.startsWith(`/${currentLang}`)) {
-      navigate(`/${currentLang}${pathWithoutLang}`, { replace: true });
+    // Agar URL da til ko'rsatilmagan yoki noto'g'ri til bo'lsa
+    if (!allowedLanguages.includes(pathLang)) {
+      const newPath = currentPath === '/' ? `/${defaultLanguage}` : `/${defaultLanguage}${currentPath}`;
+      navigate(newPath, { replace: true });
+      return;
     }
-    i18n.loadNamespaces(['translation']).then(() => {
-    });
-  }, [i18n.language]);
+
+    // Agar joriy til URL dagi tildan farq qilsa
+    if (i18n.language !== pathLang) {
+      i18n.changeLanguage(pathLang);
+    }
+  }, [location.pathname, i18n.language]);
 
   // Add this helper function to handle link paths
   const getLocalizedPath = (path) => {
@@ -108,13 +114,13 @@ const Navbar = () => {
   ];
 
   const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng).then(() => {
-      const currentPath = location.pathname;
-      const pathWithoutLang = currentPath.replace(/^\/(uz|ru|en)/, '');
-      navigate(`/${lng}${pathWithoutLang}`, { replace: true });
-      window.location.reload();
-    });
-    setIsLangOpen(false);
+    const currentPath = location.pathname;
+    const pathWithoutLang = currentPath.replace(/^\/(uz|ru|en)/, '');
+
+    i18n.changeLanguage(lng);
+    setIsLangOpen(false); // Selectni yopish
+    navigate(`/${lng}${pathWithoutLang}`, { replace: true });
+    window.location.reload(); // Sahifani qayta yuklash
   };
 
   const toggleMobileDropdown = (index) => {
@@ -182,7 +188,9 @@ const Navbar = () => {
                       {languageOptions.map((lang) => (
                         <button
                           key={lang.code}
-                          onClick={() => changeLanguage(lang.code)}
+                          onClick={() => {
+                            changeLanguage(lang.code);
+                          }}
                           className={`block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ${i18n.language === lang.code ? 'bg-gray-100' : ''
                             }`}
                         >
@@ -222,13 +230,19 @@ const Navbar = () => {
               <nav className="flex space-x-10">
                 {menuItems.map((item, index) => (
                   <div key={index} className="relative group">
-                    <Link
-                      to={item.to ? getLocalizedPath(item.to) : '#'}
-                      className="flex items-center space-x-1 py-2 text-gray-700 hover:text-blue-600"
-                    >
-                      <span>{item.title}</span>
-                      {item.dropdown && <ChevronDown className="h-4 w-4" />}
-                    </Link>
+                    {item.dropdown ? (
+                      <div className="flex items-center space-x-1 py-2 text-gray-700 hover:text-blue-600 cursor-pointer">
+                        <span>{item.title}</span>
+                        <ChevronDown className="h-4 w-4" />
+                      </div>
+                    ) : (
+                      <Link
+                        to={getLocalizedPath(item.to)}
+                        className="flex items-center space-x-1 py-2 text-gray-700 hover:text-blue-600"
+                      >
+                        <span>{item.title}</span>
+                      </Link>
+                    )}
                     {item.dropdown && (
                       <div className="absolute hidden group-hover:block w-64 left-0 top-full bg-white shadow-lg rounded-md overflow-hidden z-50">
                         {item.items.map((subItem, subIndex) => (
@@ -274,7 +288,9 @@ const Navbar = () => {
                     {languageOptions.map((lang) => (
                       <button
                         key={lang.code}
-                        onClick={() => changeLanguage(lang.code)}
+                        onClick={() => {
+                          changeLanguage(lang.code);
+                        }}
                         className={`block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ${i18n.language === lang.code ? 'bg-gray-100' : ''
                           }`}
                       >
@@ -290,20 +306,23 @@ const Navbar = () => {
             <nav className="space-y-4">
               {menuItems.map((item, index) => (
                 <div key={index} className="border-b pb-2">
-                  <button
-                    onClick={() => item.dropdown && toggleMobileDropdown(index)}
-                    className="flex items-center justify-between w-full py-2 text-gray-700"
-                  >
+                  {item.dropdown ? (
+                    <button
+                      onClick={() => toggleMobileDropdown(index)}
+                      className="flex items-center justify-between w-full py-2 text-gray-700"
+                    >
+                      <span>{item.title}</span>
+                      <ChevronDown className={`h-4 w-4 transform transition-transform duration-200 ${activeMobileDropdown === index ? 'rotate-180' : ''}`} />
+                    </button>
+                  ) : (
                     <Link
-                      to={item.to ? getLocalizedPath(item.to) : '#'}
+                      to={getLocalizedPath(item.to)}
                       onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center justify-between w-full py-2 text-gray-700"
                     >
                       {item.title}
                     </Link>
-                    {item.dropdown && (
-                      <ChevronDown className={`h-4 w-4 transform transition-transform duration-200 ${activeMobileDropdown === index ? 'rotate-180' : ''}`} />
-                    )}
-                  </button>
+                  )}
                   {item.dropdown && activeMobileDropdown === index && (
                     <div className="ml-4 mt-2 space-y-2">
                       {item.items.map((subItem, subIndex) => (
