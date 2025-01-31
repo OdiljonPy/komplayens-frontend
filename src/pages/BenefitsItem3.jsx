@@ -21,7 +21,7 @@ const FirstDocument = React.forwardRef(({ formData }, ref) => (
 
     {/* Introduction text */}
     <p className="mb-6 text-justify">
-      Мен <span className="bg-[#FFFF00] px-1 pb-2">{formData.managerFIO}</span>, ушбу декларацияда алоқадор шахс сифатида
+      Мен <span className="highlight bg-[#FFFF00] px-1 pb-2">{formData.managerFIO}</span>, ушбу декларацияда алоқадор шахс сифатида
       ўзим ва ходим (ишга кираётган номзоднинг) эҳтимолий манфаатлар тўқнашувига оид қуйидаги маълумотларни маълум қиламан:
     </p>
 
@@ -34,7 +34,7 @@ const FirstDocument = React.forwardRef(({ formData }, ref) => (
             Ходимга алоқадор жисмоний шахснинг шахсий идентификация рақами (ЖШШИР)
           </td>
           <td className="border border-black p-2">
-            <span className="bg-[#FFFF00] px-1 pb-2">{formData.jshshir}</span>
+            <span className="highlight bg-[#FFFF00] px-1 pb-2">{formData.jshshir}</span>
           </td>
         </tr>
         <tr>
@@ -43,7 +43,7 @@ const FirstDocument = React.forwardRef(({ formData }, ref) => (
             Ходимга алоқадор юридик шахснинг номи
           </td>
           <td className="border border-black p-2">
-            <span className="bg-[#FFFF00] px-1 pb-2">{formData.legalEntityName}</span>
+            <span className="highlight bg-[#FFFF00] px-1 pb-2">{formData.legalEntityName}</span>
           </td>
         </tr>
         <tr>
@@ -52,7 +52,7 @@ const FirstDocument = React.forwardRef(({ formData }, ref) => (
             Ходимга алоқадор солиқ тўловчининг идентификация рақами (СТИР)
           </td>
           <td className="border border-black p-2">
-            <span className="bg-[#FFFF00] px-1 pb-2">{formData.stir}</span>
+            <span className="highlight bg-[#FFFF00] px-1 pb-2">{formData.stir}</span>
           </td>
         </tr>
         <tr>
@@ -61,7 +61,7 @@ const FirstDocument = React.forwardRef(({ formData }, ref) => (
             Ходимнинг Ф.И.О. ва лавозими
           </td>
           <td className="border border-black p-2">
-            <span className="bg-[#FFFF00] px-1 pb-2">{formData.position} {formData.managerFIO}</span>
+            <span className="highlight bg-[#FFFF00] px-1 pb-2">{formData.position} {formData.managerFIO}</span>
           </td>
         </tr>
         <tr>
@@ -75,7 +75,7 @@ const FirstDocument = React.forwardRef(({ formData }, ref) => (
             </div>
           </td>
           <td className="border border-black p-2">
-            <span className="bg-[#FFFF00] px-1 pb-2">{formData.relativeInfo}</span>
+            <span className="highlight bg-[#FFFF00] px-1 pb-2">{formData.relativeInfo}</span>
           </td>
         </tr>
         <tr>
@@ -89,7 +89,7 @@ const FirstDocument = React.forwardRef(({ formData }, ref) => (
             </div>
           </td>
           <td className="border border-black p-2">
-            <span className="bg-[#FFFF00] px-1 pb-2">{formData.employeeInfo}</span>
+            <span className="highlight bg-[#FFFF00] px-1 pb-2">{formData.employeeInfo}</span>
           </td>
         </tr>
       </tbody>
@@ -101,12 +101,12 @@ const FirstDocument = React.forwardRef(({ formData }, ref) => (
       <div className="flex items-center gap-4">
         <div className="italic whitespace-nowrap">Шахсий имзо ёки электрон рақамли имзоси</div>
         <div className="border-b border-black min-w-[180px] text-center">
-          <span className="bg-[#FFFF00] px-1 pb-2">{formData.managerFIO}</span>
+          <span className="highlight bg-[#FFFF00] px-1 pb-4">{formData.managerFIO}</span>
         </div>
       </div>
     </div>
-    <div className="text-right mt-2 ">
-      <span className="bg-[#FFFF00] px-1 pb-2">{formData.date}</span>
+    <div className="text-right mt-2">
+      <span className="highlight bg-[#FFFF00] px-1 pb-2">{formData.date}</span>
     </div>
 
     {/* Registration info */}
@@ -457,15 +457,11 @@ const BenefitsItem3 = () => {
   };
 
   const generatePDF = async () => {
-
-    // if (!isStep2Valid()) return;
-
     try {
       setCurrentStep(1);
       await new Promise(resolve => setTimeout(resolve, 100));
 
       const doc = new jsPDF('p', 'mm', 'a4');
-
       const options = {
         scale: 1.3,
         useCORS: true,
@@ -478,14 +474,24 @@ const BenefitsItem3 = () => {
 
       // Birinchi sahifani generatsiya qilish
       if (firstPageRef.current) {
+        // Background'larni o'chirish
+        const firstHighlights = firstPageRef.current.querySelectorAll('.highlight');
+        firstHighlights.forEach(el => {
+          el.classList.remove('highlight');
+          el.classList.remove('bg-[#FFFF00]');
+        });
+
         const firstCanvas = await html2canvas(firstPageRef.current, options);
         const firstImgData = firstCanvas.toDataURL('image/png');
-
-        const imgProps = doc.getImageProperties(firstImgData);
         const pdfWidth = doc.internal.pageSize.getWidth() - 10;
-        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
+        const pdfHeight = (firstCanvas.height * pdfWidth) / firstCanvas.width;
         doc.addImage(firstImgData, 'PNG', 5, 5, pdfWidth, pdfHeight);
+
+        // Background'larni qaytarish
+        firstHighlights.forEach(el => {
+          el.classList.add('highlight');
+          el.classList.add('bg-[#FFFF00]');
+        });
       }
 
       // Ikkinchi sahifaga o'tish
@@ -494,15 +500,25 @@ const BenefitsItem3 = () => {
 
       // Ikkinchi sahifani generatsiya qilish
       if (secondPageRef.current) {
+        // Background'larni o'chirish
+        const secondHighlights = secondPageRef.current.querySelectorAll('.highlight');
+        secondHighlights.forEach(el => {
+          el.classList.remove('highlight');
+          el.classList.remove('bg-[#FFFF00]');
+        });
+
         const secondCanvas = await html2canvas(secondPageRef.current, options);
         const secondImgData = secondCanvas.toDataURL('image/png');
-
-        const imgProps = doc.getImageProperties(secondImgData);
         const pdfWidth = doc.internal.pageSize.getWidth() - 10;
-        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
+        const pdfHeight = (secondCanvas.height * pdfWidth) / secondCanvas.width;
         doc.addPage();
         doc.addImage(secondImgData, 'PNG', 5, 5, pdfWidth, pdfHeight);
+
+        // Background'larni qaytarish
+        secondHighlights.forEach(el => {
+          el.classList.add('highlight');
+          el.classList.add('bg-[#FFFF00]');
+        });
       }
 
       // PDF ni ochish
@@ -510,8 +526,19 @@ const BenefitsItem3 = () => {
       const pdfUrl = URL.createObjectURL(pdfBlob);
       window.open(pdfUrl, '_blank');
 
+      // URL ni tozalash
+      setTimeout(() => {
+        URL.revokeObjectURL(pdfUrl);
+      }, 100);
+
     } catch (error) {
       console.error('PDF generation error:', error);
+      // Xatolik yuz berganda ham background'larni qaytarish
+      const allHighlights = document.querySelectorAll('.highlight');
+      allHighlights.forEach(el => {
+        el.classList.add('highlight');
+        el.classList.add('bg-[#FFFF00]');
+      });
     }
   };
 

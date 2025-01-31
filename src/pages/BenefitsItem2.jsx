@@ -328,8 +328,8 @@ const Step2Form = ({ formData, handleInputChange }) => {
   );
 };
 
-const FirstDocument = ({ formData }) => (
-  <div className="bg-white p-4 md:p-6 overflow-x-hidden min-w-[320px] font-serif" style={{ fontSize: '0.9rem' }}>
+const FirstDocument = React.forwardRef(({ formData }, ref) => (
+  <div ref={ref} className="bg-white p-4 md:p-6 overflow-x-hidden min-w-[320px] font-serif" style={{ fontSize: '0.9rem' }}>
     {/* Title */}
     <div className="text-center mb-6">
       <h1 className="font-bold text-lg">
@@ -344,8 +344,8 @@ const FirstDocument = ({ formData }) => (
     <div className="mb-6">
       <div className="flex items-baseline mb-2">
         <div className="mr-2">Мен,</div>
-        <div className="border-b border-black flex-grow text-center pb-2">
-          {formData.managerFIO}
+        <div className="border-b border-black flex-grow text-center">
+          <span className="highlight bg-[#FFFF00] px-1 pb-2">{formData.managerFIO}</span>
         </div>
         <div className="ml-2">ушбу</div>
       </div>
@@ -376,7 +376,9 @@ const FirstDocument = ({ formData }) => (
               Идентификация ID-картаси ёки биометрик паспорт маълумотлари (серияси, рақами, берилган санаси)
             </td>
             <td className="border border-black p-2" style={{ width: "30%" }}>
-              {formData.passportSeries} {formData.passportIssueDate}
+              <span className="highlight bg-[#FFFF00] px-1 pb-2">
+                {formData.passportSeries} {formData.passportIssueDate}
+              </span>
             </td>
           </tr>
           <tr>
@@ -384,7 +386,9 @@ const FirstDocument = ({ formData }) => (
             <td className="border border-black p-2">
               Жисмоний шахснинг шахсий идентификация рақами (ЖШШИР)
             </td>
-            <td className="border border-black p-2">{formData.jshshir}</td>
+            <td className="border border-black p-2">
+              <span className="highlight bg-[#FFFF00] px-1 pb-2">{formData.jshshir}</span>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -405,21 +409,29 @@ const FirstDocument = ({ formData }) => (
           <tr>
             <td className="border border-black p-2 w-8">1.</td>
             <td className="border border-black p-2">Фамилия, исми, отасининг исми</td>
-            <td className="border border-black p-2">{formData.relativeFIO}</td>
+            <td className="border border-black p-2">
+              <span className="highlight bg-[#FFFF00] px-1 pb-2">{formData.relativeFIO}</span>
+            </td>
           </tr>
           <tr>
             <td className="border border-black p-2">2.</td>
             <td className="border border-black p-2">
               Идентификация ID-картаси ёки биометрик паспорт маълумотлари
             </td>
-            <td className="border border-black p-2">{formData.relativePassport} {formData.relativePassportDate}</td>
+            <td className="border border-black p-2">
+              <span className="highlight bg-[#FFFF00] px-1 pb-2">
+                {formData.relativePassport} {formData.relativePassportDate}
+              </span>
+            </td>
           </tr>
           <tr>
             <td className="border border-black p-2">3.</td>
             <td className="border border-black p-2">
               Жисмоний шахснинг шахсий идентификация рақами (ЖШШИР)
             </td>
-            <td className="border border-black p-2">{formData.relativeJSHSHIR}</td>
+            <td className="border border-black p-2">
+              <span className="highlight bg-[#FFFF00] px-1 pb-2">{formData.relativeJSHSHIR}</span>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -435,14 +447,18 @@ const FirstDocument = ({ formData }) => (
           <tr>
             <td className="border border-black p-2 w-8">1.</td>
             <td className="border border-black p-2">Юридик шахснинг номи</td>
-            <td className="border border-black p-2">{formData.legalEntityName}</td>
+            <td className="border border-black p-2">
+              <span className="highlight bg-[#FFFF00] px-1 pb-2">{formData.legalEntityName}</span>
+            </td>
           </tr>
           <tr>
             <td className="border border-black p-2">2.</td>
             <td className="border border-black p-2">
               Солиқ тўловчининг идентификация рақами (СТИР)
             </td>
-            <td className="border border-black p-2">{formData.stir}</td>
+            <td className="border border-black p-2">
+              <span className="highlight bg-[#FFFF00] px-1 pb-2">{formData.stir}</span>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -458,14 +474,18 @@ const FirstDocument = ({ formData }) => (
           <tr>
             <td className="border border-black p-2 w-8">1.</td>
             <td className="border border-black p-2">Юридик шахснинг номи</td>
-            <td className="border border-black p-2">{formData.relativeLegalEntityName}</td>
+            <td className="border border-black p-2">
+              <span className="highlight bg-[#FFFF00] px-1 pb-2">{formData.relativeLegalEntityName}</span>
+            </td>
           </tr>
           <tr>
             <td className="border border-black p-2">2.</td>
             <td className="border border-black p-2">
               Солиқ тўловчининг идентификация рақами (СТИР)
             </td>
-            <td className="border border-black p-2">{formData.relativeSTIR}</td>
+            <td className="border border-black p-2">
+              <span className="highlight bg-[#FFFF00] px-1 pb-2">{formData.relativeSTIR}</span>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -476,7 +496,7 @@ const FirstDocument = ({ formData }) => (
       *Ходим унга алоқадор шахсларнинг (ходимнинг яқин қариндошлари ёки ходимнинг яқин қариндошлари устав фонди (устав капитали) акцияларига ёки улушларига эгалик қиладиган ёхуд бошқарув органи раҳбари ёки аъзоси бўлган юридик шахс) идентификация ID-картаси (биометрик паспорти), ЖШШИР, СТИР бўйича маълумотларни олиш имкониятига эга бўлмаса, у томонидан тегишли позицияларда "маълумотга эга эмасман" деб изоҳ кўрсатилиши мумкин.
     </div>
   </div>
-);
+));
 
 const SecondDocument = React.forwardRef(({ formData }, ref) => {
 
@@ -544,7 +564,7 @@ const SecondDocument = React.forwardRef(({ formData }, ref) => {
           </h2>
           {descriptionLines.map((line, index) => (
             <div key={index} className="border-b border-gray-300 min-h-[30px] mb-2">
-              {line}
+              <span className="highlight bg-[#FFFF00] px-1 pb-2">{line}</span>
             </div>
           ))}
         </div>
@@ -552,11 +572,11 @@ const SecondDocument = React.forwardRef(({ formData }, ref) => {
         {/* Additional Info section */}
         <div className="mb-12">
           <h2 className="font-bold mb-4">
-            4. Эҳтимолий манфаатлар тўқнашуви тўғрисидаги декларацияда кўрсатилиши керак бўлган маълумотлардан ташқари қўшимча маълумотлар (агар мавжуд бўлса)
+            4. Эҳтимолий манфаатлар тўқнашуви тўғрисидаги декларацияда кўрсатилиши керак бўлган маълумотлардан ташқари қўшимча маълумотлар
           </h2>
           {additionalInfoLines.map((line, index) => (
             <div key={index} className="border-b border-gray-300 min-h-[30px] mb-2">
-              {line}
+              <span className="highlight bg-[#FFFF00] px-1 pb-2">{line}</span>
             </div>
           ))}
           <div className="text-xs text-gray-600 mt-2 text-center">
@@ -574,9 +594,9 @@ const SecondDocument = React.forwardRef(({ formData }, ref) => {
               Шахсий имзо ёки электрон рақамли имзоси
             </div>
             <div className="text-right">
-              {formData.managerFIO ? (
-                <span>({formData.managerFIO})</span>
-              ) : '(_______________)'}
+              {formData.managerFIO && (
+                <span className="highlight bg-[#FFFF00] px-1 pb-2">({formData.managerFIO})</span>
+              )}
             </div>
           </div>
           <div className="text-right mt-4">
@@ -649,16 +669,12 @@ const BenefitsItem2 = () => {
 
   const generatePDF = async () => {
     try {
-      // Birinchi sahifaga o'tish
       setCurrentStep(1);
-      // DOM yangilanishi uchun kutish
       await new Promise(resolve => setTimeout(resolve, 100));
 
       const doc = new jsPDF('p', 'mm', 'a4');
-
-      // html2canvas uchun options
       const options = {
-        scale: 1.3, // Sifatni oshirish
+        scale: 1.3,
         useCORS: true,
         scrollX: 0,
         scrollY: 0,
@@ -669,15 +685,24 @@ const BenefitsItem2 = () => {
 
       // Birinchi sahifani generatsiya qilish
       if (firstPageRef.current) {
+        // Background'larni o'chirish
+        const firstHighlights = firstPageRef.current.querySelectorAll('.highlight');
+        firstHighlights.forEach(el => {
+          el.classList.remove('highlight');
+          el.classList.remove('bg-[#FFFF00]');
+        });
+
         const firstCanvas = await html2canvas(firstPageRef.current, options);
         const firstImgData = firstCanvas.toDataURL('image/png');
-
-        // PDF sahifa o'lchamlarini olish
         const pdfWidth = doc.internal.pageSize.getWidth() - 10;
         const pdfHeight = (firstCanvas.height * pdfWidth) / firstCanvas.width;
-
-        // Rasmni PDF ga qo'shish
         doc.addImage(firstImgData, 'PNG', 5, 5, pdfWidth, pdfHeight);
+
+        // Background'larni qaytarish
+        firstHighlights.forEach(el => {
+          el.classList.add('highlight');
+          el.classList.add('bg-[#FFFF00]');
+        });
       }
 
       // Ikkinchi sahifaga o'tish
@@ -686,17 +711,25 @@ const BenefitsItem2 = () => {
 
       // Ikkinchi sahifani generatsiya qilish
       if (secondPageRef.current) {
+        // Background'larni o'chirish
+        const secondHighlights = secondPageRef.current.querySelectorAll('.highlight');
+        secondHighlights.forEach(el => {
+          el.classList.remove('highlight');
+          el.classList.remove('bg-[#FFFF00]');
+        });
+
         const secondCanvas = await html2canvas(secondPageRef.current, options);
         const secondImgData = secondCanvas.toDataURL('image/png');
-
-        // PDF sahifa o'lchamlarini olish
         const pdfWidth = doc.internal.pageSize.getWidth() - 10;
         const pdfHeight = (secondCanvas.height * pdfWidth) / secondCanvas.width;
-
-        // Yangi sahifa qo'shish
         doc.addPage();
-        // Rasmni PDF ga qo'shish
         doc.addImage(secondImgData, 'PNG', 5, 5, pdfWidth, pdfHeight);
+
+        // Background'larni qaytarish
+        secondHighlights.forEach(el => {
+          el.classList.add('highlight');
+          el.classList.add('bg-[#FFFF00]');
+        });
       }
 
       // PDF ni ochish
@@ -711,6 +744,12 @@ const BenefitsItem2 = () => {
 
     } catch (error) {
       console.error('PDF generation error:', error);
+      // Xatolik yuz berganda ham background'larni qaytarish
+      const allHighlights = document.querySelectorAll('.highlight');
+      allHighlights.forEach(el => {
+        el.classList.add('highlight');
+        el.classList.add('bg-[#FFFF00]');
+      });
     }
   };
 
