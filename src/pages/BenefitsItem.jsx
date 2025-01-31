@@ -614,71 +614,69 @@ const BenefitsItem = () => {
   };
 
   const generatePDF = async () => {
-
-    if (!isStep2Valid()) return;
-
     try {
+      // Birinchi sahifaga o'tish
+      setCurrentStep(1);
+      // DOM yangilanishi uchun kutish
+      await new Promise(resolve => setTimeout(resolve, 100));
+
       const doc = new jsPDF('p', 'mm', 'a4');
 
-      // Birinchi sahifani generatsiya qilish
-      setCurrentStep(1);
-      await new Promise(resolve => setTimeout(resolve, 500));
-
-      if (!firstPageRef.current) {
-        console.error('First page reference not found');
-        return;
-      }
-
+      // html2canvas uchun options
       const options = {
-        scale: 1.3,
+        scale: 1.3, // Sifatni oshirish
         useCORS: true,
         scrollX: 0,
         scrollY: 0,
-        windowWidth: firstPageRef.current.offsetWidth,
-        windowHeight: firstPageRef.current.offsetHeight,
+        windowWidth: document.documentElement.scrollWidth,
+        windowHeight: document.documentElement.scrollHeight,
         margin: [5, 5, 5, 5]
       };
 
-      // First page
-      const firstCanvas = await html2canvas(firstPageRef.current, options);
-      const firstImgData = firstCanvas.toDataURL('image/png');
+      // Birinchi sahifani generatsiya qilish
+      if (firstPageRef.current) {
+        const firstCanvas = await html2canvas(firstPageRef.current, options);
+        const firstImgData = firstCanvas.toDataURL('image/png');
 
-      const firstImgProps = doc.getImageProperties(firstImgData);
-      const pdfWidth = doc.internal.pageSize.getWidth() - 10;
-      const pdfHeight = (firstImgProps.height * pdfWidth) / firstImgProps.width;
+        // PDF sahifa o'lchamlarini olish
+        const pdfWidth = doc.internal.pageSize.getWidth() - 10;
+        const pdfHeight = (firstCanvas.height * pdfWidth) / firstCanvas.width;
 
-      doc.addImage(firstImgData, 'PNG', 5, 5, pdfWidth, pdfHeight);
-
-      // Ikkinchi sahifani generatsiya qilish
-      setCurrentStep(2);
-      await new Promise(resolve => setTimeout(resolve, 500));
-
-      // Ikkinchi ref mavjudligini tekshirish
-      if (!secondPageRef.current) {
-        console.error('Second page reference not found');
-        return;
+        // Rasmni PDF ga qo'shish
+        doc.addImage(firstImgData, 'PNG', 5, 5, pdfWidth, pdfHeight);
       }
 
-      const secondCanvas = await html2canvas(secondPageRef.current, options);
-      const secondImgData = secondCanvas.toDataURL('image/png');
+      // Ikkinchi sahifaga o'tish
+      setCurrentStep(2);
+      await new Promise(resolve => setTimeout(resolve, 100));
 
-      doc.addPage();
+      // Ikkinchi sahifani generatsiya qilish
+      if (secondPageRef.current) {
+        const secondCanvas = await html2canvas(secondPageRef.current, options);
+        const secondImgData = secondCanvas.toDataURL('image/png');
 
-      const secondImgProps = doc.getImageProperties(secondImgData);
-      const secondPdfHeight = (secondImgProps.height * pdfWidth) / secondImgProps.width;
+        // PDF sahifa o'lchamlarini olish
+        const pdfWidth = doc.internal.pageSize.getWidth() - 10;
+        const pdfHeight = (secondCanvas.height * pdfWidth) / secondCanvas.width;
 
-      doc.addImage(secondImgData, 'PNG', 5, 5, pdfWidth, secondPdfHeight);
+        // Yangi sahifa qo'shish
+        doc.addPage();
+        // Rasmni PDF ga qo'shish
+        doc.addImage(secondImgData, 'PNG', 5, 5, pdfWidth, pdfHeight);
+      }
 
       // PDF ni ochish
       const pdfBlob = doc.output('blob');
       const pdfUrl = URL.createObjectURL(pdfBlob);
       window.open(pdfUrl, '_blank');
 
+      // URL ni tozalash
+      setTimeout(() => {
+        URL.revokeObjectURL(pdfUrl);
+      }, 100);
+
     } catch (error) {
       console.error('PDF generation error:', error);
-    } finally {
-      // Har qanday holatda birinchi sahifaga qaytish
-      setCurrentStep(1);
     }
   };
 
