@@ -6,6 +6,9 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { Calendar } from 'lucide-react';
 
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
+
 
 
 const FirstDocument = React.forwardRef(({ formData }, ref) => (
@@ -454,9 +457,7 @@ const BenefitsItem3 = () => {
   };
 
   const generatePDF = async () => {
-    const { jsPDF } = await import('jspdf');
-    const html2canvas = (await import('html2canvas')).default;
-    console.log("isStep2Valid", isStep2Valid());
+
     // if (!isStep2Valid()) return;
 
     try {
