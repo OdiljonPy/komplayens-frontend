@@ -11,6 +11,15 @@ import html2canvas from 'html2canvas';
 
 
 const Step1Form = ({ formData, handleInputChange }) => {
+  const handleSTIRChange = (name, value) => {
+    const numbers = value.replace(/[^0-9]/g, '').slice(0, 9);
+    handleInputChange({
+      target: {
+        name,
+        value: numbers
+      }
+    });
+  };
 
   // Passport seriyasi uchun handler
   const handlePassportSeriesChange = (e) => {
@@ -144,7 +153,7 @@ const Step1Form = ({ formData, handleInputChange }) => {
             type="text"
             name="stir"
             value={formData.stir}
-            onChange={handleInputChange}
+            onChange={e => handleSTIRChange("stir", e.target.value)}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
             placeholder="STIR"
           />
@@ -239,7 +248,9 @@ const Step1Form = ({ formData, handleInputChange }) => {
             type="text"
             name="relativeSTIR"
             value={formData.relativeSTIR}
-            onChange={handleInputChange}
+            onChange={e => {
+              handleSTIRChange("relativeSTIR", e.target.value)
+            }}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg"
             placeholder="STIR"
           />
@@ -344,7 +355,7 @@ const FirstDocument = React.forwardRef(({ formData }, ref) => (
     <div className="mb-6">
       <div className="flex items-baseline mb-2">
         <div className="mr-2">Мен,</div>
-        <div className="border-b border-black flex-grow text-center">
+        <div className="border-b border-black flex-grow text-center pb-2">
           <span className="highlight bg-[#FFFF00] px-1 pb-2">{formData.managerFIO}</span>
         </div>
         <div className="ml-2">ушбу</div>
@@ -446,18 +457,24 @@ const FirstDocument = React.forwardRef(({ formData }, ref) => (
           </tr>
           <tr>
             <td className="border border-black p-2 w-8">1.</td>
-            <td className="border border-black p-2">Юридик шахснинг номи</td>
-            <td className="border border-black p-2">
-              <span className="highlight bg-[#FFFF00] px-1 pb-2">{formData.legalEntityName}</span>
+            <td className="border border-black p-2" style={{ minWidth: "50%" }}>Юридик шахснинг номи</td>
+            <td className="border border-black p-2" style={{ maxWidth: "50%", wordBreak: "break-word" }}>
+              <span className="highlight bg-[#FFFF00] px-1 pb-2" style={{
+                width: "100%",
+                display: "block"
+              }}>{formData.legalEntityName}</span>
             </td>
           </tr>
           <tr>
             <td className="border border-black p-2">2.</td>
-            <td className="border border-black p-2">
+            <td className="border border-black p-2" style={{ minWidth: "50%" }}>
               Солиқ тўловчининг идентификация рақами (СТИР)
             </td>
-            <td className="border border-black p-2">
-              <span className="highlight bg-[#FFFF00] px-1 pb-2">{formData.stir}</span>
+            <td className="border border-black p-2" style={{ maxWidth: "50%", wordBreak: "break-word" }}>
+              <span className="highlight bg-[#FFFF00] px-1 pb-2" style={{
+                width: "100%",
+                display: "block"
+              }}>{formData.stir}</span>
             </td>
           </tr>
         </tbody>
@@ -473,18 +490,24 @@ const FirstDocument = React.forwardRef(({ formData }, ref) => (
           </tr>
           <tr>
             <td className="border border-black p-2 w-8">1.</td>
-            <td className="border border-black p-2">Юридик шахснинг номи</td>
-            <td className="border border-black p-2">
-              <span className="highlight bg-[#FFFF00] px-1 pb-2">{formData.relativeLegalEntityName}</span>
+            <td className="border border-black p-2" style={{ minWidth: "50%" }}>Юридик шахснинг номи</td>
+            <td className="border border-black p-2" style={{ maxWidth: "50%", wordBreak: "break-word" }}>
+              <span className="highlight bg-[#FFFF00] px-1 pb-2" style={{
+                width: "100%",
+                display: "block"
+              }}>{formData.relativeLegalEntityName}</span>
             </td>
           </tr>
           <tr>
             <td className="border border-black p-2">2.</td>
-            <td className="border border-black p-2">
+            <td className="border border-black p-2" style={{ minWidth: "50%" }}>
               Солиқ тўловчининг идентификация рақами (СТИР)
             </td>
-            <td className="border border-black p-2">
-              <span className="highlight bg-[#FFFF00] px-1 pb-2">{formData.relativeSTIR}</span>
+            <td className="border border-black p-2" style={{ maxWidth: "50%", wordBreak: "break-word" }}>
+              <span className="highlight bg-[#FFFF00] px-1 pb-2" style={{
+                width: "100%",
+                display: "block"
+              }}>{formData.relativeSTIR}</span>
             </td>
           </tr>
         </tbody>
@@ -552,10 +575,7 @@ const SecondDocument = React.forwardRef(({ formData }, ref) => {
   return (
     <div ref={ref} className="bg-white p-6 overflow-x-hidden min-w-[320px] font-serif">
       <div className="mx-auto max-w-4xl">
-        {/* Page number */}
-        <div className="text-right mb-8">
-          <span>5</span>
-        </div>
+
 
         {/* Description section */}
         <div className="mb-12">
@@ -666,6 +686,10 @@ const BenefitsItem2 = () => {
     const requiredFields = ['date', 'description'];
     return requiredFields.every(field => formData[field] && formData[field].trim() !== '');
   };
+  const isStep1Valid = () => {
+    const requiredFields = ['position', 'managerFIO', 'passportSeries', 'passportIssueDate', 'jshshir', 'relativeFIO', 'relativePassport', 'relativeJSHSHIR', 'relativeSTIR', 'legalEntityName'];
+    return requiredFields.every(field => formData[field] && formData[field].trim() !== '');
+  };
 
   const generatePDF = async () => {
     try {
@@ -732,15 +756,25 @@ const BenefitsItem2 = () => {
         });
       }
 
-      // PDF ni ochish
+      // PDF ni download qilish va yangi tabda ochish
       const pdfBlob = doc.output('blob');
       const pdfUrl = URL.createObjectURL(pdfBlob);
+
+      // Download qilish
+      const downloadLink = document.createElement('a');
+      downloadLink.href = pdfUrl;
+      downloadLink.download = 'declaration.pdf';
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+
+      // Yangi tabda ochish
       window.open(pdfUrl, '_blank');
 
       // URL ni tozalash
       setTimeout(() => {
         URL.revokeObjectURL(pdfUrl);
-      }, 100);
+      }, 1000);
 
     } catch (error) {
       console.error('PDF generation error:', error);
@@ -768,7 +802,7 @@ const BenefitsItem2 = () => {
               <button
                 onClick={handleNext}
                 className={`w-full sm:w-auto px-4 md:px-6 py-2.5 text-white rounded transition-colors duration-200 text-sm md:text-base flex items-center justify-center
-                ${isStep2Valid()
+                ${isStep1Valid()
                     ? 'bg-[#024073] hover:bg-blue-700'
                     : 'bg-gray-400 cursor-not-allowed'}`}
               >

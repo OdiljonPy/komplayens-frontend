@@ -40,8 +40,7 @@ const Step1Form = ({ formData, handleInputChange }) => {
     });
   };
 
-  const handleSTIRChange = (e) => {
-    const { name, value } = e.target;
+  const handleSTIRChange = (name, value) => {
     const numbers = value.replace(/[^0-9]/g, '').slice(0, 9);
     handleInputChange({
       target: {
@@ -185,7 +184,9 @@ const Step1Form = ({ formData, handleInputChange }) => {
               type="text"
               name="stir2"
               value={formData.stir2}
-              onChange={handleSTIRChange}
+              onChange={e => {
+                handleSTIRChange("stir2", e.target.value)
+              }}
               className="w-full px-4 py-2 border border-gray-200 rounded-lg"
               placeholder="STIR"
               maxLength="9"
@@ -281,7 +282,9 @@ const Step1Form = ({ formData, handleInputChange }) => {
               type="text"
               name="stir1"
               value={formData.stir1}
-              onChange={handleInputChange}
+              onChange={e => {
+                handleSTIRChange("stir1", e.target.value)
+              }}
               className="w-full px-4 py-2 border border-gray-200 rounded-lg"
               placeholder="STIR"
             />
@@ -294,7 +297,6 @@ const Step1Form = ({ formData, handleInputChange }) => {
 
 // Step2Form.jsx
 const Step2Form = ({ formData, handleInputChange }) => {
-  const { t } = useTranslation();
 
   return (
     <div className="space-y-6">
@@ -444,16 +446,22 @@ const FirstDocument = ({ formData }) => (
           </tr>
           <tr>
             <td className="border border-black p-2 w-8">1.</td>
-            <td className="border border-black p-2">Юридик шахснинг номи</td>
-            <td className="border border-black p-2">
-              <span className="highlight px-1">{formData.legalEntityName2}</span>
+            <td className="border border-black p-2" style={{ minWidth: "50%" }}>Юридик шахснинг номи</td>
+            <td className="border border-black p-2" style={{ maxWidth: "50%", wordBreak: "break-word" }}>
+              <span className="highlight px-1" style={{
+                width: "100%",
+                display: "block"
+              }}>{formData.legalEntityName2}</span>
             </td>
           </tr>
           <tr>
             <td className="border border-black p-2">2.</td>
             <td className="border border-black p-2">СТИР</td>
-            <td className="border border-black p-2">
-              <span className="highlight px-1">{formData.stir2}</span>
+            <td className="border border-black p-2" style={{ maxWidth: "50%", wordBreak: "break-word" }}>
+              <span className="highlight px-1" style={{
+                width: "100%",
+                display: "block"
+              }}>{formData.stir2}</span>
             </td>
           </tr>
         </tbody>
@@ -469,16 +477,22 @@ const FirstDocument = ({ formData }) => (
           </tr>
           <tr>
             <td className="border border-black p-2 w-8">1.</td>
-            <td className="border border-black p-2">Юридик шахснинг номи</td>
-            <td className="border border-black p-2">
-              <span className="highlight px-1">{formData.legalEntityName1}</span>
+            <td className="border border-black p-2" style={{ minWidth: "50%" }}>Юридик шахснинг номи</td>
+            <td className="border border-black p-2" style={{ maxWidth: "50%", wordBreak: "break-word" }}>
+              <span className="highlight px-1" style={{
+                width: "100%",
+                display: "block"
+              }}>{formData.legalEntityName1}</span>
             </td>
           </tr>
           <tr>
             <td className="border border-black p-2">2.</td>
             <td className="border border-black p-2">СТИР</td>
-            <td className="border border-black p-2">
-              <span className="highlight px-1">{formData.stir1}</span>
+            <td className="border border-black p-2" style={{ maxWidth: "50%", wordBreak: "break-word" }}>
+              <span className="highlight px-1" style={{
+                width: "100%",
+                display: "block"
+              }}>{formData.stir1}</span>
             </td>
           </tr>
         </tbody>
@@ -516,8 +530,8 @@ const SecondDocument = React.forwardRef(({ formData }, ref) => (
       <div className="flex justify-between items-center mb-4">
         <div>Ходимнинг лавозими</div>
         <div className="italic">Шахсий имзо ёки электрон рақамли имзоси</div>
-        <div className="border-b border-black" style={{ minWidth: "180px" }}>
-          <span className="highlight px-1">{formData.managerFIO}</span>
+        <div className="border-b border-black pb-2" style={{ minWidth: "180px" }}>
+          <span className="highlight px-1 " >{formData.managerFIO}</span>
         </div>
       </div>
       <div className="text-right">
@@ -534,8 +548,8 @@ const SecondDocument = React.forwardRef(({ formData }, ref) => (
       <p className="mb-4">
         Мавжуд манфаатлар тўқнашувини тартибга солиш бўйича кўрилган чора:
       </p>
-      <div className="border-b border-black mb-4">
-        <span className="highlight px-1">{formData.measures}</span>
+      <div className="border-b border-black mb-4 pb-2">
+        <span className="highlight px-1 ">{formData.measures}</span>
       </div>
     </div>
 
@@ -544,8 +558,8 @@ const SecondDocument = React.forwardRef(({ formData }, ref) => (
       <div className="flex justify-between items-center mb-4">
         <div>Ходимнинг бевосита<br />раҳбарининг лавозими</div>
         <div className="italic">Шахсий имзо ёки электрон<br />рақамли имзоси</div>
-        <div className="border-b border-black" style={{ minWidth: "180px" }}>
-          <span className="highlight px-1">{formData.supervisorFIO}</span>
+        <div className="border-b border-black pb-2" style={{ minWidth: "180px" }}>
+          <span className="highlight px-1 ">{formData.supervisorFIO}</span>
         </div>
       </div>
       <div className="text-right">
@@ -689,15 +703,25 @@ const BenefitsItem = () => {
         el.classList.add('bg-[#FFFF00]');
       });
 
-      // PDF ni ochish
+      // PDF ni download qilish va yangi tabda ochish
       const pdfBlob = doc.output('blob');
       const pdfUrl = URL.createObjectURL(pdfBlob);
+
+      // Download qilish
+      const downloadLink = document.createElement('a');
+      downloadLink.href = pdfUrl;
+      downloadLink.download = 'declaration.pdf';
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+
+      // Yangi tabda ochish
       window.open(pdfUrl, '_blank');
 
       // URL ni tozalash
       setTimeout(() => {
         URL.revokeObjectURL(pdfUrl);
-      }, 100);
+      }, 1000);
 
     } catch (error) {
       console.error('PDF generation error:', error);

@@ -100,7 +100,7 @@ const FirstDocument = React.forwardRef(({ formData }, ref) => (
       <div className="whitespace-nowrap">Алоқадор шахс</div>
       <div className="flex items-center gap-4">
         <div className="italic whitespace-nowrap">Шахсий имзо ёки электрон рақамли имзоси</div>
-        <div className="border-b border-black min-w-[180px] text-center">
+        <div className="border-b border-black min-w-[180px] text-center pb-2">
           <span className="highlight bg-[#FFFF00] px-1 pb-4">{formData.managerFIO}</span>
         </div>
       </div>
@@ -312,7 +312,8 @@ const SecondDocument = React.forwardRef(({ formData }, ref) => (
     <div className="mb-8">
       <div className="flex items-baseline gap-2">
         <span>Мен</span>
-        <div className="flex-1 border-b border-black min-h-[24px] relative">
+        <div className="flex-1 border-b border-black min-h-[24px] relative pb-2">
+          <span className="highlight bg-[#FFFF00] px-1 pb-2">{formData.managerFIO}</span>
           <div className="absolute -bottom-4 left-0 right-0 text-center text-[10px]">
             (фамилияси, исми ва шарифи)
           </div>
@@ -331,28 +332,36 @@ const SecondDocument = React.forwardRef(({ formData }, ref) => (
           <td className="border border-black p-2">
             Ходимга алоқадор жисмоний шахснинг шахсий идентификация рақами (ЖШШИР)
           </td>
-          <td className="border border-black p-2 min-w-[200px]"></td>
+          <td className="border border-black p-2 min-w-[200px]">
+            <span className="highlight bg-[#FFFF00] px-1 pb-2">{formData.jshshir}</span>
+          </td>
         </tr>
         <tr>
           <td className="border border-black p-2">3.</td>
           <td className="border border-black p-2">
             Ходимга алоқадор юридик шахснинг номи
           </td>
-          <td className="border border-black p-2"></td>
+          <td className="border border-black p-2">
+            <span className="highlight bg-[#FFFF00] px-1 pb-2">{formData.legalEntityName}</span>
+          </td>
         </tr>
         <tr>
           <td className="border border-black p-2">4.</td>
           <td className="border border-black p-2">
             Ходимга алоқадор солиқ тўловчининг идентификация рақами (СТИР)
           </td>
-          <td className="border border-black p-2"></td>
+          <td className="border border-black p-2">
+            <span className="highlight bg-[#FFFF00] px-1 pb-2">{formData.stir}</span>
+          </td>
         </tr>
         <tr>
           <td className="border border-black p-2">5.</td>
           <td className="border border-black p-2">
             Ходимнинг Ф.И.О. ва лавозими
           </td>
-          <td className="border border-black p-2"></td>
+          <td className="border border-black p-2">
+            <span className="highlight bg-[#FFFF00] px-1 pb-2">{formData.position} {formData.managerFIO}</span>
+          </td>
         </tr>
         <tr>
           <td className="border border-black p-2">6.</td>
@@ -364,7 +373,9 @@ const SecondDocument = React.forwardRef(({ formData }, ref) => (
               (ота-онаси, ака-укалар, опа-сингиллар, ўғил-қизлар, эр-хотин, шунингдек эр-хотиннинг ота-онаси, ака-укалари, опа-сингиллари ва фарзандлари)
             </div>
           </td>
-          <td className="border border-black p-2"></td>
+          <td className="border border-black p-2">
+            <span className="highlight bg-[#FFFF00] px-1 pb-2">{formData.relativeInfo}</span>
+          </td>
         </tr>
         <tr>
           <td className="border border-black p-2">7.</td>
@@ -376,7 +387,9 @@ const SecondDocument = React.forwardRef(({ formData }, ref) => (
               (ходим ва унинг яқин қариндошлари таъсис этган ёки юридик шахснинг устав фонди (устав капитали)да иштирок этаётган юридик шахслар ҳақида маълумот, бундай шахсларнинг раҳбари ёки аъзоси бўлса, уша юридик шахс)
             </div>
           </td>
-          <td className="border border-black p-2"></td>
+          <td className="border border-black p-2">
+            <span className="highlight bg-[#FFFF00] px-1 pb-2">{formData.employeeInfo}</span>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -521,19 +534,28 @@ const BenefitsItem3 = () => {
         });
       }
 
-      // PDF ni ochish
+      // PDF ni download qilish va yangi tabda ochish
       const pdfBlob = doc.output('blob');
       const pdfUrl = URL.createObjectURL(pdfBlob);
+
+      // Download qilish
+      const downloadLink = document.createElement('a');
+      downloadLink.href = pdfUrl;
+      downloadLink.download = 'declaration.pdf';
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+
+      // Yangi tabda ochish
       window.open(pdfUrl, '_blank');
 
       // URL ni tozalash
       setTimeout(() => {
         URL.revokeObjectURL(pdfUrl);
-      }, 100);
+      }, 1000); // Vaqtni ko'paytirdik chunki endi ikkita operatsiya bajariladi
 
     } catch (error) {
       console.error('PDF generation error:', error);
-      // Xatolik yuz berganda ham background'larni qaytarish
       const allHighlights = document.querySelectorAll('.highlight');
       allHighlights.forEach(el => {
         el.classList.add('highlight');
