@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { ChevronRight, Eye, Calendar } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { sendRequest } from '../utils/apiFunctions';
@@ -6,6 +6,12 @@ import { useTranslation } from 'react-i18next';
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+
+
+import { DateRange } from 'react-date-range';
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
+import { format } from 'date-fns';
 
 // Add skeleton component
 const ViolationsSkeleton = () => (
@@ -93,6 +99,37 @@ function Violations() {
     totalPages: 1,
     pageSize: 10
   });
+
+  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const [dateRange, setDateRange] = useState([
+    {
+      startDate: null,
+      endDate: null,
+      key: 'selection'
+    }
+  ]);
+
+  const datePickerRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (datePickerRef.current && !datePickerRef.current.contains(event.target)) {
+        setIsDatePickerOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const formatDateDisplay = () => {
+    if (dateRange[0].startDate && dateRange[0].endDate) {
+      return `${format(dateRange[0].startDate, 'dd.MM.yyyy')} - ${format(dateRange[0].endDate, 'dd.MM.yyyy')}`;
+    }
+    return t('common.selectDate');
+  };
+
+
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [loading, setLoading] = useState(true);
 
@@ -116,40 +153,60 @@ function Violations() {
     fetchCategories();
   }, []);
 
+
+  const fetchNews = async (params = {}) => {
+    setLoading(true);
+    try {
+      const requestParams = {
+        page: pagination.currentPage,
+        page_size: pagination.pageSize,
+        ...params // Add any additional params passed to the function
+      };
+
+      if (selectedCategory) {
+        requestParams.category_id = selectedCategory;
+      }
+
+      const response = await sendRequest({
+        method: 'GET',
+        url: '/services/news/',
+        params: requestParams
+      });
+
+      if (response.success) {
+        setNews(response.data.result.content);
+        setPagination(prev => ({
+          ...prev,
+          totalPages: response.data.result.totalPages
+        }));
+      }
+    } catch (error) {
+      console.error('Error fetching news:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDateSelect = (ranges) => {
+    setDateRange([ranges.selection]);
+  };
+
+  const handleApplyDateRange = () => {
+    setIsDatePickerOpen(false);
+    // Faqat ikkala sana ham tanlangan bo'lsagina request yuboramiz
+    if (dateRange[0].startDate && dateRange[0].endDate) {
+      const formattedStartDate = format(dateRange[0].startDate, 'yyyy-MM-dd');
+      const formattedEndDate = format(dateRange[0].endDate, 'yyyy-MM-dd');
+
+      fetchNews({
+        from_date: formattedStartDate,
+        to_date: formattedEndDate
+      });
+    }
+  };
+
   // Fetch news with filters
   useEffect(() => {
-    const fetchNews = async () => {
-      setLoading(true);
-      try {
-        const params = {
-          page: pagination.currentPage,
-          page_size: pagination.pageSize,
-          from_date: selectedDate
-        };
-
-        if (selectedCategory) {
-          params.category_id = selectedCategory;
-        }
-
-        const response = await sendRequest({
-          method: 'GET',
-          url: '/services/news/',
-          params
-        });
-
-        if (response.success) {
-          setNews(response.data.result.content);
-          setPagination(prev => ({
-            ...prev,
-            totalPages: response.data.result.totalPages
-          }));
-        }
-      } catch (error) {
-        console.error('Error fetching news:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
 
     fetchNews();
   }, [selectedCategory, pagination.currentPage, pagination.pageSize, selectedDate]);
@@ -215,19 +272,38 @@ function Violations() {
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
           {/* Date Selection with MUI-like design */}
           <div className="w-full md:w-64 relative">
+            <div className="relative" ref={datePickerRef}>
+              <div
+                onClick={() => setIsDatePickerOpen(!isDatePickerOpen)}
+                className="w-full h-[48px] bg-white border border-gray-200 rounded-lg px-4 flex items-center cursor-pointer text-gray-900"
+              >
+                {formatDateDisplay() || t('common.selectDate')}
+                <Calendar className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+              </div>
 
-            <div className="relative">
-              <DatePicker
-                selected={selectedDate}
-                onChange={(date) => {
-                  const formattedDate = date.toISOString().split('T')[0];
-                  setSelectedDate(formattedDate);
-                }}
-                className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pl-10"
-                calendarClassName="custom-calendar"
-                showPopperArrow={false}
-              />
-              <Calendar className="w-5 h-5 text-blue-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+              {isDatePickerOpen && (
+                <div className="absolute z-50 mt-1 transform -translate-x-1/2 left-1/2">
+                  <DateRange
+                    ranges={dateRange}
+                    onChange={handleDateSelect}
+                    months={1}
+                    direction="vertical"
+                    className="border border-gray-200 rounded-lg shadow-lg !w-auto"
+                    monthDisplayFormat="MMMM yyyy"
+                    rangeColors={["#3b82f6"]}
+                    showMonthAndYearPickers={true}
+                    minDate={new Date()}
+                    showDateDisplay={false}
+                  />
+                  <div className="bg-white p-3 border-t flex justify-end">
+                    <button
+                      onClick={handleApplyDateRange}
+                      className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                    >
+                      OK                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
