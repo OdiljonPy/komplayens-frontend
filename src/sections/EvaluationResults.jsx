@@ -9,6 +9,7 @@ const EvaluationResults = () => {
   const [years, setYears] = useState([]);
   const [evaluationResults, setEvaluationResults] = useState([]);
   const [selectedYear, setSelectedYear] = useState(null);
+  const [activeTab, setActiveTab] = useState('yaxshi');
 
   const categories = [
     { label: t('evaluation.status.good'), color: '#22c55e' },
@@ -217,96 +218,139 @@ const EvaluationResults = () => {
               </div>
             </div>
 
-            {/* Categories */}
+            {/* Categories as Tabs */}
             <div className="flex flex-wrap gap-3 md:gap-4 lg:gap-6 mb-4 md:mb-6">
-              {categories.map((category, index) => (
-                <div key={index} className="flex items-center gap-2 bg-[#F9F9F9] rounded-[4px] px-2 py-1">
-                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: category.color }}></div>
-                  <span className="text-xs md:text-sm text-gray-600">{category.label}</span>
-                </div>
-              ))}
+              {categories.map((category, index) => {
+                const status = category.label === t('evaluation.status.good') ? 'yaxshi'
+                  : category.label === t('evaluation.status.satisfactory') ? 'qoniqarli'
+                    : 'qoniqarsiz';
+
+                const getStatusBgColor = (status, isActive) => {
+                  if (!isActive) return 'bg-[#F9F9F9]';
+                  switch (status) {
+                    case 'yaxshi':
+                      return 'bg-green-500 border border-green-200 text-white';
+                    case 'qoniqarli':
+                      return 'bg-orange-500 border border-orange-200 text-white';
+                    case 'qoniqarsiz':
+                      return 'bg-red-500 border border-red-200 text-white';
+                    default:
+                      return 'bg-[#F9F9F9]';
+                  }
+                };
+
+                return (
+                  <button
+                    key={index}
+                    onClick={() => setActiveTab(status)}
+                    className={`flex items-center gap-2 px-2 py-1 rounded-[4px] ${activeTab === status
+                      ? `${getStatusBgColor(status, true)} border border-${status === 'yaxshi' ? 'green' : status === 'qoniqarli' ? 'orange' : 'red'}-200`
+                      : 'bg-[#F9F9F9]'
+                      }`}
+                  >
+                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: category.color }}></div>
+                    <span className="text-xs md:text-sm  ">{category.label}</span>
+                  </button>
+                );
+              })}
             </div>
 
-            {/* Main Grid Layout */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {getColumnData(evaluationResults.flat()).map((columnItems, columnIndex) => (
-                <div key={columnIndex} className="flex flex-col gap-4">
-                  {/* Column Header - Show always on desktop, but only with items on mobile */}
-                  <div className={`bg-gray-50 rounded-lg p-3 ${columnItems.length === 0 ? 'hidden md:block' : ''}`}>
-                    <div className="flex items-center">
-                      <span className="text-sm text-gray-500 min-w-[120px] mr-2">{t('evaluation.quarterly_section')}</span>
-                      <div className="w-[50px] text-center"></div>
-                      <div className="grid grid-cols-5 flex-1 gap-2">
-                        {['I', 'II', 'III', 'IV', 'V'].map((quarter, idx) => (
-                          <div key={idx} className="text-center text-xs text-gray-500">{quarter}</div>
-                        ))}
-                      </div>
-                      <div className="w-[40px]"></div>
-                    </div>
+            {/* Content Grid - Now showing only active tab */}
+            <div className="grid grid-cols-1 gap-4">
+              {/* Column Header */}
+              <div className="bg-gray-50 rounded-lg p-3">
+                <div className="flex items-center">
+                  <div className="flex items-center gap-2 min-w-[100px] md:w-[70%] mr-2">
+                    <span className="text-sm text-gray-500">{t('evaluation.quarterly_section')}</span>
                   </div>
+                  <div className="w-[50px] text-center"></div>
+                  <div className="grid grid-cols-5 flex-1 gap-2">
+                    {['I', 'II', 'III', 'IV', 'V'].map((quarter, idx) => (
+                      <div key={idx} className="text-center text-xs text-gray-500">{quarter}</div>
+                    ))}
+                  </div>
+                  <div className="w-[40px]"></div>
+                </div>
+              </div>
 
-                  {/* Column Cards */}
-                  {columnItems.map((item, index) => (
-                    <div key={index} className="bg-[#F9F9F9] rounded-[4px]">
-                      <div className="p-3">
-                        {/* Name and Quarters Row */}
-                        <div className="flex items-center">
-                          {/* Name and Status */}
-                          <div className="flex items-center gap-2 min-w-[120px] mr-2 group relative">
-                            <div
-                              className="w-2 h-2 rounded-full flex-shrink-0"
-                              style={{ backgroundColor: getStatusColor(getStatus(item.this_year)) }}
-                            />
-                            <span className="text-sm truncate cursor-help" title={item.name}>
-                              {truncateText(item.name)}
-                            </span>
+              {/* Filtered Items */}
+              {getColumnData(evaluationResults.flat())
+                .find((items, index) => {
+                  const status = index === 0 ? 'yaxshi'
+                    : index === 1 ? 'qoniqarli'
+                      : 'qoniqarsiz';
+                  return status === activeTab;
+                })
+                ?.map((item, index) => (
+                  <div key={index} className="bg-[#F9F9F9] rounded-[4px]">
+                    <div className="p-3">
+                      {/* Name and Quarters Row */}
+                      <div className="flex items-center">
+                        {/* Name and Status - Mobile View */}
+                        <div className="flex md:hidden items-center gap-2 min-w-[100px] mr-2 group relative">
+                          <div
+                            className="w-2 h-2 rounded-full flex-shrink-0"
+                            style={{ backgroundColor: getStatusColor(getStatus(item.this_year)) }}
+                          />
+                          <span className="text-sm w-full truncate cursor-help" title={item.name}>
+                            {truncateText(item.name, 10)}
+                          </span>
 
-                            {/* Popover */}
-                            <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block z-10">
-                              <div className="bg-gray-900 text-white text-sm rounded-lg py-2 px-3 whitespace-nowrap shadow-lg">
-                                {item.name}
-                                <div className="absolute -bottom-1 left-4 w-2 h-2 bg-gray-900 transform rotate-45"></div>
-                              </div>
+                          {/* Popover for mobile */}
+                          <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block z-10">
+                            <div className="bg-gray-900 text-white text-xs rounded-lg py-2 px-3 whitespace-nowrap shadow-lg">
+                              {item.name}
+                              <div className="absolute -bottom-1 left-4 w-2 h-2 bg-gray-900 transform rotate-45"></div>
                             </div>
                           </div>
+                        </div>
 
-                          {/* This Year Score */}
-                          <div className={`text-sm font-medium w-[50px] text-center ${item.this_year > 80 ? 'text-[#27D157]' :
-                            item.this_year >= 56 ? 'text-[#FF9437]' : 'text-[#DC2E2E]'
-                            }`}>
-                            {item.this_year}
-                          </div>
+                        {/* Name and Status - Desktop View */}
+                        <div className="hidden md:flex items-center gap-2 w-[70%] mr-2">
+                          <div
+                            className="w-2 h-2 rounded-full flex-shrink-0"
+                            style={{ backgroundColor: getStatusColor(getStatus(item.this_year)) }}
+                          />
+                          <span className="text-sm w-full">
+                            {item.name}
+                          </span>
+                        </div>
 
-                          {/* Quarters */}
-                          <div className="grid grid-cols-5 gap-2 flex-1">
-                            <div className="text-center text-sm">{item.first_quarter}</div>
-                            <div className="text-center text-sm">{item.second_quarter}</div>
-                            <div className="text-center text-sm">{item.third_quarter}</div>
-                            <div className="text-center text-sm">{item.fourth_quarter}</div>
-                            <div className="text-center text-sm">{item.fifth_quarter}</div>
-                          </div>
+                        {/* This Year Score */}
+                        <div className={`text-sm font-medium w-[50px] text-center ${item.this_year > 80 ? 'text-[#27D157]' :
+                          item.this_year >= 56 ? 'text-[#FF9437]' : 'text-[#DC2E2E]'
+                          }`}>
+                          {item.this_year}
+                        </div>
 
-                          {/* Updated Change Indicator */}
-                          <div className={`flex items-center gap-1 ml-2 ${item.change > 0 ? 'text-[#27D157]' :
-                            item.change < 0 ? 'text-[#DC2E2E]' : 'text-[#FF9437]'
-                            }`}>
-                            {item.change > 0 ? (
-                              <ArrowUp className="w-3 h-3" />
-                            ) : (
-                              <MinusCircle className="w-3 h-3" />
-                            )}
-                            <span className="text-xs font-medium">
-                              {item.change === null ? '0' :
-                                item.change === 0 ? '0' :
-                                  Math.abs(item.change)}
-                            </span>
-                          </div>
+                        {/* Quarters */}
+                        <div className="grid grid-cols-5 gap-2 flex-1">
+                          <div className="text-center text-sm">{item.first_quarter}</div>
+                          <div className="text-center text-sm">{item.second_quarter}</div>
+                          <div className="text-center text-sm">{item.third_quarter}</div>
+                          <div className="text-center text-sm">{item.fourth_quarter}</div>
+                          <div className="text-center text-sm">{item.fifth_quarter}</div>
+                        </div>
+
+                        {/* Updated Change Indicator */}
+                        <div className={`flex items-center gap-1 ml-2 ${item.change > 0 ? 'text-[#27D157]' :
+                          item.change < 0 ? 'text-[#DC2E2E]' : 'text-[#FF9437]'
+                          }`}>
+                          {item.change > 0 ? (
+                            <ArrowUp className="w-3 h-3" />
+                          ) : (
+                            <MinusCircle className="w-3 h-3" />
+                          )}
+                          <span className="text-xs font-medium">
+                            {item.change === null ? '0' :
+                              item.change === 0 ? '0' :
+                                Math.abs(item.change)}
+                          </span>
                         </div>
                       </div>
                     </div>
-                  ))}
-                </div>
-              ))}
+                  </div>
+                ))}
             </div>
           </>
         )}
