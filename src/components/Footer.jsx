@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import logo from "../assets/logos/logo.png";
+import footer_logo from "../assets/logos/footer_logo.png";
 
 const Footer = () => {
   const { t, i18n } = useTranslation();
@@ -146,6 +147,8 @@ const Footer = () => {
               {t('navbar.handouts')}
             </Link>
           </div>
+
+
         </div>
 
         {/* Mobile Navigation */}
@@ -163,6 +166,10 @@ const Footer = () => {
               ))}
             </div>
           ))}
+        </div>
+        <div className="flex justify-between w-full max-w-5xl mx-auto mt-10">
+          <span className="text-sm text-white">© 2024. Barcha huquqlar himoyalangan.</span>
+          <img src={footer_logo} alt="footer_logo" className="h-6 w-32 mr-12" />
         </div>
       </div>
     </footer>
