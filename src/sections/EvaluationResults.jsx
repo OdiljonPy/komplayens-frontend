@@ -244,12 +244,16 @@ const EvaluationResults = () => {
                     key={index}
                     onClick={() => setActiveTab(status)}
                     className={`flex items-center gap-2 px-2 py-1 rounded-[4px] ${activeTab === status
-                      ? `${getStatusBgColor(status, true)} border border-${status === 'yaxshi' ? 'green' : status === 'qoniqarli' ? 'orange' : 'red'}-200`
+                      ? `${getStatusBgColor(status, true)} border border-${status === 'yaxshi' ? 'green' : status === 'qoniqarli' ? 'orange' : 'red'
+                      }-200`
                       : 'bg-[#F9F9F9]'
                       }`}
                   >
-                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: category.color }}></div>
-                    <span className="text-xs md:text-sm  ">{category.label}</span>
+                    <div
+                      className="w-2 h-2 rounded-full"
+                      style={{ backgroundColor: activeTab === status ? 'white' : category.color }}
+                    ></div>
+                    <span className="text-xs md:text-sm">{category.label}</span>
                   </button>
                 );
               })}
@@ -351,9 +355,32 @@ const EvaluationResults = () => {
                     </div>
                   </div>
                 ))}
+
             </div>
           </>
         )}
+
+        {/* Footer Descriptions */}
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+          <div className="flex flex-col">
+            <div className="flex items-center gap-1">
+
+              <span className="text-gray-800"><span className="text-[#22c55e] font-medium">Yaxshi</span> - Ko'tarilgan natijalar va ko'rsatkichlar 80% dan yuqori bo'lgan kompaniyalar</span>
+            </div>
+          </div>
+          <div className="flex flex-col">
+            <div className="flex items-center gap-1">
+
+              <span className="text-gray-800"> <span className="text-[#FF9437] font-medium">Qoniqarli</span> - Natijalari o'zgarmagan va ko'rsatkichlari 50% dan yuqori bo'lgan kompaniyalar</span>
+            </div>
+          </div>
+          <div className="flex flex-col">
+            <div className="flex  gap-1">
+
+              <span className="text-gray-800"><span className="text-[#ef4444] font-medium">Qoniqarsiz</span> - Natijalari pasaygan va ko'rsatkichlari 50% dan past bo'lgan kompaniyalar</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

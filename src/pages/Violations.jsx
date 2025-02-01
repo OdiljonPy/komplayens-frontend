@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 import { sendRequest } from '../utils/apiFunctions';
 import { useTranslation } from 'react-i18next';
 
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 
@@ -295,12 +294,27 @@ function Violations() {
                     minDate={new Date()}
                     showDateDisplay={false}
                   />
-                  <div className="bg-white p-3 border-t flex justify-end">
+                  <div className="bg-white p-3 border-t flex justify-end gap-2">
+                    <button
+                      onClick={() => {
+                        setDateRange([{
+                          startDate: null,
+                          endDate: null,
+                          key: 'selection'
+                        }]);
+                        setIsDatePickerOpen(false);
+                        fetchNews(); // Reset to default news fetch
+                      }}
+                      className="px-3 py-1.5 text-sm text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200"
+                    >
+                      Tozalash
+                    </button>
                     <button
                       onClick={handleApplyDateRange}
                       className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                     >
-                      OK                    </button>
+                      OK
+                    </button>
                   </div>
                 </div>
               )}

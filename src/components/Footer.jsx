@@ -6,7 +6,6 @@ import footer_logo from "../assets/logos/footer_logo.png";
 
 const Footer = () => {
   const { t, i18n } = useTranslation();
-  const location = useLocation();
 
   // Add helper function to handle link paths
   const getLocalizedPath = (path) => {
@@ -167,9 +166,14 @@ const Footer = () => {
             </div>
           ))}
         </div>
-        <div className="flex justify-between w-full max-w-5xl mx-auto mt-10">
+        <div className="flex justify-between flex-col md:flex-row gap-2  w-full max-w-5xl mx-auto mt-10">
           <span className="text-sm text-white">© 2024. Barcha huquqlar himoyalangan.</span>
-          <img src={footer_logo} alt="footer_logo" className="h-6 w-32 mr-12" />
+          <div className="flex items-center flex-row gap-4">
+            <span className="text-sm text-white">Powered by</span>
+            <a href="https://zerodev.uz/" target="_blank" rel="noopener noreferrer">
+              <img src={footer_logo} alt="footer_logo" className="h-4 w-24 mr-12" />
+            </a>
+          </div>
         </div>
       </div>
     </footer>

@@ -455,9 +455,9 @@
     },
     "benefits": {
       "title": "Conflict of Interest",
-      "button1": "Form 1",
-      "button2": "Form 2",
-      "button3": "Form 3",
+      "button1": "Notification of existing conflicts of interest",
+      "button2": "Declaration of potential conflicts of interest",
+      "button3": "Declaration of conflicts of interest with related persons",
       "form1": {
         "passportSeries": "Passport Series",
         "jshshir": "JSHSHIR",

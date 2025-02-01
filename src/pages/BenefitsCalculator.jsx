@@ -118,7 +118,7 @@ const BenefitsCalculator = () => {
               {aboutData.short_description}
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6">
+            <div className="flex flex-col gap-4">
               <Link to={getLocalizedPath("/benefits/shablon1")}>
                 <button className="bg-[#024072] w-full text-white px-4 py-2 rounded-[12px] hover:bg-blue-900 transition-colors">
                   {t('pages.benefits.button1')}
