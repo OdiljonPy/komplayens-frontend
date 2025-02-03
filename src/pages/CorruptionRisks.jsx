@@ -69,8 +69,8 @@ const Filters = ({ onFilterChange }) => {
         startDate: dateRange[0].startDate,
         endDate: dateRange[0].endDate
       });
+      setIsDatePickerOpen(false);
     }
-    setIsDatePickerOpen(false);
   };
 
   const handleReset = () => {
@@ -280,14 +280,6 @@ export default function CorruptionRisks() {
   const [aboutInfo, setAboutInfo] = useState(null);
   const [tasks, setTasks] = useState([]);
 
-  const [dateRange, setDateRange] = useState([
-    {
-      startDate: null,
-      endDate: null,
-      key: 'selection'
-    }
-  ]);
-
   const [pagination, setPagination] = useState({
     currentPage: 1,
     totalPages: 1,
@@ -296,6 +288,7 @@ export default function CorruptionRisks() {
   });
 
   const [loading, setLoading] = useState(true);
+  const [tableLoading, setTableLoading] = useState(false);
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
@@ -310,25 +303,30 @@ export default function CorruptionRisks() {
 
   useEffect(() => {
     const fetchInitialData = async () => {
-      // Fetch documents
-      const mediaResponse = await sendRequest({
-        method: 'GET',
-        url: 'services/corruption/media/'
-      });
+      try {
+        setLoading(true);
+        // Fetch documents
+        const mediaResponse = await sendRequest({
+          method: 'GET',
+          url: 'services/corruption/media/'
+        });
 
-      if (mediaResponse.success && mediaResponse.data.ok) {
-        setDocuments(mediaResponse.data.result);
-      }
+        if (mediaResponse.success && mediaResponse.data.ok) {
+          setDocuments(mediaResponse.data.result);
+        }
 
-      // Fetch about information
-      const aboutResponse = await sendRequest({
-        method: 'GET',
-        url: '/about/',
-        params: { type: 2 }
-      });
+        // Fetch about information
+        const aboutResponse = await sendRequest({
+          method: 'GET',
+          url: '/about/',
+          params: { type: 2 }
+        });
 
-      if (aboutResponse.success && aboutResponse.data.ok) {
-        setAboutInfo(aboutResponse.data.result);
+        if (aboutResponse.success && aboutResponse.data.ok) {
+          setAboutInfo(aboutResponse.data.result);
+        }
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -359,7 +357,7 @@ export default function CorruptionRisks() {
     if (endDate) params.to_date = endDate;
 
     try {
-      setLoading(true);
+      setTableLoading(true);
       const response = await sendRequest({
         method: 'GET',
         url: 'services/corruption/',
@@ -377,7 +375,7 @@ export default function CorruptionRisks() {
     } catch (error) {
       console.error('Error fetching tasks:', error);
     } finally {
-      setLoading(false);
+      setTableLoading(false);
     }
   };
 
@@ -532,7 +530,13 @@ export default function CorruptionRisks() {
                 </Swiper>
               </div>
               <Filters onFilterChange={handleFilterChange} />
-              {
+              {tableLoading ? (
+                <div className="animate-pulse">
+                  <div className="bg-white rounded-lg border border-gray-200 min-w-[1000px]">
+                    {/* Add table skeleton rows here */}
+                  </div>
+                </div>
+              ) : (
                 tasks.length > 0 ? (
                   <>
                     <div className="overflow-x-auto">
@@ -668,7 +672,7 @@ export default function CorruptionRisks() {
                     <h1 className="text-2xl font-bold">{t('pages.corruptionRisks.noData')}</h1>
                   </div>
                 )
-              }
+              )}
             </div>
           </div>
         )}
