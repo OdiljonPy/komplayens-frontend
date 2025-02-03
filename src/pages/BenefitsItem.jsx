@@ -529,10 +529,15 @@ const SecondDocument = React.forwardRef(({ formData }, ref) => (
     <div className="mb-6">
       <div className="flex justify-between items-center mb-4">
         <div>Ходимнинг лавозими</div>
-        <div className="italic">Шахсий имзо ёки электрон рақамли имзоси</div>
-        <div className="border-b border-black pb-2" style={{ minWidth: "180px" }}>
-          <span className="highlight px-1 " >{formData.managerFIO}</span>
+        <div className="italic text-[12px]">Шахсий имзо ёки электрон <br /> рақамли имзоси</div>
+
+        <div className="border-b border-black pb-2" style={{ minWidth: "100px" }}>
         </div>
+        <div className="flex flex-col">
+          <span className="highlight px-1 " >{formData.managerFIO}</span>
+          <span className="highlight px-1 " >{formData.position}</span>
+        </div>
+
       </div>
       <div className="text-right">
         Тўлдирилган сана 20___ йил "___" ________
@@ -557,9 +562,12 @@ const SecondDocument = React.forwardRef(({ formData }, ref) => (
     <div className="mb-6">
       <div className="flex justify-between items-center mb-4">
         <div>Ходимнинг бевосита<br />раҳбарининг лавозими</div>
-        <div className="italic">Шахсий имзо ёки электрон<br />рақамли имзоси</div>
-        <div className="border-b border-black pb-2" style={{ minWidth: "180px" }}>
+        <div className="italic text-[12px]">Шахсий имзо ёки электрон<br />рақамли имзоси</div>
+        <div className="border-b border-black pb-2" style={{ minWidth: "100px" }}>
+        </div>
+        <div className="flex flex-col">
           <span className="highlight px-1 ">{formData.supervisorFIO}</span>
+          <span className="highlight px-1 ">{formData.supervisorPosition}</span>
         </div>
       </div>
       <div className="text-right">
