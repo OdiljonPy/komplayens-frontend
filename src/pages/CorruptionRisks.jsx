@@ -25,6 +25,7 @@ const Filters = ({ onFilterChange }) => {
   const [selectedSort, setSelectedSort] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('');
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const [selectedDateRange, setSelectedDateRange] = useState('');
   const [dateRange, setDateRange] = useState([
     {
       startDate: null,
@@ -48,10 +49,7 @@ const Filters = ({ onFilterChange }) => {
   }, []);
 
   const formatDateDisplay = () => {
-    if (dateRange[0].startDate && dateRange[0].endDate) {
-      return `${format(dateRange[0].startDate, 'dd.MM.yyyy')} - ${format(dateRange[0].endDate, 'dd.MM.yyyy')}`;
-    }
-    return '';
+    return selectedDateRange || t('common.selectDate');
   };
 
   const handleDateSelect = (ranges) => {
@@ -59,9 +57,12 @@ const Filters = ({ onFilterChange }) => {
   };
 
   const handleApplyDateRange = () => {
-    setIsDatePickerOpen(false);
-    // Call filter function
-    if (onFilterChange) {
+    if (dateRange[0].startDate && dateRange[0].endDate) {
+      const start = format(dateRange[0].startDate, 'dd.MM.yyyy');
+      const end = format(dateRange[0].endDate, 'dd.MM.yyyy');
+      const formattedRange = `${start} - ${end}`;
+      setSelectedDateRange(formattedRange);
+
       onFilterChange({
         sort: selectedSort,
         status: selectedStatus,
@@ -69,6 +70,23 @@ const Filters = ({ onFilterChange }) => {
         endDate: dateRange[0].endDate
       });
     }
+    setIsDatePickerOpen(false);
+  };
+
+  const handleReset = () => {
+    setDateRange([{
+      startDate: null,
+      endDate: null,
+      key: 'selection'
+    }]);
+    setSelectedDateRange('');
+    setIsDatePickerOpen(false);
+    onFilterChange({
+      sort: selectedSort,
+      status: selectedStatus,
+      startDate: null,
+      endDate: null
+    });
   };
 
   return (
@@ -137,7 +155,7 @@ const Filters = ({ onFilterChange }) => {
             onClick={() => setIsDatePickerOpen(!isDatePickerOpen)}
             className="w-full h-[48px] bg-white border border-gray-200 rounded-lg px-4 flex items-center cursor-pointer text-gray-900"
           >
-            {formatDateDisplay() || t('common.selectDate')}
+            {formatDateDisplay()}
             <Calendar className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
           </div>
 
@@ -152,10 +170,17 @@ const Filters = ({ onFilterChange }) => {
                 monthDisplayFormat="MMMM yyyy"
                 rangeColors={["#3b82f6"]}
                 showMonthAndYearPickers={true}
-                minDate={new Date()}
                 showDateDisplay={false}
+                moveRangeOnFirstSelection={false}
+                editableDateInputs={true}
               />
-              <div className="bg-white p-3 border-t flex justify-end">
+              <div className="bg-white p-3 border-t flex justify-between">
+                <button
+                  onClick={handleReset}
+                  className="px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900"
+                >
+                  Reset
+                </button>
                 <button
                   onClick={handleApplyDateRange}
                   className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700"
@@ -255,7 +280,13 @@ export default function CorruptionRisks() {
   const [aboutInfo, setAboutInfo] = useState(null);
   const [tasks, setTasks] = useState([]);
 
-  const [dateRange, setDateRange] = useState([null, null]);
+  const [dateRange, setDateRange] = useState([
+    {
+      startDate: null,
+      endDate: null,
+      key: 'selection'
+    }
+  ]);
 
   const [pagination, setPagination] = useState({
     currentPage: 1,
@@ -309,17 +340,10 @@ export default function CorruptionRisks() {
   }, [selectedSort, selectedStatus, startDate, endDate, pagination.currentPage]);
 
   const handleFilterChange = (filters) => {
-    // Update states
     setSelectedSort(filters.sort);
     setSelectedStatus(filters.status);
-    if (filters.startDate) {
-      setStartDate(format(filters.startDate, 'yyyy-MM-dd'));
-    }
-    if (filters.endDate) {
-      setEndDate(format(filters.endDate, 'yyyy-MM-dd'));
-    }
-
-    // Reset pagination to first page when filters change
+    setStartDate(filters.startDate ? format(filters.startDate, 'yyyy-MM-dd') : '');
+    setEndDate(filters.endDate ? format(filters.endDate, 'yyyy-MM-dd') : '');
     setPagination(prev => ({ ...prev, currentPage: 1 }));
   };
 
@@ -335,6 +359,7 @@ export default function CorruptionRisks() {
     if (endDate) params.to_date = endDate;
 
     try {
+      setLoading(true);
       const response = await sendRequest({
         method: 'GET',
         url: 'services/corruption/',

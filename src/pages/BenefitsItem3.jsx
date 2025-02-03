@@ -97,16 +97,20 @@ const FirstDocument = React.forwardRef(({ formData }, ref) => (
 
     {/* Signature section */}
     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mt-8">
-      <div className="whitespace-nowrap">Алоқадор шахс</div>
-      <div className="flex items-center gap-4">
-        <div className="italic whitespace-nowrap">Шахсий имзо ёки электрон рақамли имзоси</div>
-        <div className="border-b border-black min-w-[180px] text-center pb-2">
-          <span className="highlight bg-[#FFFF00] px-1 pb-4">{formData.managerFIO}</span>
+      <div className="whitespace-nowrap w-[30%]">Алоқадор шахс</div>
+      <div className="flex items-center gap-4 w-[70%]">
+        <div className="italic whitespace-nowrap text-[12px] border-t border-black mt-6">Шахсий имзо ёки электрон <br /> рақамли имзоси</div>
+        <div className=" min-w-[180px] text-center pb-2 flex flex-col items-center">
+          <div className="flex flex-row items-center">
+            <span className="highlight bg-[#FFFF00] px-1  ">{formData.managerFIO}</span>
+            <span className="highlight bg-[#FFFF00] px-1 ">{formData.date}</span>
+          </div>
+          <span className='text-[12px]'>(Ф.И.О.) Тўлдирилган сана</span>
         </div>
       </div>
     </div>
     <div className="text-right mt-2">
-      <span className="highlight bg-[#FFFF00] px-1 pb-2">{formData.date}</span>
+
     </div>
 
     {/* Registration info */}
@@ -396,17 +400,15 @@ const SecondDocument = React.forwardRef(({ formData }, ref) => (
 
     {/* Signature section */}
     <div className="flex justify-between items-start mt-8">
-      <div>Алоқадор шахс</div>
-      <div className="flex flex-col items-end gap-2">
-        <div className="flex items-center gap-4">
-          <div className="italic text-sm">Шахсий имзо ёки электрон рақамли имзоси</div>
-          <div className="border-b border-black min-w-[200px]"></div>
-        </div>
-        <div className="flex items-center gap-4">
-          <div className="text-sm">(Ф.И.О.)</div>
-          <div className="text-sm">
-            Тўлдирилган сана 20{formData.date ? new Date(formData.date).getFullYear().toString().slice(2) : '___'} йил "{formData.date ? new Date(formData.date).getDate().toString().padStart(2, '0') : '___'}" {formData.date ? new Date(formData.date).toLocaleString('default', { month: 'short' }) : '___'}
+      <div className="whitespace-nowrap w-[30%]">Алоқадор шахс</div>
+      <div className="flex items-center gap-4 w-[70%]">
+        <div className="italic whitespace-nowrap text-[12px] border-t border-black mt-6">Шахсий имзо ёки электрон <br /> рақамли имзоси</div>
+        <div className=" min-w-[180px] text-center pb-2 flex flex-col items-center">
+          <div className="flex flex-row items-center">
+            <span className="highlight bg-[#FFFF00] px-1  ">{formData.managerFIO}</span>
+            <span className="highlight bg-[#FFFF00] px-1 ">{formData.date}</span>
           </div>
+          <span className='text-[12px]'>(Ф.И.О.) Тўлдирилган сана</span>
         </div>
       </div>
     </div>

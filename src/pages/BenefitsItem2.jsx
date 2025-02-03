@@ -613,15 +613,15 @@ const SecondDocument = React.forwardRef(({ formData }, ref) => {
             <div className="text-center italic">
               Шахсий имзо ёки электрон рақамли имзоси
             </div>
-            <div className="text-right">
-              {formData.managerFIO && (
-                <span className="highlight bg-[#FFFF00] px-1 pb-2">({formData.managerFIO})</span>
-              )}
+            <div className="text-right border-t  border-black flex flex-col items-center mt-6">
+              <span className='text-[12px]'>(Ходимнинг Ф.И.О.)</span>
+              <div className="text-center text-[12px]">
+                Тўлдирилган сана 20 <span className='border-b border-black min-w-[20px]'></span> <span className='pl-4 pr-4'>йил</span> " <span className='px-2'>{` `}</span> "
+              </div>
             </div>
+
           </div>
-          <div className="text-right mt-4">
-            Тўлдирилган сана 20{filledDate.year} йил "{filledDate.day}" {filledDate.month}
-          </div>
+
         </div>
 
         {/* Registration info */}

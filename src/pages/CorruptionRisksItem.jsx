@@ -91,28 +91,6 @@ const CorruptionRisksItem = () => {
         />
 
         <p className="text-gray-600 mb-4">{data.short_desc}</p>
-
-        <div className="mb-4">
-          <p className="font-semibold">Start Date:</p>
-          <p>{new Date(data.start_date).toLocaleDateString()}</p>
-        </div>
-
-        <div className="mb-4">
-          <p className="font-semibold">End Date:</p>
-          <p>{new Date(data.end_date).toLocaleDateString()}</p>
-        </div>
-
-        {data.form_url && (
-          <a
-            href={data.form_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mb-4"
-          >
-            {t('Open Form')}
-          </a>
-        )}
-
         {data.result && (
           <div className="mt-4">
             <h2 className="text-xl font-bold mb-2">{t('Results')}</h2>

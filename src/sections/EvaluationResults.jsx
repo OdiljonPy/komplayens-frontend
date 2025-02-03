@@ -83,9 +83,9 @@ const EvaluationResults = () => {
       case 'yaxshi':
         return '#22c55e';
       case 'qoniqarli':
-        return '#3b82f6';
+        return '#FF9437';
       case 'qoniqarsiz':
-        return '#ef4444';
+        return '#DC2E2E';
       default:
         return '#6b7280';
     }
@@ -229,11 +229,11 @@ const EvaluationResults = () => {
                   if (!isActive) return 'bg-[#F9F9F9]';
                   switch (status) {
                     case 'yaxshi':
-                      return 'bg-green-500 border border-green-200 text-white';
+                      return 'bg-[#27D157] border border-[#27D157] text-white';
                     case 'qoniqarli':
-                      return 'bg-orange-500 border border-orange-200 text-white';
+                      return 'bg-[#FF9437] border border-[#FF9437] text-white';
                     case 'qoniqarsiz':
-                      return 'bg-red-500 border border-red-200 text-white';
+                      return 'bg-[#DC2E2E] border border-[#DC2E2E] text-white';
                     default:
                       return 'bg-[#F9F9F9]';
                   }
@@ -244,7 +244,7 @@ const EvaluationResults = () => {
                     key={index}
                     onClick={() => setActiveTab(status)}
                     className={`flex items-center gap-2 px-2 py-1 rounded-[4px] ${activeTab === status
-                      ? `${getStatusBgColor(status, true)} border border-${status === 'yaxshi' ? 'green' : status === 'qoniqarli' ? 'orange' : 'red'
+                      ? `${getStatusBgColor(status, true)} border border-${status === 'yaxshi' ? '[]' : status === 'qoniqarli' ? 'orange' : 'red'
                       }-200`
                       : 'bg-[#F9F9F9]'
                       }`}
@@ -342,9 +342,12 @@ const EvaluationResults = () => {
                           }`}>
                           {item.change > 0 ? (
                             <ArrowUp className="w-3 h-3" />
-                          ) : (
-                            <MinusCircle className="w-3 h-3" />
-                          )}
+                          ) :
+                            item.change < 0 ? (
+                              <ArrowDown className="w-3 h-3" />
+                            ) : (
+                              <MinusCircle className="w-3 h-3" />
+                            )}
                           <span className="text-xs font-medium">
                             {item.change === null ? '0' :
                               item.change === 0 ? '0' :

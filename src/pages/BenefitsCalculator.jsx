@@ -74,7 +74,7 @@ const BenefitsCalculator = () => {
           </div>
 
           {/* Buttons skeleton */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[1, 2, 3].map((item) => (
               <div key={item} className="h-10 bg-gray-200 rounded-[12px]"></div>
             ))}
@@ -118,19 +118,19 @@ const BenefitsCalculator = () => {
               {aboutData.short_description}
             </p>
 
-            <div className="flex flex-col gap-4">
-              <Link to={getLocalizedPath("/benefits/shablon1")}>
-                <button className="bg-[#024072] w-full text-white px-4 py-2 rounded-[12px] hover:bg-blue-900 transition-colors">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <Link to={getLocalizedPath("/benefits/shablon1")} className="h-full">
+                <button className="bg-[#024072] w-full h-[120px] text-white px-2  rounded-[12px] hover:bg-blue-900 transition-colors whitespace-pre-line">
                   {t('pages.benefits.button1')}
                 </button>
               </Link>
-              <Link to={getLocalizedPath("/benefits/shablon2")}>
-                <button className="bg-[#024072] w-full text-white px-4 py-2 rounded-[12px] hover:bg-blue-900 transition-colors">
+              <Link to={getLocalizedPath("/benefits/shablon2")} className="h-full">
+                <button className="bg-[#024072] w-full h-[120px] text-white px-2  rounded-[12px] hover:bg-blue-900 transition-colors whitespace-pre-line">
                   {t('pages.benefits.button2')}
                 </button>
               </Link>
-              <Link to={getLocalizedPath("/benefits/shablon3")}>
-                <button className="bg-[#024072] w-full text-white px-4 py-2 rounded-[12px] hover:bg-blue-900 transition-colors">
+              <Link to={getLocalizedPath("/benefits/shablon3")} className="h-full">
+                <button className="bg-[#024072] w-full h-[120px] text-white px-2  rounded-[12px] hover:bg-blue-900 transition-colors whitespace-pre-line">
                   {t('pages.benefits.button3')}
                 </button>
               </Link>
