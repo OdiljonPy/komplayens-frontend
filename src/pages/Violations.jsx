@@ -7,9 +7,6 @@ import { useTranslation } from 'react-i18next';
 import "react-datepicker/dist/react-datepicker.css";
 
 
-import { DateRange } from 'react-date-range';
-import 'react-date-range/dist/styles.css';
-import 'react-date-range/dist/theme/default.css';
 import { format } from 'date-fns';
 
 // Add skeleton component
