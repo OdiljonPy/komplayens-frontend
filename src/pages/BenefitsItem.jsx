@@ -298,6 +298,7 @@ const Step1Form = ({ formData, handleInputChange }) => {
 // Step2Form.jsx
 const Step2Form = ({ formData, handleInputChange }) => {
 
+
   return (
     <div className="space-y-6">
       <div className="bg-white p-6 rounded-lg shadow-sm space-y-4">
@@ -342,7 +343,7 @@ const FirstDocument = ({ formData }) => (
       <div>
         <div className="flex justify-end">
           <div className="border-b border-black mt-1 pb-2">
-            <span className="highlight px-1">{formData.supervisorPosition} {formData.supervisorFIO}</span>
+            <span className="highlight bg-[#FFFF00] px-1">{formData.supervisorPosition} {formData.supervisorFIO}</span>
           </div>
           <div className="border-b border-black ml-2">га</div>
         </div>
@@ -352,7 +353,7 @@ const FirstDocument = ({ formData }) => (
       <div className="mt-4">
         <div className="flex justify-end">
           <div className="border-b border-black mt-1 pb-2" style={{ minWidth: "200px" }}>
-            <span className="highlight px-1">{formData.position} {formData.managerFIO}</span>
+            <span className="highlight bg-[#FFFF00] px-1">{formData.position} {formData.managerFIO}</span>
           </div>
           <div className="border-b border-black ml-2">дан</div>
         </div>
@@ -382,7 +383,7 @@ const FirstDocument = ({ formData }) => (
               Идентификация ID-картаси ёки биометрик паспорт маълумотлари (серияси, рақами, берилган санаси)
             </td>
             <td className="border border-black p-2" style={{ width: "30%" }}>
-              <span className="highlight px-1">{formData.passportSeries} {formData.passportIssueDate}</span>
+              <span className="highlight bg-[#FFFF00] px-1">{formData.passportSeries} {formData.date}</span>
             </td>
           </tr>
           <tr>
@@ -391,7 +392,7 @@ const FirstDocument = ({ formData }) => (
               Жисмоний шахснинг шахсий идентификация рақами (ЖШШИР)
             </td>
             <td className="border border-black p-2">
-              <span className="highlight px-1">{formData.jshshir}</span>
+              <span className="highlight bg-[#FFFF00] px-1">{formData.jshshir}</span>
             </td>
           </tr>
         </tbody>
@@ -414,7 +415,7 @@ const FirstDocument = ({ formData }) => (
             <td className="border border-black p-2 w-8">1.</td>
             <td className="border border-black p-2">Фамилия, исми, отасининг исми</td>
             <td className="border border-black p-2">
-              <span className="highlight px-1">{formData.relativeFIO}</span>
+              <span className="highlight bg-[#FFFF00] px-1">{formData.relativeFIO}</span>
             </td>
           </tr>
           <tr>
@@ -423,14 +424,14 @@ const FirstDocument = ({ formData }) => (
               Идентификация ID-картаси ёки биометрик паспорт маълумотлари
             </td>
             <td className="border border-black p-2">
-              <span className="highlight px-1">{formData.relativePassport}</span>
+              <span className="highlight bg-[#FFFF00] px-1">{formData.relativePassport}</span>
             </td>
           </tr>
           <tr>
             <td className="border border-black p-2">3.</td>
             <td className="border border-black p-2">ЖШШИР</td>
             <td className="border border-black p-2">
-              <span className="highlight px-1">{formData.relativeJSHSHIR}</span>
+              <span className="highlight bg-[#FFFF00] px-1">{formData.relativeJSHSHIR}</span>
             </td>
           </tr>
         </tbody>
@@ -448,7 +449,7 @@ const FirstDocument = ({ formData }) => (
             <td className="border border-black p-2 w-8">1.</td>
             <td className="border border-black p-2" style={{ minWidth: "50%" }}>Юридик шахснинг номи</td>
             <td className="border border-black p-2" style={{ maxWidth: "50%", wordBreak: "break-word" }}>
-              <span className="highlight px-1" style={{
+              <span className="highlight bg-[#FFFF00] px-1" style={{
                 width: "100%",
                 display: "block"
               }}>{formData.legalEntityName2}</span>
@@ -458,7 +459,7 @@ const FirstDocument = ({ formData }) => (
             <td className="border border-black p-2">2.</td>
             <td className="border border-black p-2">СТИР</td>
             <td className="border border-black p-2" style={{ maxWidth: "50%", wordBreak: "break-word" }}>
-              <span className="highlight px-1" style={{
+              <span className="highlight bg-[#FFFF00] px-1" style={{
                 width: "100%",
                 display: "block"
               }}>{formData.stir2}</span>
@@ -479,7 +480,7 @@ const FirstDocument = ({ formData }) => (
             <td className="border border-black p-2 w-8">1.</td>
             <td className="border border-black p-2" style={{ minWidth: "50%" }}>Юридик шахснинг номи</td>
             <td className="border border-black p-2" style={{ maxWidth: "50%", wordBreak: "break-word" }}>
-              <span className="highlight px-1" style={{
+              <span className="highlight bg-[#FFFF00] px-1" style={{
                 width: "100%",
                 display: "block"
               }}>{formData.legalEntityName1}</span>
@@ -489,7 +490,7 @@ const FirstDocument = ({ formData }) => (
             <td className="border border-black p-2">2.</td>
             <td className="border border-black p-2">СТИР</td>
             <td className="border border-black p-2" style={{ maxWidth: "50%", wordBreak: "break-word" }}>
-              <span className="highlight px-1" style={{
+              <span className="highlight bg-[#FFFF00] px-1" style={{
                 width: "100%",
                 display: "block"
               }}>{formData.stir1}</span>
@@ -500,8 +501,25 @@ const FirstDocument = ({ formData }) => (
     </div>
   </div>
 );
+const formatDate = (dateString) => {
+  if (!dateString) return { year: '___', day: '___', month: '________' };
 
+  const date = new Date(dateString);
+  const year = date.getFullYear().toString().slice(2); // oxirgi 2 raqam
+  const day = date.getDate().toString().padStart(2, '0');
+  const months = [
+    'январь', 'февраль', 'март', 'апрель', 'май', 'июнь',
+    'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'
+  ];
+  const month = months[date.getMonth()];
+
+  return { year, day, month };
+};
 const SecondDocument = React.forwardRef(({ formData }, ref) => (
+
+
+
+
   <div ref={ref} className="bg-white p-4 md:p-6 overflow-x-hidden min-w-[320px] font-serif" style={{ fontSize: '0.9rem' }}>
     {/* Izoh matni */}
     <p className="text-sm mb-6 text-justify">
@@ -519,7 +537,7 @@ const SecondDocument = React.forwardRef(({ formData }, ref) => (
             Мавжуд манфаатлар тўқнашуви тўғрисида маълумот
           </td>
           <td className="border border-black p-2">
-            <span className="highlight px-1">{formData.description}</span>
+            <span className="highlight bg-[#FFFF00] px-1">{formData.description}</span>
           </td>
         </tr>
       </tbody>
@@ -534,13 +552,13 @@ const SecondDocument = React.forwardRef(({ formData }, ref) => (
         <div className="border-b border-black pb-2" style={{ minWidth: "100px" }}>
         </div>
         <div className="flex flex-col">
-          <span className="highlight px-1 " >{formData.managerFIO}</span>
-          <span className="highlight px-1 " >{formData.position}</span>
+          <span className="highlight bg-[#FFFF00] px-1 " >{formData.managerFIO}</span>
+          <span className="highlight bg-[#FFFF00] px-1 " >{formData.position}</span>
         </div>
 
       </div>
       <div className="text-right">
-        Тўлдирилган сана 20___ йил "___" ________
+        Тўлдирилган сана 20 {formatDate(formData.date).year} йил {formatDate(formData.date).month} {formatDate(formData.date).day}
       </div>
     </div>
 
@@ -554,7 +572,7 @@ const SecondDocument = React.forwardRef(({ formData }, ref) => (
         Мавжуд манфаатлар тўқнашувини тартибга солиш бўйича кўрилган чора:
       </p>
       <div className="border-b border-black mb-4 pb-2">
-        <span className="highlight px-1 ">{formData.measures}</span>
+        <span className="highlight bg-[#FFFF00] px-1 ">{formData.measures}</span>
       </div>
     </div>
 
@@ -566,12 +584,12 @@ const SecondDocument = React.forwardRef(({ formData }, ref) => (
         <div className="border-b border-black pb-2" style={{ minWidth: "100px" }}>
         </div>
         <div className="flex flex-col">
-          <span className="highlight px-1 ">{formData.supervisorFIO}</span>
-          <span className="highlight px-1 ">{formData.supervisorPosition}</span>
+          <span className="highlight bg-[#FFFF00] px-1 ">{formData.supervisorFIO}</span>
+          <span className="highlight bg-[#FFFF00] px-1 ">{formData.supervisorPosition}</span>
         </div>
       </div>
       <div className="text-right">
-        Тўлдирилган сана 20___ йил "___" ________
+        Тўлдирилган сана 20 {formatDate(formData.passportIssueDate).year} йил {formatDate(formData.passportIssueDate).month} {formatDate(formData.passportIssueDate).day}
       </div>
     </div>
 
@@ -580,6 +598,8 @@ const SecondDocument = React.forwardRef(({ formData }, ref) => (
       Мавжуд манфаатлар тўқнашуви аниқланган ҳолатлар Манфаатлар тўқнашувини ҳисобга олиш реестрида рўйхатга олинган санаси ва тартиб рақами: 20___ йил "___" ____________ "-_______________-сон.
     </p>
   </div>
+
+
 ));
 
 const BenefitsItem = () => {
@@ -660,13 +680,6 @@ const BenefitsItem = () => {
 
       const doc = new jsPDF('p', 'mm', 'a4');
 
-      // PDF generatsiyasi uchun background'larni vaqtincha o'chirish
-      const highlights = document.querySelectorAll('.highlight');
-      highlights.forEach(el => {
-        el.classList.remove('highlight');
-        el.classList.remove('bg-[#FFFF00]');
-      });
-
       // html2canvas uchun options
       const options = {
         scale: 1.3,
@@ -680,13 +693,24 @@ const BenefitsItem = () => {
 
       // Birinchi sahifani generatsiya qilish
       if (firstPageRef.current) {
+        // Background'larni o'chirish
+        const firstHighlights = firstPageRef.current.querySelectorAll('.highlight');
+        firstHighlights.forEach(el => {
+          el.classList.remove('highlight');
+          el.classList.remove('bg-[#FFFF00]');
+        });
+
         const firstCanvas = await html2canvas(firstPageRef.current, options);
         const firstImgData = firstCanvas.toDataURL('image/png');
-
         const pdfWidth = doc.internal.pageSize.getWidth() - 10;
         const pdfHeight = (firstCanvas.height * pdfWidth) / firstCanvas.width;
-
         doc.addImage(firstImgData, 'PNG', 5, 5, pdfWidth, pdfHeight);
+
+        // Background'larni qaytarish
+        firstHighlights.forEach(el => {
+          el.classList.add('highlight');
+          el.classList.add('bg-[#FFFF00]');
+        });
       }
 
       // Ikkinchi sahifaga o'tish
@@ -695,21 +719,26 @@ const BenefitsItem = () => {
 
       // Ikkinchi sahifani generatsiya qilish
       if (secondPageRef.current) {
+        // Background'larni o'chirish
+        const secondHighlights = secondPageRef.current.querySelectorAll('.highlight');
+        secondHighlights.forEach(el => {
+          el.classList.remove('highlight');
+          el.classList.remove('bg-[#FFFF00]');
+        });
+
         const secondCanvas = await html2canvas(secondPageRef.current, options);
         const secondImgData = secondCanvas.toDataURL('image/png');
-
         const pdfWidth = doc.internal.pageSize.getWidth() - 10;
         const pdfHeight = (secondCanvas.height * pdfWidth) / secondCanvas.width;
-
         doc.addPage();
         doc.addImage(secondImgData, 'PNG', 5, 5, pdfWidth, pdfHeight);
-      }
 
-      // Background'larni qaytarish
-      highlights.forEach(el => {
-        el.classList.add('highlight');
-        el.classList.add('bg-[#FFFF00]');
-      });
+        // Background'larni qaytarish
+        secondHighlights.forEach(el => {
+          el.classList.add('highlight');
+          el.classList.add('bg-[#FFFF00]');
+        });
+      }
 
       // PDF ni download qilish va yangi tabda ochish
       const pdfBlob = doc.output('blob');
@@ -734,8 +763,8 @@ const BenefitsItem = () => {
     } catch (error) {
       console.error('PDF generation error:', error);
       // Xatolik yuz berganda ham background'larni qaytarish
-      const highlights = document.querySelectorAll('.highlight');
-      highlights.forEach(el => {
+      const allHighlights = document.querySelectorAll('.highlight');
+      allHighlights.forEach(el => {
         el.classList.add('highlight');
         el.classList.add('bg-[#FFFF00]');
       });
