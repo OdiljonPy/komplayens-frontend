@@ -36,7 +36,7 @@
   },
   "report": {
     "send_message": "Send message",
-    "search_input": "Search for an organization",
+    "search_input": "Search",
     "benifits": "Conflict of Interest"
   },
   "practice": {
@@ -543,7 +543,7 @@
       },
       "additionalMaterials": "Additional materials",
       "videoMaterials": "Video materials",
-      "watch": "Minute",
+      "watch": "More",
       "loading": "Loading..."
     },
     "benefits2": {

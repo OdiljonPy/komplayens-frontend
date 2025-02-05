@@ -7,12 +7,20 @@ import { Link } from 'react-router-dom';
 import { sendRequest } from '../utils/apiFunctions';
 
 
+
 const Announcements = () => {
   const { t, i18n } = useTranslation();
   const [announcements, setAnnouncements] = useState([]);
 
   const getLocalizedPath = (path) => {
     return `/${i18n.language}${path}`;
+  };
+  const months = t('months', { returnObjects: true });
+
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
   };
 
   useEffect(() => {
@@ -93,9 +101,10 @@ const Announcements = () => {
                       <span>{announcement.views || 0}</span>
                     </div>
 
-                    <div className="flex items-center gap-1 text-[#595959]">
-                      <Calendar size={14} />
-                      <span>{announcement.published_date || ""}</span>
+
+                    <div className="flex items-center gap-1">
+                      <Calendar size={12} />
+                      <span>{formatDate(announcement.published_date)}</span>
                     </div>
                   </div>
                 </div>

@@ -13,6 +13,12 @@ function Announcements() {
   const getLocalizedPath = (path) => {
     return `/${i18n.language}${path}`;
   };
+  const months = t('months', { returnObjects: true });
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+  };
   const [categories, setCategories] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
   const [pagination, setPagination] = useState({});
@@ -139,22 +145,8 @@ function Announcements() {
 
             <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
               {/* Date Selection with MUI-like design */}
-              <div className="w-full md:w-64 relative">
-                {/* <div className="relative border rounded-md focus-within:border-blue-500 transition-colors">
-              <label
-                className={`absolute left-3 transition-all pointer-events-none
-                ${selectedDate ? 'text-xs -top-2 bg-white px-1' : 'text-gray-500 top-2'}`}
-              >
-                {t('pages.corruptionRisks.sorting')}
-              </label>
-              <input
-                type="date"
-                className="w-full px-3 pt-3 pb-2 outline-none rounded-md bg-transparent"
-                value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)}
-              />
+              {/* <div className="w-full md:w-64 relative">
 
-            </div> */}
                 <div className="relative">
                   <DatePicker
                     selected={selectedDate}
@@ -169,7 +161,7 @@ function Announcements() {
                   />
                   <Calendar className="w-5 h-5 text-blue-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                 </div>
-              </div>
+              </div> */}
 
               <div className="w-full md:w-auto flex overflow-x-auto whitespace-nowrap gap-2 pb-2 md:flex-wrap scrollbar-hide">
                 <button
@@ -225,7 +217,7 @@ function Announcements() {
 
                       <div className="flex items-center gap-1">
                         <Calendar size={14} />
-                        <span>{announcement.published_date}</span>
+                        <span>{formatDate(announcement.published_date)}</span>
                       </div>
                     </div>
                   </div>

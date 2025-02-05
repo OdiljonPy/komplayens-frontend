@@ -36,7 +36,7 @@
   },
   "report": {
     "send_message": "Отправить сообщение",
-    "search_input": "Поиск организации",
+    "search_input": "Поиск",
     "benifits": "Конфликт интересов"
   },
   "practice": {
@@ -529,7 +529,7 @@
       },
       "additionalMaterials": "Дополнительные материалы",
       "videoMaterials": "Видео материалы",
-      "watch": "Минута",
+      "watch": "Подробнее",
       "loading": "Загрузка..."
     },
     "benefits2": {

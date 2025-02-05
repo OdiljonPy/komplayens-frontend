@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Clock, Eye, ChevronRight } from 'lucide-react';
+import { Calendar, Eye, ChevronRight } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { sendRequest } from '../utils/apiFunctions';
@@ -85,6 +85,13 @@ const NewsItem = () => {
   const { t, i18n } = useTranslation();
   const getLocalizedPath = (path) => {
     return `/${i18n.language}${path}`;
+  };
+  const months = t('months', { returnObjects: true });
+
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
   };
   const { newsId } = useParams();
   const [newsData, setNewsData] = useState(null);
@@ -190,9 +197,9 @@ const NewsItem = () => {
                           <span>{item.views}</span>
                         </div>
                         <div className="flex items-center">
-                          <Clock className="w-4 h-4 mr-1" />
+                          <Calendar size={12} />
                           <span>
-                            {new Date(item.published_date).toLocaleDateString()}
+                            {formatDate(item.published_date)}
                           </span>
                         </div>
                       </div>

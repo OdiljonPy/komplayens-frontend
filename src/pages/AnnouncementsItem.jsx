@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Clock, Eye, ChevronRight } from 'lucide-react';
+import { Calendar, Eye, ChevronRight } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { sendRequest } from '../utils/apiFunctions';
@@ -87,6 +87,14 @@ const AnnouncementsItem = () => {
   const [newsData, setNewsData] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const months = t('months', { returnObjects: true });
+
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+  };
+
   useEffect(() => {
     const fetchNewsData = async () => {
       setLoading(true);
@@ -163,12 +171,11 @@ const AnnouncementsItem = () => {
                     <Eye className="w-4 h-4 mr-1" />
                     <span>{newsData.views}</span>
                   </div>
-                  <div className="flex items-center">
-                    <Clock className="w-4 h-4 mr-1" />
-                    <span>
-                      {new Date(newsData.published_date).toLocaleDateString()}
-                    </span>
+                  <div className="flex items-center gap-1">
+                    <Calendar size={12} />
+                    <span>{formatDate(newsData.published_date)}</span>
                   </div>
+
                 </div>
               </div>
             </div>

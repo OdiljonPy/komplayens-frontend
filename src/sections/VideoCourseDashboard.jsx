@@ -21,6 +21,14 @@ const VideoCourseDashboard = () => {
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
   const [startDate, setStartDate] = useState(new Date("2024-12-18"));
 
+  const months = t('months', { returnObjects: true });
+
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+  };
+
   // Fetch years on component mount
   useEffect(() => {
     const fetchYears = async () => {
@@ -218,8 +226,8 @@ const VideoCourseDashboard = () => {
                               {course.views}
                             </span>
                             <span className="flex items-center gap-1">
-                              <Calendar className="w-4 h-4" />
-                              {new Date(course.created_at).toLocaleDateString()}
+                              <Calendar size={12} />
+                              {formatDate(course.created_at)}
                             </span>
                           </div>
                         </div>

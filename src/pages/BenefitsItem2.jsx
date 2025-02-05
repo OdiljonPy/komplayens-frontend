@@ -615,8 +615,8 @@ const SecondDocument = React.forwardRef(({ formData }, ref) => {
             </div>
             <div className="text-right border-t  border-black flex flex-col items-center mt-6">
               <span className='text-[12px]'>(Ходимнинг Ф.И.О.)</span>
-              <div className="text-center text-[12px]">
-                Тўлдирилган сана 20 <span className='border-b border-black min-w-[20px]'></span> <span className='pl-4 pr-4'>йил</span> " <span className='px-2'>{` `}</span> "
+              <div className="text-center text-[10px]">
+                Тўлдирилган сана 20 <span className='border-b border-black min-w-[20px]'>{filledDate.year}</span> <span className=''>йил</span> {filledDate.month} <span >{` `}</span> {filledDate.day}
               </div>
             </div>
 
@@ -627,7 +627,7 @@ const SecondDocument = React.forwardRef(({ formData }, ref) => {
         {/* Registration info */}
         <div className="text-sm mt-8">
           <p>
-            Эҳтимолий манфаатлар тўқнашуви аниқланган ҳолатлар Манфаатлар тўқнашувини ҳисобга олиш реестрида рўйхатга олинган санаси ва рақами: 20{date.year} йил "{date.day}" {date.month} "-_______________"; реестр рақами ______-сон.
+            Эҳтимолий манфаатлар тўқнашуви аниқланган ҳолатлар Манфаатлар тўқнашувини ҳисобга олиш реестрида рўйхатга олинган санаси ва рақами: 20 <span className='border-b border-black min-w-[20px] px-2'></span> йил " <span className='px-2'></span> "-_______________"; реестр рақами ______-сон.
           </p>
         </div>
       </div>

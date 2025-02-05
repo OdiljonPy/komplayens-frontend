@@ -36,7 +36,7 @@
   },
   "report": {
     "send_massage": "Xabar yuborish",
-    "search_input": "Tashkilotni qidirish",
+    "search_input": "Qidirish",
     "benifits": "Manfaatlar to'qnashuvi "
   },
   "practice": {
@@ -539,7 +539,7 @@
       },
       "additionalMaterials": "Qo'shimcha materiallar",
       "videoMaterials": "Video materiallar",
-      "watch": "Minut",
+      "watch": "Batafsil",
       "loading": "Yuklanmoqda..."
     },
     "benefits2": {

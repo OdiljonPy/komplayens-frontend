@@ -90,6 +90,15 @@ function Violations() {
   const getLocalizedPath = (path) => {
     return `/${i18n.language}${path}`;
   };
+
+  const months = t('months', { returnObjects: true });
+
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+  };
+
   const [categories, setCategories] = useState([]);
   const [news, setNews] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -270,7 +279,7 @@ function Violations() {
         {/* Filter Section */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
           {/* Date Selection with MUI-like design */}
-          <div className="w-full md:w-64 relative">
+          {/* <div className="w-full md:w-64 relative">
             <div className="relative" ref={datePickerRef}>
               <div
                 onClick={() => setIsDatePickerOpen(!isDatePickerOpen)}
@@ -291,7 +300,6 @@ function Violations() {
                     monthDisplayFormat="MMMM yyyy"
                     rangeColors={["#3b82f6"]}
                     showMonthAndYearPickers={true}
-                    minDate={new Date()}
                     showDateDisplay={false}
                   />
                   <div className="bg-white p-3 border-t flex justify-end gap-2">
@@ -319,7 +327,7 @@ function Violations() {
                 </div>
               )}
             </div>
-          </div>
+          </div> */}
 
           {/* Categories with horizontal scroll on mobile */}
           <div className="w-full md:w-auto overflow-x-auto">
@@ -375,7 +383,7 @@ function Violations() {
 
                         <div className="flex items-center gap-1">
                           <Calendar size={12} />
-                          <span>{new Date(item.published_date).toLocaleDateString()}</span>
+                          <span>{formatDate(item.published_date)}</span>
                         </div>
                       </div>
                     </div>

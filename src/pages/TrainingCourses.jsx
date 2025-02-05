@@ -86,6 +86,15 @@ export default function TrainingCourses() {
   const getLocalizedPath = (path) => {
     return `/${i18n.language}${path}`;
   };
+
+  const months = t('months', { returnObjects: true });
+
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+  };
+
   const [categories, setCategories] = useState([]);
   const [courses, setCourses] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
