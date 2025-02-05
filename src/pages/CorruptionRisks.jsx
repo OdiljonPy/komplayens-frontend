@@ -4,14 +4,9 @@ import { Link } from 'react-router-dom';
 import pdfImg from "../assets/icons/pdf.png"
 import { sendRequest } from '../utils/apiFunctions';
 import { useTranslation } from 'react-i18next';
-
-import 'react-datepicker/dist/react-datepicker.css';
-
-import { DateRange } from 'react-date-range';
-import 'react-date-range/dist/styles.css';
-import 'react-date-range/dist/theme/default.css';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import format from 'date-fns/format';
-
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Autoplay } from 'swiper/modules';
@@ -26,13 +21,8 @@ const Filters = ({ onFilterChange }) => {
   const [selectedStatus, setSelectedStatus] = useState('');
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [selectedDateRange, setSelectedDateRange] = useState('');
-  const [dateRange, setDateRange] = useState([
-    {
-      startDate: null,
-      endDate: null,
-      key: 'selection'
-    }
-  ]);
+  const [dateRange, setDateRange] = useState([null, null]);
+  const [startDate, endDate] = dateRange;
 
   const datePickerRef = useRef(null);
 
@@ -48,45 +38,36 @@ const Filters = ({ onFilterChange }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const formatDateDisplay = () => {
-    return selectedDateRange || t('common.selectDate');
-  };
+  const handleDateChange = (update) => {
+    setDateRange(update);
+    if (!update[0] && !update[1]) {
+      setSelectedDateRange('');
+      onFilterChange({
+        sort: selectedSort,
+        status: selectedStatus,
+        startDate: null,
+        endDate: null
+      });
+      return;
+    }
 
-  const handleDateSelect = (ranges) => {
-    setDateRange([ranges.selection]);
-  };
-
-  const handleApplyDateRange = () => {
-    if (dateRange[0].startDate && dateRange[0].endDate) {
-      const start = format(dateRange[0].startDate, 'dd.MM.yyyy');
-      const end = format(dateRange[0].endDate, 'dd.MM.yyyy');
+    if (update[0] && update[1]) {
+      const start = format(update[0], 'dd.MM.yyyy');
+      const end = format(update[1], 'dd.MM.yyyy');
       const formattedRange = `${start} - ${end}`;
       setSelectedDateRange(formattedRange);
 
       onFilterChange({
         sort: selectedSort,
         status: selectedStatus,
-        startDate: dateRange[0].startDate,
-        endDate: dateRange[0].endDate
+        startDate: update[0],
+        endDate: update[1]
       });
-      setIsDatePickerOpen(false);
     }
   };
 
-  const handleReset = () => {
-    setDateRange([{
-      startDate: null,
-      endDate: null,
-      key: 'selection'
-    }]);
-    setSelectedDateRange('');
-    setIsDatePickerOpen(false);
-    onFilterChange({
-      sort: selectedSort,
-      status: selectedStatus,
-      startDate: null,
-      endDate: null
-    });
+  const formatDateDisplay = () => {
+    return selectedDateRange || t('common.selectDate');
   };
 
   return (
@@ -104,8 +85,8 @@ const Filters = ({ onFilterChange }) => {
               onFilterChange?.({
                 sort: e.target.value,
                 status: selectedStatus,
-                startDate: dateRange[0].startDate,
-                endDate: dateRange[0].endDate
+                startDate: dateRange[0],
+                endDate: dateRange[1]
               });
             }}
             className="w-full h-[48px] appearance-none bg-white border border-gray-200 rounded-lg px-4 text-gray-900 focus:outline-none focus:ring-1 focus:ring-blue-500"
@@ -131,8 +112,8 @@ const Filters = ({ onFilterChange }) => {
               onFilterChange?.({
                 sort: selectedSort,
                 status: e.target.value,
-                startDate: dateRange[0].startDate,
-                endDate: dateRange[0].endDate
+                startDate: dateRange[0],
+                endDate: dateRange[1]
               });
             }}
             className="w-full h-[48px] appearance-none bg-white border border-gray-200 rounded-lg px-4 text-gray-900 focus:outline-none focus:ring-1 focus:ring-blue-500"
@@ -151,45 +132,20 @@ const Filters = ({ onFilterChange }) => {
           {t('common.date')}
         </label>
         <div className="relative" ref={datePickerRef}>
-          <div
-            onClick={() => setIsDatePickerOpen(!isDatePickerOpen)}
-            className="w-full h-[48px] bg-white border border-gray-200 rounded-lg px-4 flex items-center cursor-pointer text-gray-900"
-          >
-            {formatDateDisplay()}
-            <Calendar className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-          </div>
-
-          {isDatePickerOpen && (
-            <div className="absolute z-50 mt-1 transform -translate-x-1/2 left-1/2">
-              <DateRange
-                ranges={dateRange}
-                onChange={handleDateSelect}
-                months={1}
-                direction="vertical"
-                className="border border-gray-200 rounded-lg shadow-lg !w-auto"
-                monthDisplayFormat="MMMM yyyy"
-                rangeColors={["#3b82f6"]}
-                showMonthAndYearPickers={true}
-                showDateDisplay={false}
-                moveRangeOnFirstSelection={false}
-                editableDateInputs={true}
-              />
-              <div className="bg-white p-3 border-t flex justify-between">
-                <button
-                  onClick={handleReset}
-                  className="px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900"
-                >
-                  Reset
-                </button>
-                <button
-                  onClick={handleApplyDateRange}
-                  className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-                >
-                  OK
-                </button>
-              </div>
-            </div>
-          )}
+          <DatePicker
+            selectsRange={true}
+            startDate={startDate}
+            endDate={endDate}
+            onChange={handleDateChange}
+            monthsShown={2}
+            className="w-full h-[48px] bg-white border border-gray-200 rounded-lg px-4 cursor-pointer text-gray-900"
+            placeholderText={t('common.selectDate')}
+            dateFormat="dd.MM.yyyy"
+            isClearable={true}
+            showMonthDropdown
+            showYearDropdown
+            dropdownMode="select"
+          />
         </div>
       </div>
     </div>
