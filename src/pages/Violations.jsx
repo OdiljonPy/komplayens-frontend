@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { ChevronRight, Eye, Calendar } from 'lucide-react'
+import { ChevronRight, Eye, Calendar, ChevronDown } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { sendRequest } from '../utils/apiFunctions';
 import { useTranslation } from 'react-i18next';
@@ -137,6 +137,7 @@ function Violations() {
 
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [loading, setLoading] = useState(true);
+  const [orderBy, setOrderBy] = useState('all');
 
   // Fetch categories
   useEffect(() => {
@@ -159,13 +160,14 @@ function Violations() {
   }, []);
 
 
-  const fetchNews = async (params = {}) => {
+  const fetchNews = async (params = {}, currentOrderBy = orderBy) => {
     setLoading(true);
     try {
       const requestParams = {
         page: pagination.currentPage,
         page_size: pagination.pageSize,
-        ...params // Add any additional params passed to the function
+        order_by: currentOrderBy === "all" ? "" : currentOrderBy,
+        ...params
       };
 
       if (selectedCategory) {
@@ -275,56 +277,27 @@ function Violations() {
 
         {/* Filter Section */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
-          {/* Date Selection with MUI-like design */}
-          {/* <div className="w-full md:w-64 relative">
-            <div className="relative" ref={datePickerRef}>
-              <div
-                onClick={() => setIsDatePickerOpen(!isDatePickerOpen)}
-                className="w-full h-[48px] bg-white border border-gray-200 rounded-lg px-4 flex items-center cursor-pointer text-gray-900"
+          {/* Add Sort Select */}
+          <div className="w-full md:w-[200px]">
+            <label className="block text-sm text-gray-600 mb-1.5">{t('common.sort')}:</label>
+            <div className="relative">
+              <select
+                className="w-full h-[48px] appearance-none bg-white border border-gray-200 rounded-lg px-4 text-gray-900 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                value={orderBy}
+                onChange={(e) => {
+                  const newValue = e.target.value;
+                  setOrderBy(newValue);
+                  setPagination(prev => ({ ...prev, currentPage: 1 }));
+                  fetchNews({}, newValue);
+                }}
               >
-                {formatDateDisplay() || t('common.selectDate')}
-                <Calendar className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-              </div>
-
-              {isDatePickerOpen && (
-                <div className="absolute z-50 mt-1 transform -translate-x-1/2 left-1/2">
-                  <DateRange
-                    ranges={dateRange}
-                    onChange={handleDateSelect}
-                    months={1}
-                    direction="vertical"
-                    className="border border-gray-200 rounded-lg shadow-lg !w-auto"
-                    monthDisplayFormat="MMMM yyyy"
-                    rangeColors={["#3b82f6"]}
-                    showMonthAndYearPickers={true}
-                    showDateDisplay={false}
-                  />
-                  <div className="bg-white p-3 border-t flex justify-end gap-2">
-                    <button
-                      onClick={() => {
-                        setDateRange([{
-                          startDate: null,
-                          endDate: null,
-                          key: 'selection'
-                        }]);
-                        setIsDatePickerOpen(false);
-                        fetchNews(); // Reset to default news fetch
-                      }}
-                      className="px-3 py-1.5 text-sm text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200"
-                    >
-                      Tozalash
-                    </button>
-                    <button
-                      onClick={handleApplyDateRange}
-                      className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-                    >
-                      OK
-                    </button>
-                  </div>
-                </div>
-              )}
+                <option value="all">Hammasi</option>
+                <option value="new">{t('sort.newest')}</option>
+                <option value="old">{t('sort.oldest')}</option>
+              </select>
+              <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
             </div>
-          </div> */}
+          </div>
 
           {/* Categories with horizontal scroll on mobile */}
           <div className="w-full md:w-auto overflow-x-auto">

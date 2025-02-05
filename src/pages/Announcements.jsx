@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Eye, Calendar, } from 'lucide-react'
+import { Eye, Calendar, ChevronDown } from 'lucide-react'
 import banner from "../assets/banners/05.png"
 import { sendRequest } from '../utils/apiFunctions';
 import { useTranslation } from 'react-i18next';
@@ -23,12 +23,16 @@ function Announcements() {
   const [announcements, setAnnouncements] = useState([]);
   const [pagination, setPagination] = useState({});
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [orderBy, setOrderBy] = useState('all');
 
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
 
 
-  const fetchAnnouncements = async (page = 1, categoryId = null, date = null) => {
-    const response = await sendRequest({ method: 'GET', url: `/services/announcement/?page=${page}&page_size=10&${categoryId ? `category_id=${categoryId}` : ''}&${date ? `from_date=${date}` : ''}` });
+  const fetchAnnouncements = async (page = 1, categoryId = null, orderValue = orderBy) => {
+    const response = await sendRequest({
+      method: 'GET',
+      url: `/services/announcement/?page=${page}&page_size=10&${categoryId ? `category_id=${categoryId}` : ''}&order_by=${orderValue === "all" ? "" : orderValue}`
+    });
     if (response.success && response.data.ok) {
       setAnnouncements(response.data.result.content);
       setPagination({
@@ -142,26 +146,30 @@ function Announcements() {
           <AnnouncementsSkeleton />
         ) : (
           <>
-
             <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
-              {/* Date Selection with MUI-like design */}
-              {/* <div className="w-full md:w-64 relative">
-
+              {/* Add Sort Select */}
+              <div className="w-full md:w-[200px]">
+                <label className="block text-sm text-gray-600 mb-1.5">{t('common.sort')}:</label>
                 <div className="relative">
-                  <DatePicker
-                    selected={selectedDate}
-                    onChange={(date) => {
-                      setSelectedDate(date);
-                      const formattedDate = date.toISOString().split('T')[0]; // Formats to "YYYY-MM-DD"
-                      fetchAnnouncements(1, null, formattedDate);
+                  <select
+                    className="w-full h-[48px] appearance-none bg-white border border-gray-200 rounded-lg px-4 text-gray-900 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    value={orderBy}
+                    onChange={(e) => {
+                      const newValue = e.target.value;
+                      setOrderBy(newValue);
+                      fetchAnnouncements(1, selectedCategory, newValue);
                     }}
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pl-10"
-                    calendarClassName="custom-calendar"
-                    showPopperArrow={false}
-                  />
-                  <Calendar className="w-5 h-5 text-blue-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  >
+                    <option value="all">Hammasi</option>
+                    <option value="new">{t('sort.newest')}</option>
+                    <option value="old">{t('sort.oldest')}</option>
+                  </select>
+                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                 </div>
-              </div> */}
+              </div>
+
+              {/* Date Selection with MUI-like design */}
+
 
               <div className="w-full md:w-auto flex overflow-x-auto whitespace-nowrap gap-2 pb-2 md:flex-wrap scrollbar-hide">
                 <button

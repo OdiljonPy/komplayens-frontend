@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Search, ChevronRight, Clock, Eye, ChevronLeft } from 'lucide-react';
+import { Search, ChevronRight, Clock, Eye, ChevronLeft, ChevronDown } from 'lucide-react';
 import banner from "../assets/banners/07.png";
 import { Link } from 'react-router-dom';
 import { sendRequest } from '../utils/apiFunctions';
 import { useTranslation } from 'react-i18next';
+import DatePicker from 'react-datepicker';
+import { Calendar } from 'lucide-react';
 
 // Add skeleton component
 const TrainingCoursesSkeleton = () => (
@@ -101,9 +103,17 @@ export default function TrainingCourses() {
   const [selectedCategory, setSelectedCategory] = useState(1);
   const [pagination, setPagination] = useState({});
   const [loading, setLoading] = useState(true);
+  const [orderBy, setOrderBy] = useState('new');
+  const [dateRange, setDateRange] = useState([null, null]);
+  const [startDate, endDate] = dateRange;
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
+    setPagination(prev => ({ ...prev, currentPage: 1 }));
+  };
+
+  const handleDateChange = (update) => {
+    setDateRange(update);
     setPagination(prev => ({ ...prev, currentPage: 1 }));
   };
 
@@ -121,9 +131,21 @@ export default function TrainingCourses() {
     const fetchCourses = async (page = 1) => {
       setLoading(true);
       try {
+        const fromDate = startDate ? startDate.toISOString().split('T')[0] : '';
+        const toDate = endDate ? endDate.toISOString().split('T')[0] : '';
+
         const response = await sendRequest({
           method: 'GET',
-          url: `/services/training/?page=${page}&page_size=10&q=${searchTerm}&category_id=${selectedCategory}`
+          url: `/services/training/`,
+          params: {
+            page,
+            page_size: 10,
+            q: searchTerm,
+            category_id: selectedCategory,
+            order_by: orderBy == "all" ? "" : orderBy,
+            from_date: fromDate,
+            to_date: toDate
+          }
         });
         if (response.success && response.data.ok) {
           setCourses(response.data.result.content);
@@ -143,7 +165,7 @@ export default function TrainingCourses() {
     }, searchTerm ? 500 : 0);
 
     return () => clearTimeout(debounceTimer);
-  }, [searchTerm, selectedCategory, pagination.currentPage]);
+  }, [searchTerm, selectedCategory, pagination.currentPage, orderBy, startDate, endDate]);
 
   const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= pagination.totalPages) {
@@ -188,36 +210,6 @@ export default function TrainingCourses() {
               </Link>
             </div>
 
-
-            {/* <div className="flex flex-col md:flex-row gap-4 mb-6">
-              <div className="flex-1">
-                <label className="block text-sm text-gray-600 mb-1">{t('common.sort')}:</label>
-                <select
-                  className="w-full p-2 border rounded-md"
-                  value={orderBy}
-                  onChange={(e) => setOrderBy(e.target.value)}
-                >
-                  <option value="new">{t('sort.newest')}</option>
-                  <option value="old">{t('sort.oldest')}</option>
-                </select>
-              </div>
-              <div className="flex-1 w-full">
-                <label className="block text-sm text-gray-600 mb-1">{t('common.date')}</label>
-                <div className="relative">
-                  <DatePicker
-                    selected={startDate}
-                    onChange={handleDateChange}
-                    dateFormat="dd/MM/yyyy"
-                    className="w-full p-2.5 pl-10 bg-white border border-gray-200 rounded-xl cursor-pointer"
-                    calendarClassName="custom-calendar"
-                    showPopperArrow={false}
-
-                  />
-                  <Calendar className="w-5 h-5 text-blue-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                </div>
-              </div>
-            </div> */}
-
             {/* Search Input */}
             <div className="relative w-full md:w-64">
               <input
@@ -231,21 +223,67 @@ export default function TrainingCourses() {
             </div>
           </div>
 
-          {/* Category Selection */}
-          <div className="flex overflow-x-auto gap-2 mb-4 mt-4 pb-2">
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setSelectedCategory(category.id)}
-                className={`px-4 py-1.5 rounded-[8px] transition-colors whitespace-nowrap ${selectedCategory === category.id
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-white hover:bg-gray-50'
-                  }`}
-              >
-                {category.name}
-              </button>
-            ))}
+          {/* Update the filters section */}
+          <div className="flex flex-col md:flex-row gap-4 mb-6 w-full md:w-[70%]">
+            {/* Category Select */}
+            <div className="flex-1">
+              <label className="block text-sm text-gray-600 mb-1.5">Kategoriya:</label>
+              <div className="relative">
+                <select
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(Number(e.target.value))}
+                  className="w-full h-[48px] appearance-none bg-white border border-gray-200 rounded-lg px-4 text-gray-900 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                >
+                  {categories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+              </div>
+            </div>
+
+            {/* Sort Select */}
+            <div className="flex-1">
+              <label className="block text-sm text-gray-600 mb-1.5">{t('common.sort')}:</label>
+              <div className="relative">
+                <select
+                  className="w-full h-[48px] appearance-none bg-white border border-gray-200 rounded-lg px-4 text-gray-900 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  value={orderBy}
+                  onChange={(e) => setOrderBy(e.target.value)}
+                >
+                  <option value="all">Hammasi</option>
+                  <option value="new">{t('sort.newest')}</option>
+                  <option value="old">{t('sort.oldest')}</option>
+                </select>
+                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+              </div>
+            </div>
+
+            {/* Date Range Picker */}
+            <div className="flex-1">
+              <label className="block text-sm text-gray-600 mb-1.5">{t('common.date')}</label>
+              <div className="relative">
+                <DatePicker
+                  selectsRange={true}
+                  startDate={startDate}
+                  endDate={endDate}
+                  onChange={handleDateChange}
+                  dateFormat="dd.MM.yyyy"
+                  className="w-full h-[48px] pl-10 bg-white border border-gray-200 rounded-lg cursor-pointer text-gray-900"
+                  placeholderText={t('common.selectDate')}
+                  isClearable={true}
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select"
+                  monthsShown={2}
+                />
+                <Calendar className="w-5 h-5 text-blue-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+              </div>
+            </div>
           </div>
+
           {
             courses.length === 0 ? (
               <div className="flex justify-center items-center h-40">
