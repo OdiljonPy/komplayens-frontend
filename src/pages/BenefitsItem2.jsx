@@ -269,21 +269,6 @@ const Step2Form = ({ formData, handleInputChange }) => {
           Manfaatlar To'qnashuvi To'g'risidagi Axborot
         </h2>
 
-        <div className="relative">
-          <label className="block text-gray-500 text-sm mb-1">
-            Sana <span className="text-red-500">*</span>
-          </label>
-          <DatePicker
-            selected={formData.date}
-            onChange={(date) => {
-              const formattedDate = date.toISOString().split('T')[0];
-              handleInputChange({ target: { name: 'date', value: formattedDate } });
-            }}
-            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg pl-10"
-            placeholderText="19.01.2025"
-          />
-          <Calendar className="w-5 h-5 text-blue-500 absolute left-3 top-[50px] -translate-y-1/2 pointer-events-none" />
-        </div>
 
         <div className="form-group">
           <label className="block text-gray-500 text-sm mb-1">
@@ -613,10 +598,13 @@ const SecondDocument = React.forwardRef(({ formData }, ref) => {
             <div className="text-center italic">
               Шахсий имзо ёки электрон рақамли имзоси
             </div>
-            <div className="text-right border-t  border-black flex flex-col items-center mt-6">
+            <div className="text-right flex flex-col items-center mt-6">
+              <span className='text-[12px]  border-b  border-black pb-2'>
+                {formData.managerFIO} {formData.position}
+              </span>
               <span className='text-[12px]'>(Ходимнинг Ф.И.О.)</span>
               <div className="text-center text-[10px]">
-                Тўлдирилган сана 20 <span className='border-b border-black min-w-[20px]'>{filledDate.year}</span> <span className=''>йил</span> {filledDate.month} <span >{` `}</span> {filledDate.day}
+                Тўлдирилган сана 20 <span className='border-b border-black min-w-[20px] pb-2'>{filledDate.year}</span> <span className=''>йил</span> {filledDate.month} <span >{` `}</span> {filledDate.day}
               </div>
             </div>
 
@@ -683,7 +671,7 @@ const BenefitsItem2 = () => {
   const handleNext = () => setCurrentStep(2);
 
   const isStep2Valid = () => {
-    const requiredFields = ['date', 'description'];
+    const requiredFields = ['description'];
     return requiredFields.every(field => formData[field] && formData[field].trim() !== '');
   };
   const isStep1Valid = () => {
