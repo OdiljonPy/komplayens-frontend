@@ -145,6 +145,8 @@ const Filters = ({ onFilterChange }) => {
             showMonthDropdown
             showYearDropdown
             dropdownMode="select"
+            inline={false}
+            calendarStartDay={1}
           />
         </div>
       </div>
