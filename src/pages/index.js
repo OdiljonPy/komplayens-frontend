@@ -23,3 +23,4 @@ export { default as Login } from './Auth/Login';
 export { default as ForgotPassword } from './Auth/ForgotPassword';
 export { default as Handouts } from './Handouts';
 export { default as AnnouncementsItem } from './AnnouncementsItem';
+export { default as Profile } from './Auth/Profile';

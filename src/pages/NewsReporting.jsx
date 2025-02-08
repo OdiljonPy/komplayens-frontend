@@ -626,10 +626,10 @@ const ReportDetails = ({ onFormDataChange, onFileChange, formData: initialFormDa
                 className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                 value={formData.details}
                 onChange={(e) => handleFormChange('details', e.target.value)}
-                maxLength={460}
+                maxLength={1000}
               />
               <div className="text-right text-sm text-gray-500">
-                {formData.details.length}/460
+                {formData.details.length}/1000
               </div>
             </div>
 

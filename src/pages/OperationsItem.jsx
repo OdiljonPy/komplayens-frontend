@@ -267,7 +267,7 @@ const OperationsItem = () => {
                         </button>
                         <div className="flex items-center gap-2 text-gray-500">
                           <MessageSquare size={isMobile ? 16 : 20} />
-                          <span className={`${isMobile ? 'text-xs' : 'text-sm'}`}>32</span>
+                          <span className={`${isMobile ? 'text-xs' : 'text-sm'}`}>{comments?.length || 0}</span>
                         </div>
                       </div>
                     )}
@@ -330,7 +330,7 @@ const OperationsItem = () => {
                     placeholder={t('pages.operations.commentPlaceholder')}
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
-                    maxLength={460}
+                    maxLength={1000}
                   ></textarea>
                   <div className="mt-4 flex justify-between items-center">
                     <button
@@ -347,7 +347,7 @@ const OperationsItem = () => {
                       </span>
                     </button>
                     <span className="text-gray-400 text-sm">
-                      {newComment.length}/460
+                      {newComment.length}/1000
                     </span>
                   </div>
                 </div>

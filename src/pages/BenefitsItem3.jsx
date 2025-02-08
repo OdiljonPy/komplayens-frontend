@@ -238,11 +238,11 @@ const Step1Form = ({ formData, handleInputChange }) => {
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg resize-none"
             rows={4}
-            maxLength={460}
+            maxLength={1000}
             placeholder="Qarindoshlar to'g'risidagi ma'lumotlarni kiriting"
           />
           <div className="text-right text-sm text-gray-500">
-            {(formData.relativeInfo || '').length}/460
+            {(formData.relativeInfo || '').length}/1000
           </div>
         </div>
 
@@ -256,11 +256,11 @@ const Step1Form = ({ formData, handleInputChange }) => {
             onChange={handleInputChange}
             className="w-full px-4 py-2.5 border border-gray-200 rounded-lg resize-none"
             rows={4}
-            maxLength={460}
+            maxLength={1000}
             placeholder="Xodimlar to'g'risidagi ma'lumotlarni kiriting"
           />
           <div className="text-right text-sm text-gray-500">
-            {(formData.employeeInfo || '').length}/460
+            {(formData.employeeInfo || '').length}/1000
           </div>
         </div>
       </div>

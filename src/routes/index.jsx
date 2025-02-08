@@ -29,6 +29,7 @@ import {
   ElectronicLibrary,
   Handouts,
   AnnouncementsItem,
+  Profile,
 } from "../pages";
 import { allowedLanguages, defaultLanguage } from '../utils/constants';
 
@@ -136,6 +137,10 @@ export const router = createBrowserRouter([
       {
         path: "handouts",
         element: <Handouts />
+      },
+      {
+        path: "profile",
+        element: <Profile />
       }
     ]
   },
@@ -154,7 +159,8 @@ export const router = createBrowserRouter([
       {
         path: "forgot-password",
         element: <ForgotPassword />
-      }
+      },
+
     ]
   }
 ]);

@@ -283,7 +283,7 @@ const Step2Form = ({ formData, handleInputChange }) => {
             placeholder="Manfaatlar to'qnashuvi tafsifi"
           />
           <div className="text-right text-sm text-gray-500">
-            <span>{formData.description?.length || 0}</span>/460
+            <span>{formData.description?.length || 0}</span>/1000
           </div>
         </div>
 
@@ -300,7 +300,7 @@ const Step2Form = ({ formData, handleInputChange }) => {
             placeholder="Qo'shimcha ma'lumot"
           />
           <div className="text-right text-sm text-gray-500">
-            <span>{formData.additionalInfo?.length || 0}</span>/460
+            <span>{formData.additionalInfo?.length || 0}</span>/1000
           </div>
         </div>
 

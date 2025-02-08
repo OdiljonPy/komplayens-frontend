@@ -80,7 +80,7 @@ const Login = () => {
     });
 
     setLoading(false);
-
+    console.log(response);
     if (response.success) {
       // Save tokens to local storage
       localStorage.setItem('user', JSON.stringify(response.data.result));

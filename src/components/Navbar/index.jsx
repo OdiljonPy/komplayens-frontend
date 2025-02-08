@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Phone, ChevronDown, Menu, X } from 'lucide-react';
+import { Phone, ChevronDown, Menu, X, User } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import logo from "../../assets/logos/logo.png";
 import { allowedLanguages, defaultLanguage } from '../../utils/constants';
@@ -13,6 +13,7 @@ const Navbar = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
+  const [user, setUser] = useState(null);
 
   // Add effect to handle language changes
   useEffect(() => {
@@ -31,6 +32,14 @@ const Navbar = () => {
       i18n.changeLanguage(pathLang);
     }
   }, [location.pathname, i18n.language]);
+
+  // Add effect to check localStorage for user
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
 
   // Add this helper function to handle link paths
   const getLocalizedPath = (path) => {
@@ -147,6 +156,26 @@ const Navbar = () => {
     return option ? option.label : 'O\'ZB'; // default to O'ZB if not found
   };
 
+  const renderAuthButton = () => {
+    if (user) {
+      return (
+        <Link to={getLocalizedPath('/profile')} className="hidden md:block">
+          <div className="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
+            <User className="h-6 w-6" />
+            <span className="text-sm">{user.name || 'Profile'}</span>
+          </div>
+        </Link>
+      );
+    }
+    return (
+      <Link to={getLocalizedPath('/login')} className="hidden md:block">
+        <button className="bg-blue-900 text-white px-6 py-2 rounded text-sm">
+          {t('login')}
+        </button>
+      </Link>
+    );
+  };
+
   return (
     <>
       <div className="fixed top-0 left-0 right-0 z-50 bg-white shadow-lg">
@@ -201,11 +230,7 @@ const Navbar = () => {
                   )}
                 </div>
 
-                <Link to={getLocalizedPath('/login')} className="hidden md:block">
-                  <button className="bg-blue-900 text-white px-6 py-2 rounded text-sm">
-                    {t('login')}
-                  </button>
-                </Link>
+                {renderAuthButton()}
 
                 {/* Mobile Menu Button */}
                 <button
@@ -343,11 +368,18 @@ const Navbar = () => {
             </nav>
 
             {/* Mobile Login Button */}
-            <Link to={getLocalizedPath('/login')}>
-              <button className="w-full bg-blue-900 text-white px-6 py-2 rounded text-sm">
-                {t('login')}
-              </button>
-            </Link>
+            {!user ? (
+              <Link to={getLocalizedPath('/login')}>
+                <button className="w-full bg-blue-900 text-white px-6 py-2 rounded text-sm">
+                  {t('login')}
+                </button>
+              </Link>
+            ) : (
+              <Link to={getLocalizedPath('/profile')} className="flex items-center space-x-2 px-4 py-2 text-gray-700">
+                <User className="h-6 w-6" />
+                <span>{user.name || 'Profile'}</span>
+              </Link>
+            )}
           </div>
         </div>
       )}

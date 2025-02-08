@@ -167,6 +167,7 @@ const Register = () => {
     });
 
     setLoading(false);
+    console.log(response);
 
     if (response.success) {
       window.location.href = '/login';
