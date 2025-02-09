@@ -14,6 +14,8 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [user, setUser] = useState(null);
+  const showLogin = import.meta.env.VITE_SHOW_LOGIN === 'true';
+  console.log('SHOW_LOGIN:', import.meta.env.VITE_SHOW_LOGIN);
 
   // Add effect to handle language changes
   useEffect(() => {
@@ -157,6 +159,8 @@ const Navbar = () => {
   };
 
   const renderAuthButton = () => {
+    if (!showLogin) return null;
+
     if (user) {
       return (
         <Link to={getLocalizedPath('/profile')} className="hidden md:block">
@@ -368,17 +372,19 @@ const Navbar = () => {
             </nav>
 
             {/* Mobile Login Button */}
-            {!user ? (
-              <Link to={getLocalizedPath('/login')}>
-                <button className="w-full bg-blue-900 text-white px-6 py-2 rounded text-sm">
-                  {t('login')}
-                </button>
-              </Link>
-            ) : (
-              <Link to={getLocalizedPath('/profile')} className="flex items-center space-x-2 px-4 py-2 text-gray-700">
-                <User className="h-6 w-6" />
-                <span>{user.name || 'Profile'}</span>
-              </Link>
+            {showLogin && (
+              !user ? (
+                <Link to={getLocalizedPath('/login')}>
+                  <button className="w-full bg-blue-900 text-white px-6 py-2 rounded text-sm">
+                    {t('login')}
+                  </button>
+                </Link>
+              ) : (
+                <Link to={getLocalizedPath('/profile')} className="flex items-center space-x-2 px-4 py-2 text-gray-700">
+                  <User className="h-6 w-6" />
+                  <span>{user.name || 'Profile'}</span>
+                </Link>
+              )
             )}
           </div>
         </div>
