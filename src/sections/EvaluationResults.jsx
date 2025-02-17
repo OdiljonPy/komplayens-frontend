@@ -368,19 +368,19 @@ const EvaluationResults = () => {
           <div className="flex flex-col">
             <div className="flex items-center gap-1">
 
-              <span className="text-gray-800"><span className="text-[#22c55e] font-medium">Yaxshi</span> - Ko'tarilgan natijalar va ko'rsatkichlar 80% dan yuqori bo'lgan kompaniyalar</span>
+              <span className="text-gray-800"><span className="text-[#22c55e] font-medium">{t('evaluation.good')}</span> - {t('evaluation.goodDescription')}</span>
             </div>
           </div>
           <div className="flex flex-col">
             <div className="flex items-center gap-1">
 
-              <span className="text-gray-800"> <span className="text-[#FF9437] font-medium">Qoniqarli</span> - Natijalari o'zgarmagan va ko'rsatkichlari 50% dan yuqori bo'lgan kompaniyalar</span>
+              <span className="text-gray-800"> <span className="text-[#FF9437] font-medium">{t('evaluation.avarage')}</span> - {t('evaluation.avarageDescription')}</span>
             </div>
           </div>
           <div className="flex flex-col">
             <div className="flex  gap-1">
 
-              <span className="text-gray-800"><span className="text-[#ef4444] font-medium">Qoniqarsiz</span> - Natijalari pasaygan va ko'rsatkichlari 50% dan past bo'lgan kompaniyalar</span>
+              <span className="text-gray-800"><span className="text-[#ef4444] font-medium">{t('evaluation.bad')}</span> - {t('evaluation.badDescription')}</span>
             </div>
           </div>
         </div>

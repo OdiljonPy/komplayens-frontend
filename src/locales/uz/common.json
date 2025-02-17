@@ -122,7 +122,13 @@
       "good": "Yaxshi",
       "satisfactory": "Qoniqarli",
       "unsatisfactory": "Qoniqarsiz"
-    }
+    },
+    "good": "Yaxshi",
+    "goodDescription": "Ko'tarilgan natijalar va ko'rsatkichlar 80% dan yuqori bo'lgan kompaniyalar",
+    "avarage": "Qoniqarli",
+    "avarageDescription": "Natijalari o'zgarmagan va ko'rsatkichlari 50% dan yuqori bo'lgan kompaniyalar",
+    "bad": "Qoniqarsiz",
+    "badDescription": "Natijalari pasaygan va ko'rsatkichlari 50% dan past bo'lgan kompaniyalar"
   },
   "auth": {
     "welcome": "Xush kelibsiz",

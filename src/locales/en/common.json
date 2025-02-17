@@ -122,7 +122,13 @@
       "good": "Good",
       "satisfactory": "Satisfactory",
       "unsatisfactory": "Unsatisfactory"
-    }
+    },
+    "good": "Good",
+    "goodDescription": "companies with improved results and indicators above 80%",
+    "avarage": "Satisfactory",
+    "avarageDescription": "companies with unchanged results and performance above 50%",
+    "bad": "Unsatisfactory",
+    "badDescription": "companies with deteriorating results and performance below 50%"
   },
   "auth": {
     "welcome": "Welcome",
