@@ -61,10 +61,6 @@ const Navbar = () => {
         {
           label: t('navbar.electronic_library'),
           to: '/electronic-library'
-        },
-        {
-          label: t('navbar.corruption_risks'),
-          to: '/corruption-risks'
         }
       ]
     },
@@ -74,7 +70,7 @@ const Navbar = () => {
       dropdown: true,
       items: [
         {
-          label: t('navbar.report'),
+          label: t('navbar.report_corruption'),
           to: '/news'
         },
         {
@@ -84,19 +80,10 @@ const Navbar = () => {
       ]
     },
     {
-      title: t('navbar.surveys'),
-      to: '/operations',
-      dropdown: true,
-      items: [
-        {
-          label: t('navbar.practice'),
-          to: '/operations'
-        },
-        {
-          label: t('navbar.compliance_officers'),
-          to: '/compliance'
-        }
-      ]
+      title: t('navbar.corruption_risks'),
+      to: '/corruption-risks',
+      dropdown: false,
+
     },
     {
       title: t('navbar.integrity_test'),
@@ -109,19 +96,27 @@ const Navbar = () => {
       dropdown: true,
       items: [
         {
+          label: t('navbar.practice'),
+          to: '/operations'
+        },{
+          label: t('navbar.handouts'),
+          to: '/handouts'
+        },
+        {
           label: t('navbar.news'),
           to: '/violations'
         },
         {
           label: t('navbar.announcements'),
           to: '/announcements'
-        },
-        {
-          label: t('navbar.handouts'),
-          to: '/handouts'
         }
       ]
-    }
+    },
+    {
+      title: t('navbar.contact_info'),
+      to: '/compliance',
+      dropdown: false
+    },
   ];
 
   const changeLanguage = (lng) => {

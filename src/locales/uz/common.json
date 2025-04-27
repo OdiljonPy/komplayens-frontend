@@ -51,18 +51,20 @@
     "education_resources": "Ta'lim resurslari",
     "training_courses": "O'quv kurslari",
     "electronic_library": "Elektron kutubxona",
-    "corruption_risks": "Korrupsiyaviy xavf-xatarlar",
+    "corruption_risks": "So'rovnomalar",
     "report": "Xabar berish",
-    "conflict_of_interest": "Manfaatlar to'qnashuvi",
+    "report_corruption": "Korrupsiyaviy haqida xabar berish",
+    "conflict_of_interest": "Manfaatlar to'qnashuvi haqida xabar berish",
     "surveys": "So'rovnomalar",
-    "practice": "Amaliyot",
+    "practice": "Amaliy keyslar",
     "compliance_officers": "Komplayens ofitserlar",
     "integrity_test": "Halollik testi",
     "useful_resources": "Foydali resurslar",
     "news": "Yangiliklar",
     "announcements": "E'lonlar",
-    "handouts": "Tarqatma materiallar",
-    "phone": "+998 71 222-77-77"
+    "handouts": "Targ'ibot materiallari",
+    "phone": "+998 71 222-77-77",
+    "contact_info": "Aloqa malumotlari"
   },
   "common": {
     "details": "Tanlash",
@@ -116,7 +118,7 @@
     "high": "Yuqori"
   },
   "evaluation": {
-    "title": "Baholash natijalari",
+    "title": "Davlat idoralarining korrupsiyaga qarshi kurashish faoliyati samaradorligi reytingi",
     "quarterly_section": "Choraklik bo'limi",
     "status": {
       "good": "Yaxshi",
