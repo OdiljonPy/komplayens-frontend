@@ -86,6 +86,9 @@ const TestSelection = ({ onNext, onSelect, selectedTestId }) => {
     if (onSelect) {
       onSelect(test.id);
     }
+    if (onNext) {
+      onNext();
+    }
   };
 
   return (
@@ -913,6 +916,7 @@ const StatusCheck = () => {
               </div>
 
               <TestSelection
+                onNext={handleNext}
                 onSelect={handleTestSelect}
                 selectedTestId={selectedTestId}
               />

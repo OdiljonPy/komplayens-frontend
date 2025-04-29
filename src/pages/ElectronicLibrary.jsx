@@ -383,39 +383,79 @@ const ElectronicLibrary = () => {
                   </div>
                 </div>
 
-                {/* Pagination */}
-                <div className="flex md:hidden justify-between items-center overflow-x-auto">
+                {/* Desktop Pagination */}
+                <div className="hidden md:flex justify-between items-center mt-6">
                   <button
                     onClick={() => handlePageChange(pagination.currentPage - 1)}
                     disabled={pagination.currentPage === 1}
-                    className="flex items-center gap-2 px-4 py-2 text-gray-600 border border-gray-200 bg-white rounded-md"
+                    className={`flex items-center gap-2 px-4 py-2 rounded-md transition-colors ${pagination.currentPage === 1
+                      ? 'text-gray-400 bg-gray-100 cursor-not-allowed'
+                      : 'text-gray-600 border border-gray-200 bg-white hover:bg-gray-50'
+                      }`}
                   >
                     <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M16.3332 10.6986H4.6665M4.6665 10.6986L10.4998 16.5319M4.6665 10.6986L10.4998 4.86523" stroke="#414651" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M16.3332 10.6986H4.6665M4.6665 10.6986L10.4998 16.5319M4.6665 10.6986L10.4998 4.86523"
+                        stroke="currentColor" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                     <span>{t('pages.electronicLibrary.pagination.previous')}</span>
                   </button>
 
-                  <div className="flex items-center gap-1 overflow-x-auto px-2">
-                    {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map((page) => (
-                      <button
-                        key={page}
-                        onClick={() => handlePageChange(page)}
-                        className={`w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-md
-                      ${page === pagination.currentPage ? 'bg-[#F9F5FF] text-[#7F56D9]' : 'text-gray-600'}`}
-                      >
-                        {page}
-                      </button>
-                    ))}
+                  <div className="flex items-center gap-1">
+                    {Array.from({ length: pagination.totalPages }, (_, i) => i + 1)
+                      .filter(page => {
+                        // Show first page, last page, current page and pages around current
+                        const showAround = Math.abs(page - pagination.currentPage) <= 1;
+                        const isFirstOrLast = page === 1 || page === pagination.totalPages;
+                        return showAround || isFirstOrLast;
+                      })
+                      .map((page, index, array) => {
+                        // Add ellipsis between non-consecutive pages
+                        if (index > 0 && array[index - 1] !== page - 1) {
+                          return (
+                            <React.Fragment key={`ellipsis-${page}`}>
+                              <span className="px-2">...</span>
+                              <button
+                                onClick={() => handlePageChange(page)}
+                                className={`w-8 h-8 flex items-center justify-center rounded-md transition-colors
+                                  ${page === pagination.currentPage
+                                    ? 'bg-[#F9F5FF] text-[#7F56D9]'
+                                    : 'text-gray-600 hover:bg-gray-50'
+                                  }`}
+                              >
+                                {page}
+                              </button>
+                            </React.Fragment>
+                          );
+                        }
+                        return (
+                          <button
+                            key={page}
+                            onClick={() => handlePageChange(page)}
+                            className={`w-8 h-8 flex items-center justify-center rounded-md transition-colors
+                              ${page === pagination.currentPage
+                                ? 'bg-[#F9F5FF] text-[#7F56D9]'
+                                : 'text-gray-600 hover:bg-gray-50'
+                              }`}
+                          >
+                            {page}
+                          </button>
+                        );
+                      })}
                   </div>
 
                   <button
                     onClick={() => handlePageChange(pagination.currentPage + 1)}
                     disabled={pagination.currentPage === pagination.totalPages}
-                    className="flex-shrink-0 flex items-center gap-1 px-3 py-2 text-gray-600"
+                    className={`flex items-center gap-2 px-4 py-2 rounded-md transition-colors ${pagination.currentPage === pagination.totalPages
+                      ? 'text-gray-400 bg-gray-100 cursor-not-allowed'
+                      : 'text-gray-600 border border-gray-200 bg-white hover:bg-gray-50'
+                      }`}
                   >
                     <span>{t('pages.electronicLibrary.pagination.next')}</span>
-                    <ChevronRight size={20} />
+                    <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M4.6665 10.6986H16.3332M16.3332 10.6986L10.4998 16.5319M16.3332 10.6986L10.4998 4.86523"
+                        stroke="currentColor" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
                   </button>
                 </div>
               </>

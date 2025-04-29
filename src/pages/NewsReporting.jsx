@@ -111,6 +111,9 @@ const OrganizationSelection = ({ onNext, onSelect, selectedOrgId }) => {
     if (onSelect) {
       onSelect(org);
     }
+    if (onNext) {
+      onNext();
+    }
   };
 
   return (

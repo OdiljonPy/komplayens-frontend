@@ -6,7 +6,7 @@ const Layout = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
-      <main className=" mx-auto py-8">
+      <main className="  py-8 mx-4">
         <Outlet />
       </main>
       <Footer />

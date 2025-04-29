@@ -177,11 +177,11 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="fixed top-0 left-0 right-0 z-50 bg-white shadow-lg">
+      <div className="fixed top-0 left-0 right-0 z-50 bg-white shadow-lg ">
         {/* Top Bar */}
         <div className="border-b">
           <div className="container mx-auto">
-            <div className="flex items-center justify-between h-16">
+            <div className="flex items-center justify-between h-16 px-2">
               {/* Logo and Title */}
               <div className="flex items-center space-x-4">
                 <Link to={getLocalizedPath('/')} className="flex items-center space-x-2">
@@ -248,7 +248,7 @@ const Navbar = () => {
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:block bg-white">
+        <div className="hidden md:block bg-white px-4">
           <div className="container mx-auto">
             <div className="flex items-center justify-between h-14">
               <nav className="flex space-x-10">

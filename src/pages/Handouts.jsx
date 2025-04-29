@@ -185,12 +185,12 @@ function Handouts() {
               </div>
             </div>
 
-            <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-6">
+            {/* <h1 className="text-xl font-bold border-l-4 border-[#024072] pl-3 text-[#595959] mb-6">
               {t('pages.handouts.title')}
-            </h1>
+            </h1> */}
 
             {/* Header with Select and Search */}
-            <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+            {/* <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
               <div className="w-full md:w-48">
                 <select
                   className="w-full px-4 py-2.5 text-gray-700 bg-white border border-gray-300 
@@ -232,46 +232,48 @@ function Handouts() {
                     focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
-            </div>
+            </div> */}
 
             {/* Updated Files Grid */}
             {
               handouts.length !== 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {handouts.map((handout) => (
-                    <div key={handout.id} className="bg-[#F5F5F5] border border-[#DFDFDF] rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8">
-                            <img
-                              src={handout.type === "zip" ? zip : handout.type === "ppt" ? ppt : handout.type === "xls" ? xls : handout.type === "png" ? png : pdf}
-                              alt={t('pages.handouts.fileIcon')}
-                              className="w-full h-full object-contain"
-                            />
-                          </div>
-                          <div>
-                            <p className="text-sm text-gray-700">{handout.name}</p>
-                          </div>
-                        </div>
-                        <a
-                          href={handout.file}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-gray-500 hover:text-gray-700"
-                          title={t('pages.handouts.download')}
-                        >
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                          </svg>
-                        </a>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <></>
+                // <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                //   {handouts.map((handout) => (
+                //     <div key={handout.id} className="bg-[#F5F5F5] border border-[#DFDFDF] rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
+                //       <div className="flex items-center justify-between">
+                //         <div className="flex items-center gap-3">
+                //           <div className="w-8 h-8">
+                //             <img
+                //               src={handout.type === "zip" ? zip : handout.type === "ppt" ? ppt : handout.type === "xls" ? xls : handout.type === "png" ? png : pdf}
+                //               alt={t('pages.handouts.fileIcon')}
+                //               className="w-full h-full object-contain"
+                //             />
+                //           </div>
+                //           <div>
+                //             <p className="text-sm text-gray-700">{handout.name}</p>
+                //           </div>
+                //         </div>
+                //         <a
+                //           href={handout.file}
+                //           target="_blank"
+                //           rel="noopener noreferrer"
+                //           className="text-gray-500 hover:text-gray-700"
+                //           title={t('pages.handouts.download')}
+                //         >
+                //           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                //             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                //           </svg>
+                //         </a>
+                //       </div>
+                //     </div>
+                //   ))}
+                // </div>
               ) : (
-                <div className="flex justify-center items-center w-full">
-                  <h1 className="text-2xl font-bold">{t('pages.handouts.noData')}</h1>
-                </div>
+                <></>
+                // <div className="flex justify-center items-center w-full">
+                //   <h1 className="text-2xl font-bold">{t('pages.handouts.noData')}</h1>
+                // </div>
               )
             }
 

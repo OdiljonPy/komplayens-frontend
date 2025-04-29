@@ -34,8 +34,10 @@ const Footer = () => {
           <Link to={getLocalizedPath('/')}>
             <img src={logo} alt="Logo" className="h-14 mb-6" />
           </Link>
-          <h2 className="text-center text-2xl font-medium max-w-2xl">
-            {t('platform_title_1')}
+          <h2 className="text-left text-2xl font-medium max-w-2xl">
+            {t('platform_title_1')} <br />
+            {t('platform_title_2')}
+
           </h2>
         </div>
 

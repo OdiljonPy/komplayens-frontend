@@ -54,10 +54,10 @@ export const router = createBrowserRouter([
         path: "",
         element: <LandingPage />
       },
-      {
-        path: "educational-materials",
-        element: <EducationalMaterials />
-      },
+      // {
+      //   path: "educational-materials",
+      //   element: <EducationalMaterials />
+      // },
       {
         path: "training-courses",
         element: <TrainingCourses />
@@ -66,10 +66,10 @@ export const router = createBrowserRouter([
         path: "electronic-library",
         element: <ElectronicLibrary />
       },
-      {
-        path: "educational-materials/:courseId",
-        element: <CourseItem />
-      },
+      // {
+      //   path: "educational-materials/:courseId",
+      //   element: <CourseItem />
+      // },
       {
         path: "operations/:operationId",
         element: <OperationsItem />
