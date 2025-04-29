@@ -385,16 +385,12 @@ const ReportDetails = ({ onFormDataChange, onFileChange, formData: initialFormDa
   const isFormValid =
     formData.type &&
     formData.region &&
-    formData.district &&
-    formData.date &&
-    formData.time;
+    formData.district;
 
   useEffect(() => {
     const isValid = formData.type &&
       formData.region &&
-      formData.district &&
-      formData.date &&
-      formData.time;
+      formData.district;
 
     if (onFormDataChange) {
       onFormDataChange({
@@ -402,7 +398,7 @@ const ReportDetails = ({ onFormDataChange, onFileChange, formData: initialFormDa
         isValid
       });
     }
-  }, [formData.type, formData.region, formData.district, formData.date, formData.time]);
+  }, [formData.type, formData.region, formData.district]);
 
   // Add new function to handle tab change
   const handleTabChange = (tab) => {
@@ -532,7 +528,7 @@ const ReportDetails = ({ onFormDataChange, onFileChange, formData: initialFormDa
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <div className="text-sm text-gray-600 mb-1">
-                    Sana <span className="text-red-500">*</span>
+                    Sana
                   </div>
                   <div className="relative">
                     <DatePicker
@@ -544,11 +540,10 @@ const ReportDetails = ({ onFormDataChange, onFileChange, formData: initialFormDa
                     />
                     <Calendar className="w-5 h-5 text-blue-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                   </div>
-
                 </div>
                 <div>
                   <div className="text-sm text-gray-600 mb-1">
-                    Vaqt <span className="text-red-500">*</span>
+                    Vaqt
                   </div>
                   <input
                     type="time"

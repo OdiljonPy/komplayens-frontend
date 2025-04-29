@@ -112,10 +112,11 @@ const TestSelection = ({ onNext, onSelect, selectedTestId }) => {
               <div
                 key={test.id}
                 onClick={() => handleSelectTest(test)}
-                className={`p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow h-[150px] flex flex-col justify-between cursor-pointer 
+                className={`p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between cursor-pointer 
                   ${selectedTest?.id === test.id ? 'border-2 bg-[#024072] text-white' : ''}`}
                 style={{
                   boxShadow: '0px 4px 29px 0px #0000001A',
+                  minHeight: '160px'
                 }}
               >
                 <div className="flex items-start space-x-4">
@@ -123,9 +124,8 @@ const TestSelection = ({ onNext, onSelect, selectedTestId }) => {
                     rounded-[50%] flex items-center justify-center`}>
                     <img src={test.image} alt={t('pages.statusCheck.testSelection.organizationIcon')} className="w-8 h-8" />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className={`font-medium text-gray-900 text-sm line-clamp-3 
-                      ${selectedTest?.id === test.id ? 'text-white' : ''}`}>
+                  <div className="flex-1">
+                    <h3 className={`font-medium text-base ${selectedTest?.id === test.id ? 'text-white' : 'text-gray-900'}`}>
                       {test.name}
                     </h3>
                   </div>
