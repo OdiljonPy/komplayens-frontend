@@ -307,7 +307,11 @@ export default function TrainingCourses() {
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {courses.map((course) => (
-                    <div key={course.id} className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                        <Link key={course.id}
+                              to={getLocalizedPath(`/educational-materials/${course.id}`)}
+                          className="block"
+                        >
+                    <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                       <img
                         src={course.image || banner}
                         alt={t('pages.statusCheck.testSelection.organizationIcon')}
@@ -324,21 +328,17 @@ export default function TrainingCourses() {
                             <span className="text-sm">{course.views}</span>
                           </div>
                         </div>
-                        <h3 className="font-medium text-[#024072] text-lg mb-2">{course.name}</h3>
-                        <div
-                          className="text-sm text-[#4D4D4D] mb-4 line-clamp-2"
-                          dangerouslySetInnerHTML={{ __html: course.description }}
-                        />
-                        <Link
-                          to={getLocalizedPath(`/educational-materials/${course.id}`)}
-                          className="block"
-                        >
+                        <h3 className="font-medium text-[#024072] mb-4 text-lg mb-2">{course.name}</h3>
+                        {/*<div*/}
+                        {/*  className="text-sm text-[#4D4D4D] mb-4 line-clamp-2"*/}
+                        {/*  dangerouslySetInnerHTML={{ __html: course.description }}*/}
+                        {/*/>*/}
                           <button className="w-full bg-[#024072] text-white py-2 rounded-md hover:bg-[#02386A] transition-colors">
                             {t('educational_materials.start')}
                           </button>
-                        </Link>
                       </div>
                     </div>
+                        </Link>
                   ))}
                 </div>
 

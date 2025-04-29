@@ -51,18 +51,20 @@
     "education_resources": "Образовательные ресурсы",
     "training_courses": "Учебные курсы",
     "electronic_library": "Электронная библиотека",
-    "corruption_risks": "Коррупционные риски",
+    "corruption_risks": "Опросы",
     "report": "Сообщить",
-    "conflict_of_interest": "Конфликт интересов",
+    "report_corruption": "Сообщить о коррупции",
+    "conflict_of_interest": "Сообщение о конфликте интересов",
     "surveys": "Опросы",
-    "practice": "Практика",
+    "practice": "Практические случаи",
     "compliance_officers": "Комплаенс офицеры",
     "integrity_test": "Тест на честность",
     "useful_resources": "Полезные ресурсы",
     "news": "Новости",
     "announcements": "Объявления",
-    "handouts": "Раздаточные материалы",
-    "phone": "+998 71 222-77-77"
+    "handouts": "Рекламные материалы",
+    "phone": "+998 71 222-77-77",
+    "contact_info": "Контактная информация"
   },
   "common": {
     "details": "Подробнее",
@@ -116,7 +118,7 @@
     "high": "Высокий"
   },
   "evaluation": {
-    "title": "Результаты оценки",
+    "title": "Рейтинг эффективности деятельности государственных органов по противодействию коррупции",
     "quarterly_section": "Квартальный раздел",
     "status": {
       "good": "Хорошо",

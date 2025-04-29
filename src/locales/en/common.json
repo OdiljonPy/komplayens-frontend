@@ -51,18 +51,20 @@
     "education_resources": "Educational Resources",
     "training_courses": "Training Courses",
     "electronic_library": "Electronic Library",
-    "corruption_risks": "Corruption Risks",
+    "corruption_risks": "Surveys",
     "report": "Report",
-    "conflict_of_interest": "Conflict of Interest",
+    "report_corruption": "Report Corruption",
+    "conflict_of_interest": "Reporting a conflict of interest",
     "surveys": "Surveys",
-    "practice": "Practice",
+    "practice": "Practical cases",
     "compliance_officers": "Compliance Officers",
     "integrity_test": "Integrity Test",
     "useful_resources": "Useful Resources",
     "news": "News",
     "announcements": "Announcements",
-    "handouts": "Handouts",
-    "phone": "+998 71 222-77-77"
+    "handouts": "Promotional materials",
+    "phone": "+998 71 222-77-77",
+    "contact_info": "Contact information"
   },
   "common": {
     "details": "Details",
@@ -116,7 +118,7 @@
     "high": "High"
   },
   "evaluation": {
-    "title": "Evaluation Results",
+    "title": "Rating of the effectiveness of government agencies in combating corruption",
     "quarterly_section": "Quarterly section",
     "status": {
       "good": "Good",

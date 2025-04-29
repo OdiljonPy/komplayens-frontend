@@ -12,7 +12,7 @@ const ComplianceOfficers = () => {
     totalElements: 0,
     totalPages: 0,
     currentPage: 1,
-    size: 10
+    size: 12
   });
   const [loading, setLoading] = useState(false);
 
@@ -24,6 +24,7 @@ const ComplianceOfficers = () => {
         url: '/services/organization/',
         params: {
           page,
+          page_size: pagination.size,
           ...(query && { q: query })
         }
       });
