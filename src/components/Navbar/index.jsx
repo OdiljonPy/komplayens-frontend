@@ -70,12 +70,12 @@ const Navbar = () => {
     },
     {
       title: t('navbar.report'),
-      to: '/news',
+      to: '/xabar-berish',
       dropdown: true,
       items: [
         {
           label: t('navbar.report'),
-          to: '/news'
+          to: '/xabar-berish'
         },
         {
           label: t('navbar.conflict_of_interest'),

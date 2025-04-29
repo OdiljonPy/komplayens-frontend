@@ -465,19 +465,18 @@ export default function CorruptionRisks() {
                   }}
                 >
                   {documents.map((doc) => (
-                    <SwiperSlide key={doc.id}>
-                      <div className="bg-[#F5F5F5] rounded-xl p-6 border border-[#DFDFDF] shadow-[0px_0px_10px_0px_rgba(0,0,0,0.05)]">
-                        <div className="flex justify-between items-start">
-                          <div className="flex items-center gap-2 flex-row">
-                            <img src={pdfImg} alt="pdf" className="w-5 h-5" />
-                            <p className="text-[#595959] text-sm mb-1">{doc.filename}</p>
-
+                    <SwiperSlide key={doc.id} className="h-full">
+                      <div className="bg-[#F5F5F5] rounded-xl p-6 border border-[#DFDFDF] shadow-[0px_0px_10px_0px_rgba(0,0,0,0.05)] h-[80px] min-h-[80px]">
+                        <div className="flex justify-between items-start h-full">
+                          <div className="flex items-center gap-2 flex-row flex-1 min-w-0">
+                            <img src={pdfImg} alt="pdf" className="w-5 h-5 flex-shrink-0" />
+                            <p className="text-[#595959] text-sm mb-1 truncate">{doc.filename}</p>
                           </div>
                           <a
                             href={doc.file}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-[#8C8C8C] hover:text-blue-600"
+                            className="text-[#8C8C8C] hover:text-blue-600 flex-shrink-0"
                           >
                             <Download className="w-5 h-5" strokeWidth={1.5} />
                           </a>

@@ -224,7 +224,7 @@
         "select": "Bo'limi tanlang",
         "all": "Barchasi"
       },
-      "bookCount": "{{count}} kitob",
+      "bookCount": "{{count}} Ilmiy Material",
       "table": {
         "bookName": "Kitob nomi",
         "authorName": "Yozuvchining ismi",

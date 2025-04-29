@@ -8,80 +8,92 @@ import DatePicker from 'react-datepicker';
 import { Calendar } from 'lucide-react';
 
 // Add skeleton component
-const TrainingCoursesSkeleton = () => (
-  <div className="p-4 pt-14 md:pt-0 animate-pulse">
-    {/* Breadcrumb skeleton */}
-    <div className="py-3 md:py-4 pt-0">
-      <div className="flex items-center gap-1">
-        <div className="h-4 w-16 bg-gray-200 rounded"></div>
-        <div className="h-4 w-4 bg-gray-200 rounded"></div>
-        <div className="h-4 w-24 bg-gray-200 rounded"></div>
-      </div>
-    </div>
+const TrainingCoursesSkeleton = ({ searchTerm, handleSearch }) => {
+  const { t } = useTranslation();
 
-    {/* Title skeleton */}
-    <div className="py-4 md:py-6">
-      <div className="h-7 w-64 bg-gray-200 rounded border-l-4 border-[#024072] pl-3 mb-6 md:mb-10"></div>
-
-      {/* Navigation and Search skeleton */}
-      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
-        {/* Tabs skeleton */}
-        <div className="p-1 rounded-lg inline-flex w-full md:w-auto bg-white">
-          <div className="h-10 w-32 bg-gray-200 rounded-md mr-2"></div>
-          <div className="h-10 w-32 bg-gray-200 rounded-md"></div>
-        </div>
-
-        {/* Search Input skeleton */}
-        <div className="w-full md:w-64">
-          <div className="h-10 w-full bg-gray-200 rounded-md"></div>
+  return (
+    <div className="p-4 pt-14 md:pt-0 animate-pulse">
+      {/* Breadcrumb skeleton */}
+      <div className="py-3 md:py-4 pt-0">
+        <div className="flex items-center gap-1">
+          <div className="h-4 w-16 bg-gray-200 rounded"></div>
+          <div className="h-4 w-4 bg-gray-200 rounded"></div>
+          <div className="h-4 w-24 bg-gray-200 rounded"></div>
         </div>
       </div>
 
-      {/* Category buttons skeleton */}
-      <div className="flex overflow-x-auto gap-2 mb-8 pb-2">
-        {[1, 2, 3, 4].map((item) => (
-          <div key={item} className="h-8 w-24 bg-gray-200 rounded-full flex-shrink-0"></div>
-        ))}
-      </div>
+      {/* Title skeleton */}
+      <div className="py-4 md:py-6">
+        <div className="h-7 w-64 bg-gray-200 rounded border-l-4 border-[#024072] pl-3 mb-6 md:mb-10"></div>
 
-      {/* Courses Grid skeleton */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
-          <div key={item} className="bg-white rounded-lg overflow-hidden shadow-sm">
-            {/* Image skeleton */}
-            <div className="w-full aspect-[16/9] bg-gray-200"></div>
-
-            <div className="p-4">
-              {/* Meta info skeleton */}
-              <div className="flex items-center gap-2 mb-2">
-                <div className="flex items-center gap-1">
-                  <div className="h-4 w-4 bg-gray-200 rounded"></div>
-                  <div className="h-4 w-16 bg-gray-200 rounded"></div>
-                </div>
-                <div className="flex items-center gap-1">
-                  <div className="h-4 w-4 bg-gray-200 rounded"></div>
-                  <div className="h-4 w-16 bg-gray-200 rounded"></div>
-                </div>
-              </div>
-
-              {/* Title skeleton */}
-              <div className="h-6 w-3/4 bg-gray-200 rounded mb-2"></div>
-
-              {/* Description skeleton */}
-              <div className="space-y-2 mb-4">
-                <div className="h-4 w-full bg-gray-200 rounded"></div>
-                <div className="h-4 w-2/3 bg-gray-200 rounded"></div>
-              </div>
-
-              {/* Button skeleton */}
-              <div className="h-10 w-full bg-gray-200 rounded-md"></div>
-            </div>
+        {/* Navigation and Search skeleton */}
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
+          {/* Tabs skeleton */}
+          <div className="p-1 rounded-lg inline-flex w-full md:w-auto bg-white">
+            <div className="h-10 w-32 bg-gray-200 rounded-md mr-2"></div>
+            <div className="h-10 w-32 bg-gray-200 rounded-md"></div>
           </div>
-        ))}
+
+          {/* Search Input skeleton */}
+          <div className="relative w-full md:w-64">
+            <input
+              type="text"
+              placeholder={t('report.search_input')}
+              value={searchTerm}
+              onChange={handleSearch}
+              autoFocus
+              className="w-full pr-10 pl-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+            />
+            <Search className="absolute right-3 top-2.5 text-gray-400" size={20} />
+          </div>
+        </div>
+
+        {/* Category buttons skeleton */}
+        <div className="flex overflow-x-auto gap-2 mb-8 pb-2">
+          {[1, 2, 3, 4].map((item) => (
+            <div key={item} className="h-8 w-24 bg-gray-200 rounded-full flex-shrink-0"></div>
+          ))}
+        </div>
+
+        {/* Courses Grid skeleton */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
+            <div key={item} className="bg-white rounded-lg overflow-hidden shadow-sm">
+              {/* Image skeleton */}
+              <div className="w-full aspect-[16/9] bg-gray-200"></div>
+
+              <div className="p-4">
+                {/* Meta info skeleton */}
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="flex items-center gap-1">
+                    <div className="h-4 w-4 bg-gray-200 rounded"></div>
+                    <div className="h-4 w-16 bg-gray-200 rounded"></div>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <div className="h-4 w-4 bg-gray-200 rounded"></div>
+                    <div className="h-4 w-16 bg-gray-200 rounded"></div>
+                  </div>
+                </div>
+
+                {/* Title skeleton */}
+                <div className="h-6 w-3/4 bg-gray-200 rounded mb-2"></div>
+
+                {/* Description skeleton */}
+                <div className="space-y-2 mb-4">
+                  <div className="h-4 w-full bg-gray-200 rounded"></div>
+                  <div className="h-4 w-2/3 bg-gray-200 rounded"></div>
+                </div>
+
+                {/* Button skeleton */}
+                <div className="h-10 w-full bg-gray-200 rounded-md"></div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default function TrainingCourses() {
   const { t, i18n } = useTranslation();
@@ -174,7 +186,7 @@ export default function TrainingCourses() {
   };
 
   if (loading) {
-    return <TrainingCoursesSkeleton />;
+    return <TrainingCoursesSkeleton searchTerm={searchTerm} handleSearch={handleSearch} />;
   }
 
   return (
@@ -217,6 +229,7 @@ export default function TrainingCourses() {
                 placeholder={t('report.search_input')}
                 value={searchTerm}
                 onChange={handleSearch}
+                autoFocus
                 className="w-full pr-10 pl-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
               />
               <Search className="absolute right-3 top-2.5 text-gray-400" size={20} />

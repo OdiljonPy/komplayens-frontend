@@ -4,92 +4,105 @@ import { Link } from 'react-router-dom';
 import { sendRequest } from '../utils/apiFunctions'; // Update this path
 import { useTranslation } from 'react-i18next';
 
-const ElectronicLibrarySkeleton = () => (
-  <div className="w-full p-4 animate-pulse">
-    {/* Breadcrumb skeleton */}
-    <div className="py-3 md:py-4 pt-0">
-      <div className="flex items-center gap-2">
-        {[1, 2].map((item) => (
-          <div key={item} className="flex items-center gap-1">
-            <div className="h-4 w-16 bg-gray-200 rounded"></div>
-            {item < 2 && <div className="h-4 w-4 bg-gray-200 rounded"></div>}
-          </div>
-        ))}
-      </div>
-    </div>
-
-    {/* Title skeleton */}
-    <div className="h-7 w-64 bg-gray-200 rounded mb-6"></div>
-
-    {/* Navigation and Search skeleton */}
-    <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
-      <div className="flex space-x-2">
-        {[1, 2].map((tab) => (
-          <div key={tab} className="h-10 w-32 bg-gray-200 rounded-md"></div>
-        ))}
-      </div>
-      <div className="w-full md:w-64 h-10 bg-gray-200 rounded-md"></div>
-    </div>
-
-    {/* Main Content skeleton */}
-    <div className="bg-white rounded-lg">
-      {/* Department Selector skeleton */}
-      <div className="p-4 border-b">
+const ElectronicLibrarySkeleton = ({ searchQuery, handleSearch }) => {
+  const { t } = useTranslation();
+  return (
+    <div className="w-full p-4 animate-pulse">
+      {/* Breadcrumb skeleton */}
+      <div className="py-3 md:py-4 pt-0">
         <div className="flex items-center gap-2">
-          <div className="h-10 w-48 bg-gray-200 rounded-md"></div>
-          <div className="h-8 w-24 bg-gray-200 rounded-full"></div>
-        </div>
-      </div>
-
-      {/* Table skeleton */}
-      <div className="hidden md:block">
-        <div className="border-b">
-          <div className="grid grid-cols-6 gap-4 p-4">
-            {[1, 2, 3, 4, 5, 6].map((col) => (
-              <div key={col} className="h-5 bg-gray-200 rounded"></div>
-            ))}
-          </div>
-        </div>
-        <div className="divide-y">
-          {[1, 2, 3, 4, 5].map((row) => (
-            <div key={row} className="grid grid-cols-6 gap-4 p-4">
-              {[1, 2, 3, 4, 5, 6].map((col) => (
-                <div key={col} className="h-4 bg-gray-200 rounded"></div>
-              ))}
+          {[1, 2].map((item) => (
+            <div key={item} className="flex items-center gap-1">
+              <div className="h-4 w-16 bg-gray-200 rounded"></div>
+              {item < 2 && <div className="h-4 w-4 bg-gray-200 rounded"></div>}
             </div>
           ))}
         </div>
       </div>
 
-      {/* Mobile List skeleton */}
-      <div className="md:hidden divide-y">
-        {[1, 2, 3, 4].map((item) => (
-          <div key={item} className="p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gray-200 rounded-full"></div>
-              <div className="h-5 w-3/4 bg-gray-200 rounded"></div>
-            </div>
-            <div className="flex justify-between items-center">
-              <div className="h-4 w-24 bg-gray-200 rounded"></div>
-              <div className="h-8 w-20 bg-gray-200 rounded"></div>
+      {/* Title skeleton */}
+      <div className="h-7 w-64 bg-gray-200 rounded mb-6"></div>
+
+      {/* Navigation and Search skeleton */}
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
+        <div className="flex space-x-2">
+          {[1, 2].map((tab) => (
+            <div key={tab} className="h-10 w-32 bg-gray-200 rounded-md"></div>
+          ))}
+        </div>
+        <div className="relative w-full md:w-64">
+          <input
+            type="text"
+            placeholder={t('pages.electronicLibrary.search.placeholder')}
+            value={searchQuery}
+            onChange={handleSearch}
+            autoFocus
+            className="w-full pr-10 pl-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+          />
+          <Search className="absolute right-3 top-2.5 text-gray-400" size={20} />
+        </div>
+      </div>
+
+      {/* Main Content skeleton */}
+      <div className="bg-white rounded-lg">
+        {/* Department Selector skeleton */}
+        <div className="p-4 border-b">
+          <div className="flex items-center gap-2">
+            <div className="h-10 w-48 bg-gray-200 rounded-md"></div>
+            <div className="h-8 w-24 bg-gray-200 rounded-full"></div>
+          </div>
+        </div>
+
+        {/* Table skeleton */}
+        <div className="hidden md:block">
+          <div className="border-b">
+            <div className="grid grid-cols-6 gap-4 p-4">
+              {[1, 2, 3, 4, 5, 6].map((col) => (
+                <div key={col} className="h-5 bg-gray-200 rounded"></div>
+              ))}
             </div>
           </div>
-        ))}
-      </div>
-    </div>
+          <div className="divide-y">
+            {[1, 2, 3, 4, 5].map((row) => (
+              <div key={row} className="grid grid-cols-6 gap-4 p-4">
+                {[1, 2, 3, 4, 5, 6].map((col) => (
+                  <div key={col} className="h-4 bg-gray-200 rounded"></div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
 
-    {/* Pagination skeleton */}
-    <div className="flex justify-between items-center mt-6">
-      <div className="w-24 h-10 bg-gray-200 rounded-md"></div>
-      <div className="flex items-center gap-2">
-        {[1, 2, 3, 4, 5].map((page) => (
-          <div key={page} className="w-8 h-8 bg-gray-200 rounded-md"></div>
-        ))}
+        {/* Mobile List skeleton */}
+        <div className="md:hidden divide-y">
+          {[1, 2, 3, 4].map((item) => (
+            <div key={item} className="p-4 space-y-2">
+              <div className="flex items-center gap-2">
+                <div className="w-10 h-10 bg-gray-200 rounded-full"></div>
+                <div className="h-5 w-3/4 bg-gray-200 rounded"></div>
+              </div>
+              <div className="flex justify-between items-center">
+                <div className="h-4 w-24 bg-gray-200 rounded"></div>
+                <div className="h-8 w-20 bg-gray-200 rounded"></div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-      <div className="w-24 h-10 bg-gray-200 rounded-md"></div>
+
+      {/* Pagination skeleton */}
+      <div className="flex justify-between items-center mt-6">
+        <div className="w-24 h-10 bg-gray-200 rounded-md"></div>
+        <div className="flex items-center gap-2">
+          {[1, 2, 3, 4, 5].map((page) => (
+            <div key={page} className="w-8 h-8 bg-gray-200 rounded-md"></div>
+          ))}
+        </div>
+        <div className="w-24 h-10 bg-gray-200 rounded-md"></div>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const ElectronicLibrary = () => {
   const { t, i18n } = useTranslation();
@@ -198,7 +211,7 @@ const ElectronicLibrary = () => {
   return (
     <div className="container mx-auto">
       {loading ? (
-        <ElectronicLibrarySkeleton />
+        <ElectronicLibrarySkeleton searchQuery={searchQuery} handleSearch={handleSearch} />
       ) : (
         <div className="w-full px-4 md:px-0">
           {/* Breadcrumb */}
@@ -237,6 +250,7 @@ const ElectronicLibrary = () => {
                   placeholder={t('pages.electronicLibrary.search.placeholder')}
                   value={searchQuery}
                   onChange={handleSearch}
+                  autoFocus
                   className="w-full pr-10 pl-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
                 />
                 <Search className="absolute right-3 top-2.5 text-gray-400" size={20} />

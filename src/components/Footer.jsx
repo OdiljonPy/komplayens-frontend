@@ -32,7 +32,7 @@ const Footer = () => {
     {
       items: [
         {
-          to: '/news',
+          to: '/xabar-berish',
           label: t('navbar.report')
         },
         {
@@ -92,7 +92,7 @@ const Footer = () => {
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden lg:grid grid-cols-5 gap-8 text-sm max-w-5xl mx-auto">
+        <div className="hidden lg:grid grid-cols-5 gap-1 text-sm  mx-auto">
           {/* First Row */}
           <div className="text-start">
             <Link to={getLocalizedPath('/training-courses')} className="block hover:text-blue-400 mb-4">
@@ -100,7 +100,7 @@ const Footer = () => {
             </Link>
           </div>
           <div className="text-start">
-            <Link to={getLocalizedPath('/news')} className="block hover:text-blue-400 mb-4">
+            <Link to={getLocalizedPath('/xabar-berish')} className="block hover:text-blue-400 mb-4">
               {t('navbar.report')}
             </Link>
           </div>
@@ -166,7 +166,7 @@ const Footer = () => {
             </div>
           ))}
         </div>
-        <div className="flex justify-between flex-col md:flex-row gap-2  w-full max-w-5xl mx-auto mt-10">
+        <div className="flex justify-between flex-col md:flex-row gap-2  w-full mx-auto mt-10">
           <span className="text-sm text-white">© 2024. Barcha huquqlar himoyalangan.</span>
           <div className="flex items-center flex-row gap-4">
             <span className="text-sm text-white">Powered by</span>

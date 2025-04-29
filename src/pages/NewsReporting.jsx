@@ -154,7 +154,7 @@ const OrganizationSelection = ({ onNext, onSelect, selectedOrgId }) => {
                   />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className={`font-medium text-sm line-clamp-3 ${selectedOrg?.id === org.id ? 'text-white' : 'text-gray-900'}`}>
+                  <h3 className={`font-medium text-base line-clamp-3 ${selectedOrg?.id === org.id ? 'text-white' : 'text-gray-900'}`}>
                     {org.name}
                   </h3>
                 </div>

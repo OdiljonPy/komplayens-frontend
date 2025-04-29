@@ -224,7 +224,7 @@
         "select": "Выберите отдел",
         "all": "Все"
       },
-      "bookCount": "{{count}} книг",
+      "bookCount": "{{count}} Научный материал",
       "table": {
         "bookName": "Название книги",
         "authorName": "Имя автора",

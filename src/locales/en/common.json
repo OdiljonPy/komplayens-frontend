@@ -224,7 +224,7 @@
         "select": "Select department",
         "all": "All"
       },
-      "bookCount": "{{count}} books",
+      "bookCount": "{{count}} Scientific Material",
       "table": {
         "bookName": "Book name",
         "authorName": "Author name",

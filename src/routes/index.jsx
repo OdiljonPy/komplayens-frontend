@@ -83,7 +83,7 @@ export const router = createBrowserRouter([
         element: <CorruptionRisksItem />
       },
       {
-        path: "news",
+        path: "xabar-berish",
         element: <NewsReporting />
       },
       {

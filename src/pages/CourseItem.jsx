@@ -104,8 +104,10 @@ const CourseItem = () => {
 
   // Extract video ID from YouTube URL
   const getYoutubeEmbedUrl = (url) => {
-    const videoId = url.split('?')[0].split('/').pop();
-    return `https://www.youtube.com/embed/${videoId}`;
+    const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+    const match = url.match(regExp);
+    const videoId = match && match[7].length === 11 ? match[7] : null;
+    return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
   };
 
   return (
