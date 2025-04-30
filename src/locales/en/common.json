@@ -749,5 +749,8 @@
         "fillingDate": "Filling date 20___ year \"___\" _______"
       }
     }
-  }
+  },
+    "footer": {
+      "rights": "All rights reserved."
+    }
 }

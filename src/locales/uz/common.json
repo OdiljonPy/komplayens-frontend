@@ -749,5 +749,8 @@
         "fillingDate": "To'ldirilgan sana 20___ yil \"___\" _______"
       }
     }
-  }
+  },
+    "footer": {
+      "rights": "Barcha huquqlar himoyalangan."
+    }
 }
