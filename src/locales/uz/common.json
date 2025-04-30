@@ -751,6 +751,11 @@
     }
   },
     "footer": {
-      "rights": "Barcha huquqlar himoyalangan."
+      "rights": "Barcha huquqlar himoyalangan.",
+      "activity": "Faoliyat",
+      "about_agency": "Agentlik haqida",
+      "agency_structure": "Agentlik tuzilmasi",
+      "leadership": "Rahbariyat",
+      "information_service": "Axborot xizmati"
     }
 }

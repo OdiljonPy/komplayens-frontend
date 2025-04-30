@@ -751,6 +751,11 @@
     }
   },
     "footer": {
-      "rights": "All rights reserved."
+      "rights": "All rights reserved.",
+      "activity": "Activity",
+      "about_agency": "About the agency",
+      "agency_structure": "Agency Structure",
+      "leadership": "Leadership",
+      "information_service": "Information service"
     }
 }

@@ -735,6 +735,11 @@
     }
   },
     "footer": {
-      "rights": "Все права защищены."
+      "rights": "Все права защищены.",
+      "activity": "Активность",
+      "about_agency": "Об агентстве",
+      "agency_structure": "Структура агентства",
+      "leadership": "Лидерство",
+      "information_service": "Информационная служба"
     }
 }

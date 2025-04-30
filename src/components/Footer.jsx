@@ -30,23 +30,23 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           {/* Agentlik haqida */}
           <div>
-            <h3 className="text-xl mb-4">Agentlik haqida</h3>
+            <h3 className="text-xl mb-4">{t('footer.about_agency')}</h3>
             <div className="flex flex-col gap-2">
               <Link to={getLocalizedPath('/about')} className="text-gray-400 hover:text-white">
-                Agentlik haqida
+                {t('footer.about_agency')}
               </Link>
               <Link to={getLocalizedPath('/leadership')} className="text-gray-400 hover:text-white">
-                Rahbariyat
+                {t('footer.leadership')}
               </Link>
               <Link to={getLocalizedPath('/structure')} className="text-gray-400 hover:text-white">
-                Agentlik tuzilmasi
+                {t('footer.agency_structure')}
               </Link>
             </div>
           </div>
 
           {/* Faoliyat */}
           <div>
-            <h3 className="text-xl mb-4">Faoliyat</h3>
+            <h3 className="text-xl mb-4">{t('footer.activity')}</h3>
             <div className="flex flex-col gap-2">
               <Link to={getLocalizedPath('/statistics')} className="text-gray-400 hover:text-white">
                 {t('navbar.practice')}
@@ -62,7 +62,7 @@ const Footer = () => {
 
           {/* Axborot xizmati */}
           <div>
-            <h3 className="text-xl mb-4">Axborot xizmati</h3>
+            <h3 className="text-xl mb-4">{t('footer.information_service')}</h3>
             <div className="flex flex-col gap-2">
               <Link to={getLocalizedPath('/violations')} className="text-gray-400 hover:text-white">
                 {t('navbar.news')}
