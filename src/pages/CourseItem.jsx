@@ -73,6 +73,13 @@ const CourseItemSkeleton = () => (
   </div>
 );
 
+// Loading animation komponentini qo'shamiz
+const LoadingSpinner = () => (
+  <div className="flex justify-center items-center min-h-screen">
+    <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#024072]"></div>
+  </div>
+);
+
 const CourseItem = () => {
   const { t, i18n } = useTranslation();
   const getLocalizedPath = (path) => {
@@ -100,7 +107,7 @@ const CourseItem = () => {
   }, [courseId]);
 
   if (loading) return <CourseItemSkeleton />;
-  if (!courseData) return <div>{t('pages.courseItem.loading')}</div>;
+  if (!courseData) return <LoadingSpinner />;
 
   // Extract video ID from YouTube URL
   const getYoutubeEmbedUrl = (url) => {
