@@ -40,7 +40,7 @@ const HeroCarousel = () => {
 
   return (
     <div className="container mx-auto ">
-      <div className="relative h-[300px] md:h-[400px] overflow-hidden rounded-3xl mt-16 md:mt-0">
+      <div className="relative h-[220px] sm:h-[300px] md:h-[400px] overflow-hidden rounded-xl sm:rounded-3xl mt-[50px] md:mt-0">
         <Swiper
           spaceBetween={0}
           slidesPerView={1}

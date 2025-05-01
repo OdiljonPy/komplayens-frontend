@@ -176,7 +176,7 @@ const VideoCourseDashboard = () => {
   };
 
   return (
-    <div className="bg-gray-50 py-8 mt-4">
+    <div className="bg-gray-50 py-8 sm:mt-4">
       <div className="container mx-auto px-4 md:px-0">
         <div className="grid lg:grid-cols-12 md:grid-cols-2 grid-cols-1 gap-8">
           {/* Left Section - Video Courses */}
@@ -205,16 +205,16 @@ const VideoCourseDashboard = () => {
                     boxShadow: '0px 0px 32px 0px #00000012'
                   }}>
                     <Link to={getLocalizedPath(`/educational-materials/${course.id}`)}>
-                      <div className="flex flex-col md:flex-row gap-4">
+                      <div className="flex flex-col lg:flex-row gap-4">
                         <img
                           src={course.image}
                           alt=""
-                          className='w-full md:w-48 h-32 bg-gray-200 rounded-md object-cover object-center'
+                          className='w-full lg:w-48 h-32 bg-gray-200 rounded-md object-cover object-center'
                         />
                         <div className="flex-1">
                           <h3 className="text-lg font-semibold mb-2">{course.name}</h3>
                           <div
-                            className="text-gray-600 mb-4 line-clamp-3"
+                            className="text-gray-600 mb-4  hidden md:line-clamp-3"
                             dangerouslySetInnerHTML={{ __html: course.description }}
                           />
                           <div className="flex gap-4 text-gray-500">
